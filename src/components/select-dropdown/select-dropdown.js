@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import tw from '../../styles/tailwind';
-import LinearGradient from 'react-native-linear-gradient';
 
 const items = [
   {

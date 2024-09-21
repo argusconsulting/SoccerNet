@@ -6,9 +6,12 @@ import tw from '../styles/tailwind';
 import LanguageSelection from '../screens/LanguageSelection/LanguageSelection';
 import SplashScreen from '../screens/SplashScreen/SplashScreen';
 import LeagueSelection from '../screens/LeagueSelection/leagueSelection';
-import Calendar from '../screens/Calendar/calendar';
+
 import Home from '../screens/Home/home';
 import Feather from 'react-native-vector-icons/Feather';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {Image} from 'react-native';
+import CalendarScreen from '../screens/Calendar/calendar';
 
 // Bottom Tab Navigation
 const Tab = createBottomTabNavigator();
@@ -25,8 +28,8 @@ function BottomTabScreens() {
           showLabel: true,
           activeTintColor: '#937323',
           inactiveTintColor: '#9756',
-          tabStyle: {backgroundColor: '#fff', paddingBottom: 7},
-          labelStyle: {fontSize: 12},
+          tabStyle: {backgroundColor: '#303649', paddingBottom: 7},
+          labelStyle: {fontSize: 12, color: '#fff'},
         }}>
         <Tab.Screen
           name="Home"
@@ -37,7 +40,7 @@ function BottomTabScreens() {
               focused ? (
                 <Feather
                   name={'home'}
-                  color={'#EB6707'}
+                  color={'#fff'}
                   size={22}
                   style={tw`mt-2`}
                 />
@@ -54,20 +57,20 @@ function BottomTabScreens() {
 
         <Tab.Screen
           name="Calendar"
-          component={Calendar}
+          component={CalendarScreen}
           options={{
             tabBarLabel: 'Calendar',
             tabBarIcon: ({focused}) =>
               focused ? (
-                <Feather
-                  name={'book'}
-                  color={'#EB6707'}
+                <AntDesign
+                  name={'calendar'}
+                  color={'#fff'}
                   size={22}
                   style={tw`mt-2`}
                 />
               ) : (
-                <Feather
-                  name={'book'}
+                <AntDesign
+                  name={'calendar'}
                   color={'#8D8E90'}
                   size={22}
                   style={tw`mt-2`}
@@ -76,30 +79,25 @@ function BottomTabScreens() {
           }}
         />
 
-        {/* <Tab.Screen
-          name="Event"
-          component={Event}
+        <Tab.Screen
+          name="More"
+          component={LanguageSelection}
           options={{
-            tabBarLabel: 'Event',
+            tabBarLabel: 'More',
             tabBarIcon: ({focused}) =>
-                focused ? (
-                    <Feather
-                      name={'calendar'}
-                      color={'#EB6707'}
-                      size={22}
-                      style={tw`mt-2`}
-                    />
-                  ) : (
-                    <Feather
-                      name={'calendar'}
-                      color={'#8D8E90'}
-                      size={22}
-                      style={tw`mt-2`}
-                    />
-            ),
-
+              focused ? (
+                <Image
+                  source={require('../assets/icons/white_grid.png')}
+                  style={[tw`w-5 h-5 mt-2`, {resizeMode: 'contain'}]}
+                />
+              ) : (
+                <Image
+                  source={require('../assets/icons/grid.png')}
+                  style={[tw`w-5 h-5 mt-2`, {resizeMode: 'contain'}]}
+                />
+              ),
           }}
-        /> */}
+        />
       </Tab.Navigator>
     </SafeAreaProvider>
   );
@@ -113,12 +111,11 @@ export const StackScreen = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <>
+        <Stack.Screen name="Home" component={BottomTabScreens} />
         <Stack.Screen name="LanguageSelection" component={LanguageSelection} />
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="LeagueSelection" component={LeagueSelection} />
-        <Stack.Screen name="Calendar" component={Calendar} />
-
-        <Stack.Screen name="Home" component={BottomTabScreens} />
+        <Stack.Screen name="Calendar" component={CalendarScreen} />
       </>
     </Stack.Navigator>
   );
