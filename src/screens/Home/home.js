@@ -34,6 +34,39 @@ const Home = () => {
     },
   ];
 
+  const matches = [
+    {
+      leagueLogo: require('../../assets/league_icons/league-1.png'),
+      time: "87'",
+      homeTeam: 'Man United',
+      homeScore: 1,
+      awayScore: 2,
+      awayTeam: 'Man City',
+      homeTeamLogo: require('../../assets/league_icons/league-2.png'),
+      awayTeamLogo: require('../../assets/league_icons/league-3.png'),
+    },
+    {
+      leagueLogo: require('../../assets/league_icons/league-1.png'),
+      homeTeam: 'Man United',
+      time: "87'",
+      homeScore: 1,
+      awayScore: 2,
+      awayTeam: 'Man City',
+      homeTeamLogo: require('../../assets/league_icons/league-2.png'),
+      awayTeamLogo: require('../../assets/league_icons/league-3.png'),
+    },
+    {
+      leagueLogo: require('../../assets/league_icons/league-1.png'),
+      homeTeam: 'Man United',
+      time: "87'",
+      homeScore: 1,
+      awayScore: 2,
+      awayTeam: 'Man City',
+      homeTeamLogo: require('../../assets/league_icons/league-2.png'),
+      awayTeamLogo: require('../../assets/league_icons/league-3.png'),
+    },
+  ];
+
   const Item = ({item}) => (
     <View style={tw`bg-[#303649] p-3 mx-2 rounded-lg`}>
       <Image
@@ -64,9 +97,9 @@ const Home = () => {
         <SearchBar />
       </View>
       <View>
-        <View style={tw`flex-row justify-between`}>
+        <View style={tw`flex-row justify-between mb-5`}>
           <Text
-            style={tw`text-white text-[22px] font-401 leading-tight  mt-3 mb-5 px-5`}>
+            style={tw`text-white text-[22px] font-401 leading-tight  mt-3  px-5`}>
             League
           </Text>
           <Text
@@ -85,9 +118,9 @@ const Home = () => {
       </View>
 
       <View>
-        <View style={tw`flex-row justify-between mt-3`}>
+        <View style={tw`flex-row justify-between mt-3 mb-2`}>
           <Text
-            style={tw`text-white text-[22px] font-401 leading-tight  mt-3 mb-5 px-5`}>
+            style={tw`text-white text-[22px] font-401 leading-tight  mt-3  px-5`}>
             Live Now
           </Text>
           <Text
@@ -95,20 +128,21 @@ const Home = () => {
             Sell all
           </Text>
         </View>
+
         <FlatList
-          data={items}
+          data={matches}
           horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={({item}) => <ScoreCard item={item} />}
-          keyExtractor={item => item.id}
-          contentContainerStyle={tw`px-3`}
+          renderItem={({item}) => <ScoreCard match={item} />}
+          keyExtractor={(item, index) => index.toString()}
+          contentContainerStyle={tw`items-center px-3`}
         />
       </View>
 
       <View>
-        <View style={tw`flex-row justify-between mt-3`}>
+        <View style={tw`flex-row justify-between mt-3 mb-2`}>
           <Text
-            style={tw`text-white text-[22px] font-401 leading-tight  mt-3 mb-5 px-5`}>
+            style={tw`text-white text-[22px] font-401 leading-tight  mt-3 px-5`}>
             Just Finished
           </Text>
           <Text
@@ -117,12 +151,12 @@ const Home = () => {
           </Text>
         </View>
         <FlatList
-          data={items}
+          data={matches}
           horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={({item}) => <ScoreCard item={item} />}
-          keyExtractor={item => item.id}
-          contentContainerStyle={tw`px-3`}
+          renderItem={({item}) => <ScoreCard match={item} />}
+          keyExtractor={(item, index) => index.toString()}
+          contentContainerStyle={tw`items-center px-3`}
         />
       </View>
     </View>

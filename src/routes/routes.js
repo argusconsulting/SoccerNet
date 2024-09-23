@@ -10,12 +10,21 @@ import LeagueSelection from '../screens/LeagueSelection/leagueSelection';
 import Home from '../screens/Home/home';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {Image} from 'react-native';
+import {Image, TouchableOpacity} from 'react-native';
 import CalendarScreen from '../screens/Calendar/calendar';
+import {useState} from 'react';
+import LeagueModal from '../components/league-modal/league-modal';
+import Profile from '../screens/Profile/profile';
 
 // Bottom Tab Navigation
 const Tab = createBottomTabNavigator();
 function BottomTabScreens() {
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
   return (
     <SafeAreaProvider>
       <Tab.Navigator
@@ -80,28 +89,39 @@ function BottomTabScreens() {
         />
 
         <Tab.Screen
-          name="More"
-          component={LanguageSelection}
+          name="League"
+          component={EmptyScreen} // Any valid screen or use the main one
           options={{
             tabBarLabel: 'More',
-            tabBarIcon: ({focused}) =>
-              focused ? (
+            tabBarIcon: ({focused}) => (
+              <TouchableOpacity onPress={toggleModal}>
                 <Image
-                  source={require('../assets/icons/white_grid.png')}
+                  source={
+                    focused
+                      ? require('../assets/icons/white_grid.png')
+                      : require('../assets/icons/grid.png')
+                  }
                   style={[tw`w-5 h-5 mt-2`, {resizeMode: 'contain'}]}
                 />
-              ) : (
-                <Image
-                  source={require('../assets/icons/grid.png')}
-                  style={[tw`w-5 h-5 mt-2`, {resizeMode: 'contain'}]}
-                />
-              ),
+              </TouchableOpacity>
+            ),
+          }}
+          listeners={{
+            tabPress: e => {
+              e.preventDefault(); // Prevent navigation on tab press
+              toggleModal(); // Open the modal instead
+            },
           }}
         />
       </Tab.Navigator>
+      <LeagueModal isVisible={isModalVisible} toggleModal={toggleModal} />
     </SafeAreaProvider>
   );
 }
+
+const EmptyScreen = () => {
+  return null;
+};
 
 const Stack = createNativeStackNavigator();
 
@@ -111,11 +131,12 @@ export const StackScreen = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <>
-        <Stack.Screen name="Home" component={BottomTabScreens} />
         <Stack.Screen name="LanguageSelection" component={LanguageSelection} />
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="LeagueSelection" component={LeagueSelection} />
+        <Stack.Screen name="Home" component={BottomTabScreens} />
         <Stack.Screen name="Calendar" component={CalendarScreen} />
+        <Stack.Screen name="Profile" component={Profile} />
       </>
     </Stack.Navigator>
   );
