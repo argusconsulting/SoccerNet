@@ -49,19 +49,28 @@
 // const styles = StyleSheet.create({});
 
 import React from 'react';
-import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import tw from '../../styles/tailwind';
+import { useNavigation } from '@react-navigation/native';
 
-const ScoreCard = ({match}) => {
+const ScoreCard = ({match , width, screen}) => {
+
+  const navigation = useNavigation()
   return (
-    <View style={tw`bg-[#303649] h-31 w-70 rounded-2xl mt-4 mx-2`}>
+    <TouchableOpacity style={[tw`bg-[#303649] h-34  rounded-2xl mt-5 mx-2`,{width :width}]} onPress={()=> navigation.navigate('HighlightDetail')}>
       <View style={tw`flex-row justify-between`}>
         <Image source={match?.leagueLogo} style={tw`w-5 h-5 mt-2 ml-3`} />
+        {screen &&  <Text
+          style={tw`text-[#a9a9a9] text-[16px] font-400 leading-normal self-center mt-1.5`}>
+          {match?.date}
+        </Text>}
+       
         <Text
           style={tw`text-[#fff] text-[16px] font-401 leading-normal mt-1.5 mr-3`}>
           {match?.time}
         </Text>
       </View>
+    
       <View style={tw`flex-row justify-between mx-12 mt-3`}>
         <View>
           <Image
@@ -96,7 +105,7 @@ const ScoreCard = ({match}) => {
           </Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

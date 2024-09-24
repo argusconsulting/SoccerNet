@@ -5,6 +5,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SearchBar from '../../components/search-bar/search-bar';
 import ScoreCard from '../../components/score-card/score-card';
+import { matches } from '../../helpers/dummyData';
 
 const Home = () => {
   const items = [
@@ -34,38 +35,7 @@ const Home = () => {
     },
   ];
 
-  const matches = [
-    {
-      leagueLogo: require('../../assets/league_icons/league-1.png'),
-      time: "87'",
-      homeTeam: 'Man United',
-      homeScore: 1,
-      awayScore: 2,
-      awayTeam: 'Man City',
-      homeTeamLogo: require('../../assets/league_icons/league-2.png'),
-      awayTeamLogo: require('../../assets/league_icons/league-3.png'),
-    },
-    {
-      leagueLogo: require('../../assets/league_icons/league-1.png'),
-      homeTeam: 'Man United',
-      time: "87'",
-      homeScore: 1,
-      awayScore: 2,
-      awayTeam: 'Man City',
-      homeTeamLogo: require('../../assets/league_icons/league-2.png'),
-      awayTeamLogo: require('../../assets/league_icons/league-3.png'),
-    },
-    {
-      leagueLogo: require('../../assets/league_icons/league-1.png'),
-      homeTeam: 'Man United',
-      time: "87'",
-      homeScore: 1,
-      awayScore: 2,
-      awayTeam: 'Man City',
-      homeTeamLogo: require('../../assets/league_icons/league-2.png'),
-      awayTeamLogo: require('../../assets/league_icons/league-3.png'),
-    },
-  ];
+
 
   const Item = ({item}) => (
     <View style={tw`bg-[#303649] p-3 mx-2 rounded-lg`}>
@@ -133,7 +103,7 @@ const Home = () => {
           data={matches}
           horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={({item}) => <ScoreCard match={item} />}
+          renderItem={({item}) => <ScoreCard match={item} width={280} />}
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={tw`items-center px-3`}
         />
@@ -154,7 +124,7 @@ const Home = () => {
           data={matches}
           horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={({item}) => <ScoreCard match={item} />}
+          renderItem={({item}) => <ScoreCard match={item}  width={280}/>}
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={tw`items-center px-3`}
         />

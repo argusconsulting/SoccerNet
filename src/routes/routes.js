@@ -15,6 +15,8 @@ import CalendarScreen from '../screens/Calendar/calendar';
 import {useState} from 'react';
 import LeagueModal from '../components/league-modal/league-modal';
 import Profile from '../screens/Profile/profile';
+import Highlights from '../screens/Highlights/highlights';
+import HighlightDetail from '../screens/Highlights/modules/highlight-detail';
 
 // Bottom Tab Navigation
 const Tab = createBottomTabNavigator();
@@ -131,12 +133,14 @@ export const StackScreen = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <>
+        <Stack.Screen name="Home" component={BottomTabScreens} />
         <Stack.Screen name="LanguageSelection" component={LanguageSelection} />
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="LeagueSelection" component={LeagueSelection} />
-        <Stack.Screen name="Home" component={BottomTabScreens} />
         <Stack.Screen name="Calendar" component={CalendarScreen} />
         <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="Highlights" component={Highlights} />
+        <Stack.Screen name="HighlightDetail" component={HighlightDetail} />
       </>
     </Stack.Navigator>
   );
