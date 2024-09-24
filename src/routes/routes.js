@@ -17,6 +17,10 @@ import LeagueModal from '../components/league-modal/league-modal';
 import Profile from '../screens/Profile/profile';
 import Highlights from '../screens/Highlights/highlights';
 import HighlightDetail from '../screens/Highlights/modules/highlight-detail';
+import Trivia from '../screens/trivia/trivia';
+import Poll from '../screens/poll/poll';
+import LeagueScreen from '../screens/league/leagueList';
+import TriviaQuestions from '../screens/triviaQuestions/triviaQuestions';
 
 // Bottom Tab Navigation
 const Tab = createBottomTabNavigator();
@@ -141,6 +145,10 @@ export const StackScreen = () => {
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="Highlights" component={Highlights} />
         <Stack.Screen name="HighlightDetail" component={HighlightDetail} />
+        <Stack.Screen name="Trivia" component={Trivia} />
+        <Stack.Screen name="Poll" component={Poll} />
+        <Stack.Screen name="LeagueScreen" component={LeagueScreen} />
+        <Stack.Screen name="TriviaQuestions" component={TriviaQuestions} />
       </>
     </Stack.Navigator>
   );

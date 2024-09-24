@@ -1,4 +1,4 @@
-import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import tw from '../../styles/tailwind';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -6,8 +6,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import SearchBar from '../../components/search-bar/search-bar';
 import ScoreCard from '../../components/score-card/score-card';
 import { matches } from '../../helpers/dummyData';
+import { useNavigation } from '@react-navigation/native';
 
 const Home = () => {
+
+  const navigation = useNavigation()
+
   const items = [
     {
       id: '3ac68afc-c605-48d3-a4f8-fb1aa97f63',
@@ -72,10 +76,12 @@ const Home = () => {
             style={tw`text-white text-[22px] font-401 leading-tight  mt-3  px-5`}>
             League
           </Text>
+          <TouchableOpacity onPress={()=> navigation.navigate('LeagueScreen')}>
           <Text
             style={tw`text-[#8195FF] text-[14px] font-401 leading-tight  mt-5  px-5`}>
             Sell all
           </Text>
+          </TouchableOpacity>
         </View>
         <FlatList
           data={items}

@@ -33,7 +33,7 @@ const HighlightDetail = () => {
         },
     ];
 
-    const [type, setType] = useState('DESCRIPTION');
+    const [type, setType] = useState('Summary');
 
     const renderItem = ({ item }) => (
         <View style={tw``}>
@@ -64,7 +64,7 @@ const HighlightDetail = () => {
     <View style={tw`bg-[#05102E] flex-1 `}>
      <Header name="" />
 
-     <View style={[tw` h-34  rounded-2xl mt-2 mx-5`]}>
+     <View style={[tw`  mt-2 mx-5`]}>
       <View style={tw`flex-row justify-between`}>
         <Image source={require('../../../assets/league_icons/league-1.png')} style={tw`w-5 h-5 mt-2 ml-3`} />
      <Text
@@ -113,7 +113,34 @@ const HighlightDetail = () => {
         </View>
       </View>
     </View>
+    <View style={tw`flex-row self-center mt-5`}>
+    <Text
+          style={tw`text-[#a9a9a9] text-[16px] font-400 leading-normal self-center mt-1.5 w-31`}>
+       R. Mahrez 57’ (Pen)
+        </Text>
+        <Image source={require('../../../assets/icons/football.png')} style={[tw`w-5 h-5 mt-2 mx-5`,{resizeMode:"contain"}]} />
+
+        <Text
+          style={tw`text-[#a9a9a9] text-[16px] font-400 leading-normal self-center mt-1.5 w-30`}>
+       R. Mahrez 57’ (Pen)
+        </Text>
+        </View>
+        <View style={tw`flex-row self-center mt-2`}>
+    <Text
+          style={tw`text-[#a9a9a9] text-[16px] font-400 leading-normal self-center mt-1.5 w-35`}>
+  
+        </Text>
+        <Image source={require('../../../assets/icons/red-card.png')} style={[tw`w-5 h-5 mt-2 mx-5`,{resizeMode:"contain"}]} />
+
+        <Text
+          style={tw`text-[#a9a9a9] text-[16px] font-400 leading-normal self-center mt-1.5 w-35`}>
+    Gabriel Magalhaes 59’
+        </Text>
+        </View>
 <View>
+<View
+                                style={tw` border-t pt-3 ml-3 border-[#3e3e3e] mt-10 `}
+                            />
     <FlatList
                                 data={detailsType}
                                 horizontal
@@ -122,10 +149,12 @@ const HighlightDetail = () => {
                                 renderItem={renderItem}
                                 keyExtractor={(item) => item.id.toString()}
                             />
-                            </View>
                             <View
-                                style={tw` border-b pt-3 ml-3 border-[#33333333] `}
+                                style={tw` border-b pt-3 ml-3 border-[#3e3e3e] `}
                             />
+                            </View>
+
+                           
                             <Suspense fallback={<Text>Loading...</Text>}>
                                 {type === 'Summary' && (
                                 <Summary/>
