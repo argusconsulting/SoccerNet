@@ -6,10 +6,10 @@ import { useNavigation } from '@react-navigation/native';
 
 
 const data = [
-    { id: '1', label: 'Box 1' },
-    { id: '2', label: 'Box 2' },
-    { id: '3', label: 'Box 3' },
-    { id: '4', label: 'Box 4' },
+    { id: '1', label: 'Did you Know' },
+    { id: '2', label: 'Match Trivia' },
+    { id: '3', label: 'Player Trivia' },
+    { id: '4', label: 'Goal Scorer Quiz' },
 ];
 
 const screenWidth = Dimensions.get('window').width;

@@ -38,7 +38,7 @@ const LeagueModal = ({isVisible, toggleModal}) => {
       id: '4',
       icon: require('../../assets/icons/comments.png'),
       title: 'Discussions',
-      navigate: 'Discussions', // Example screen name
+      navigate: 'Discussion', // Example screen name
     },
     {
       id: '5',

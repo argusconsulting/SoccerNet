@@ -21,6 +21,9 @@ import Trivia from '../screens/trivia/trivia';
 import Poll from '../screens/poll/poll';
 import LeagueScreen from '../screens/league/leagueList';
 import TriviaQuestions from '../screens/triviaQuestions/triviaQuestions';
+import Discussion from '../screens/discussion/discussion';
+import News from '../screens/news/news';
+import Photos from '../screens/photos/photos';
 
 // Bottom Tab Navigation
 const Tab = createBottomTabNavigator();
@@ -149,6 +152,9 @@ export const StackScreen = () => {
         <Stack.Screen name="Poll" component={Poll} />
         <Stack.Screen name="LeagueScreen" component={LeagueScreen} />
         <Stack.Screen name="TriviaQuestions" component={TriviaQuestions} />
+        <Stack.Screen name="Discussion" component={Discussion} />
+        <Stack.Screen name="News" component={News} />
+        <Stack.Screen name="Photos" component={Photos} />
       </>
     </Stack.Navigator>
   );
