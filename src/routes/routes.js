@@ -24,6 +24,8 @@ import TriviaQuestions from '../screens/triviaQuestions/triviaQuestions';
 import Discussion from '../screens/discussion/discussion';
 import News from '../screens/news/news';
 import Photos from '../screens/photos/photos';
+import UploadPhotos from '../screens/photos/modules/upload-photos';
+import LiveNow from '../screens/live-now/live-now';
 
 // Bottom Tab Navigation
 const Tab = createBottomTabNavigator();
@@ -155,6 +157,8 @@ export const StackScreen = () => {
         <Stack.Screen name="Discussion" component={Discussion} />
         <Stack.Screen name="News" component={News} />
         <Stack.Screen name="Photos" component={Photos} />
+        <Stack.Screen name="UploadPhotos" component={UploadPhotos} />
+        <Stack.Screen name="LiveNow" component={LiveNow} />
       </>
     </Stack.Navigator>
   );

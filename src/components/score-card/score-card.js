@@ -64,11 +64,16 @@ const ScoreCard = ({match , width, screen}) => {
           style={tw`text-[#a9a9a9] text-[16px] font-400 leading-normal self-center mt-1.5`}>
           {match?.date}
         </Text>}
-       
+       {screen === "liveNow" ?
+        <Text
+        style={tw`text-red-500 text-[16px] font-401 leading-normal mt-1.5 mr-3`}>
+   Live
+      </Text>:
         <Text
           style={tw`text-[#fff] text-[16px] font-401 leading-normal mt-1.5 mr-3`}>
           {match?.time}
         </Text>
+}
       </View>
     
       <View style={tw`flex-row justify-between mx-12 mt-3`}>
