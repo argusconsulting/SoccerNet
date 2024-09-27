@@ -44,7 +44,7 @@ const LeagueModal = ({isVisible, toggleModal}) => {
       id: '5',
       icon: require('../../assets/icons/spotlight.png'),
       title: 'Spotlight',
-      navigate: 'Spotlight', // Example screen name
+      navigate: 'Rooms', // Example screen name
     },
     {
       id: '6',

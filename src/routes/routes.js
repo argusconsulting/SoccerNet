@@ -27,6 +27,7 @@ import Photos from '../screens/photos/photos';
 import UploadPhotos from '../screens/photos/modules/upload-photos';
 import LiveNow from '../screens/live-now/live-now';
 import LiveDetails from '../screens/live-now/modules/live-details';
+import RoomsListing from '../screens/rooms/rooms-listing';
 
 // Bottom Tab Navigation
 const Tab = createBottomTabNavigator();
@@ -161,6 +162,7 @@ export const StackScreen = () => {
         <Stack.Screen name="UploadPhotos" component={UploadPhotos} />
         <Stack.Screen name="LiveNow" component={LiveNow} />
         <Stack.Screen name="LiveDetails" component={LiveDetails} />
+        <Stack.Screen name="Rooms" component={RoomsListing} />
       </>
     </Stack.Navigator>
   );
