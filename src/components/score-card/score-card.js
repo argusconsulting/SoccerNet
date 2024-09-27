@@ -53,11 +53,11 @@ import {FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-n
 import tw from '../../styles/tailwind';
 import { useNavigation } from '@react-navigation/native';
 
-const ScoreCard = ({match , width, screen}) => {
+const ScoreCard = ({match , width, screen, navigate}) => {
 
   const navigation = useNavigation()
   return (
-    <TouchableOpacity style={[tw`bg-[#303649] h-34  rounded-2xl mt-5 mx-2`,{width :width}]} onPress={()=> navigation.navigate('HighlightDetail')}>
+    <TouchableOpacity style={[tw`bg-[#303649] h-34  rounded-2xl mt-5 mx-2`,{width :width}]} onPress={()=> navigation.navigate(navigate)}>
       <View style={tw`flex-row justify-between`}>
         <Image source={match?.leagueLogo} style={tw`w-5 h-5 mt-2 ml-3`} />
         {screen &&  <Text

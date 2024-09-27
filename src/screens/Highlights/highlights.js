@@ -13,7 +13,7 @@ const Highlights = () => {
       <View style={tw``}>
       <FlatList
           data={matches}
-          renderItem={({item}) => <ScoreCard match={item} width={'96%'} screen={'highlight'}/>}
+          renderItem={({item}) => <ScoreCard match={item} width={'96%'} screen={'highlight'} navigate={'HighlightDetail'}/>}
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={tw`px-3`}
         />

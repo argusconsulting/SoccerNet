@@ -13,7 +13,7 @@ const LiveNow = () => {
       <View style={tw``}>
       <FlatList
           data={matches}
-          renderItem={({item}) => <ScoreCard match={item} width={'96%'} screen={'liveNow'}/>}
+          renderItem={({item}) => <ScoreCard match={item} width={'96%'} screen={'liveNow'} navigate={'LiveDetails'}/>}
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={tw`px-3`}
         />

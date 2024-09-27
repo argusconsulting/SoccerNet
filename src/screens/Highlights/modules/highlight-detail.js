@@ -52,7 +52,7 @@ const HighlightDetail = () => {
                     {item.name}
                 </Text>
                 {type === item.name && (
-                    <View style={tw`border-b-2 border-[#fff] w-16  self-center`} />
+                    <View style={tw`border-b-2 border-[#fff] w-full  self-center`} />
                 )}
             </TouchableOpacity>
         </View>
