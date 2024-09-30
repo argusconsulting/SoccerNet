@@ -1,12 +1,13 @@
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { Suspense, useState } from 'react'
+import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { lazy, Suspense, useState } from 'react'
 import tw from '../../../styles/tailwind'
 import Header from '../../../components/header/header'
-import Summary from './summary'
-import Statistics from './statistics'
-import Standings from './standings'
-import Players from './players'
-import Commentary from './commentary'
+import Summary from '../../../components/detail-modules/summary'
+const Commentary = lazy(() => import('../../../components/detail-modules/commentary'));
+const Standings = lazy(() => import('../../../components/detail-modules/standings'));
+const Players = lazy(() => import('../../../components/detail-modules/players'));
+const Statistics = lazy(() => import('../../../components/detail-modules/statistics'));
+
 
 const HighlightDetail = () => {
 
@@ -63,6 +64,7 @@ const HighlightDetail = () => {
   return (
     <View style={tw`bg-[#05102E] flex-1 `}>
      <Header name="" />
+     <ScrollView>
 
      <View style={[tw`  mt-2 mx-5`]}>
       <View style={tw`flex-row justify-between`}>
@@ -172,6 +174,7 @@ const HighlightDetail = () => {
                                   <Commentary/>
                                 )}
                             </Suspense>
+                            </ScrollView>
     </View>
   )
 }

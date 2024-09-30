@@ -1,5 +1,5 @@
 import {FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import tw from '../../styles/tailwind';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -7,10 +7,16 @@ import SearchBar from '../../components/search-bar/search-bar';
 import ScoreCard from '../../components/score-card/score-card';
 import { matches } from '../../helpers/dummyData';
 import { useNavigation } from '@react-navigation/native';
+import Menu from '../../components/menu/menu';
 
 const Home = () => {
 
   const navigation = useNavigation()
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
 
   const items = [
     {
@@ -53,7 +59,10 @@ const Home = () => {
   return (
     <View style={tw`bg-[#05102E] flex-1 `}>
       <View style={tw`flex-row justify-between p-5`}>
+        <TouchableOpacity    onPress={() => setModalVisible(true)}
+              activeOpacity={0.4}>
         <Entypo name={'menu'} color={'#fff'} size={26} style={tw``} />
+        </TouchableOpacity>
 
         <Ionicons
           name={'notifications'}
@@ -109,7 +118,7 @@ const Home = () => {
           data={matches}
           horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={({item}) => <ScoreCard match={item} width={280} />}
+          renderItem={({item}) => <ScoreCard match={item} width={280} navigate={''}/>}
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={tw`items-center px-3`}
         />
@@ -130,11 +139,13 @@ const Home = () => {
           data={matches}
           horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={({item}) => <ScoreCard match={item}  width={280}/>}
+          renderItem={({item}) => <ScoreCard match={item}  width={280} navigate={''}/>}
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={tw`items-center px-3`}
         />
       </View>
+
+      <Menu modalVisible={modalVisible} toggleModal={toggleModal} />
     </View>
   );
 };

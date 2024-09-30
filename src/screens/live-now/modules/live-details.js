@@ -1,8 +1,9 @@
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { Suspense, useState } from 'react'
+import React, { lazy, Suspense, useState } from 'react'
 import Header from '../../../components/header/header'
 import tw from '../../../styles/tailwind'
-import Commentary from '../../../components/detail-modules/commentary'
+const Commentary = lazy(() => import('../../../components/detail-modules/commentary'));
+const Standings = lazy(() => import('../../../components/detail-modules/standings'));
 
 const LiveDetails = () => {
 
@@ -124,7 +125,7 @@ const LiveDetails = () => {
                            <Suspense fallback={<Text>Loading...</Text>}>
                           
                                {type === 'Standings' && (
-                         <Text>gdf</Text>
+                      <Standings/>
                                )}
                                {type === 'News' && (
                       <Text>gdf</Text>

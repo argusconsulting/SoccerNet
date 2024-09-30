@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import Header from '../../components/header/header';
 import tw from '../../styles/tailwind';
@@ -14,6 +14,7 @@ const Profile = () => {
           style={tw`text-[#fff] text-[40px] font-401 leading-normal self-center`}>
           SR
         </Text>
+        <Image source={require('../../assets/edit_profile.png')} style={tw`w-8 h-8  absolute bottom-0 right-3`}/>
       </View>
       <Text
           style={tw`text-[#fff] text-[30px] font-401 leading-normal self-center mt-4`}>
