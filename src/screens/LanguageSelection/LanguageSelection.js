@@ -144,7 +144,7 @@ const LanguageSelection = () => {
             {flex: 1, justifyContent: 'center', alignItems: 'center'},
           ]}>
           <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight`}>
-            Continue
+          {t('continue')}
           </Text>
         </LinearGradient>
       </TouchableOpacity>

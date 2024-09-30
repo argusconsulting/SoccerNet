@@ -1,4 +1,5 @@
 {
-    "language": "Select a language",
-    "chooseLangText":"Choose a language. You can make changes later through settings."
+    "language": "Select a\nlanguage",
+    "chooseLangText":"Choose a language. You can make changes later through settings.",
+        "continue":"Continue"
    }

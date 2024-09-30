@@ -1,21 +1,65 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, { useState } from 'react';
 import Header from '../../components/header/header';
 import tw from '../../styles/tailwind';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 
 const Profile = () => {
+
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const openImagePicker = () => {
+    const options = {
+      mediaType: 'photo',
+      includeBase64: false,
+      maxHeight: 2000,
+      maxWidth: 2000,
+    };
+
+    launchImageLibrary(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('Image picker error: ', response.error);
+      } else {
+        let imageUri = response.uri || response.assets?.[0]?.uri;
+        setSelectedImage(imageUri);
+      }
+    });
+  };
+
+
   return (
     <View style={tw`bg-[#05102E] flex-1 `}>
       <Header name="Profile" />
-      <View
-        style={tw`bg-[#585858] w-30 h-30 rounded-full self-center justify-center`}>
-        <Text
-          style={tw`text-[#fff] text-[40px] font-401 leading-normal self-center`}>
-          SR
-        </Text>
-        <Image source={require('../../assets/edit_profile.png')} style={tw`w-8 h-8  absolute bottom-0 right-3`}/>
-      </View>
+      <TouchableOpacity
+  onPress={() => openImagePicker()}
+  style={tw`bg-[#585858] w-30 h-30 rounded-full self-center justify-center`}>
+  {selectedImage ? (
+    <>
+    <Image
+      source={{ uri: selectedImage }}
+      style={tw`w-30 h-30 rounded-full`}
+    />
+    <Image
+    source={require('../../assets/edit_profile.png')}
+    style={tw`w-8 h-8 absolute bottom-0 right-3`}
+  />
+  </>
+  ) : (
+    <>
+      <Text
+        style={tw`text-[#fff] text-[40px] font-401 leading-normal self-center`}>
+        SR
+      </Text>
+      <Image
+        source={require('../../assets/edit_profile.png')}
+        style={tw`w-8 h-8 absolute bottom-0 right-3`}
+      />
+    </>
+  )}
+</TouchableOpacity>
       <Text
           style={tw`text-[#fff] text-[30px] font-401 leading-normal self-center mt-4`}>
           Sanchit Rastogi

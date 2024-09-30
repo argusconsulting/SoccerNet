@@ -4,12 +4,17 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
 import tw from '../../styles/tailwind';
 
-const GradientButton = ({navigationScreen, labelShown, width, alignment}) => {
+const GradientButton = ({navigationScreen, labelShown, width, alignment , onClose}) => {
   const navigation = useNavigation();
+
+  const handleOnPress = ()=>{
+    
+    navigation.navigate(`${navigationScreen}`)
+  }
   return (
     <View>
       <TouchableOpacity
-        onPress={() => navigation.navigate(`${navigationScreen}`)}
+        onPress={() => handleOnPress() }
         style={[
           tw`mt-1 rounded-xl justify-center `,
           {

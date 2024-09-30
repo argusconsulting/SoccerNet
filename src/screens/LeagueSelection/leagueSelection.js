@@ -40,10 +40,14 @@ const LeagueSelection = () => {
             leagueBy="Countries"
             leaguePlaceholder="Country leagues"
           />
+
+          <View style={tw`border-b-[#a2a2a2] border-[1px]`}/>
           <MultiSelectDropdown
             leagueBy="Intercontinental"
             leaguePlaceholder="Intercontinental leagues"
           />
+
+<View style={tw`border-b-[#a2a2a2] border-[1px]`}/>
           <MultiSelectDropdown
             leagueBy="World Cup"
             leaguePlaceholder="World cup leagues"

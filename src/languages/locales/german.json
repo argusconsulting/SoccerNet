@@ -1,4 +1,5 @@
 {
-    "language": "Wählen Sie eine Sprache aus",
-    "chooseLangText":"Wählen Sie eine Sprache. Sie können später über die Einstellungen Änderungen vornehmen."
+    "language": "Wählen Sie eine \nSprache aus",
+    "chooseLangText":"Wählen Sie eine Sprache. Sie können später über die Einstellungen Änderungen vornehmen.",
+      "continue":"Weitermachen"
    }

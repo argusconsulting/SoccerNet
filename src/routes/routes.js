@@ -144,10 +144,10 @@ export const StackScreen = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <>
-        <Stack.Screen name="Home" component={BottomTabScreens} />
         <Stack.Screen name="LanguageSelection" component={LanguageSelection} />
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="LeagueSelection" component={LeagueSelection} />
+        <Stack.Screen name="Home" component={BottomTabScreens} />
         <Stack.Screen name="Calendar" component={CalendarScreen} />
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="Highlights" component={Highlights} />

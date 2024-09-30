@@ -6,6 +6,8 @@ import {RadioButton} from 'react-native-paper';
 import GradientButton from '../gradient-button/gradient-button';
 import TextInput from '../../components/library/text-input';
 import PhoneInput from 'react-native-phone-number-input';
+import {useNavigation} from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
 
 const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
   const [checked, setChecked] = React.useState('first');
@@ -13,6 +15,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
   const [formattedValue, setFormattedValue] = useState('');
   const [isLogin, setIsLogin] = useState(selectedValue === 'Login');
   const phoneInput = useRef(null);
+  const navigation = useNavigation();
 
   useEffect(() => {
     setIsLogin(selectedValue === 'Login');
@@ -21,6 +24,8 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
   const toggleLoginSignup = () => {
     setIsLogin(!isLogin);
   };
+
+  console.log(isVisible);
 
   return (
     <Modal
@@ -135,10 +140,32 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
         </View>
 
         <View style={tw`mt-7`}>
-          <GradientButton
-            navigationScreen="LeagueSelection"
-            labelShown={isLogin ? 'Log In' : 'Free Sign Up'}
-          />
+          <TouchableOpacity
+            onPress={() => {
+              onClose();
+              navigation.navigate('LeagueSelection');
+            }}
+            style={[
+              tw`mt-1 rounded-xl justify-center `,
+              {
+                width: '100%',
+                height: 50,
+                alignSelf: 'center',
+              },
+            ]}>
+            <LinearGradient
+              colors={['#6A36CE', '#2575F6']}
+              start={{x: 0, y: 0}} // Start from top left
+              end={{x: 1, y: 1}} // End at bottom right
+              style={[
+                tw`rounded-xl justify-center`,
+                {flex: 1, justifyContent: 'center', alignItems: 'center'},
+              ]}>
+              <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight`}>
+                {isLogin ? 'Log In' : 'Free Sign Up'}
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
         </View>
 
         <View style={tw`flex-row mt-7 self-center`}>

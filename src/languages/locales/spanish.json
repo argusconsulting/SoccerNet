@@ -1,4 +1,5 @@
 {
-    "language": "Seleccione un idioma",
-    "chooseLangText":"Elige un idioma. Puede realizar cambios más adelante a través de la configuración."
+    "language": "Seleccione un \nidioma",
+    "chooseLangText":"Elige un idioma. Puede realizar cambios más adelante a través de la configuración.",
+    "continue":"Continuar"
    }

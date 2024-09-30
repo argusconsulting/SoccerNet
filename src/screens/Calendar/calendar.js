@@ -32,10 +32,10 @@ const CalendarScreen = () => {
         }}
       />
 
-      <View style={tw`bg-[#464646] w-90 h-40 mt-5 self-center rounded-lg`}>
-        <View style={tw`flex-row mt-3`}>
+      <View style={tw`bg-[#303649] w-90 py-3 mt-5 self-center rounded-lg`}>
+        <View style={tw`flex-row `}>
           <Image
-            source={require('../../assets/league_icons/league-1.png')}
+            source={require('../../assets/league_icons/league-3.png')}
             style={tw`w-9 h-9 self-center ml-3`}
           />
           <Text
@@ -47,25 +47,85 @@ const CalendarScreen = () => {
         <View style={tw`flex-row mt-3`}>
           <Image
             source={require('../../assets/league_icons/league-1.png')}
-            style={tw`w-6 h-6 self-center ml-5`}
+            style={tw`w-6 h-6 self-center ml-3`}
           />
           <Text
-            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-3 `}>
+            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-1 `}>
             Aston Villa
           </Text>
 
           <Text
-            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-3 `}>
-            V/S
+            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-2 `}>
+            v/s
           </Text>
 
           <Image
             source={require('../../assets/league_icons/league-1.png')}
-            style={tw`w-6 h-6 self-center ml-5`}
+            style={tw`w-6 h-6 self-center ml-1`}
           />
           <Text
-            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-3 `}>
+            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-1 `}>
             Aston Villa
+          </Text>
+          <Text
+            style={tw`text-[#a2a2a2] text-[18px] font-400 leading-tight self-center mx-3 `}>
+         21:00 PM
+          </Text>
+        </View>
+        <View style={tw`flex-row mt-3`}>
+          <Image
+            source={require('../../assets/league_icons/league-1.png')}
+            style={tw`w-6 h-6 self-center ml-3`}
+          />
+          <Text
+            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-1 `}>
+            Aston Villa
+          </Text>
+
+          <Text
+            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-2 `}>
+            v/s
+          </Text>
+
+          <Image
+            source={require('../../assets/league_icons/league-1.png')}
+            style={tw`w-6 h-6 self-center ml-1`}
+          />
+          <Text
+            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-1 `}>
+            Aston Villa
+          </Text>
+          <Text
+            style={tw`text-[#a2a2a2] text-[18px] font-400 leading-tight self-center mx-3 `}>
+         21:00 PM
+          </Text>
+        </View>
+        <View style={tw`flex-row mt-3`}>
+          <Image
+            source={require('../../assets/league_icons/league-1.png')}
+            style={tw`w-6 h-6 self-center ml-3`}
+          />
+          <Text
+            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-1 `}>
+            Aston Villa
+          </Text>
+
+          <Text
+            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-2 `}>
+            v/s
+          </Text>
+
+          <Image
+            source={require('../../assets/league_icons/league-3.png')}
+            style={tw`w-6 h-6 self-center ml-1`}
+          />
+          <Text
+            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-1 `}>
+    BrentFord
+          </Text>
+          <Text
+            style={tw`text-[#a2a2a2] text-[18px] font-400 leading-tight self-center mx-3 `}>
+         21:00 PM
           </Text>
         </View>
       </View>
