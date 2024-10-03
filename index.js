@@ -1,14 +1,14 @@
 /**
  * @format
  */
-
-import {ActivityIndicator, AppRegistry, Text, View} from 'react-native';
+import {AppRegistry} from 'react-native';
 import App from './App';
 import {name as appName} from './app.json';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {persistor, store} from './src/redux/store';
-
+import {persistor} from './src/redux/store';
 import {PersistGate} from 'redux-persist/integration/react';
+import Toast from 'react-native-toast-message';
+import { config } from './src/scripts/toast';
 
 const Root = () => {
   return (
@@ -18,7 +18,7 @@ const Root = () => {
 
         <PersistGate persistor={persistor}>
           <App />
-          {/* <Toast config={config} /> */}
+          <Toast config={config} />
         </PersistGate>
       </GestureHandlerRootView>
     </>

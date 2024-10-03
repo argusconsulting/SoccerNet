@@ -3,7 +3,7 @@ import React from 'react';
 import Header from '../../components/header/header';
 import tw from '../../styles/tailwind';
 
-const News = () => {
+const News = ({ shownHeader = true }) => {
   const DATA = [
     {
       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -57,7 +57,8 @@ const News = () => {
 
   return (
     <View style={tw`bg-[#05102E] flex-1 `}>
-      <Header name="News" />
+      
+      {shownHeader && <Header name="News" />}
 
       <FlatList
         data={DATA}

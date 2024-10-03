@@ -3160,6 +3160,7 @@ __metadata:
     react-native-render-html: ^6.3.4
     react-native-safe-area-context: ^4.11.0
     react-native-screens: ^3.34.0
+    react-native-toast-message: ^2.2.1
     react-native-vector-icons: ^10.2.0
     react-redux: ^9.1.2
     react-test-renderer: 18.3.1
@@ -8879,6 +8880,16 @@ __metadata:
   version: 1.0.5
   resolution: "react-native-swipe-gestures@npm:1.0.5"
   checksum: d637bc40baa50fa0ce3b6cf2b494efeceaea03cc3875cb7cf7d76922914a21d5e6b098d4a084fb291ce61bfbb0a241c03cff24b15bebf0cfae1c146f4ad10d92
+  languageName: node
+  linkType: hard
+
+"react-native-toast-message@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "react-native-toast-message@npm:2.2.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: c6b5d231b3b617b3d3d893023673534fe2cc0c5f32bb5fc4aecfe239e9de2fb9f0e9a4086d776e53daf3bc2376dce16dcec13e1b5cf1554dbf51808695fc2441
   languageName: node
   linkType: hard
 

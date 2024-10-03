@@ -128,7 +128,7 @@ const TextInput = React.forwardRef(
                 : null,
               disabled && bordered && tw`border-gray-400`,
             ]}
-            placeholderTextColor="#b7b7b7"
+            placeholderTextColor="#a9a9a9"
             {...props}
           />
           {type === 'password' ? (

@@ -36,28 +36,30 @@ const HighlightDetail = () => {
 
     const [type, setType] = useState('Summary');
 
-    const renderItem = ({ item }) => (
+    const renderItem = ({ item, index }) => {
+      const isLastItem = index === detailsType.length - 1;
+    
+      return (
         <View style={tw``}>
-            <TouchableOpacity
-                style={[
-                    tw`h-7`, 
-                    { paddingHorizontal: 10},
-                ]}
-                onPress={() => setType(item.name)}
-            >
-                <Text
-                    style={[
-                        tw`text-[#fff] text-[18px] font-400 self-center`
-                    ]}
-                >
-                    {item.name}
-                </Text>
-                {type === item.name && (
-                    <View style={tw`border-b-2 border-[#fff] w-full  self-center`} />
-                )}
-            </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              tw`h-7`,
+              { paddingHorizontal: 10 },
+              isLastItem && { marginRight: 10 }, // Add marginRight only if it's the last item
+            ]}
+            onPress={() => setType(item.name)}
+          >
+            <Text style={tw`text-[#fff] text-[18px] font-400 self-center`}>
+              {item.name}
+            </Text>
+            {type === item.name && (
+              <View style={tw`border-b-2 border-[#fff] w-full self-center`} />
+            )}
+          </TouchableOpacity>
         </View>
-    );
+      );
+    };
+    
     
     
 
@@ -143,14 +145,14 @@ const HighlightDetail = () => {
 <View
                                 style={tw` border-t pt-3 ml-3 border-[#3e3e3e] mt-10 `}
                             />
-    <FlatList
-                                data={detailsType}
-                                horizontal
-                                showsHorizontalScrollIndicator={false}
-                                contentContainerStyle={tw`flex-row justify-between mx-3`}
-                                renderItem={renderItem}
-                                keyExtractor={(item) => item.id.toString()}
-                            />
+ <FlatList
+  data={detailsType}
+  horizontal
+  showsHorizontalScrollIndicator={false}
+  contentContainerStyle={tw`flex-row justify-between mx-3`}
+  renderItem={renderItem}
+  keyExtractor={(item) => item.id.toString()}
+/>
                             <View
                                 style={tw` border-b pt-3 ml-3 border-[#3e3e3e] `}
                             />

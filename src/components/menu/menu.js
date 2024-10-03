@@ -71,10 +71,11 @@ function Menu({modalVisible, toggleModal}) {
       title: 'Live Now',
     },
 
-    // {
-    //   id: '333acb48-34bb-4d56-ae50-62gh625u3b26',
-    //   title: 'Logout',
-    // },
+    {
+      id: '333acb48-34bb-4d56-ae50-62gh625u3b26',
+      icon: require('../../assets/icons/logout.png'),
+      title: 'Logout',
+    },
   ];
 
   const slideInLeft = {

@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Image, ToastAndroid} from 'react-native';
 import Modal from 'react-native-modal';
 import tw from '../../styles/tailwind';
 import {RadioButton} from 'react-native-paper';
@@ -8,6 +8,13 @@ import TextInput from '../../components/library/text-input';
 import PhoneInput from 'react-native-phone-number-input';
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
+import { validateEmail } from '../../scripts/validations';
+import { postApi } from '../../scripts/api-services';
+import { api_name_login } from '../../constants/api-constants';
+import { useDispatch } from 'react-redux';
+import Loader from '../loader/Loader';
+import { setUserAuthToken, setUserID } from '../../redux/authSlice';
+import Alertify from '../../scripts/toast';
 
 const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
   const [checked, setChecked] = React.useState('first');
@@ -16,6 +23,12 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
   const [isLogin, setIsLogin] = useState(selectedValue === 'Login');
   const phoneInput = useRef(null);
   const navigation = useNavigation();
+  const dispatch = useDispatch()
+  const [submitLoader, setSubmitLoader] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  // console.log("value is ---------", value ,"formattedvalue is --------", formattedValue)
 
   useEffect(() => {
     setIsLogin(selectedValue === 'Login');
@@ -25,7 +38,46 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
     setIsLogin(!isLogin);
   };
 
-  console.log(isVisible);
+  //api call
+
+  async function handleLoginWithEmail() {
+    try {
+      if (value == '') {
+        Alertify.error('Please enter your Email')
+      } else if (!validateEmail(value)) {
+        Alertify.error('Please enter a valid email address.')
+      } else if (password == '') {
+        Alertify.error('Please enter your password')
+      } else {
+        setSubmitLoader(true);
+        postApi(api_name_login, {
+          login: formattedValue,
+          login_type: "contact_number",
+          email: null,
+          password: password,
+        })
+          .then(async response => {
+            Alertify.success(response?.data.message)
+            if (response?.data?.token) {
+              dispatch(setUserAuthToken(response?.data?.token));
+              dispatch(setUserID(response?.data?.data?.user?.id))
+              navigation.navigate('LeagueSelection');
+
+              setSubmitLoader(false);
+            } else {
+              Alertify.error('Incorrect Credentials !')
+            }
+          })
+          .catch(error => {
+            Alertify.error('Incorrect Credentials !')
+            setSubmitLoader(false);
+            console.log('Login Error', error?.message);
+          });
+      }
+    } catch (error) {
+      console.log('Login Error ', error);
+    }
+  }
 
   return (
     <Modal
@@ -80,60 +132,73 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
           {checked === 'first' ? (
             // Email inputs
             <>
-              <TextInput
+            {!isLogin &&  <TextInput
                 type="text"
-                style={tw`border border-[#a9a9a9] text-white p-2 h-11 rounded-lg px-3`}
+                style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg mb-5 px-3`}
                 placeholder="Enter your name"
-              />
+              />}
+             
 
               <TextInput
                 type="text"
-                style={tw`border border-[#a9a9a9] text-white p-2 h-11 rounded-lg mt-5 px-3`}
+                style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg px-3`}
                 placeholder="Enter your email"
+                value={email}
+                onChangeText={text => setEmail(text)}
               />
 
               <TextInput
                 type="password"
-                style={tw`border border-[#a9a9a9] text-white p-2 h-11 rounded-lg mt-5 px-3`}
+                style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg mt-5 px-3`}
                 placeholder="Enter your password"
+                value={password}
+                onChangeText={text => setPassword(text)}
               />
             </>
           ) : (
             // Phone number input
             <>
-              <TextInput
+            {!isLogin &&  <TextInput
                 type="text"
-                style={tw`border border-[#a9a9a9] text-white p-2 h-11 rounded-lg  px-3`}
+                style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg mb-5 px-3`}
                 placeholder="Enter your name"
-              />
+              />}
+             
 
               <PhoneInput
                 ref={phoneInput}
                 defaultValue={value}
+                placeholder='Enter your phone number'
                 defaultCode="IN"
                 layout="second"
                 onChangeText={text => {
-                  setValue(text);
+                  if (text.length <= 10) {
+                    setValue(text);
+                  }
                 }}
                 onChangeFormattedText={text => {
-                  setFormattedValue(text);
+                    setFormattedValue(text);
                 }}
                 withDarkTheme
                 withShadow
                 autoFocus={false}
-                containerStyle={tw`  bg-[#12122A] w-88 rounded-lg mt-5 border-[#a9a9a9] border-[1px]`}
+                containerStyle={tw`  bg-[#12122A] w-88 rounded-lg  border-[#a9a9a9] border-[1px]`}
                 textContainerStyle={tw`bg-[#12122a] border-l-[#a9a9a9] border-[1px] h-11  py-0 text-[#a9a9a9] rounded-lg`}
                 codeTextStyle={tw`text-[#a9a9a9] border-r-[#a9a9a9] `}
                 textInputStyle={tw`text-[#a9a9a9]`}
                 textInputProps={{
-                  selectionColor: '#a9a9a9', // Set the cursor color to white
+                  selectionColor: '#a9a9a9', 
+                  maxLength: 10, 
+                  keyboardType: 'number-pad', 
                 }}
               />
 
               <TextInput
                 type="password"
-                style={tw`border border-[#a9a9a9] text-white p-2 h-11 rounded-lg mt-5 px-3`}
-                placeholder="Password"
+                style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg mt-5 px-3`}
+                placeholder="Enter your password"
+                value={password}
+                onChangeText={text => setPassword(text)}
               />
             </>
           )}
@@ -144,6 +209,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
             onPress={() => {
               onClose();
               navigation.navigate('LeagueSelection');
+              // handleLoginWithEmail()
             }}
             style={[
               tw`mt-1 rounded-xl justify-center `,
@@ -161,9 +227,10 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
                 tw`rounded-xl justify-center`,
                 {flex: 1, justifyContent: 'center', alignItems: 'center'},
               ]}>
+                {submitLoader ? <Loader/> :
               <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight`}>
                 {isLogin ? 'Log In' : 'Free Sign Up'}
-              </Text>
+              </Text>}
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -226,7 +293,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    height: 600,
+   
   },
   header: {
     width: 100,

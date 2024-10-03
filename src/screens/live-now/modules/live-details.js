@@ -2,6 +2,7 @@ import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react
 import React, { lazy, Suspense, useState } from 'react'
 import Header from '../../../components/header/header'
 import tw from '../../../styles/tailwind'
+const News = lazy(()=> import('../../news/news'))
 const Commentary = lazy(() => import('../../../components/detail-modules/commentary'));
 const Standings = lazy(() => import('../../../components/detail-modules/standings'));
 
@@ -127,9 +128,8 @@ const LiveDetails = () => {
                                {type === 'Standings' && (
                       <Standings/>
                                )}
-                               {type === 'News' && (
-                      <Text>gdf</Text>
-                               )}
+                             {type === 'News' && <News shownHeader={false} />}
+
                                {type === 'Commentary' && (
                            <Commentary/>
                                )}
