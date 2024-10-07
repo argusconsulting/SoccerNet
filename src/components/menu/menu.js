@@ -15,7 +15,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
-
+import {userLogout} from '../../redux/authSlice';
+import {customAlert} from '../../scripts/functions';
 
 function Menu({modalVisible, toggleModal}) {
   const navigation = useNavigation();
@@ -134,29 +135,36 @@ function Menu({modalVisible, toggleModal}) {
         toggleModal();
         navigation.navigate('LiveNow');
         break;
+
+      case 'Logout':
+        toggleModal();
+        handleLogout();
+        break;
+
       default:
         console.warn('No screen found for ', title);
     }
   };
 
-  //   const handleLogout = () => {
-  //     customAlert('Are you sure you want to logout ?', 'YES', () =>
-  //       dispatch(userLogout()),
-  //     );
-  //   };
+  const handleLogout = () => {
+    customAlert('Are you sure you want to logout ?', 'YES', () =>
+      dispatch(userLogout()),
+    );
+  };
 
   const Item = ({title, onPress, icon}) => (
     <View style={tw`p-4`}>
       <TouchableOpacity onPress={onPress}>
         <View style={tw`flex-row justify-between`}>
-            <View style={tw`flex-row`}>
-        <Image
-        source={icon}
-        style={[tw`w-5 h-5 self-center mr-5`, {resizeMode: 'contain'}]}
-      />
-          <Text style={tw`text-[#fff] text-[16px] font-400 mt-1 leading-tight`}>
-            {title}
-          </Text>
+          <View style={tw`flex-row`}>
+            <Image
+              source={icon}
+              style={[tw`w-5 h-5 self-center mr-5`, {resizeMode: 'contain'}]}
+            />
+            <Text
+              style={tw`text-[#fff] text-[16px] font-400 mt-1 leading-tight`}>
+              {title}
+            </Text>
           </View>
           <Feather
             name={'arrow-up-right'}

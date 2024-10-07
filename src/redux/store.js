@@ -4,6 +4,8 @@ import {persistReducer, persistStore} from 'redux-persist';
 import languageSlice from './languageSlice';
 import authSlice from './authSlice';
 import  profileSlice  from './profileSlice';
+import pollSlice from './pollSlice';
+import triviaSlice from './triviaSlice'
 
 const persistConfig = {
   key: 'root',
@@ -18,7 +20,9 @@ const persistConfig = {
 const reducers = combineReducers({
   auth_store: authSlice,
   language_store: languageSlice,
-  profile: profileSlice
+  profile: profileSlice,
+  poll: pollSlice,
+  trivia: triviaSlice
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

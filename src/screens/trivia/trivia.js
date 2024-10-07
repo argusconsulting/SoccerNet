@@ -1,15 +1,24 @@
-import { Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import tw from '../../styles/tailwind'
-import Header from '../../components/header/header'
-import { useNavigation } from '@react-navigation/native';
-
+import {
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useEffect} from 'react';
+import tw from '../../styles/tailwind';
+import Header from '../../components/header/header';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {getTriviaCategory} from '../../redux/triviaSlice';
+import Loader from '../../components/loader/Loader';
 
 const data = [
-    { id: '1', label: 'Did you Know' },
-    { id: '2', label: 'Match Trivia' },
-    { id: '3', label: 'Player Trivia' },
-    { id: '4', label: 'Goal Scorer Quiz' },
+  {id: '1', label: 'Did you Know'},
+  {id: '2', label: 'Match Trivia'},
+  {id: '3', label: 'Player Trivia'},
+  {id: '4', label: 'Goal Scorer Quiz'},
 ];
 
 const screenWidth = Dimensions.get('window').width;
@@ -17,47 +26,62 @@ const numColumns = 2;
 const boxSize = screenWidth / numColumns - 40; // Adjust the spacing
 
 const Trivia = () => {
-    const navigation = useNavigation(); // Move useNavigation here
+  const dispatch = useDispatch();
+  const navigation = useNavigation(); // Move useNavigation here
+  const {isLoading, triviaCategory} = useSelector(state => state.trivia);
 
-    const renderItem = ({ item }) => {
-        return (
-            <TouchableOpacity 
-                style={[tw`rounded-xl border-[#fff] border-[0.5px]`, styles.box, { width: boxSize, height: boxSize }]} 
-                onPress={() => navigation.navigate('TriviaQuestions')}>
-                <Text style={styles.boxText}>{item.label}</Text>
-            </TouchableOpacity>
-        );
-    }
+  useEffect(() => {
+    dispatch(getTriviaCategory());
+  }, []);
 
+  const renderItem = ({item}) => {
     return (
-        <View style={tw`bg-[#05102E] flex-1 `}>
-            <Header name="Trivia" />
-           
-            <FlatList
-                data={data}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id}
-                numColumns={numColumns}
-                contentContainerStyle={styles.container}
-            />
-        </View>
-    )
-}
+      <TouchableOpacity
+        style={[
+          tw`rounded-xl border-[#fff] border-[0.5px]`,
+          styles.box,
+          {width: boxSize, height: boxSize},
+        ]}
+        onPress={() => {navigation.navigate('TriviaQuestions', {categoryId: item?.id});
+        }}>
+        <Text style={styles.boxText}>{item?.name}</Text>
+      </TouchableOpacity>
+    );
+  };
 
-export default Trivia
+  return (
+    <View style={tw`bg-[#05102E] flex-1 `}>
+      <Header name="Trivia" />
+
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <FlatList
+          data={triviaCategory}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          numColumns={numColumns}
+          contentContainerStyle={styles.container}
+        />
+      )}
+    </View>
+  );
+};
+
+export default Trivia;
 
 const styles = StyleSheet.create({
-    container: {
-        paddingHorizontal: 20,
-    },
-    box: {
-        backgroundColor: '#303649',
-        margin: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    boxText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-})
+  container: {
+    paddingHorizontal: 20,
+  },
+  box: {
+    backgroundColor: '#303649',
+    margin: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  boxText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});

@@ -3,3 +3,7 @@ export const api_name_register = 'api/register';
 export const api_name_logout = 'logout';
 export const api_name_updateProfile = 'api/profile';
 export const api_name_get_profile = 'api/get/profile';
+export const api_name_get_poll = 'api/polls';
+export const api_name_poll_vote = 'api/polls/vote';
+export const api_name_trivia_category = 'api/question-banks';
+export const api_name_trivia_questions = 'api/question-banks/questions';

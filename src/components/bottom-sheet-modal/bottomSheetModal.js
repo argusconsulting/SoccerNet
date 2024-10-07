@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, useCallback} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image, ToastAndroid} from 'react-native';
 import Modal from 'react-native-modal';
 import tw from '../../styles/tailwind';
@@ -16,39 +16,79 @@ import { setUserAuthToken, setUserDetails, setUserID } from '../../redux/authSli
 import Alertify from '../../scripts/toast';
 
 const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
-  const [checked, setChecked] = useState('email');
-  const [value, setValue] = useState('');
-  const [formattedValue, setFormattedValue] = useState('');
-  const [isLogin, setIsLogin] = useState(selectedValue === 'Login');
+
   const phoneInput = useRef(null);
   const navigation = useNavigation();
   const dispatch = useDispatch()
+
+
+    const [checked, setChecked] = useState('email');
+  const [value, setValue] = useState('');
+  const [formattedValue, setFormattedValue] = useState('');
+  const [isLogin, setIsLogin] = useState(selectedValue === 'Login');
   const [submitLoader, setSubmitLoader] = useState(false);
   const [emailValue, setEmailValue] = useState('');
   const [password, setPassword] = useState('');
   const [name , setName] = useState('')
 
+
   useEffect(() => {
     setIsLogin(selectedValue === 'Login');
   }, [selectedValue, isVisible]);
+
+  // Memoized handlers for input changes
+  const handleEmailChange = useCallback((text) => {
+    setEmailValue(text);
+  }, []);
+
+  const handlePasswordChange = useCallback((text) => {
+    setPassword(text);
+  }, []);
+
+  const handlePhoneChange = useCallback((text) => {
+    if (text.length <= 10) {
+      setValue(text);
+    }
+  }, []);
+
+  const handleNameChange = useCallback((text) => {
+    setName(text);
+  }, []);
 
   const toggleLoginSignup = () => {
     setIsLogin(!isLogin);
   };
 
+
   //api call
 
   async function handleLogin() {
     try {
-      if (emailValue && emailValue == '') {
-        ToastAndroid.show('Please enter your Email', ToastAndroid.LONG);
-      } else if (emailValue && !validateEmail(emailValue)) {
-       
-        ToastAndroid.show('Please enter a valid email address.', ToastAndroid.LONG);
-      } else if (password == '') {
-    
+      if (checked === 'email') {
+        if (emailValue == '') {
+          ToastAndroid.show('Please enter your Email', ToastAndroid.LONG);
+          return; // Stop further execution
+        } else if (!validateEmail(emailValue)) {
+          ToastAndroid.show('Please enter a valid email address.', ToastAndroid.LONG);
+          return; // Stop further execution
+        }
+      }
+  
+      // Validation for phone number when `checked` is 'contact'
+      if (checked === 'contact_number') {
+        if (value == '') {
+          ToastAndroid.show('Please enter your Phone Number', ToastAndroid.LONG);
+          return; // Stop further execution
+        }
+      }
+  
+      // Validation for password
+      if (password == '') {
         ToastAndroid.show('Please enter your password', ToastAndroid.LONG);
-      } else {
+        return; // Stop further execution
+      }
+
+
         setSubmitLoader(true);
         postApi(api_name_login, {
           login_type: checked ,
@@ -77,7 +117,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
             setSubmitLoader(false);
             console.log('Login Error', error?.message);
           });
-      }
+      
     } catch (error) {
       console.log('Login Error ', error);
     }
@@ -85,17 +125,31 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
 
   async function handleRegister() {
     try {
-      if (name && name == '') {
+      if(name === ''){
         ToastAndroid.show('Please enter your Name', ToastAndroid.LONG);
       }
-      else if (emailValue && emailValue == '') {
-        ToastAndroid.show('Please enter your Email', ToastAndroid.LONG);
-      } else if (emailValue && !validateEmail(emailValue)) {
-       
-        ToastAndroid.show('Please enter a valid email address.', ToastAndroid.LONG);
-      } else if (password == '') {
-    
+      if (checked === 'email') {
+        if (emailValue == '') {
+          ToastAndroid.show('Please enter your Email', ToastAndroid.LONG);
+          return; // Stop further execution
+        } else if (!validateEmail(emailValue)) {
+          ToastAndroid.show('Please enter a valid email address.', ToastAndroid.LONG);
+          return; // Stop further execution
+        }
+      }
+  
+      // Validation for phone number when `checked` is 'contact'
+      if (checked === 'contact_number') {
+        if (value == '') {
+          ToastAndroid.show('Please enter your Phone Number', ToastAndroid.LONG);
+          return; // Stop further execution
+        }
+      }
+  
+      // Validation for password
+      if (password == '') {
         ToastAndroid.show('Please enter your password', ToastAndroid.LONG);
+        return; // Stop further execution
       } else {
         setSubmitLoader(true);
         postApi(api_name_register, {
@@ -184,7 +238,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
                 style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg mb-5 px-3`}
                 placeholder="Enter your name"
                 value={name}
-                onChangeText={text => setName(text)}
+                onChangeText={handleNameChange} 
               />}
              
 
@@ -193,7 +247,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
                 style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg px-3`}
                 placeholder="Enter your email"
                 value={emailValue}
-                onChangeText={text => setEmailValue(text)}
+                onChangeText={handleEmailChange} 
               />
 
               <TextInput
@@ -201,7 +255,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
                 style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg mt-5 px-3`}
                 placeholder="Enter your password"
                 value={password}
-                onChangeText={text => setPassword(text)}
+                onChangeText={handlePasswordChange}
               />
             </>
           ) : (
@@ -212,7 +266,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
                 style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg mb-5 px-3`}
                 placeholder="Enter your name"
                 value={name}
-                onChangeText={text => setName(text)}
+                onChangeText={handleEmailChange}
               />}
              
 
@@ -222,11 +276,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
                 placeholder='Enter your phone number'
                 defaultCode="IN"
                 layout="second"
-                onChangeText={text => {
-                  if (text.length <= 10) {
-                    setValue(text);
-                  }
-                }}
+                onChangeText={handlePhoneChange}
                 onChangeFormattedText={text => {
                     setFormattedValue(text);
                 }}
@@ -249,7 +299,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
                 style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg mt-5 px-3`}
                 placeholder="Enter your password"
                 value={password}
-                onChangeText={text => setPassword(text)}
+                onChangeText={handlePasswordChange} 
               />
             </>
           )}

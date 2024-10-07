@@ -1,65 +1,63 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import tw from '../../styles/tailwind';
 import Header from '../../components/header/header';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPollData, pollVoteData } from '../../redux/pollSlice';
 
 const Poll = () => {
-  const initialQuestions = [
-    {
-      id: 1,
-      question: 'What is your favorite sports brand?',
-      choices: [
-        { id: 1, choice: 'Nike', votes: 60 },
-        { id: 2, choice: 'Adidas', votes: 10 },
-        { id: 3, choice: 'Puma', votes: 11 },
-        { id: 4, choice: 'Reebok', votes: 18 },
-      ],
-    },
-    {
-      id: 2,
-      question: 'Which football club do you support?',
-      choices: [
-        { id: 1, choice: 'Barcelona', votes: 55 },
-        { id: 2, choice: 'Real Madrid', votes: 20 },
-        { id: 3, choice: 'Manchester United', votes: 15 },
-        { id: 4, choice: 'Juventus', votes: 10 },
-      ],
-    },
-    // Add more questions as needed
-  ];
 
-  const [questions, setQuestions] = useState(initialQuestions);
+  const dispatch = useDispatch();
+  const apiPolls = useSelector((state) => state.poll?.userPollData);
+
+  // Local state to manage the polls
+  const [questions, setQuestions] = useState([]);
   const [selectedChoices, setSelectedChoices] = useState({});
 
-  const handleChoicePress = (questionId, selectedChoice) => {
+  useEffect(() => {
+    // Dispatch action to fetch poll data when component mounts
+    dispatch(getPollData());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (apiPolls && apiPolls.length > 0) {
+      setQuestions(apiPolls);
+    }
+  }, [apiPolls]);
+
+  const handleChoicePress = (pollId, selectedChoice) => {
     const selectedId = selectedChoice.id;
 
     const updatedQuestions = questions.map((question) => {
-      if (question.id === questionId) {
-        const updatedChoices = question.choices.map((choice) => {
+      if (question.id === pollId) {
+        const updatedChoices = question.options.map((option) => {
           // Check if the user has already voted for this choice
-          if (selectedChoices[questionId] === choice.id) {
+          if (selectedChoices[pollId] === option.id) {
             // If the user clicks the same item again, we "unvote" it
-            return { ...choice, votes: choice.votes - 1 };
-          } else if (choice.id === selectedId) {
+            return { ...option, votes_count: option.votes_count - 1 };
+          } else if (option.id === selectedId) {
             // If the user selects a different item, we add 1 to the new choice's votes
-            return { ...choice, votes: choice.votes + 1 };
+            return { ...option, votes_count: option.votes_count + 1 };
           }
-          return choice; // No change for other choices
+          return option; // No change for other choices
         });
 
-        return { ...question, choices: updatedChoices };
+        return { ...question, options: updatedChoices };
       }
       return question;
     });
 
     setQuestions(updatedQuestions);
+    
     // Update the user's selected choice for this question (or reset it if they unvoted)
     setSelectedChoices((prevState) =>
-      prevState[questionId] === selectedId
-        ? { ...prevState, [questionId]: null } // If the user unvoted, clear the selection
-        : { ...prevState, [questionId]: selectedId } // Update to the new selection
+      prevState[pollId] === selectedId
+        ? { ...prevState, [pollId]: null } // If the user unvoted, clear the selection
+        : { ...prevState, [pollId]: selectedId } // Update to the new selection
     );
+    
+    // Dispatch the vote action with the option ID
+    dispatch(pollVoteData(selectedId));  // Pass the selected choice's ID
   };
 
   return (
@@ -69,20 +67,20 @@ const Poll = () => {
         <View style={tw`p-5`}>
           {questions.map((question) => (
             <View key={question.id} style={[tw`bg-[#303649] p-4 mb-6 rounded-lg`]}>
-              <Text style={[tw`text-white text-lg font-bold mb-2`]}>{question.question}</Text>
-              {question.choices.map((choice) => {
+              <Text style={[tw`text-white text-lg font-bold mb-2`]}>{question.title}</Text>
+              {question.options.map((option) => {
                 // Recalculate total votes and vote percentage
-                const totalVotes = question.choices.reduce((total, choice) => total + choice.votes, 0);
-                const votePercentage = totalVotes > 0 ? (choice.votes / totalVotes) * 100 : 0;
+                const totalVotes = question.options.reduce((total, option) => total + option.votes_count, 0);
+                const votePercentage = totalVotes > 0 ? (option.votes_count / totalVotes) * 100 : 0;
 
                 return (
-                  <View key={choice.id} style={[tw`mb-3`]}>
+                  <View key={option.id} style={[tw`mb-3`]}>
                     <TouchableOpacity
                       style={[tw`flex-row justify-between py-2`]}
-                      onPress={() => handleChoicePress(question.id, choice)}
+                      onPress={() => handleChoicePress(question.id, option)}
                     >
-                      <Text style={tw`text-white`}>{choice.choice}</Text>
-                      <Text style={tw`text-white`}>Votes:  {votePercentage.toFixed(0)}%</Text>
+                      <Text style={tw`text-white`}>{option.option_text}</Text>
+                      <Text style={tw`text-white`}>Votes: {votePercentage.toFixed(0)}%</Text>
                     </TouchableOpacity>
                     <View style={styles.progressBarBackground}>
                       <View style={[styles.progressBar, { width: `${votePercentage}%` }]} />

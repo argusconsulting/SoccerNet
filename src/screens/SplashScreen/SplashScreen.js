@@ -1,13 +1,23 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import tw from '../../styles/tailwind';
 import GradientButton from '../../components/gradient-button/gradient-button';
 import BottomSheetModal from '../../components/bottom-sheet-modal/bottomSheetModal';
 import LinearGradient from 'react-native-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SplashScreen = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [value, setValue] = useState(null);
+
+  useEffect(() => {
+    const loadStoredLanguage = async () => {
+      const savedLanguage = await AsyncStorage.getItem('selectedLanguage');
+      // console.log('value of saved lang', savedLanguage);
+    }
+
+    loadStoredLanguage();
+  }, []);
 
   const btnHandler = () => {
     setValue('SignUp');

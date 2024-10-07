@@ -2,10 +2,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { postApi } from '../../scripts/api-services';
 import { api_name_logout } from '../../constants/api-constants';
-// import RNRestart from 'react-native-restart';
+import RNRestart from 'react-native-restart';
 
 
-// import { clearAll } from '../../components/local-storage';
+import { clearAll } from '../../components/local-storage';
 // import { postApi } from '../../scripts/api-services';
 
 async function saveToken(token) {
@@ -30,13 +30,13 @@ export const userLogout = createAsyncThunk('user/logout', async (_,{ dispatch })
         const response = await postApi(api_name_logout);
         removeToken();
         dispatch(clearToken()); 
-        // RNRestart.Restart();
+        RNRestart.Restart();
         return response;
     } catch (error) {
         console.log('Error in logout', error);
         removeToken();
         dispatch(clearToken()); 
-        // RNRestart.Restart();
+        RNRestart.Restart();
     }
 });
 

@@ -1,17 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import tw from '../../styles/tailwind';
 import { triviaData } from '../../helpers/dummyData';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
+import { useDispatch, useSelector } from 'react-redux';
+import { triviaQuestionsApi } from '../../redux/triviaSlice';
+import RenderHtml from 'react-native-render-html';
 
 
-
-const TriviaQuestions = () => {
+const TriviaQuestions = ({}) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const route = useRoute()
   const navigation = useNavigation();
+  const dispatch = useDispatch()
+  const categoryId = route?.params?.categoryId
+  const questions = useSelector(state => state?.trivia?.triviaQuestions)
+
+  console.log("ques", questions)
+
+  const customStyles = {
+    body: tw`text-[#fff] text-[18px] leading-tight  mt-3 w-full`,
+    p: tw`text-[#fff]`, // Style for <p> tags
+  };
+
+  useEffect(()=>{
+    dispatch(triviaQuestionsApi({id: categoryId}))
+  },[])
 
   const handleNext = () => {
     if (currentQuestionIndex < triviaData.length - 1) {
@@ -27,13 +44,21 @@ const TriviaQuestions = () => {
 
   const renderQuestion = ({ item }) => (
     <View>
-      <Text style={tw`text-[#fff] text-[20px] font-400 leading-normal mt-8`}>
-        {item.question}
-      </Text>
+     
+      <RenderHtml
+  contentWidth={100}
+  source={{ html:item.question }}
+  tagsStyles={customStyles}
+/>
+  
       <View style={tw`mt-5`}>
-        {Object.entries(item.choices).map(([key, value]) => (
-          <TouchableOpacity key={key} style={tw`p-4 bg-[#303649] rounded-lg my-2`}>
-            <Text style={tw`text-[#fff] text-[18px] font-401`}>{`${key.toUpperCase()}: ${value}`}</Text>
+        {/* Looping over options */}
+        {item.options.map((option, index) => (
+          <TouchableOpacity key={option.id} style={tw`p-4 bg-[#303649] rounded-lg my-2`}>
+            {/* Display the option number or text if available */}
+            <Text style={tw`text-[#fff] text-[18px] font-401`}>
+              {`${String.fromCharCode(65 + index)}: ${option.option_text || "No text available"}`}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -65,9 +90,9 @@ const TriviaQuestions = () => {
         </View>
 
       <FlatList
-        data={[triviaData[currentQuestionIndex]]}
+        data={[questions[currentQuestionIndex]]}
         renderItem={renderQuestion}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => item?.id.toString()}
    
       />
 
