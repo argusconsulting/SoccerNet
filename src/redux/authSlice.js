@@ -21,6 +21,7 @@ const initialState = {
     role: '',
     userID: '',
     google_token: '',
+    userDetails: null,
 };
 
 // logout
@@ -47,9 +48,11 @@ export const authSlice = createSlice({
             saveToken(action.payload);
             state.token = action.payload;
         },
+        
     
         clearToken: (state) => { 
             state.token = '';  
+            state.userDetails = null;
         },
         // setUserAuthRole: (state, action) => {
         //     state.role = action.payload;
@@ -57,15 +60,16 @@ export const authSlice = createSlice({
         setUserID: (state, action) => {
             state.userID = action.payload;
         },
-        // setSocialLoginToken: (state, action) => {
-        //     state.google_token = action.payload;
-        // },
+        setUserDetails: (state, action) => { 
+            state.userDetails = action.payload;
+        },
     },
 });
 
 export const {
     setUserAuthToken,
     clearToken,
+    setUserDetails, 
     // setUserAuthRole,
     setUserID,
     // setSocialLoginToken,

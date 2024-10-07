@@ -35,28 +35,20 @@ api.interceptors.request.use(
 export const postApi = async (
     path,
     data = {},
-    token = null,
     headers = { Accept: 'application/json' }
 ) => {
-
     var result = await new Promise((resolve, reject) => {
-
-
-        if (token) {
-            headers.Authorization = `${token}`;
-          }
-        
-     
+        // console.time('Time');
         api.post(path, data, {
             headers: headers,
-        }).then((response) => {
-          
+        })
+            .then((response) => {
                 // console.timeEnd('Time');
                 return resolve(response);
             })
             .catch((error) => {
                 console.log('hey post api error');
-                console.log("in api services",error.response.data);
+                console.log(error.response.data);
 
                 return reject(error.response.data);
             });

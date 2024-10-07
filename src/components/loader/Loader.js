@@ -5,7 +5,7 @@ import tw from '../../styles/tailwind'
 const Loader = () => {
   return (
     <View style={tw`flex-1 justify-center items-center`}>
-       <ActivityIndicator style={tw` self-center`} size="large" color="#EB6707" />
+       <ActivityIndicator style={tw` self-center`} size="large" color="#fff" />
     </View>
   )
 }

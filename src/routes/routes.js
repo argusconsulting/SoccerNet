@@ -28,6 +28,7 @@ import UploadPhotos from '../screens/photos/modules/upload-photos';
 import LiveNow from '../screens/live-now/live-now';
 import LiveDetails from '../screens/live-now/modules/live-details';
 import RoomsListing from '../screens/rooms/rooms-listing';
+import {useSelector} from 'react-redux';
 
 // Bottom Tab Navigation
 const Tab = createBottomTabNavigator();
@@ -139,14 +140,24 @@ const EmptyScreen = () => {
 const Stack = createNativeStackNavigator();
 
 export const StackScreen = () => {
-  // const token = useSelector(state => state.auth_store.token);
+  const token = useSelector(state => state.auth_store.token);
+
+  console.log('value of token', token);
 
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
+      {(token == undefined || token == '' || token == null) && (
+        <>
+          <Stack.Screen
+            name="LanguageSelection"
+            component={LanguageSelection}
+          />
+          <Stack.Screen name="SplashScreen" component={SplashScreen} />
+   
+        </>
+      )}
       <>
-        <Stack.Screen name="LanguageSelection" component={LanguageSelection} />
-        <Stack.Screen name="SplashScreen" component={SplashScreen} />
-        <Stack.Screen name="LeagueSelection" component={LeagueSelection} />
+      <Stack.Screen name="LeagueSelection" component={LeagueSelection} />
         <Stack.Screen name="Home" component={BottomTabScreens} />
         <Stack.Screen name="Calendar" component={CalendarScreen} />
         <Stack.Screen name="Profile" component={Profile} />

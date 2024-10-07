@@ -3,21 +3,20 @@ import {View, Text, TouchableOpacity, StyleSheet, Image, ToastAndroid} from 'rea
 import Modal from 'react-native-modal';
 import tw from '../../styles/tailwind';
 import {RadioButton} from 'react-native-paper';
-import GradientButton from '../gradient-button/gradient-button';
 import TextInput from '../../components/library/text-input';
 import PhoneInput from 'react-native-phone-number-input';
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import { validateEmail } from '../../scripts/validations';
 import { postApi } from '../../scripts/api-services';
-import { api_name_login } from '../../constants/api-constants';
-import { useDispatch } from 'react-redux';
+import { api_name_login, api_name_register } from '../../constants/api-constants';
+import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../loader/Loader';
-import { setUserAuthToken, setUserID } from '../../redux/authSlice';
+import { setUserAuthToken, setUserDetails, setUserID } from '../../redux/authSlice';
 import Alertify from '../../scripts/toast';
 
 const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
-  const [checked, setChecked] = React.useState('first');
+  const [checked, setChecked] = useState('email');
   const [value, setValue] = useState('');
   const [formattedValue, setFormattedValue] = useState('');
   const [isLogin, setIsLogin] = useState(selectedValue === 'Login');
@@ -25,10 +24,9 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch()
   const [submitLoader, setSubmitLoader] = useState(false);
-  const [email, setEmail] = useState('');
+  const [emailValue, setEmailValue] = useState('');
   const [password, setPassword] = useState('');
-
-  // console.log("value is ---------", value ,"formattedvalue is --------", formattedValue)
+  const [name , setName] = useState('')
 
   useEffect(() => {
     setIsLogin(selectedValue === 'Login');
@@ -40,27 +38,33 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
 
   //api call
 
-  async function handleLoginWithEmail() {
+  async function handleLogin() {
     try {
-      if (value == '') {
-        Alertify.error('Please enter your Email')
-      } else if (!validateEmail(value)) {
-        Alertify.error('Please enter a valid email address.')
+      if (emailValue && emailValue == '') {
+        ToastAndroid.show('Please enter your Email', ToastAndroid.LONG);
+      } else if (emailValue && !validateEmail(emailValue)) {
+       
+        ToastAndroid.show('Please enter a valid email address.', ToastAndroid.LONG);
       } else if (password == '') {
-        Alertify.error('Please enter your password')
+    
+        ToastAndroid.show('Please enter your password', ToastAndroid.LONG);
       } else {
         setSubmitLoader(true);
         postApi(api_name_login, {
-          login: formattedValue,
-          login_type: "contact_number",
-          email: null,
+          login_type: checked ,
+          login: checked === "email" ? emailValue : value,
           password: password,
         })
           .then(async response => {
             Alertify.success(response?.data.message)
+            setEmailValue('')
+            setPassword('')
+            setValue(' ')
             if (response?.data?.token) {
               dispatch(setUserAuthToken(response?.data?.token));
-              dispatch(setUserID(response?.data?.data?.user?.id))
+              dispatch(setUserID(response?.data?.user?.id))
+              dispatch(setUserDetails(response?.data?.user))
+              onClose();
               navigation.navigate('LeagueSelection');
 
               setSubmitLoader(false);
@@ -72,6 +76,49 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
             Alertify.error('Incorrect Credentials !')
             setSubmitLoader(false);
             console.log('Login Error', error?.message);
+          });
+      }
+    } catch (error) {
+      console.log('Login Error ', error);
+    }
+  }
+
+  async function handleRegister() {
+    try {
+      if (name && name == '') {
+        ToastAndroid.show('Please enter your Name', ToastAndroid.LONG);
+      }
+      else if (emailValue && emailValue == '') {
+        ToastAndroid.show('Please enter your Email', ToastAndroid.LONG);
+      } else if (emailValue && !validateEmail(emailValue)) {
+       
+        ToastAndroid.show('Please enter a valid email address.', ToastAndroid.LONG);
+      } else if (password == '') {
+    
+        ToastAndroid.show('Please enter your password', ToastAndroid.LONG);
+      } else {
+        setSubmitLoader(true);
+        postApi(api_name_register, {
+          name: name,
+          ...(checked === "email" ? { email: emailValue } : { contact_number: value }),
+          password: password,
+          password_confirmation: password
+        })
+          .then(async response => {
+            Alertify.success(response?.data.message)
+            setEmailValue('')
+            setPassword('')
+            setValue(' ')
+            setName(' ')
+            onClose();
+            setSubmitLoader(false);
+            navigation.navigate('LeagueSelection');
+          
+          })
+          .catch(error => {
+            Alertify.error('error', error)
+            setSubmitLoader(false);
+            console.log('Login Error', error.errors.contact_number);
           });
       }
     } catch (error) {
@@ -103,9 +150,9 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
           <View style={tw`flex-row`}>
             <RadioButton
               color="#fff"
-              value="first"
-              status={checked === 'first' ? 'checked' : 'unchecked'}
-              onPress={() => setChecked('first')}
+              value="email"
+              status={checked === 'email' ? 'checked' : 'unchecked'}
+              onPress={() => setChecked('email')}
             />
             <Text
               style={tw`text-[#a9a9a9] text-[18px] font-400 leading-tight self-center ml-2`}>
@@ -115,10 +162,10 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
 
           <View style={tw`flex-row`}>
             <RadioButton
-              value="second"
+              value="contact_number"
               color="#fff"
-              status={checked === 'second' ? 'checked' : 'unchecked'}
-              onPress={() => setChecked('second')}
+              status={checked === 'contact_number' ? 'checked' : 'unchecked'}
+              onPress={() => setChecked('contact_number')}
             />
             <Text
               style={tw`text-[#a9a9a9] text-[18px] font-400 leading-tight self-center ml-2`}>
@@ -129,13 +176,15 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
 
         {/* Conditionally render text inputs */}
         <View style={tw`mt-5`}>
-          {checked === 'first' ? (
+          {checked === 'email' ? (
             // Email inputs
             <>
             {!isLogin &&  <TextInput
                 type="text"
                 style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg mb-5 px-3`}
                 placeholder="Enter your name"
+                value={name}
+                onChangeText={text => setName(text)}
               />}
              
 
@@ -143,8 +192,8 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
                 type="text"
                 style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg px-3`}
                 placeholder="Enter your email"
-                value={email}
-                onChangeText={text => setEmail(text)}
+                value={emailValue}
+                onChangeText={text => setEmailValue(text)}
               />
 
               <TextInput
@@ -162,6 +211,8 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
                 type="text"
                 style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg mb-5 px-3`}
                 placeholder="Enter your name"
+                value={name}
+                onChangeText={text => setName(text)}
               />}
              
 
@@ -207,9 +258,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
         <View style={tw`mt-7`}>
           <TouchableOpacity
             onPress={() => {
-              onClose();
-              navigation.navigate('LeagueSelection');
-              // handleLoginWithEmail()
+              isLogin ?  handleLogin() : handleRegister()
             }}
             style={[
               tw`mt-1 rounded-xl justify-center `,

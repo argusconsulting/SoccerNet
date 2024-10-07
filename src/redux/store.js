@@ -3,12 +3,14 @@ import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {persistReducer, persistStore} from 'redux-persist';
 import languageSlice from './languageSlice';
 import authSlice from './authSlice';
+import  profileSlice  from './profileSlice';
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   whitelist: [
-    '  const selectedLanguage = useSelector(state => state?.language?.language);',
+'auth_store', 'profile', 'language_store'
+    // '  const selectedLanguage = useSelector(state => state?.language?.language);',
   ],
   // blacklist: ['filter_store'],
 };
@@ -16,6 +18,7 @@ const persistConfig = {
 const reducers = combineReducers({
   auth_store: authSlice,
   language_store: languageSlice,
+  profile: profileSlice
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);
