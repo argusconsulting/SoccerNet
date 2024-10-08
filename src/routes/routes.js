@@ -29,6 +29,7 @@ import LiveNow from '../screens/live-now/live-now';
 import LiveDetails from '../screens/live-now/modules/live-details';
 import RoomsListing from '../screens/rooms/rooms-listing';
 import {useSelector} from 'react-redux';
+import Notification from '../screens/Notification/notification';
 
 // Bottom Tab Navigation
 const Tab = createBottomTabNavigator();
@@ -174,6 +175,7 @@ export const StackScreen = () => {
         <Stack.Screen name="LiveNow" component={LiveNow} />
         <Stack.Screen name="LiveDetails" component={LiveDetails} />
         <Stack.Screen name="Rooms" component={RoomsListing} />
+        <Stack.Screen name="Notification" component={Notification} />
       </>
     </Stack.Navigator>
   );

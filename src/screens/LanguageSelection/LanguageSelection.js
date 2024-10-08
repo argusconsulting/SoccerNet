@@ -5,15 +5,13 @@ import {
   Text,
   TouchableOpacity,
   View,
-  ActivityIndicator,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import tw from '../../styles/tailwind';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
-import GradientButton from '../../components/gradient-button/gradient-button';
-import {loadStoredLanguage, setLanguage} from '../../redux/languageSlice';
+import { setLanguage} from '../../redux/languageSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 
@@ -25,14 +23,6 @@ const LanguageSelection = () => {
     state => state?.language_store?.language,
   );
 
-  // useEffect(() => {
-  //   const loadLanguage = async () => {
-  //     await dispatch(loadStoredLanguage());
-  //     setLoading(false);
-  //   };
-
-  //   loadLanguage();
-  // }, [dispatch]);
 
   const DATA = [
     {

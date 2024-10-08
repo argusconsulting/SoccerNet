@@ -64,12 +64,15 @@ const Home = () => {
         <Entypo name={'menu'} color={'#fff'} size={26} style={tw``} />
         </TouchableOpacity>
 
+        <TouchableOpacity    onPress={() => navigation.navigate('Notification')}
+              activeOpacity={0.4}>
         <Ionicons
           name={'notifications'}
           color={'#fff'}
           size={26}
           style={tw``}
         />
+        </TouchableOpacity>
       </View>
       <View style={tw`px-5`}>
         <Text

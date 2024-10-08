@@ -44,7 +44,7 @@ const Trivia = () => {
         ]}
         onPress={() => {navigation.navigate('TriviaQuestions', {categoryId: item?.id});
         }}>
-        <Text style={styles.boxText}>{item?.name}</Text>
+        <Text style={tw`text-[#fff] text-[20px] font-401 leading-normal `}>{item?.name}</Text>
       </TouchableOpacity>
     );
   };
@@ -80,8 +80,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  boxText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
+
 });

@@ -6,6 +6,7 @@ import authSlice from './authSlice';
 import  profileSlice  from './profileSlice';
 import pollSlice from './pollSlice';
 import triviaSlice from './triviaSlice'
+import announcementSlice  from './announcementSlice';
 
 const persistConfig = {
   key: 'root',
@@ -22,7 +23,8 @@ const reducers = combineReducers({
   language_store: languageSlice,
   profile: profileSlice,
   poll: pollSlice,
-  trivia: triviaSlice
+  trivia: triviaSlice,
+  announcement: announcementSlice
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

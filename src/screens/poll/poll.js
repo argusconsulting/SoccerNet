@@ -4,11 +4,13 @@ import tw from '../../styles/tailwind';
 import Header from '../../components/header/header';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPollData, pollVoteData } from '../../redux/pollSlice';
+import Loader from '../../components/loader/Loader';
 
 const Poll = () => {
 
   const dispatch = useDispatch();
   const apiPolls = useSelector((state) => state.poll?.userPollData);
+  const isLoading = useSelector((state)=> state.poll.isLoading)
 
   // Local state to manage the polls
   const [questions, setQuestions] = useState([]);
@@ -26,6 +28,7 @@ const Poll = () => {
   }, [apiPolls]);
 
   const handleChoicePress = (pollId, selectedChoice) => {
+    console.log("pollId,,,,,",pollId)
     const selectedId = selectedChoice.id;
 
     const updatedQuestions = questions.map((question) => {
@@ -57,13 +60,14 @@ const Poll = () => {
     );
     
     // Dispatch the vote action with the option ID
-    dispatch(pollVoteData(selectedId));  // Pass the selected choice's ID
+    dispatch(pollVoteData({id:selectedId , pollId}));  // Pass the selected choice's ID
   };
 
   return (
     <View style={[tw`bg-[#000] flex-1`]}>
       <ScrollView>
         <Header name="Poll" />
+        {isLoading ? <Loader/>:
         <View style={tw`p-5`}>
           {questions.map((question) => (
             <View key={question.id} style={[tw`bg-[#303649] p-4 mb-6 rounded-lg`]}>
@@ -91,6 +95,7 @@ const Poll = () => {
             </View>
           ))}
         </View>
+}
       </ScrollView>
     </View>
   );

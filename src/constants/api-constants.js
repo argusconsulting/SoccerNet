@@ -7,3 +7,4 @@ export const api_name_get_poll = 'api/polls';
 export const api_name_poll_vote = 'api/polls/vote';
 export const api_name_trivia_category = 'api/question-banks';
 export const api_name_trivia_questions = 'api/question-banks/questions';
+export const api_name_new_announcements = 'api/announcements';

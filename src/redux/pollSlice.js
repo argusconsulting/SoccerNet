@@ -7,7 +7,6 @@ export const getPollData = createAsyncThunk(
     async (_, { rejectWithValue }) => {
       try {
         const response = await getApi(api_name_get_poll);
-        console.log('response get poll data', response);
         return response;
       } catch (error) {
         console.log('Error fetching poll API', error);
@@ -20,14 +19,17 @@ export const getPollData = createAsyncThunk(
     //   poll vote
     export const pollVoteData = createAsyncThunk(
         'poll/pollVoteData',
-        async (_, { id }) => {
+        async ({id , pollId}, { dispatch, rejectWithValue }) => {
+          const reqData= {
+            option_id: id
+          }
         try {
-            const response = await postApi(`${api_name_poll_vote}/${id}`);
-            console.log('response vote poll data', response);
+            const response = await postApi(`${api_name_poll_vote}/${pollId}`,reqData);
+            dispatch(getPollData())
             return response;
         } catch (error) {
             console.log('Error sending vote poll API', error);
-            return error;
+            return rejectWithValue(error);
         }
         }
     );
@@ -48,12 +50,15 @@ export const getPollData = createAsyncThunk(
       builder.addCase(getPollData.fulfilled, (state, action) => {
         state.userPollData = action?.payload?.polls;
         state.status = 'fulfilled';
+        state.isLoading = false
     });
     builder.addCase(getPollData.pending, (state, action) => {
         state.status = 'pending';
+        state.isLoading = true
     });
     builder.addCase(getPollData.rejected, (state, action) => {
         state.status = 'rejected';
+        state.isLoading = false
     });
 
     // vote poll
