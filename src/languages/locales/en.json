@@ -1,5 +1,9 @@
 {
-    "language": "Select a\nlanguage",
-    "chooseLangText":"Choose a language. You can make changes later through settings.",
-        "continue":"Continue"
-   }
+  "language": "Select a\nlanguage",
+  "chooseLangText": "Choose a language. You can make changes later through settings.",
+  "continue": "Continue",
+  "discoverSport": "Discover all \nabout sports",
+  "splashDesc":"Get ready to experience the thrill of every play with KickScore. Yourgo-to app for live scores, stats, and real-time updates.",
+     "freeSignUp":"Free Sign Up",
+     "Login":"Log In"
+}

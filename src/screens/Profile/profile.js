@@ -209,7 +209,7 @@ const Profile = () => {
 
       <Text
         style={tw`text-[#fff] text-[30px] font-401 leading-normal self-center mt-4`}>
-        Sanchit Rastogi
+     {userProfileData?.name}
       </Text>
       {/* Profile */}
 

@@ -29,7 +29,7 @@ const Notification = () => {
   }, []);
 
   const Item = ({item}) => (
-    <View style={tw`mx-2 my-3`}>
+    <View style={tw`mx-2 my-3 bg-[#303649] p-3 rounded-lg`}>
       <TouchableOpacity
         onPress={() =>
           navigation.navigate('AnnouncementDetail', {

@@ -17,7 +17,7 @@ import Loader from '../loader/Loader';
 import Modal from 'react-native-modal';
 import {useNavigation} from '@react-navigation/native';
 import RenderHtml from 'react-native-render-html';
-
+import { createComments, getComments } from '../../redux/discussionSlice';
 
 const PostCard = ({item}) => {
   const dispatch = useDispatch();
@@ -25,101 +25,81 @@ const PostCard = ({item}) => {
 
   const [comment, setComment] = useState('');
   const [isLiked, setIsLiked] = useState(item?.is_liked);
-  const [likeCount, setLikeCount] = useState(item?.likes_count);
-//   const [modalVisible, setModalVisible] = useState(false);
-//   const userId = useSelector(state => state.auth_store.userID);
-//   const commentsList = useSelector(state => state?.timeline?.commentsData);
-//   const sendLoader = useSelector(state => state?.timeline?.sendLoader);
-//   const getCommentsLoader = useSelector(
-//     state => state?.timeline?.getCommentsLoader,
-//   );
+  // const [commentCount, setCoCount] = useState(item?.likes_count);
+    const [modalVisible, setModalVisible] = useState(false);
+    const userId = useSelector(state => state.auth_store.userID);
+    const commentsList = useSelector(state => state?.discussion?.commentsData);
+    const sendLoader = useSelector(state => state?.discussion?.sendLoader);
+    const getCommentsLoader = useSelector(
+      state => state?.discussion?.getCommentsLoader,
+    );
 
-//   function handleLike() {
-//     const newLikeStatus = !isLiked;
-//     setIsLiked(newLikeStatus);
-//     setLikeCount(newLikeStatus ? likeCount + 1 : likeCount - 1);
-//     const reqData = {
-//       post_id: item?.id,
-//       user_id: userId,
-//     };
-//     dispatch(likePostHandler({reqData})).then(res => {
-//       if (res?.payload?.status === 200) {
-//         dispatch(postHandler());
-//       } else {
-//         setIsLiked(!newLikeStatus);
-//         setLikeCount(newLikeStatus ? likeCount - 1 : likeCount + 1);
-//         // Alertify.error(res?.payload?.message);
-//       }
-//     });
-//   }
+    const commentsCount = item?.comments_count
 
-//   function handleComment() {
-//     const reqData = {
-//       post_id: item?.id,
-//       user_id: userId,
-//       content: comment,
-//     };
-//     dispatch(createComments({reqData})).then(res => {
-//       if (res?.payload?.status === 201) {
-//         dispatch(getComments({post_id: item?.id}));
-//         setComment('');
-//       } else {
-//         console.log('Error comment', res?.payload);
-//       }
-//     });
-//   }
 
-//   const toggleModal = postId => {
-//     dispatch(getComments({post_id: postId}));
-//     setModalVisible(!modalVisible);
-//   };
+    function handleComment() {
+      const reqData = {
+        post_id: item?.id,
+        user_id: userId,
+        content: comment,
+      };
+      dispatch(createComments({reqData})).then(res => {
+        if (res?.payload?.status === 201) {
+          dispatch(getComments({post_id: item?.id}));
+          setComment('');
+        } else {
+          console.log('Error comment', res?.payload);
+        }
+      });
+    }
+
+    const toggleModal = postId => {
+      dispatch(getComments({post_id: postId}));
+      setModalVisible(!modalVisible);
+    };
 
   const customStyles = {
     body: tw`text-[#fff] text-[14px] leading-tight mx-1 mt-3 w-80`,
     p: tw`text-[#fff]`, // Style for <p> tags
   };
 
-//   const Item = ({items}) => {
-//     return (
-//       <View style={tw`mx-5 mt-6`}>
-//         <View style={tw`flex-row items-center`}>
-//           <TouchableOpacity
-//             onPress={() => {
-//               setModalVisible(false);
-//               // navigation.navigate('UserProfileDetail',{
-//               //   details: items?.user
-//               // });
-//             }}>
-//             <Image
-//               source={
-//                 items?.user?.avatar_url
-//                   ? {uri: items?.user?.avatar_url}
-//                   : require('../../assets/images/dummyUser.png')
-//               }
-//               style={tw`w-10 h-10 rounded-full mr-2`}
-//             />
-//           </TouchableOpacity>
+    const Item = ({items}) => {
+      return (
+        <View style={tw`mx-5 mt-6`}>
+          <View style={tw`flex-row items-center`}>
+            <TouchableOpacity
+              onPress={() => {
+                setModalVisible(false);
+                // navigation.navigate('UserProfileDetail',{
+                //   details: items?.user
+                // });
+              }}>
+              <Image
+                source={
+                  items?.user?.avatar_url
+                    ? {uri: items?.user?.avatar_url}
+                    : require('../../assets/icons/user.png')
+                }
+                style={[tw`w-10 h-10 rounded-full mr-2`,{resizeMode:"contain"}]}
+              />
+            </TouchableOpacity>
 
-//           <View>
-//             <Text
-//               style={tw`text-[#3b3b3b] text-[13px] font-401 mx-1 leading-tight`}>
-//               {items?.user?.name}
-//             </Text>
-//             <Text
-//               style={tw`text-[#3b3b3b] text-[14px] font-400 mx-1 mt-1 leading-tight`}>
-//               {items?.content}
-//             </Text>
-//           </View>
-//         </View>
-//         {/* <Text
-//         style={tw`text-[#999da0] text-[12px] font-400 mx-1 mt-1 leading-tight mx-13`}>
-//         Reply
-//       </Text> */}
-//       </View>
-//     );
-//   };
-  const formattedDate = new Date(item.created_at).toLocaleDateString();
-  const formattedTime = new Date(item.created_at).toLocaleTimeString();
+            <View>
+              <Text
+                style={[tw`text-[#fff] text-[15px] font-401 mx-1 leading-tight`,{textTransform:"capitalize"}]}>
+                {items?.user?.name}
+              </Text>
+              <Text
+                style={tw`text-[#fff] text-[14px] font-400 mx-1 mt-1 leading-tight`}>
+                {items?.content}
+              </Text>
+            </View>
+          </View>
+     
+        </View>
+      );
+    };
+
   return (
     <View
       style={[
@@ -152,60 +132,58 @@ const PostCard = ({item}) => {
 
       <Image
         source={{uri: item?.image}}
-        style={[tw`w-full h-50  rounded-lg`, {resizeMode: 'cover'}]}
+        style={[tw`w-full h-50  rounded-lg`, {resizeMode: 'contain'}]}
       />
       <View style={tw`px-2`}>
-   <RenderHtml
-  contentWidth={80}
-  source={{ html: item.content }}
-  tagsStyles={customStyles}
-/>
-  
+        <RenderHtml
+          contentWidth={80}
+          source={{html: item.content}}
+          tagsStyles={customStyles}
+        />
 
-      <View style={tw`flex-row justify-between mt-2`}>
-        <Text
-          style={tw`text-[#fff] text-[12px] font-400 mx-1 mt-1 leading-tight`}>
-          {likeCount} {' '}Comments
-        </Text>
-     
-      </View>
-
-      <View style={tw`border-t border-[#d3d3d3] mt-4`} />
-      <View style={tw`flex-row justify-between my-3 mx-1`}>
-        <TouchableOpacity style={tw`flex-row`} onPress={() => toggleModal(item?.id)}>
-        <FontAwesome
-            name={'comment-o'}
-            size={20}
-            color={'#a2a2a2'}
-            style={tw`mr-2`}
-          />
+        <View style={tw`flex-row justify-between mt-2`}>
           <Text
-            style={tw`text-[#fff] text-[15px] font-400 mx-1 mt-1 leading-tight`}>
-            Comment
+            style={tw`text-[#fff] text-[13px] font-400 mx-1 mt-1 leading-tight`}>
+            {commentsCount}{' '} Comments
           </Text>
-        </TouchableOpacity>
+        </View>
 
-        <TouchableOpacity
-          style={tw`flex-row`}
-          >
-          <FontAwesome
-            name={'share'}
-            size={20}
-            color={'#a2a2a2'}
-            style={tw`mr-2`}
-          />
-          <Text
-            style={tw`text-[#fff] text-[15px] font-400 mx-1 mt-1 leading-tight`}>
-            Share
-          </Text>
-        </TouchableOpacity>
-      </View>
+        <View style={tw`border-t border-[#d3d3d3] mt-4`} />
+        <View style={tw`flex-row justify-between my-3 mx-1`}>
+          <TouchableOpacity
+            style={tw`flex-row`}
+            onPress={() => toggleModal(item?.id)}>
+            <FontAwesome
+              name={'comment-o'}
+              size={20}
+              color={'#a2a2a2'}
+              style={tw`mr-2`}
+            />
+            <Text
+              style={tw`text-[#fff] text-[15px] font-400 mx-1 mt-1 leading-tight`}>
+              Comment
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={tw`flex-row`}>
+            <FontAwesome
+              name={'share'}
+              size={20}
+              color={'#a2a2a2'}
+              style={tw`mr-2`}
+            />
+            <Text
+              style={tw`text-[#fff] text-[15px] font-400 mx-1 mt-1 leading-tight`}>
+              Share
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
-      {/* <Modal
+      <Modal
         isVisible={modalVisible}
         onBackdropPress={() => setModalVisible(false)}>
-        <View style={tw`flex-1 bg-[#fff] rounded-md`}>
+        <View style={tw`flex-1 bg-[#303649] rounded-md`}>
           <View style={styles.messageContainer}>
             <View style={[tw`flex-row justify-between items-center px-5 pt-3`]}>
               <Text style={styles.messageTitle}>Comments</Text>
@@ -213,7 +191,7 @@ const PostCard = ({item}) => {
                 <AntDesign
                   name={'close'}
                   size={24}
-                  color={'#3d3d3d'}
+                  color={'#fff'}
                   style={tw`mr-2`}
                 />
               </TouchableOpacity>
@@ -240,9 +218,9 @@ const PostCard = ({item}) => {
               <View
                 style={tw`flex-row justify-between border-t border-[#d3d3d3] px-3 py-2 mt-5`}>
                 <TextInput
-                  style={tw` text-[13px] rounded-md p-2 h-8 w-75 text-[#3b3b3b]`}
+                  style={tw` text-[13px] rounded-md p-2 h-8 w-75 text-[#fff]`}
                   placeholder="Add your comment here!"
-                  placeholderTextColor="#3b3b3b"
+                  placeholderTextColor="#a2a2a2"
                   value={comment}
                   onChangeText={text => setComment(text)}
                 />
@@ -254,7 +232,7 @@ const PostCard = ({item}) => {
                     <FontAwesome
                       name={'send'}
                       size={24}
-                      color={'#EB6707'}
+                      color={'#a2a2a2'}
                       style={tw`ml-2 mt-1`}
                     />
                   )}
@@ -263,7 +241,7 @@ const PostCard = ({item}) => {
             </View>
           </View>
         </View>
-      </Modal> */}
+      </Modal>
     </View>
   );
 };
@@ -282,6 +260,6 @@ const styles = StyleSheet.create({
   messageTitle: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#222',
+    color: '#fff',
   },
 });

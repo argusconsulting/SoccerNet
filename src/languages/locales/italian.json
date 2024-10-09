@@ -1,6 +1,12 @@
 {
     "language": "Seleziona una \nlingua",
     "chooseLangText":"Scegli una lingua. Potrai apportare modifiche in seguito tramite le impostazioni.",
-    "continue":"Continuare"
+    "continue":"Continuare",
+     "discoverSport": "Scopri tutto sullo sport",
+     "splashDesc":"Preparati a provare l'emozione di ogni partita con KickScore. La tua app di riferimento per risultati in tempo reale, statistiche e aggiornamenti in tempo reale.",
+        "freeSignUp":"Registrazione gratuita",
+        "Login":"Login"
+
+
 
    }

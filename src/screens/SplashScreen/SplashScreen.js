@@ -5,10 +5,12 @@ import GradientButton from '../../components/gradient-button/gradient-button';
 import BottomSheetModal from '../../components/bottom-sheet-modal/bottomSheetModal';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTranslation } from 'react-i18next';
 
 const SplashScreen = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [value, setValue] = useState(null);
+  const {i18n, t} = useTranslation();
 
   useEffect(() => {
     const loadStoredLanguage = async () => {
@@ -35,13 +37,12 @@ const SplashScreen = () => {
         style={[tw`w-full h-95`, {resizeMode: 'contain'}]}
       />
       <Text style={tw`text-white text-[36px] font-401 leading-tight  mt-1`}>
-        Discover all {'\n'}about sports
+       {t('discoverSport')}
       </Text>
 
       <Text
         style={tw`text-[#a9a9a9] text-[18px] font-400 leading-tight mt-5 mb-3`}>
-        Get ready to experience the thrill of every play with KickScore. Your
-        go-to app for live scores, stats, and real-time updates.{' '}
+       {t('splashDesc')}{' '}
       </Text>
 
       <View style={tw`flex-row mt-5`}>
@@ -64,7 +65,7 @@ const SplashScreen = () => {
               {flex: 1, justifyContent: 'center', alignItems: 'center'},
             ]}>
             <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight`}>
-              Free Sign Up
+           {t('freeSignUp')}
             </Text>
           </LinearGradient>
         </TouchableOpacity>
@@ -77,7 +78,7 @@ const SplashScreen = () => {
           style={tw`border-[#435AE5] border-[1px] w-39 h-14 mt-1 ml-5 rounded-xl justify-center`}>
           <Text
             style={tw`text-white text-[20px] font-401 leading-tight self-center`}>
-            Log In
+         {t('Login')}
           </Text>
         </TouchableOpacity>
       </View>
