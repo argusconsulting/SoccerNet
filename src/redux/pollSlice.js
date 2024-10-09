@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api_name_get_poll, api_name_poll_vote } from "../constants/api-constants";
 import { getApi, postApi } from "../scripts/api-services";
+import Alertify from "../scripts/toast";
 
 export const getPollData = createAsyncThunk(
     'poll/pollData',
@@ -28,6 +29,7 @@ export const getPollData = createAsyncThunk(
             dispatch(getPollData())
             return response;
         } catch (error) {
+          Alertify.error(error?.message)
             console.log('Error sending vote poll API', error);
             return rejectWithValue(error);
         }

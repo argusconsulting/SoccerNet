@@ -10,8 +10,8 @@ import italian from './locales/italian.json';
 
 i18n.use(initReactI18next).init({
   compatibilityJSON: 'v3',
-  lng: 'en', // Default language
-  fallbackLng: 'en', // Fallback language if the translation is missing
+  lng: 'arb', // Default language
+  fallbackLng: 'arb', // Fallback language if the translation is missing
   resources: {
     en: {translation: en},
     arb: {translation: arb},

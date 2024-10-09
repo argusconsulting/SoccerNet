@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     left: '6%',
     right: '6%',
     height: 55,
-    marginHorizontal: '6%',
+    marginHorizontal: '1',
     marginBottom: 10,
   },
   continueButtonGradient: {

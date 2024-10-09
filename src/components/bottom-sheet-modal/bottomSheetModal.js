@@ -7,7 +7,7 @@ import TextInput from '../../components/library/text-input';
 import PhoneInput from 'react-native-phone-number-input';
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
-import { validateEmail } from '../../scripts/validations';
+import { validateEmail, validatePhoneNumber } from '../../scripts/validations';
 import { postApi } from '../../scripts/api-services';
 import { api_name_login, api_name_register } from '../../constants/api-constants';
 import { useDispatch, useSelector } from 'react-redux';
@@ -80,6 +80,10 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
           ToastAndroid.show('Please enter your Phone Number', ToastAndroid.LONG);
           return; // Stop further execution
         }
+        else if (!validatePhoneNumber(value)) {
+          ToastAndroid.show('Please enter a valid phone number.', ToastAndroid.LONG);
+          return; // Stop further execution
+        }
       }
   
       // Validation for password
@@ -142,6 +146,9 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
       if (checked === 'contact_number') {
         if (value == '') {
           ToastAndroid.show('Please enter your Phone Number', ToastAndroid.LONG);
+          return; // Stop further execution
+        }else if (!validatePhoneNumber(value)) {
+          ToastAndroid.show('Please enter a valid phone number.', ToastAndroid.LONG);
           return; // Stop further execution
         }
       }
