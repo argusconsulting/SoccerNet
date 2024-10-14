@@ -153,7 +153,7 @@ const TriviaQuestions = ({}) => {
       ) : (
         <View style={tw`flex-1 justify-center items-center`}>
           <Text style={tw`text-[#fff] text-[20px] font-401`}>
-            No questions found
+            No questions found !
           </Text>
         </View>
       )}

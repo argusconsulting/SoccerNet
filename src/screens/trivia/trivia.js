@@ -44,7 +44,7 @@ const Trivia = () => {
         ]}
         onPress={() => {navigation.navigate('TriviaQuestions', {categoryId: item?.id , categoryName: item?.name});
         }}>
-        <Text style={tw`text-[#fff] text-[20px] font-401 leading-normal `}>{item?.name}</Text>
+        <Text style={[tw`text-[#fff] text-[20px] font-401 leading-normal `,{textTransform:"capitalize"}]}>{item?.name}</Text>
       </TouchableOpacity>
     );
   };
