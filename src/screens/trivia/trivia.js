@@ -42,7 +42,7 @@ const Trivia = () => {
           styles.box,
           {width: boxSize, height: boxSize},
         ]}
-        onPress={() => {navigation.navigate('TriviaQuestions', {categoryId: item?.id});
+        onPress={() => {navigation.navigate('TriviaQuestions', {categoryId: item?.id , categoryName: item?.name});
         }}>
         <Text style={tw`text-[#fff] text-[20px] font-401 leading-normal `}>{item?.name}</Text>
       </TouchableOpacity>
