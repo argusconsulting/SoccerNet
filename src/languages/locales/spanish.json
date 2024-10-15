@@ -1,11 +1,27 @@
 {
-    "language": "Seleccione un \nidioma",
-    "chooseLangText":"Elige un idioma. Puede realizar cambios más adelante a través de la configuración.",
-    "continue":"Continuar",
-     "discoverSport": "Descubre todo sobre los deportes",
-     "splashDesc":"Prepárate para experimentar la emoción de cada jugada con KickScore. Tu aplicación de referencia para resultados en vivo, estadísticas y actualizaciones en tiempo real.",
-     "freeSignUp":"Regístrate gratis",
-     "Login":"Se connecter"
-
-
-   }
+  "language": "Seleccione un \nidioma",
+  "chooseLangText": "Elige un idioma. Puede realizar cambios más adelante a través de la configuración.",
+  "continue": "Continuar",
+  "discoverSport": "Descubre todo sobre los deportes",
+  "splashDesc": "Prepárate para experimentar la emoción de cada jugada con KickScore. Tu aplicación de referencia para resultados en vivo, estadísticas y actualizaciones en tiempo real.",
+  "freeSignUp": "Regístrate gratis",
+  "Login": "Se connecter",
+  "signup": "Registrarse",
+  "welcomeToKickScore": "Bienvenidos a Kick Score",
+  "email": "correo electrónico",
+  "phoneNumber": "número de teléfono",
+  "or": "o",
+  "loginWith": "Iniciar sesión con",
+  "signupWith": "Registrarse con",
+  "dontHaveAccount": "¿No tienes una cuenta?",
+  "haveAccount": "¿Tienes una cuenta?",
+  "emailPlaceholder": "Ingresa tu correo electrónico",
+  "passwordPlaceholder": "Ingresa tu contraseña",
+  "namePlaceholder": "Ingresa tu nombre",
+  "phonePlaceholder": "Ingresa tu número de teléfono",
+      "selectFavLeague":"Selecciona tus ligas favoritas",
+      "chooseMoreThanOne":"Puedes elegir más de uno.",
+      "leagueHeadingCountry":"Países",
+      "leagueHeadingIntercontinental":"Intercontinental",
+      "leagueHeadingWorldcup":"Copa del Mundo"
+}

@@ -7,12 +7,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from '../../components/header/header';
 import tw from '../../styles/tailwind';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFanPhotos } from '../../redux/fanPhotosSlice';
+import moment from 'moment';
 
 const Photos = () => {
 
@@ -46,10 +49,20 @@ const Photos = () => {
     },
   ];
 
+  const dispatch = useDispatch();
+  const data = useSelector(state => state?.fanPhotos?.fanPhotos);
+
+  console.log("dataaaaaaaaaaa",data)
+
+
+  useEffect(() => {
+dispatch(getFanPhotos())
+  }, [])
+
   const Item = ({item}) => (
     <View style={styles.item}>
       <ImageBackground
-        source={item?.img}
+        source={{uri:item?.image}}
         style={[tw`w-full h-120`, {resizeMode: 'cover'}]}>
         <View
           style={[
@@ -106,18 +119,18 @@ const Photos = () => {
             />
             <Text
               style={tw`text-[#fff] text-[16px] font-401 mx-1 mt-1 leading-tight self-center ml-3`}>
-              {item?.name}
+              {item?.user?.name}
             </Text>
           </View>
           <Text
             style={tw`text-[#A9A9A9] text-[14px] font-400 mx-1 mt-1 leading-tight`}>
-            {item?.duration}
+           {moment(item?.created_at).format('MMMM Do YYYY, h:mm A')}
           </Text>
         </View>
 
         <Text
           style={tw`text-[#A9A9A9] text-[18px] font-400 mx-1 mt-1 leading-tight mt-2`}>
-          {item?.desc}
+          {item?.caption}
         </Text>
       </View>
     </View>
@@ -127,7 +140,7 @@ const Photos = () => {
     <View style={tw`bg-[#05102E] flex-1 `}>
       <Header name="Photos" />
       <FlatList
-    data={DATA}
+    data={data}
     renderItem={({item}) => <Item item={item} />}
     keyExtractor={item => item.id}
     contentContainerStyle={{ paddingBottom: 60 }} // To avoid content hiding behind the button

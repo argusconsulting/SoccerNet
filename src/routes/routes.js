@@ -158,8 +158,8 @@ export const StackScreen = () => {
         </>
       )}
       <>
-        <Stack.Screen name="Home" component={BottomTabScreens} />
       <Stack.Screen name="LeagueSelection" component={LeagueSelection} />
+        <Stack.Screen name="Home" component={BottomTabScreens} />
         <Stack.Screen name="Calendar" component={CalendarScreen} />
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="Highlights" component={Highlights} />

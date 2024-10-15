@@ -8,6 +8,7 @@ import pollSlice from './pollSlice';
 import triviaSlice from './triviaSlice'
 import announcementSlice  from './announcementSlice';
 import  discussionSlice  from './discussionSlice';
+import  fanPhotosSlice  from './fanPhotosSlice';
 
 const persistConfig = {
   key: 'root',
@@ -26,7 +27,8 @@ const reducers = combineReducers({
   poll: pollSlice,
   trivia: triviaSlice,
   announcement: announcementSlice,
-  discussion : discussionSlice
+  discussion : discussionSlice,
+  fanPhotos: fanPhotosSlice
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

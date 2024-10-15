@@ -7,8 +7,6 @@ export const postHandler = createAsyncThunk('discussion/post', async () => {
     try {
    
       const response = await getApi(`${api_name_post}`);
-      console.log("res", response)
-   
       return response; 
     } catch (error) {
       console.log('get post list error', error);

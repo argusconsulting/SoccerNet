@@ -11,6 +11,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import MultiSelectDropdown from '../../components/select-dropdown/select-dropdown';
+import { t } from 'i18next';
 
 const LeagueSelection = () => {
   const navigation = useNavigation();
@@ -29,27 +30,27 @@ const LeagueSelection = () => {
           </TouchableOpacity>
           <Text
             style={tw`text-[#fff] text-[34px] font-401 leading-normal mt-3`}>
-            Select your {' \n'}favorite leagues
+         {t('selectFavLeague')}
           </Text>
           <Text
             style={tw`text-[#A9A9A9] text-[16px] font-400 leading-tight mt-3 w-80`}>
-            You can choose more than one.
+      {t('chooseMoreThanOne')}
           </Text>
 
           <MultiSelectDropdown
-            leagueBy="Countries"
+            leagueBy={t('leagueHeadingCountry')}
             leaguePlaceholder="Country leagues"
           />
 
           <View style={tw`border-b-[#a2a2a2] border-[1px]`}/>
           <MultiSelectDropdown
-            leagueBy="Intercontinental"
+            leagueBy={t('leagueHeadingIntercontinental')}
             leaguePlaceholder="Intercontinental leagues"
           />
 
 <View style={tw`border-b-[#a2a2a2] border-[1px]`}/>
           <MultiSelectDropdown
-            leagueBy="World Cup"
+            leagueBy={t('leagueHeadingWorldcup')}
             leaguePlaceholder="World cup leagues"
           />
         </View>
@@ -65,7 +66,7 @@ const LeagueSelection = () => {
           end={{x: 1, y: 1}}
           style={styles.continueButtonGradient}>
           <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight`}>
-            Continue
+          {t('continue')}
           </Text>
         </LinearGradient>
       </TouchableOpacity>

@@ -1,11 +1,27 @@
 {
   "language": "اختر لغة",
- "chooseLangText": "اختر لغة. يمكنك إجراء التغييرات لاحقًا من خلال الإعدادات.",
- "continue":"يكمل",
- "discoverSport":"اكتشف كل ما يتعلق بالرياضة",
- "splashDesc":"استعد لتجربة إثارة كل لعبة مع KickScore. تطبيق Yourgo-to للحصول على النتائج المباشرة والإحصائيات والتحديثات في الوقت الفعلي.",
-    "freeSignUp":"تسجيل مجاني",
-    "Login":"تسجيل الدخول"
-
-
+  "chooseLangText": "اختر لغة. يمكنك إجراء التغييرات لاحقًا من خلال الإعدادات.",
+  "continue": "يكمل",
+  "discoverSport": "اكتشف كل ما يتعلق بالرياضة",
+  "splashDesc": "استعد لتجربة إثارة كل لعبة مع KickScore. تطبيق Yourgo-to للحصول على النتائج المباشرة والإحصائيات والتحديثات في الوقت الفعلي.",
+  "freeSignUp": "تسجيل مجاني",
+  "Login": "تسجيل الدخول",
+  "signup": "التسجيل",
+  "welcomeToKickScore": "مرحباً بكم في كيك سكور",
+  "email": "البريد الإلكتروني",
+  "phoneNumber": "رقم الهاتف",
+  "or": "أو",
+  "loginWith": "تسجيل الدخول باستخدام",
+  "signupWith": "التسجيل باستخدام",
+  "dontHaveAccount": "ليس لديك حساب؟",
+  "haveAccount": "هل لديك حساب؟",
+  "emailPlaceholder":"أدخل بريدك الإلكتروني",
+  "passwordPlaceholder":"أدخل كلمة المرور الخاصة بك",
+  "namePlaceholder":"أدخل اسمك",
+  "phonePlaceholder":"أدخل رقم هاتفك",
+    "selectFavLeague":"اختر دورياتك المفضلة",
+    "chooseMoreThanOne":"يمكنك اختيار أكثر من واحد.",
+    "leagueHeadingCountry":"دول",
+    "leagueHeadingIntercontinental":"بين القارات",
+    "leagueHeadingWorldcup":"كأس العالم"
 }

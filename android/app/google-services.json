@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "221160589936",
+    "project_id": "kickscore-8e258",
+    "storage_bucket": "kickscore-8e258.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:221160589936:android:f0aad5261f2446d84dc2b5",
+        "android_client_info": {
+          "package_name": "com.soccernet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "221160589936-hk5k3fi72cigode330ljvcfu74rho0gg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.soccernet",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "221160589936-84ekdd7ecdm8lflgfi4akiahm19tp7sq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpfOLZ2IK8aI43yVYJFrrEigg2aB4RfRA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "221160589936-84ekdd7ecdm8lflgfi4akiahm19tp7sq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

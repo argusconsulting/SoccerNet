@@ -8,6 +8,7 @@ export const getTriviaCategory = createAsyncThunk(
     async (_, { rejectWithValue }) => {
       try {
         const response = await getApi(api_name_trivia_category);
+        console.log("res", response)
         return response;
       } catch (error) {
         console.log('Error fetching trivia API', error);

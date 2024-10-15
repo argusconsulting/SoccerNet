@@ -1,6 +1,8 @@
 import {
   Dimensions,
   FlatList,
+  Image,
+  ImageBackground,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -30,22 +32,29 @@ const Trivia = () => {
   const navigation = useNavigation(); // Move useNavigation here
   const {isLoading, triviaCategory} = useSelector(state => state.trivia);
 
+
+
   useEffect(() => {
     dispatch(getTriviaCategory());
   }, []);
 
   const renderItem = ({item}) => {
+    console.log("item---------", item)
     return (
       <TouchableOpacity
-        style={[
-          tw`rounded-xl border-[#fff] border-[0.5px]`,
+    
+        onPress={() => {navigation.navigate('TriviaQuestions', {categoryId: item?.id , categoryName: item?.name});
+        }}>
+<Image
+  source={typeof item?.image === 'string' ? {uri: item?.image} : item?.image} 
+   style={[
+          tw`rounded-xl border-[#fff] border-[0.5px]  `,
           styles.box,
           {width: boxSize, height: boxSize},
         ]}
-        onPress={() => {navigation.navigate('TriviaQuestions', {categoryId: item?.id , categoryName: item?.name});
-        }}>
-        <Text style={[tw`text-[#fff] text-[20px] font-401 leading-normal `,{textTransform:"capitalize"}]}>{item?.name}</Text>
-      </TouchableOpacity>
+/> 
+
+       </TouchableOpacity>
     );
   };
 
@@ -79,6 +88,7 @@ const styles = StyleSheet.create({
     margin: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    resizeMode:"cover"
   },
 
 });

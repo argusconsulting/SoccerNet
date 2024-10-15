@@ -12,3 +12,4 @@ export const api_name_post = 'posts';
 export const api_name_get_comments = 'posts/comments';
 export const api_name_create_comments = 'posts/comment';
 export const api_name_like_post = 'posts/like';
+export const api_name_fan_photos = 'get/fan-photos';

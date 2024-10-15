@@ -1,5 +1,12 @@
 import React, {useState, useRef, useEffect, useCallback} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Image, ToastAndroid} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  ToastAndroid,
+} from 'react-native';
 import Modal from 'react-native-modal';
 import tw from '../../styles/tailwind';
 import {RadioButton} from 'react-native-paper';
@@ -7,58 +14,59 @@ import TextInput from '../../components/library/text-input';
 import PhoneInput from 'react-native-phone-number-input';
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
-import { validateEmail, validatePhoneNumber } from '../../scripts/validations';
-import { postApi } from '../../scripts/api-services';
-import { api_name_login, api_name_register } from '../../constants/api-constants';
-import { useDispatch, useSelector } from 'react-redux';
+import {validateEmail, validatePhoneNumber} from '../../scripts/validations';
+import {postApi} from '../../scripts/api-services';
+import {api_name_login, api_name_register} from '../../constants/api-constants';
+import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../loader/Loader';
-import { setUserAuthToken, setUserDetails, setUserID } from '../../redux/authSlice';
+import {
+  setUserAuthToken,
+  setUserDetails,
+  setUserID,
+} from '../../redux/authSlice';
 import Alertify from '../../scripts/toast';
+import { useTranslation } from 'react-i18next';
 
 const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
-
   const phoneInput = useRef(null);
   const navigation = useNavigation();
-  const dispatch = useDispatch()
-
-
-    const [checked, setChecked] = useState('email');
+  const dispatch = useDispatch();
+  const {i18n, t} = useTranslation();
+  const [checked, setChecked] = useState('email');
   const [value, setValue] = useState('');
   const [formattedValue, setFormattedValue] = useState('');
   const [isLogin, setIsLogin] = useState(selectedValue === 'Login');
   const [submitLoader, setSubmitLoader] = useState(false);
   const [emailValue, setEmailValue] = useState('');
   const [password, setPassword] = useState('');
-  const [name , setName] = useState('')
-
+  const [name, setName] = useState('');
 
   useEffect(() => {
     setIsLogin(selectedValue === 'Login');
   }, [selectedValue, isVisible]);
 
   // Memoized handlers for input changes
-  const handleEmailChange = useCallback((text) => {
+  const handleEmailChange = useCallback(text => {
     setEmailValue(text);
   }, []);
 
-  const handlePasswordChange = useCallback((text) => {
+  const handlePasswordChange = useCallback(text => {
     setPassword(text);
   }, []);
 
-  const handlePhoneChange = useCallback((text) => {
+  const handlePhoneChange = useCallback(text => {
     if (text.length <= 10) {
       setValue(text);
     }
   }, []);
 
-  const handleNameChange = useCallback((text) => {
+  const handleNameChange = useCallback(text => {
     setName(text);
   }, []);
 
   const toggleLoginSignup = () => {
     setIsLogin(!isLogin);
   };
-
 
   //api call
 
@@ -69,59 +77,65 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
           ToastAndroid.show('Please enter your Email', ToastAndroid.LONG);
           return; // Stop further execution
         } else if (!validateEmail(emailValue)) {
-          ToastAndroid.show('Please enter a valid email address.', ToastAndroid.LONG);
+          ToastAndroid.show(
+            'Please enter a valid email address.',
+            ToastAndroid.LONG,
+          );
           return; // Stop further execution
         }
       }
-  
+
       // Validation for phone number when `checked` is 'contact'
       if (checked === 'contact_number') {
         if (value == '') {
-          ToastAndroid.show('Please enter your Phone Number', ToastAndroid.LONG);
+          ToastAndroid.show(
+            'Please enter your Phone Number',
+            ToastAndroid.LONG,
+          );
           return; // Stop further execution
-        }
-        else if (!validatePhoneNumber(value)) {
-          ToastAndroid.show('Please enter a valid phone number.', ToastAndroid.LONG);
+        } else if (!validatePhoneNumber(value)) {
+          ToastAndroid.show(
+            'Please enter a valid phone number.',
+            ToastAndroid.LONG,
+          );
           return; // Stop further execution
         }
       }
-  
+
       // Validation for password
       if (password == '') {
         ToastAndroid.show('Please enter your password', ToastAndroid.LONG);
         return; // Stop further execution
       }
 
+      setSubmitLoader(true);
+      postApi(api_name_login, {
+        login_type: checked,
+        login: checked === 'email' ? emailValue : value,
+        password: password,
+      })
+        .then(async response => {
+          Alertify.success(response?.data.message);
+          setEmailValue('');
+          setPassword('');
+          setValue(' ');
+          if (response?.data?.token) {
+            dispatch(setUserAuthToken(response?.data?.token));
+            dispatch(setUserID(response?.data?.user?.id));
+            dispatch(setUserDetails(response?.data?.user));
+            onClose();
+            navigation.navigate('LeagueSelection');
 
-        setSubmitLoader(true);
-        postApi(api_name_login, {
-          login_type: checked ,
-          login: checked === "email" ? emailValue : value,
-          password: password,
-        })
-          .then(async response => {
-            Alertify.success(response?.data.message)
-            setEmailValue('')
-            setPassword('')
-            setValue(' ')
-            if (response?.data?.token) {
-              dispatch(setUserAuthToken(response?.data?.token));
-              dispatch(setUserID(response?.data?.user?.id))
-              dispatch(setUserDetails(response?.data?.user))
-              onClose();
-              navigation.navigate('LeagueSelection');
-
-              setSubmitLoader(false);
-            } else {
-              Alertify.error('Incorrect Credentials !')
-            }
-          })
-          .catch(error => {
-            Alertify.error('Incorrect Credentials !')
             setSubmitLoader(false);
-            console.log('Login Error', error?.message);
-          });
-      
+          } else {
+            Alertify.error('Incorrect Credentials !');
+          }
+        })
+        .catch(error => {
+          Alertify.error('Incorrect Credentials !');
+          setSubmitLoader(false);
+          console.log('Login Error', error?.message);
+        });
     } catch (error) {
       console.log('Login Error ', error);
     }
@@ -129,7 +143,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
 
   async function handleRegister() {
     try {
-      if(name === ''){
+      if (name === '') {
         ToastAndroid.show('Please enter your Name', ToastAndroid.LONG);
       }
       if (checked === 'email') {
@@ -137,22 +151,31 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
           ToastAndroid.show('Please enter your Email', ToastAndroid.LONG);
           return; // Stop further execution
         } else if (!validateEmail(emailValue)) {
-          ToastAndroid.show('Please enter a valid email address.', ToastAndroid.LONG);
+          ToastAndroid.show(
+            'Please enter a valid email address.',
+            ToastAndroid.LONG,
+          );
           return; // Stop further execution
         }
       }
-  
+
       // Validation for phone number when `checked` is 'contact'
       if (checked === 'contact_number') {
         if (value == '') {
-          ToastAndroid.show('Please enter your Phone Number', ToastAndroid.LONG);
+          ToastAndroid.show(
+            'Please enter your Phone Number',
+            ToastAndroid.LONG,
+          );
           return; // Stop further execution
-        }else if (!validatePhoneNumber(value)) {
-          ToastAndroid.show('Please enter a valid phone number.', ToastAndroid.LONG);
+        } else if (!validatePhoneNumber(value)) {
+          ToastAndroid.show(
+            'Please enter a valid phone number.',
+            ToastAndroid.LONG,
+          );
           return; // Stop further execution
         }
       }
-  
+
       // Validation for password
       if (password == '') {
         ToastAndroid.show('Please enter your password', ToastAndroid.LONG);
@@ -161,23 +184,24 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
         setSubmitLoader(true);
         postApi(api_name_register, {
           name: name,
-          ...(checked === "email" ? { email: emailValue } : { contact_number: value }),
+          ...(checked === 'email'
+            ? {email: emailValue}
+            : {contact_number: value}),
           password: password,
-          password_confirmation: password
+          password_confirmation: password,
         })
           .then(async response => {
-            Alertify.success(response?.data.message)
-            setEmailValue('')
-            setPassword('')
-            setValue(' ')
-            setName(' ')
+            Alertify.success(response?.data.message);
+            setEmailValue('');
+            setPassword('');
+            setValue(' ');
+            setName(' ');
             onClose();
             setSubmitLoader(false);
             navigation.navigate('LeagueSelection');
-          
           })
           .catch(error => {
-            Alertify.error('error', error)
+            Alertify.error('error', error);
             setSubmitLoader(false);
             console.log('Login Error', error.errors.contact_number);
           });
@@ -203,7 +227,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
           />
           <Text
             style={tw`text-white text-[28px] font-401 leading-tight self-center mx-5`}>
-            Welcome to Kick Score
+           {t('welcomeToKickScore')}
           </Text>
         </View>
 
@@ -217,7 +241,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
             />
             <Text
               style={tw`text-[#a9a9a9] text-[18px] font-400 leading-tight self-center ml-2`}>
-              Email
+          {t('email')}
             </Text>
           </View>
 
@@ -230,7 +254,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
             />
             <Text
               style={tw`text-[#a9a9a9] text-[18px] font-400 leading-tight self-center ml-2`}>
-              Phone Number
+           {t('phoneNumber')}
             </Text>
           </View>
         </View>
@@ -240,27 +264,28 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
           {checked === 'email' ? (
             // Email inputs
             <>
-            {!isLogin &&  <TextInput
-                type="text"
-                style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg mb-5 px-3`}
-                placeholder="Enter your name"
-                value={name}
-                onChangeText={handleNameChange} 
-              />}
-             
+              {!isLogin && (
+                <TextInput
+                  type="text"
+                  style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg mb-5 px-3`}
+                  placeholder={t('namePlaceholder')}
+                  value={name}
+                  onChangeText={handleNameChange}
+                />
+              )}
 
               <TextInput
                 type="text"
                 style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg px-3`}
-                placeholder="Enter your email"
+                placeholder={t('emailPlaceholder')}
                 value={emailValue}
-                onChangeText={handleEmailChange} 
+                onChangeText={handleEmailChange}
               />
 
               <TextInput
                 type="password"
                 style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg mt-5 px-3`}
-                placeholder="Enter your password"
+                placeholder={t('passwordPlaceholder')}
                 value={password}
                 onChangeText={handlePasswordChange}
               />
@@ -268,24 +293,25 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
           ) : (
             // Phone number input
             <>
-            {!isLogin &&  <TextInput
-                type="text"
-                style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg mb-5 px-3`}
-                placeholder="Enter your name"
-                value={name}
-                onChangeText={handleEmailChange}
-              />}
-             
+              {!isLogin && (
+                <TextInput
+                  type="text"
+                  style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg mb-5 px-3`}
+                  placeholder={t('namePlaceholder')}
+                  value={name}
+                  onChangeText={handleEmailChange}
+                />
+              )}
 
               <PhoneInput
                 ref={phoneInput}
                 defaultValue={value}
-                placeholder='Enter your phone number'
+                placeholder={t('phonePlaceholder')}
                 defaultCode="IN"
                 layout="second"
                 onChangeText={handlePhoneChange}
                 onChangeFormattedText={text => {
-                    setFormattedValue(text);
+                  setFormattedValue(text);
                 }}
                 withDarkTheme
                 withShadow
@@ -295,18 +321,18 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
                 codeTextStyle={tw`text-[#a9a9a9] border-r-[#a9a9a9] `}
                 textInputStyle={tw`text-[#a9a9a9]`}
                 textInputProps={{
-                  selectionColor: '#a9a9a9', 
-                  maxLength: 10, 
-                  keyboardType: 'number-pad', 
+                  selectionColor: '#a9a9a9',
+                  maxLength: 10,
+                  keyboardType: 'number-pad',
                 }}
               />
 
               <TextInput
                 type="password"
                 style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg mt-5 px-3`}
-                placeholder="Enter your password"
+                placeholder={t('passwordPlaceholder')}
                 value={password}
-                onChangeText={handlePasswordChange} 
+                onChangeText={handlePasswordChange}
               />
             </>
           )}
@@ -315,7 +341,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
         <View style={tw`mt-7`}>
           <TouchableOpacity
             onPress={() => {
-              isLogin ?  handleLogin() : handleRegister()
+              isLogin ? handleLogin() : handleRegister();
             }}
             style={[
               tw`mt-1 rounded-xl justify-center `,
@@ -333,10 +359,14 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
                 tw`rounded-xl justify-center`,
                 {flex: 1, justifyContent: 'center', alignItems: 'center'},
               ]}>
-                {submitLoader ? <Loader/> :
-              <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight`}>
-                {isLogin ? 'Log In' : 'Free Sign Up'}
-              </Text>}
+              {submitLoader ? (
+                <Loader />
+              ) : (
+                <Text
+                  style={tw`text-[#fff] text-[20px] font-401 leading-tight`}>
+                  {isLogin ? t('Login') : t('freeSignUp')}
+                </Text>
+              )}
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -345,31 +375,38 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
           <View style={tw`border-b-[#fff] border-[1px] w-40 mb-2`} />
           <Text
             style={tw`text-white text-[16px] font-400 leading-tight self-center mx-3 `}>
-            or
+            {t('or')}
           </Text>
           <View style={tw`border-b-[#fff] border-[1px] w-40 mb-2`} />
         </View>
 
-        <View style={tw`flex-row mt-7 `}>
-          <Text
-            style={tw`text-white text-[20px] font-400 leading-tight self-center mx-3 `}>
-            {isLogin ? 'Log in with' : 'Sign up with'}
-          </Text>
+        <Text
+          style={tw`text-white text-[20px] font-400 leading-tight self-center mx-3 mt-7 `}>
+          {isLogin ? t('loginWith') : t('signupWith')}
+        </Text>
+        <View style={tw`flex-row mt-3 self-center `}>
           <Image
             source={require('../../assets/icons/google.png')}
-            style={[tw`w-8 h-8 self-center mx-5`, {resizeMode: 'contain'}]}
+            style={[tw`w-8 h-8 self-center  mr-7`, {resizeMode: 'contain'}]}
+          />
+
+          <Image
+            source={require('../../assets/icons/apple.png')}
+            style={[tw`w-9 h-9 self-center mr-7`, {resizeMode: 'contain'}]}
+          />
+
+          <Image
+            source={require('../../assets/icons/ms.png')}
+            style={[tw`w-7 h-7 self-center mr-7`, {resizeMode: 'contain'}]}
+          />
+
+          <Image
+            source={require('../../assets/icons/instagram.png')}
+            style={[tw`w-10 h-10 self-center mr-7`, {resizeMode: 'contain'}]}
           />
           <Image
             source={require('../../assets/icons/facebook.png')}
-            style={[tw`w-9 h-9 self-center mr-5`, {resizeMode: 'contain'}]}
-          />
-          <Image
-            source={require('../../assets/icons/apple.png')}
-            style={[tw`w-9 h-9 self-center mr-5`, {resizeMode: 'contain'}]}
-          />
-          <Image
-            source={require('../../assets/icons/instagram.png')}
-            style={[tw`w-10 h-10 self-center `, {resizeMode: 'contain'}]}
+            style={[tw`w-9 h-9 self-center `, {resizeMode: 'contain'}]}
           />
         </View>
         <TouchableOpacity
@@ -377,11 +414,11 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
           onPress={toggleLoginSignup}>
           <Text
             style={tw`text-[#a9a9a9] text-[18px] font-400 leading-tight self-center mx-1 `}>
-            {isLogin ? "Don't have an account?" : 'Have an account?'}
+            {isLogin ? t('dontHaveAccount') : t('haveAccount')}
           </Text>
           <Text
             style={tw`text-[#88afff] text-[18px] font-401 leading-tight self-center  `}>
-            {isLogin ? 'Sign Up' : 'Log In'}
+            {isLogin ? t('signup') : t('Login')}
           </Text>
         </TouchableOpacity>
       </View>
@@ -399,7 +436,6 @@ const styles = StyleSheet.create({
     padding: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-   
   },
   header: {
     width: 100,
