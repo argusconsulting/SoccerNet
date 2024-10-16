@@ -12,6 +12,8 @@ import Loader from '../../components/loader/Loader'; // Assuming Loader is your 
 
 const TriviaQuestions = ({}) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedOption, setSelectedOption] = useState(null);
+const [isCorrect, setIsCorrect] = useState(null);
   const route = useRoute();
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -41,23 +43,37 @@ const TriviaQuestions = ({}) => {
     }
   };
 
-  const renderQuestion = ({item}) => (
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option.id);
+    setIsCorrect(option.is_correct);
+  };
+
+  const renderQuestion = ({ item }) => (
     <View>
       <RenderHtml
         contentWidth={100}
-        source={{html: item?.question_text}}
+        source={{ html: item?.question_text }}
         tagsStyles={customStyles}
       />
-
+  
       <View style={tw`mt-5`}>
         {/* Looping over options */}
-        {item?.options?.map((option, index) => (
+        {item?.options?.map((option) => (
           <TouchableOpacity
             key={option.id}
-            style={tw`p-4 bg-[#303649] rounded-lg my-2`}>
+            style={[
+              tw`p-4 rounded-lg my-2`,
+              selectedOption === option.id
+                ? isCorrect
+                  ? tw`bg-green-500` // Correct option
+                  : tw`bg-red-500`   // Wrong option
+                : tw`bg-[#303649]`    // Default option background
+            ]}
+            onPress={() => handleOptionSelect(option)}
+          >
             <RenderHtml
               contentWidth={100}
-              source={{html: `${option.option_text || 'No text available'}`}}
+              source={{ html: `${option.option_text || 'No text available'}` }}
               tagsStyles={customStyles}
             />
           </TouchableOpacity>
