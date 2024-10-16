@@ -16,48 +16,21 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFanPhotos } from '../../redux/fanPhotosSlice';
 import moment from 'moment';
+import Loader from '../../components/loader/Loader';
 
 const Photos = () => {
 
   const navigation = useNavigation()
-  const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      name: 'Harry Brook',
-      duration: '3 hours ago',
-      img: require('../../assets/img1.png'),
-      profile: require('../../assets/profile.png'),
-      desc: 'Caught this moment!',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      name: 'Harry Brook',
-      img: require('../../assets/img2.png'),
-      duration: '3 hours ago',
-      profile: require('../../assets/profile.png'),
-
-      desc: 'Caught this moment!',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      name: 'Harry Brook',
-      img: require('../../assets/img1.png'),
-      duration: '3 hours ago',
-      profile: require('../../assets/profile.png'),
-
-      desc: 'Caught this moment!',
-    },
-  ];
 
   const dispatch = useDispatch();
-  const data = useSelector(state => state?.fanPhotos?.fanPhotos);
-
-  console.log("dataaaaaaaaaaa",data)
-
+  const {fanPhotos,isLoading} = useSelector(state => state?.fanPhotos);
 
   useEffect(() => {
-dispatch(getFanPhotos())
-  }, [])
+    const willFocusSubscription = navigation.addListener('focus', () => {
+      dispatch(getFanPhotos())
+    });
+    return willFocusSubscription;
+  }, [dispatch]);
 
   const Item = ({item}) => (
     <View style={styles.item}>
@@ -114,8 +87,8 @@ dispatch(getFanPhotos())
         <View style={tw`flex-row justify-between`}>
           <View style={tw`flex-row `}>
             <Image
-              source={item?.profile}
-              style={[tw`w-5 h-5 self-center`, {resizeMode: 'contain'}]}
+              source={{uri:item?.user?.avatar_url}}
+              style={[tw`w-5 h-5 self-center rounded-full`, {resizeMode: 'contain'}]}
             />
             <Text
               style={tw`text-[#fff] text-[16px] font-401 mx-1 mt-1 leading-tight self-center ml-3`}>
@@ -139,8 +112,10 @@ dispatch(getFanPhotos())
   return (
     <View style={tw`bg-[#05102E] flex-1 `}>
       <Header name="Photos" />
-      <FlatList
-    data={data}
+      {isLoading ? <Loader/>:
+      <>
+        <FlatList
+    data={fanPhotos}
     renderItem={({item}) => <Item item={item} />}
     keyExtractor={item => item.id}
     contentContainerStyle={{ paddingBottom: 60 }} // To avoid content hiding behind the button
@@ -160,7 +135,8 @@ dispatch(getFanPhotos())
     <Text style={tw`text-[#fff] text-[16px] font-400 mx-1 leading-tight  self-center`}>
       Upload your match moments
     </Text>
-  </TouchableOpacity>
+  </TouchableOpacity></>}
+    
     </View>
   );
 };
