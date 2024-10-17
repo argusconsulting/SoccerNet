@@ -40,14 +40,11 @@ const PostCard = ({item}) => {
 
   const shareImageBase64 = async ({imageUrl, desc}) => {
     try {
-      // Step 1: Convert image URL to Base64
       const response = await RNFetchBlob.fetch('GET', imageUrl);
-      const base64Data = response.base64(); // Convert to Base64
+      const base64Data = response.base64();
 
-      // Step 2: Create a shareable image URL (base64)
       const imageBase64Url = `data:image/jpeg;base64,${base64Data}`;
 
-      // Step 3: Share the image with the message
       const options = {
         title: 'Share via',
         message: cleanHtmlContent(desc),
