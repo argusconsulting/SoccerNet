@@ -17,88 +17,130 @@ import Loader from '../loader/Loader';
 import Modal from 'react-native-modal';
 import {useNavigation} from '@react-navigation/native';
 import RenderHtml from 'react-native-render-html';
-import { createComments, getComments } from '../../redux/discussionSlice';
+import {createComments, getComments} from '../../redux/discussionSlice';
+import Share from 'react-native-share';
+import RNFetchBlob from 'react-native-blob-util';
 
 const PostCard = ({item}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const [comment, setComment] = useState('');
-  const [isLiked, setIsLiked] = useState(item?.is_liked);
+
   // const [commentCount, setCoCount] = useState(item?.likes_count);
-    const [modalVisible, setModalVisible] = useState(false);
-    const userId = useSelector(state => state.auth_store.userID);
-    const commentsList = useSelector(state => state?.discussion?.commentsData);
-    const sendLoader = useSelector(state => state?.discussion?.sendLoader);
-    const getCommentsLoader = useSelector(
-      state => state?.discussion?.getCommentsLoader,
-    );
+  const [modalVisible, setModalVisible] = useState(false);
+  const userId = useSelector(state => state.auth_store.userID);
+  const commentsList = useSelector(state => state?.discussion?.commentsData);
+  const sendLoader = useSelector(state => state?.discussion?.sendLoader);
+  const getCommentsLoader = useSelector(
+    state => state?.discussion?.getCommentsLoader,
+  );
 
-    const commentsCount = item?.comments_count
+  const commentsCount = item?.comments_count;
 
+  const shareImageBase64 = async ({imageUrl, desc}) => {
+    try {
+      // Step 1: Convert image URL to Base64
+      const response = await RNFetchBlob.fetch('GET', imageUrl);
+      const base64Data = response.base64(); // Convert to Base64
 
-    function handleComment() {
-      const reqData = {
-        post_id: item?.id,
-        user_id: userId,
-        content: comment,
+      // Step 2: Create a shareable image URL (base64)
+      const imageBase64Url = `data:image/jpeg;base64,${base64Data}`;
+
+      // Step 3: Share the image with the message
+      const options = {
+        title: 'Share via',
+        message: cleanHtmlContent(desc),
+        url: imageBase64Url, // Base64 image URL
       };
-      dispatch(createComments({reqData})).then(res => {
-        if (res?.payload?.status === 201) {
-          dispatch(getComments({post_id: item?.id}));
-          setComment('');
-        } else {
-          console.log('Error comment', res?.payload);
-        }
-      });
-    }
 
-    const toggleModal = postId => {
-      dispatch(getComments({post_id: postId}));
-      setModalVisible(!modalVisible);
+      await Share.open(options);
+      console.log('Shared successfully');
+    } catch (error) {
+      console.error('Error sharing image:', error);
+    }
+  };
+
+  const decodeHtmlEntities = text => {
+    return text
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&#39;/g, "'")
+      .replace(/&quot;/g, '"');
+  };
+
+  const cleanHtmlContent = html => {
+    const noTags = html.replace(/<[^>]+>/g, ' ');
+    const cleanedText = noTags.replace(/\s+/g, ' ').trim();
+    return decodeHtmlEntities(cleanedText);
+  };
+
+  function handleComment() {
+    const reqData = {
+      post_id: item?.id,
+      user_id: userId,
+      content: comment,
     };
+    dispatch(createComments({reqData})).then(res => {
+      if (res?.payload?.status === 201) {
+        dispatch(getComments({post_id: item?.id}));
+        setComment('');
+      } else {
+        console.log('Error comment', res?.payload);
+      }
+    });
+  }
+
+  const toggleModal = postId => {
+    dispatch(getComments({post_id: postId}));
+    setModalVisible(!modalVisible);
+  };
 
   const customStyles = {
     body: tw`text-[#fff] text-[14px] leading-tight mx-1 mt-3 w-80`,
     p: tw`text-[#fff]`, // Style for <p> tags
   };
 
-    const Item = ({items}) => {
-      return (
-        <View style={tw`mx-5 mt-6`}>
-          <View style={tw`flex-row items-center`}>
-            <TouchableOpacity
-              onPress={() => {
-                setModalVisible(false);
-                // navigation.navigate('UserProfileDetail',{
-                //   details: items?.user
-                // });
-              }}>
-              <Image
-                source={
-                  items?.user?.avatar_url
-                    ? {uri: items?.user?.avatar_url}
-                    : require('../../assets/icons/user.png')
-                }
-                style={[tw`w-10 h-10 rounded-full mr-2`,{resizeMode:"contain"}]}
-              />
-            </TouchableOpacity>
+  const Item = ({items}) => {
+    return (
+      <View style={tw`mx-5 mt-6`}>
+        <View style={tw`flex-row items-center`}>
+          <TouchableOpacity
+            onPress={() => {
+              setModalVisible(false);
+              // navigation.navigate('UserProfileDetail',{
+              //   details: items?.user
+              // });
+            }}>
+            <Image
+              source={
+                items?.user?.avatar_url
+                  ? {uri: items?.user?.avatar_url}
+                  : require('../../assets/icons/user.png')
+              }
+              style={[tw`w-10 h-10 rounded-full mr-2`, {resizeMode: 'contain'}]}
+            />
+          </TouchableOpacity>
 
-            <View>
-              <Text
-                style={[tw`text-[#fff] text-[15px] font-401 mx-1 leading-tight`,{textTransform:"capitalize"}]}>
-                {items?.user?.name}
-              </Text>
-              <Text
-                style={tw`text-[#fff] text-[14px] font-400 mx-1 mt-1 leading-tight`}>
-                {items?.content}
-              </Text>
-            </View>
+          <View>
+            <Text
+              style={[
+                tw`text-[#fff] text-[15px] font-401 mx-1 leading-tight`,
+                {textTransform: 'capitalize'},
+              ]}>
+              {items?.user?.name}
+            </Text>
+            <Text
+              style={tw`text-[#fff] text-[14px] font-400 mx-1 mt-1 leading-tight`}>
+              {items?.content}
+            </Text>
           </View>
-     
         </View>
-      );
-    };
+      </View>
+    );
+  };
 
   return (
     <View
@@ -144,7 +186,7 @@ const PostCard = ({item}) => {
         <View style={tw`flex-row justify-between mt-2`}>
           <Text
             style={tw`text-[#fff] text-[13px] font-400 mx-1 mt-1 leading-tight`}>
-            {commentsCount}{' '} Comments
+            {commentsCount} Comments
           </Text>
         </View>
 
@@ -165,7 +207,11 @@ const PostCard = ({item}) => {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={tw`flex-row`}>
+          <TouchableOpacity
+            style={tw`flex-row`}
+            onPress={() =>
+              shareImageBase64({imageUrl: item?.image, desc: item?.content})
+            }>
             <FontAwesome
               name={'share'}
               size={20}

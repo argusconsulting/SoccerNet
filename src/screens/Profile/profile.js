@@ -23,6 +23,7 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import Alertify from '../../scripts/toast';
 import UploadPopup from '../../components/upload-PopUp';
+import {t} from 'i18next';
 
 const Profile = () => {
   const navigation = useNavigation();
@@ -32,10 +33,6 @@ const Profile = () => {
 
   const dispatch = useDispatch();
   const userProfileData = useSelector(state => state.profile.userProfileData);
-
-  console.log('UserData', userProfileData);
-
-
 
   //for selecting image
   const chooseFile = type => {
@@ -70,7 +67,7 @@ const Profile = () => {
       maxHeight: 2000,
       maxWidth: 2000,
     };
-  
+
     launchCamera(options, response => {
       setUploadPopup(false);
       if (response.didCancel) {
@@ -81,21 +78,20 @@ const Profile = () => {
         let imageUri = response.uri || response.assets?.[0]?.uri;
         let fileName = response.assets?.[0]?.fileName || 'captured_image.jpg'; // Provide a default file name
         let type = response.assets?.[0]?.type || 'image/jpeg'; // Provide a default MIME type
-  
+
         // Structure the data as you did in chooseFile
         let data = {
           uri: imageUri,
           name: fileName,
           type: type,
         };
-  
+
         // Set the image data to state
         setImageData(data);
-        console.log("check the data is ",data); 
+        console.log('check the data is ', data);
       }
     });
   };
-
 
   const handleUpdateProfile = async () => {
     if (userProfileData.name == '' || userProfileData.name == undefined) {
@@ -117,7 +113,6 @@ const Profile = () => {
           imageData,
         }),
       ).then(data => {
-        console.log("in component", data)
         dispatch(getProfileData());
       });
     }
@@ -138,8 +133,6 @@ const Profile = () => {
   return (
     <View style={tw`bg-[#05102E] flex-1 `}>
       <Header name="Profile" />
- 
-
 
       <View
         style={{
@@ -153,13 +146,11 @@ const Profile = () => {
             }}>
             <ImageBackground
               style={tw`w-35 h-35 self-center flex items-end justify-end rounded-full overflow-hidden`}
-              source={{uri: imageData.uri}}>
-              
-            </ImageBackground>
+              source={{uri: imageData.uri}}></ImageBackground>
             <Image
-                source={require('../../assets/edit_profile.png')}
-                style={tw`w-8 h-8 absolute bottom-1 right-3`}
-              />
+              source={require('../../assets/edit_profile.png')}
+              style={tw`w-8 h-8 absolute bottom-1 right-3`}
+            />
           </Pressable>
         ) : (
           <Pressable
@@ -181,26 +172,24 @@ const Profile = () => {
                     }}
                     source={{
                       uri: `${userProfileData?.avatar_url}`,
-                    }}>
-                   
-                  </ImageBackground>
-                  <Image
-                      source={require('../../assets/edit_profile.png')}
-                      style={tw`w-8 h-8 absolute bottom-0 right-3`}
-                    />
-                </View>
-              </>
-            ) : (
-              <View  style={tw`bg-[#585858] w-30 h-30 rounded-full self-center justify-center`}>
-                <Text
-        style={tw`text-[#fff] text-[40px] font-401 leading-normal self-center`}>
-        SR
-      </Text>
+                    }}></ImageBackground>
                   <Image
                     source={require('../../assets/edit_profile.png')}
                     style={tw`w-8 h-8 absolute bottom-0 right-3`}
                   />
-          
+                </View>
+              </>
+            ) : (
+              <View
+                style={tw`bg-[#585858] w-30 h-30 rounded-full self-center justify-center`}>
+                <Text
+                  style={tw`text-[#fff] text-[40px] font-401 leading-normal self-center`}>
+                  SR
+                </Text>
+                <Image
+                  source={require('../../assets/edit_profile.png')}
+                  style={tw`w-8 h-8 absolute bottom-0 right-3`}
+                />
               </View>
             )}
           </Pressable>
@@ -209,18 +198,18 @@ const Profile = () => {
 
       <Text
         style={tw`text-[#fff] text-[30px] font-401 leading-normal self-center mt-4`}>
-     {userProfileData?.name}
+        {userProfileData?.name}
       </Text>
       {/* Profile */}
 
       {uploadPopup && (
-                <UploadPopup
-                    visible={uploadPopup}
-                    setVisible={() => setUploadPopup(!uploadPopup)}
-                    handleCamera={() => captureImage('upload-photo')}
-                    handleGallery={() => chooseFile('photo')}
-                />
-            )}
+        <UploadPopup
+          visible={uploadPopup}
+          setVisible={() => setUploadPopup(!uploadPopup)}
+          handleCamera={() => captureImage('upload-photo')}
+          handleGallery={() => chooseFile('photo')}
+        />
+      )}
 
       {/* Icon and Text Group */}
       <View style={tw`flex-row items-center mt-10`}>
@@ -237,7 +226,7 @@ const Profile = () => {
           <TextInput
             type="text"
             style={tw`border-b border-[#a9a9a9] text-[#a9a9a9]  h-10 w-70 rounded-lg px-2`}
-            placeholder="Enter your Name"
+            placeholder={t('namePlaceholder')}
             value={userProfileData?.name}
             onChangeText={text =>
               handleFieldChange({
@@ -265,7 +254,7 @@ const Profile = () => {
           <TextInput
             type="text"
             style={tw`border-b border-[#a9a9a9] text-[#a9a9a9]  h-10 w-70 rounded-lg px-2 `}
-            placeholder="Enter your Email"
+            placeholder={t('emailPlaceholder')}
             value={userProfileData?.email}
             onChangeText={text =>
               handleFieldChange({
@@ -293,7 +282,7 @@ const Profile = () => {
           <TextInput
             type="text"
             style={tw`border-b border-[#a9a9a9] text-[#a9a9a9]  h-10 w-70 rounded-lg px-2`}
-            placeholder="Enter your Phone Number"
+            placeholder={t('phonePlaceholder')}
             value={userProfileData?.contact_number}
             onChangeText={text =>
               handleFieldChange({
@@ -322,7 +311,7 @@ const Profile = () => {
 
           <View>
             <Text style={tw`text-[#fff] text-[20px] font-401 leading-normal`}>
-              Settings
+              {t('Settings')}
             </Text>
           </View>
         </View>
@@ -350,7 +339,7 @@ const Profile = () => {
             {flex: 1, justifyContent: 'center', alignItems: 'center'},
           ]}>
           <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight`}>
-            Update
+            {t('Update')}
           </Text>
         </LinearGradient>
       </TouchableOpacity>

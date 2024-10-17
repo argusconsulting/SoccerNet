@@ -11,6 +11,7 @@ import React from 'react';
 import Modal from 'react-native-modal';
 import tw from '../../styles/tailwind';
 import {useNavigation} from '@react-navigation/native';
+import {t} from 'i18next';
 
 const LeagueModal = ({isVisible, toggleModal}) => {
   const navigation = useNavigation(); // Corrected variable name
@@ -37,14 +38,14 @@ const LeagueModal = ({isVisible, toggleModal}) => {
     {
       id: '4',
       icon: require('../../assets/icons/comments.png'),
-      title: 'Discussions',
+      title: 'Discussion',
       navigate: 'Discussion', // Example screen name
     },
     {
       id: '5',
       icon: require('../../assets/icons/spotlight.png'),
-      title: 'Spotlight',
-      navigate: 'Rooms', // Example screen name
+      title: 'SpotLight',
+      navigate: 'SpotLight', // Example screen name
     },
     {
       id: '6',
@@ -67,7 +68,7 @@ const LeagueModal = ({isVisible, toggleModal}) => {
     {
       id: '9',
       icon: require('../../assets/icons/live.png'),
-      title: 'Live Now',
+      title: 'LiveNow',
       navigate: 'LiveNow', // Example screen name
     },
   ];
@@ -86,8 +87,11 @@ const LeagueModal = ({isVisible, toggleModal}) => {
         style={[tw`w-7 h-7 self-center`, {resizeMode: 'contain'}]}
       />
       <Text
-        style={tw`text-[#fff] text-[18px] font-401 leading-normal mt-3 self-center`}>
-        {item?.title}
+        style={[
+          tw`text-[#fff] text-[18px] font-401 leading-normal mt-3 self-center`,
+          {textAlign: 'center'},
+        ]}>
+        {t(item.title)}
       </Text>
     </TouchableOpacity>
   );

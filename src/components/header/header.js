@@ -3,6 +3,7 @@ import React from 'react';
 import tw from '../../styles/tailwind';
 import {useNavigation} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {t} from 'i18next';
 
 const Header = ({name}) => {
   const navigation = useNavigation();
@@ -18,7 +19,7 @@ const Header = ({name}) => {
       </TouchableOpacity>
       <Text
         style={tw`text-[#fff] text-[24px] font-401 leading-normal self-center `}>
-        {name}
+        {t(name)}
       </Text>
     </View>
   );

@@ -17,6 +17,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {userLogout} from '../../redux/authSlice';
 import {customAlert} from '../../scripts/functions';
+import {t} from 'i18next';
 
 function Menu({modalVisible, toggleModal}) {
   const navigation = useNavigation();
@@ -49,7 +50,7 @@ function Menu({modalVisible, toggleModal}) {
       id: '0a3d5f78-3eae-4a0c-810b-66e799f',
       icon: require('../../assets/icons/spotlight.png'),
 
-      title: 'Spotlight',
+      title: 'SpotLight',
     },
     {
       id: '0a3d5f78-3eae-4a0c-810b-6637e799f',
@@ -69,7 +70,7 @@ function Menu({modalVisible, toggleModal}) {
     {
       id: '0a3d5f78-3e6e-4a0c-810b-6637687e799f',
       icon: require('../../assets/icons/live.png'),
-      title: 'Live Now',
+      title: 'LiveNow',
     },
 
     {
@@ -115,9 +116,9 @@ function Menu({modalVisible, toggleModal}) {
         toggleModal();
         navigation.navigate('Discussion');
         break;
-      case 'Spotlight':
+      case 'SpotLight':
         toggleModal();
-        navigation.navigate('Rooms');
+        navigation.navigate('SpotLight');
         break;
       case 'Poll':
         toggleModal();
@@ -131,7 +132,7 @@ function Menu({modalVisible, toggleModal}) {
         toggleModal();
         navigation.navigate('Photos');
         break;
-      case 'Live Now':
+      case 'LiveNow':
         toggleModal();
         navigation.navigate('LiveNow');
         break;
@@ -163,7 +164,7 @@ function Menu({modalVisible, toggleModal}) {
             />
             <Text
               style={tw`text-[#fff] text-[16px] font-400 mt-1 leading-tight`}>
-              {title}
+              {t(title)}
             </Text>
           </View>
           <Feather
@@ -190,7 +191,7 @@ function Menu({modalVisible, toggleModal}) {
         <View style={tw`flex-1 w-[80%] h-full bg-[#303649] rounded-md`}>
           <View style={tw`flex-row justify-between mx-5 m-5`}>
             <Text style={tw`text-[22px] text-[#fff]  font-401 leading-tight`}>
-              Menu
+              {t('Menu')}
             </Text>
             <TouchableOpacity onPress={() => toggleModal()}>
               <AntDesign name={'close'} size={22} color={'#fff'} style={tw``} />

@@ -27,9 +27,9 @@ import Photos from '../screens/photos/photos';
 import UploadPhotos from '../screens/photos/modules/upload-photos';
 import LiveNow from '../screens/live-now/live-now';
 import LiveDetails from '../screens/live-now/modules/live-details';
-import RoomsListing from '../screens/rooms/rooms-listing';
 import {useSelector} from 'react-redux';
 import Notification from '../screens/Notification/notification';
+import SpotLight from '../screens/rooms/spotListing';
 
 // Bottom Tab Navigation
 const Tab = createBottomTabNavigator();
@@ -154,11 +154,10 @@ export const StackScreen = () => {
             component={LanguageSelection}
           />
           <Stack.Screen name="SplashScreen" component={SplashScreen} />
-   
         </>
       )}
       <>
-      <Stack.Screen name="LeagueSelection" component={LeagueSelection} />
+        <Stack.Screen name="LeagueSelection" component={LeagueSelection} />
         <Stack.Screen name="Home" component={BottomTabScreens} />
         <Stack.Screen name="Calendar" component={CalendarScreen} />
         <Stack.Screen name="Profile" component={Profile} />
@@ -174,7 +173,7 @@ export const StackScreen = () => {
         <Stack.Screen name="UploadPhotos" component={UploadPhotos} />
         <Stack.Screen name="LiveNow" component={LiveNow} />
         <Stack.Screen name="LiveDetails" component={LiveDetails} />
-        <Stack.Screen name="Rooms" component={RoomsListing} />
+        <Stack.Screen name="SpotLight" component={SpotLight} />
         <Stack.Screen name="Notification" component={Notification} />
       </>
     </Stack.Navigator>

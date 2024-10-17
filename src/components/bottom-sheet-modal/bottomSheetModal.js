@@ -25,7 +25,7 @@ import {
   setUserID,
 } from '../../redux/authSlice';
 import Alertify from '../../scripts/toast';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
   const phoneInput = useRef(null);
@@ -198,7 +198,6 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
             setName(' ');
             onClose();
             setSubmitLoader(false);
-            navigation.navigate('LeagueSelection');
           })
           .catch(error => {
             Alertify.error('error', error);
@@ -227,7 +226,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
           />
           <Text
             style={tw`text-white text-[28px] font-401 leading-tight self-center mx-5`}>
-           {t('welcomeToKickScore')}
+            {t('welcomeToKickScore')}
           </Text>
         </View>
 
@@ -241,7 +240,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
             />
             <Text
               style={tw`text-[#a9a9a9] text-[18px] font-400 leading-tight self-center ml-2`}>
-          {t('email')}
+              {t('email')}
             </Text>
           </View>
 
@@ -254,7 +253,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
             />
             <Text
               style={tw`text-[#a9a9a9] text-[18px] font-400 leading-tight self-center ml-2`}>
-           {t('phoneNumber')}
+              {t('phoneNumber')}
             </Text>
           </View>
         </View>
@@ -299,7 +298,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
                   style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg mb-5 px-3`}
                   placeholder={t('namePlaceholder')}
                   value={name}
-                  onChangeText={handleEmailChange}
+                  onChangeText={handleNameChange}
                 />
               )}
 
