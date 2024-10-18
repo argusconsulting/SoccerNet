@@ -26,6 +26,7 @@ import {
 } from '../../redux/authSlice';
 import Alertify from '../../scripts/toast';
 import {useTranslation} from 'react-i18next';
+import GoogleLogin from '../google-login';
 
 const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
   const phoneInput = useRef(null);
@@ -398,10 +399,11 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
           {isLogin ? t('loginWith') : t('signupWith')}
         </Text>
         <View style={tw`flex-row mt-3 self-center `}>
-          <Image
+          {/* <Image
             source={require('../../assets/icons/google.png')}
             style={[tw`w-8 h-8 self-center  mr-7`, {resizeMode: 'contain'}]}
-          />
+          /> */}
+          <GoogleLogin />
 
           <Image
             source={require('../../assets/icons/apple.png')}
