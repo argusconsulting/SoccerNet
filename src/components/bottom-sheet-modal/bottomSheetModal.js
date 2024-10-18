@@ -288,6 +288,13 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
                 value={password}
                 onChangeText={handlePasswordChange}
               />
+
+              {isLogin && (
+                <Text
+                  style={tw`text-[#a9a9a9] text-[16px] font-401 leading-tight mt-3 mx-1`}>
+                  Forgot password ?
+                </Text>
+              )}
             </>
           ) : (
             // Phone number input
@@ -333,11 +340,18 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
                 value={password}
                 onChangeText={handlePasswordChange}
               />
+
+              {isLogin && (
+                <Text
+                  style={tw`text-[#a9a9a9] text-[16px] font-401 leading-tight mt-3 mx-1`}>
+                  Forgot password ?
+                </Text>
+              )}
             </>
           )}
         </View>
 
-        <View style={tw`mt-7`}>
+        <View style={tw`mt-5`}>
           <TouchableOpacity
             onPress={() => {
               isLogin ? handleLogin() : handleRegister();

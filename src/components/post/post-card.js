@@ -17,17 +17,17 @@ import Loader from '../loader/Loader';
 import Modal from 'react-native-modal';
 import {useNavigation} from '@react-navigation/native';
 import RenderHtml from 'react-native-render-html';
-import {createComments, getComments} from '../../redux/discussionSlice';
+import {
+  createComments,
+  getComments,
+  postHandler,
+} from '../../redux/discussionSlice';
 import Share from 'react-native-share';
 import RNFetchBlob from 'react-native-blob-util';
 
 const PostCard = ({item}) => {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
-
   const [comment, setComment] = useState('');
-
-  // const [commentCount, setCoCount] = useState(item?.likes_count);
   const [modalVisible, setModalVisible] = useState(false);
   const userId = useSelector(state => state.auth_store.userID);
   const commentsList = useSelector(state => state?.discussion?.commentsData);
@@ -35,7 +35,6 @@ const PostCard = ({item}) => {
   const getCommentsLoader = useSelector(
     state => state?.discussion?.getCommentsLoader,
   );
-
   const commentsCount = item?.comments_count;
 
   const shareImageBase64 = async ({imageUrl, desc}) => {
@@ -230,7 +229,11 @@ const PostCard = ({item}) => {
           <View style={styles.messageContainer}>
             <View style={[tw`flex-row justify-between items-center px-5 pt-3`]}>
               <Text style={styles.messageTitle}>Comments</Text>
-              <TouchableOpacity onPress={() => toggleModal(item?.id)}>
+              <TouchableOpacity
+                onPress={() => {
+                  // dispatch(postHandler());
+                  toggleModal(item?.id);
+                }}>
                 <AntDesign
                   name={'close'}
                   size={24}
