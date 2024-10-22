@@ -31,6 +31,7 @@ import {
 import Alertify from '../../scripts/toast';
 import {useTranslation} from 'react-i18next';
 import GoogleLogin from '../google-login';
+import FacebookLogin from '../facebook-login';
 
 const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
   const phoneInput = useRef(null);
@@ -429,10 +430,11 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
             source={require('../../assets/icons/instagram.png')}
             style={[tw`w-10 h-10 self-center mr-7`, {resizeMode: 'contain'}]}
           />
-          <Image
+          <FacebookLogin />
+          {/* <Image
             source={require('../../assets/icons/facebook.png')}
             style={[tw`w-9 h-9 self-center `, {resizeMode: 'contain'}]}
-          />
+          /> */}
         </View>
         <TouchableOpacity
           style={tw`flex-row mt-7 self-center`}

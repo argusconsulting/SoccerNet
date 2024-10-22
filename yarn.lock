@@ -3845,6 +3845,7 @@ __metadata:
     react-native: 0.75.3
     react-native-blob-util: ^0.19.11
     react-native-calendars: ^1.1307.0
+    react-native-fbsdk-next: ^13.1.3
     react-native-gesture-handler: ^2.19.0
     react-native-image-picker: ^7.1.2
     react-native-linear-gradient: ^2.8.3
@@ -9631,6 +9632,19 @@ __metadata:
     react-native: "*"
     react-native-web: "*"
   checksum: e808169b45c5e8021462a6914f7c3fb28e84ae8d58097ed7b3418fee41efa2bc44012abc09ff3f3bd6ee14427b9efe1b0f8d8b3a19cc01325b2f2cd0137d5d00
+  languageName: node
+  linkType: hard
+
+"react-native-fbsdk-next@npm:^13.1.3":
+  version: 13.1.3
+  resolution: "react-native-fbsdk-next@npm:13.1.3"
+  peerDependencies:
+    expo: ">=47.0.0"
+    react-native: ">=0.63.3"
+  peerDependenciesMeta:
+    expo:
+      optional: true
+  checksum: 707e4e83a8686910d212b9d933011fbeb2c600d5bda921903f9c08dff5556ee41d39bb4fd7b4b767c799034b6d99921cd68b7ec2846f9e311ea61d07c4e12128
   languageName: node
   linkType: hard
 

@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">SoccerNet</string>
+    <string name="facebook_app_id">1334161241290057</string>
+    <string name="fb_login_protocol_scheme">fb1334161241290057</string>
+<string name="facebook_client_token">1d094f5a0159aca9d2349d37cd9cab20</string>
 </resources>
