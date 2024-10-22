@@ -10,6 +10,7 @@ import {store} from '../redux/store';
 import {useNavigation} from '@react-navigation/native';
 import {setSocialProfile} from '../redux/profileSlice';
 import {api_name_google_login} from '../constants/api-constants';
+import {postApi} from '../scripts/api-services';
 
 const GoogleLogin = () => {
   const [userInfo, setUserInfo] = useState(null);
@@ -25,15 +26,14 @@ const GoogleLogin = () => {
     try {
       await GoogleSignin.hasPlayServices();
       const usrInfo = await GoogleSignin.signIn();
-      console.log('userinfo', usrInfo);
       setUserInfo(usrInfo);
-      var idToken = usrInfo.idToken;
+      var idToken = usrInfo?.data?.idToken;
       store.dispatch(setSocialLoginToken());
       const response = await _googleSocialLogin(idToken);
-      console.log('response google login api ', response.data.data);
-      store.dispatch(setSocialProfile(response.data));
-      store.dispatch(setUserAuthToken(response.data.data.token));
       navigation.navigate('Home');
+      store.dispatch(setSocialProfile(response?.data));
+      store.dispatch(setUserAuthToken(response?.data?.token));
+      // navigation.navigate('Home');
       return await GoogleSignin.signOut();
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -54,16 +54,12 @@ const GoogleLogin = () => {
         token: idToken,
       });
 
-      //   console.log('Response in Api', response);
-
       return response; // Return the response here
     } catch (error) {
       console.error(error);
       throw error; // Rethrow the error so it can be handled in the caller function
     }
   }
-
-  // console.log('google login details --------->', userInfo);
 
   return (
     <View>

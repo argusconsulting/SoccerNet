@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {getApi, postApi} from '../scripts/api-services';
 import {
+  api_name_change_password,
   api_name_get_profile,
   api_name_updateProfile,
 } from '../constants/api-constants';
@@ -54,6 +55,21 @@ export const updateProfileData = createAsyncThunk(
   },
 );
 
+// change password
+export const ChangePasswordApi = createAsyncThunk(
+  'profile/changePassword',
+  async ({payload, token}) => {
+    try {
+      const response = await postApi(api_name_change_password, payload, token);
+      Alertify.success(response?.data?.message);
+      return response;
+    } catch (error) {
+      Alertify.error(error?.message);
+      console.log('Change Password error', error);
+    }
+  },
+);
+
 const profileSlice = createSlice({
   name: 'profile',
   initialState: {
@@ -74,8 +90,7 @@ const profileSlice = createSlice({
     },
 
     setSocialProfile: (state, action) => {
-      // console.log('payload', action.payload);
-      state.userProfileData = action.payload.data.user;
+      state.userProfileData = action?.payload?.user;
     },
   },
   extraReducers: builder => {

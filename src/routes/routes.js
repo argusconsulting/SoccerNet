@@ -30,6 +30,8 @@ import LiveDetails from '../screens/live-now/modules/live-details';
 import {useSelector} from 'react-redux';
 import Notification from '../screens/Notification/notification';
 import SpotLight from '../screens/rooms/spotListing';
+import Settings from '../screens/settings/settings';
+import ChangePassword from '../screens/change-password/change-password';
 
 // Bottom Tab Navigation
 const Tab = createBottomTabNavigator();
@@ -143,44 +145,71 @@ const Stack = createNativeStackNavigator();
 export const StackScreen = () => {
   const token = useSelector(state => state.auth_store.token);
 
-  console.log('value of token', token);
-
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
-      {(token == undefined || token == '' || token == null) && (
-        <>
-          <Stack.Screen
-            name="LanguageSelection"
-            component={LanguageSelection}
-          />
-          <Stack.Screen name="SplashScreen" component={SplashScreen} />
-        </>
-      )}
-      <>
-        <Stack.Screen name="LeagueSelection" component={LeagueSelection} />
-        <Stack.Screen name="Home" component={BottomTabScreens} />
-        <Stack.Screen name="Calendar" component={CalendarScreen} />
-        <Stack.Screen name="Profile" component={Profile} />
-        <Stack.Screen name="Highlights" component={Highlights} />
-        <Stack.Screen name="HighlightDetail" component={HighlightDetail} />
-        <Stack.Screen name="Trivia" component={Trivia} />
-        <Stack.Screen name="Poll" component={Poll} />
-        <Stack.Screen name="LeagueScreen" component={LeagueScreen} />
-        <Stack.Screen name="TriviaQuestions" component={TriviaQuestions} />
-        <Stack.Screen name="Discussion" component={Discussion} />
-        <Stack.Screen name="News" component={News} />
-        <Stack.Screen name="Photos" component={Photos} />
-        <Stack.Screen name="UploadPhotos" component={UploadPhotos} />
-        <Stack.Screen name="LiveNow" component={LiveNow} />
-        <Stack.Screen name="LiveDetails" component={LiveDetails} />
-        <Stack.Screen name="SpotLight" component={SpotLight} />
-        <Stack.Screen name="Notification" component={Notification} />
-      </>
+    // <Stack.Navigator screenOptions={{headerShown: false}}>
+    //   {(token == undefined || token == '' || token == null) && (
+    //     <>
+    //       <Stack.Screen
+    //         name="LanguageSelection"
+    //         component={LanguageSelection}
+    //       />
+    //       <Stack.Screen name="SplashScreen" component={SplashScreen} />
+    //     </>
+    //   )}
+    //   <>
+    //     <Stack.Screen name="LeagueSelection" component={LeagueSelection} />
+    //     <Stack.Screen name="Home" component={BottomTabScreens} />
+    //     <Stack.Screen name="Calendar" component={CalendarScreen} />
+    //     <Stack.Screen name="Profile" component={Profile} />
+    //     <Stack.Screen name="Highlights" component={Highlights} />
+    //     <Stack.Screen name="HighlightDetail" component={HighlightDetail} />
+    //     <Stack.Screen name="Trivia" component={Trivia} />
+    //     <Stack.Screen name="Poll" component={Poll} />
+    //     <Stack.Screen name="LeagueScreen" component={LeagueScreen} />
+    //     <Stack.Screen name="TriviaQuestions" component={TriviaQuestions} />
+    //     <Stack.Screen name="Discussion" component={Discussion} />
+    //     <Stack.Screen name="News" component={News} />
+    //     <Stack.Screen name="Photos" component={Photos} />
+    //     <Stack.Screen name="UploadPhotos" component={UploadPhotos} />
+    //     <Stack.Screen name="LiveNow" component={LiveNow} />
+    //     <Stack.Screen name="LiveDetails" component={LiveDetails} />
+    //     <Stack.Screen name="SpotLight" component={SpotLight} />
+    //     <Stack.Screen name="Notification" component={Notification} />
+    //     <Stack.Screen name="Settings" component={Settings} />
+    //   </>
+    // </Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{headerShown: false}}
+      initialRouteName={token ? 'Home' : 'LanguageSelection'} // Set the starting screen based on token
+    >
+      <Stack.Screen name="LanguageSelection" component={LanguageSelection} />
+      <Stack.Screen name="SplashScreen" component={SplashScreen} />
+      <Stack.Screen name="LeagueSelection" component={LeagueSelection} />
+      <Stack.Screen name="Home" component={BottomTabScreens} />
+      <Stack.Screen name="Calendar" component={CalendarScreen} />
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Highlights" component={Highlights} />
+      <Stack.Screen name="HighlightDetail" component={HighlightDetail} />
+      <Stack.Screen name="Trivia" component={Trivia} />
+      <Stack.Screen name="Poll" component={Poll} />
+      <Stack.Screen name="LeagueScreen" component={LeagueScreen} />
+      <Stack.Screen name="TriviaQuestions" component={TriviaQuestions} />
+      <Stack.Screen name="Discussion" component={Discussion} />
+      <Stack.Screen name="News" component={News} />
+      <Stack.Screen name="Photos" component={Photos} />
+      <Stack.Screen name="UploadPhotos" component={UploadPhotos} />
+      <Stack.Screen name="LiveNow" component={LiveNow} />
+      <Stack.Screen name="LiveDetails" component={LiveDetails} />
+      <Stack.Screen name="SpotLight" component={SpotLight} />
+      <Stack.Screen name="Notification" component={Notification} />
+      <Stack.Screen name="Settings" component={Settings} />
+      <Stack.Screen name="ChangePassword" component={ChangePassword} />
     </Stack.Navigator>
   );
 };
 
 export default function Routes() {
+  const token = useSelector(state => state.auth_store.token);
   return (
     <NavigationContainer>
       <StackScreen />

@@ -48,5 +48,11 @@
   "Standings": "Standings",
   "Players": "Players",
   "Commentary": "Commentary",
-  "Update": "Update"
+  "Update": "Update",
+  "Notifications": "Notifications",
+  "ChangePassword": "Change Password",
+  "languageText": "Language",
+  "privacyPolicy": "Privacy Policy",
+  "termsOfUse": "Terms of Use",
+  "support": "Support"
 }

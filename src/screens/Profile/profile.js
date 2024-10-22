@@ -228,10 +228,11 @@ const Profile = () => {
             style={tw`border-b border-[#a9a9a9] text-[#a9a9a9]  h-10 w-70 rounded-lg px-2`}
             placeholder={t('namePlaceholder')}
             value={userProfileData?.name}
+            maxLength={25}
             onChangeText={text =>
               handleFieldChange({
                 key: 'name',
-                value: text,
+                value: text.slice(0, 25),
               })
             }
           />
@@ -296,7 +297,9 @@ const Profile = () => {
 
       {/* settings */}
 
-      <View style={tw`mt-10 flex-row justify-between items-center`}>
+      <TouchableOpacity
+        style={tw`mt-10 flex-row justify-between items-center`}
+        onPress={() => navigation.navigate('Settings')}>
         {/* Icon and Text Group */}
         <View style={tw`flex-row items-center`}>
           <View
@@ -318,7 +321,7 @@ const Profile = () => {
 
         {/* Arrow Icon */}
         <AntDesign name={'right'} size={20} color={'#fff'} style={tw`mr-5`} />
-      </View>
+      </TouchableOpacity>
 
       <TouchableOpacity
         onPress={handleUpdateProfile}

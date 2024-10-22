@@ -49,5 +49,11 @@
   "Standings": "الترتيب",
   "Players": "اللاعبون",
   "Commentary": "التعليق",
-  "Update": "تحديث"
+  "Update": "تحديث",
+  "Notifications": "الإشعارات",
+  "ChangePassword": "تغيير كلمة المرور",
+  "languageText": "اللغة",
+  "privacyPolicy": "سياسة الخصوصية",
+  "termsOfUse": "شروط الاستخدام",
+  "support": "الدعم"
 }

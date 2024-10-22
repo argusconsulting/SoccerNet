@@ -48,5 +48,11 @@
   "Standings": "Statistics",
   "Players": "Giocatori",
   "Commentary": "Commento",
-  "Update": "Aggiornare"
+  "Update": "Aggiornare",
+  "Notifications": "Notifiche",
+  "ChangePassword": "Cambia password",
+  "languageText": "Lingua",
+  "privacyPolicy": "Politica sulla privacy",
+  "termsOfUse": "Termini di utilizzo",
+  "support": "Supporto"
 }

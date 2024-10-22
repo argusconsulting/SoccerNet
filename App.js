@@ -39,8 +39,8 @@ function App() {
   if (loading) {
     return (
       <View style={tw`flex-1 justify-center items-center`}>
-        <ActivityIndicator size="large" color="#6A36CE" />
-        <Text style={tw`text-[#fff] mt-2`}>Loading...</Text>
+        <ActivityIndicator size="large" color="#fff" />
+        <Text style={tw`text-[#fff] text-[20px] mt-5`}>Loading...</Text>
       </View>
     );
   }

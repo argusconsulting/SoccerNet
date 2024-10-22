@@ -14,7 +14,11 @@ import TextInput from '../../components/library/text-input';
 import PhoneInput from 'react-native-phone-number-input';
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
-import {validateEmail, validatePhoneNumber} from '../../scripts/validations';
+import {
+  validateEmail,
+  validatePassword,
+  validatePhoneNumber,
+} from '../../scripts/validations';
 import {postApi} from '../../scripts/api-services';
 import {api_name_login, api_name_register} from '../../constants/api-constants';
 import {useDispatch, useSelector} from 'react-redux';
@@ -106,7 +110,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
       // Validation for password
       if (password == '') {
         ToastAndroid.show('Please enter your password', ToastAndroid.LONG);
-        return; // Stop further execution
+        return;
       }
 
       setSubmitLoader(true);
@@ -144,11 +148,11 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
 
   async function handleRegister() {
     try {
-      if (name === '') {
+      if (!name.trim()) {
         ToastAndroid.show('Please enter your Name', ToastAndroid.LONG);
       }
       if (checked === 'email') {
-        if (emailValue == '') {
+        if (!emailValue.trim()) {
           ToastAndroid.show('Please enter your Email', ToastAndroid.LONG);
           return; // Stop further execution
         } else if (!validateEmail(emailValue)) {
@@ -162,7 +166,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
 
       // Validation for phone number when `checked` is 'contact'
       if (checked === 'contact_number') {
-        if (value == '') {
+        if (!value.trim()) {
           ToastAndroid.show(
             'Please enter your Phone Number',
             ToastAndroid.LONG,
@@ -178,8 +182,14 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
       }
 
       // Validation for password
-      if (password == '') {
+      if (!password.trim()) {
         ToastAndroid.show('Please enter your password', ToastAndroid.LONG);
+        return; // Stop further execution
+      } else if (!validatePassword(password)) {
+        ToastAndroid.show(
+          'Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
+          ToastAndroid.LONG,
+        );
         return; // Stop further execution
       } else {
         setSubmitLoader(true);
@@ -276,7 +286,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
 
               <TextInput
                 type="text"
-                style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg px-3`}
+                style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg mb-5 px-3`}
                 placeholder={t('emailPlaceholder')}
                 value={emailValue}
                 onChangeText={handleEmailChange}
@@ -284,7 +294,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
 
               <TextInput
                 type="password"
-                style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg mt-5 px-3`}
+                style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg  px-3`}
                 placeholder={t('passwordPlaceholder')}
                 value={password}
                 onChangeText={handlePasswordChange}
@@ -323,7 +333,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
                 withDarkTheme
                 withShadow
                 autoFocus={false}
-                containerStyle={tw`  bg-[#12122A] w-88 rounded-lg  border-[#a9a9a9] border-[1px]`}
+                containerStyle={tw`  bg-[#12122A] w-88 rounded-lg mb-5 border-[#a9a9a9] border-[1px]`}
                 textContainerStyle={tw`bg-[#12122a] border-l-[#a9a9a9] border-[1px] h-11  py-0 text-[#a9a9a9] rounded-lg`}
                 codeTextStyle={tw`text-[#a9a9a9] border-r-[#a9a9a9] `}
                 textInputStyle={tw`text-[#a9a9a9]`}
@@ -336,7 +346,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
 
               <TextInput
                 type="password"
-                style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg mt-5 px-3`}
+                style={tw`border border-[#a9a9a9] text-[#a9a9a9] p-2 h-11 rounded-lg  px-3`}
                 placeholder={t('passwordPlaceholder')}
                 value={password}
                 onChangeText={handlePasswordChange}

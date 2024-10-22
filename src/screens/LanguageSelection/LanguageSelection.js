@@ -10,18 +10,22 @@ import React from 'react';
 import tw from '../../styles/tailwind';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
-import {useNavigation} from '@react-navigation/native';
-import { setLanguage} from '../../redux/languageSlice';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {setLanguage} from '../../redux/languageSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 
 const LanguageSelection = () => {
   const {i18n, t} = useTranslation();
   const dispatch = useDispatch();
+  const route = useRoute();
   const navigation = useNavigation(); // Make sure to define navigation
   const selectedLanguage = useSelector(
     state => state?.language_store?.language,
   );
+  const {from} = route.params || {};
+
+  console.log('value of from', from);
 
   const DATA = [
     {
@@ -116,7 +120,11 @@ const LanguageSelection = () => {
         contentContainerStyle={styles.listContainer}
       />
       <TouchableOpacity
-        onPress={() => navigation.navigate('SplashScreen')}
+        onPress={() => {
+          from === 'Settings'
+            ? navigation.navigate('Home')
+            : navigation.navigate('SplashScreen');
+        }}
         style={[
           tw`mt-8 mx-2 rounded-md justify-center self-center`,
           {
@@ -133,7 +141,7 @@ const LanguageSelection = () => {
             {flex: 1, justifyContent: 'center', alignItems: 'center'},
           ]}>
           <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight`}>
-          {t('continue')}
+            {t('continue')}
           </Text>
         </LinearGradient>
       </TouchableOpacity>

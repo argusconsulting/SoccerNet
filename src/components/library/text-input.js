@@ -143,7 +143,7 @@ const TextInput = React.forwardRef(
                   name={'eye-off'}
                   size={20}
                   color={'#A9A9A9'}
-                  style={tw`self-end mt-5.5`}
+                  style={tw`self-end `}
                 />
               </TouchableOpacity>
             ) : (
@@ -157,7 +157,7 @@ const TextInput = React.forwardRef(
                   name={'eye'}
                   size={20}
                   color={'#A9A9A9'}
-                  style={tw`self-end mt-5.5`}
+                  style={tw`self-end`}
                 />
               </TouchableOpacity>
             )

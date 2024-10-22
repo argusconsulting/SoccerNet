@@ -28,7 +28,11 @@ const Photos = () => {
   // Initialize local photos when fanPhotos updates
   useEffect(() => {
     if (fanPhotos) {
-      setLocalPhotos(fanPhotos);
+      const updatedPhotos = fanPhotos.map(photo => ({
+        ...photo,
+        is_reacted: photo.is_reacted || null, // Ensure it has a default value
+      }));
+      setLocalPhotos(updatedPhotos);
     }
   }, [fanPhotos]);
 
@@ -40,12 +44,11 @@ const Photos = () => {
   }, [dispatch]);
 
   const handleReaction = (reaction, postId) => {
-    // Update the state to allow only one reaction at a time
     const updatedPhotos = localPhotos.map(photo => {
       if (photo.id === postId) {
         return {
           ...photo,
-          user_reaction: reaction, // Store the selected reaction
+          is_reacted: reaction, // Set the reaction
           claps_count: reaction === 'clap' ? 1 : 0,
           likes_count: reaction === 'like' ? 1 : 0,
           hearts_count: reaction === 'heart' ? 1 : 0,
@@ -58,8 +61,7 @@ const Photos = () => {
 
     const reqData = {id: postId, reaction};
     dispatch(getFanReactions(reqData)).catch(() => {
-      // Rollback state on API failure
-      setLocalPhotos(fanPhotos);
+      setLocalPhotos(fanPhotos); // Rollback on failure
     });
   };
 
@@ -70,10 +72,11 @@ const Photos = () => {
         style={[tw`w-full h-120`, {resizeMode: 'cover'}]}>
         <View style={tw`absolute bottom-0 right-0 flex-row p-2`}>
           <TouchableOpacity onPress={() => handleReaction('clap', item.id)}>
+            {console.log('value of item', item)}
             <FontAwesome6
               name={'hands-clapping'}
               size={20}
-              color={item.user_reaction === 'clap' ? '#FFBF00' : '#fff'}
+              color={item.is_reacted === 'clap' ? '#FFBF00' : '#fff'}
               style={tw`self-center`}
             />
             <Text style={tw`text-[#fff] text-[16px] mx-1`}>
@@ -83,9 +86,9 @@ const Photos = () => {
 
           <TouchableOpacity onPress={() => handleReaction('like', item.id)}>
             <FontAwesome
-              name={item.user_reaction === 'like' ? 'thumbs-up' : 'thumbs-o-up'}
+              name={item.is_reacted === 'like' ? 'thumbs-up' : 'thumbs-o-up'}
               size={20}
-              color={item.user_reaction === 'like' ? '#FFBF00' : '#fff'}
+              color={item.is_reacted === 'like' ? '#FFBF00' : '#fff'}
               style={tw`self-center`}
             />
             <Text style={tw`text-[#fff] text-[16px] mx-1`}>
@@ -95,9 +98,9 @@ const Photos = () => {
 
           <TouchableOpacity onPress={() => handleReaction('heart', item.id)}>
             <AntDesign
-              name={item.user_reaction === 'heart' ? 'heart' : 'hearto'}
+              name={item.is_reacted === 'heart' ? 'heart' : 'hearto'}
               size={20}
-              color={item.user_reaction === 'heart' ? 'red' : '#fff'}
+              color={item.is_reacted === 'heart' ? 'red' : '#fff'}
               style={tw`self-center`}
             />
             <Text style={tw`text-[#fff] text-[16px] mx-1`}>
