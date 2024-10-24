@@ -35,7 +35,7 @@ const SplashScreen = () => {
       />
       <Image
         source={require('../../assets/spalsh-screen.png')}
-        style={[tw`w-full h-95`, {resizeMode: 'contain'}]}
+        style={[tw`w-full h-[50%]`, {resizeMode: 'contain'}]}
       />
       <Text style={tw`text-white text-[36px] font-401 leading-tight  mt-1`}>
         {t('discoverSport')}

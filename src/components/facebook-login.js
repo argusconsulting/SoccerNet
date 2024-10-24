@@ -7,8 +7,15 @@ import {
   LoginManager,
 } from 'react-native-fbsdk-next';
 import tw from '../styles/tailwind';
+import {setSocialLoginToken, setUserAuthToken} from '../redux/authSlice';
+import {store} from '../redux/store';
+import {api_name_fb_login} from '../constants/api-constants';
+import {postApi} from '../scripts/api-services';
+import {setSocialProfile} from '../redux/profileSlice';
+import {useNavigation} from '@react-navigation/native';
 
 const FacebookLogin = () => {
+  const navigation = useNavigation();
   // working code
   //   const handleLoginFinished = async (error, result) => {
   //     console.log('Error:', error, 'Result:', result);
@@ -56,25 +63,33 @@ const FacebookLogin = () => {
   const getData = async () => {
     try {
       const data = await AccessToken.getCurrentAccessToken();
+      // console.log('this is data', data);
+      var idToken = data?.accessToken;
+      store.dispatch(setSocialLoginToken());
+      const response = await _fbSocialLogin(idToken);
+      // console.log('checking response now here ', response);
+      store.dispatch(setSocialProfile(response?.data?.user));
+      store.dispatch(setUserAuthToken(response?.data?.token));
+      navigation.navigate('Home');
       if (!data) throw new Error('No access token found');
-
-      const response = await fetch(
-        `https://graph.facebook.com/me?fields=id,name,email,picture.type(large)&access_token=${data.accessToken}`,
-      );
-      const userInfo = await response.json();
-
-      console.log('User Info:', userInfo);
-      const {id, name, email, picture} = userInfo;
-
-      console.log(`ID: ${id}`);
-      console.log(`Name: ${name}`);
-      console.log(`Email: ${email}`);
-      console.log(`Profile Picture URL: ${picture?.data?.url}`);
     } catch (error) {
       console.log('Error fetching data from Facebook:', error);
       Alert.alert('Error', 'Failed to retrieve profile information.');
     }
   };
+
+  async function _fbSocialLogin(idToken) {
+    console.log('checking token', idToken);
+    try {
+      const response = await postApi(api_name_fb_login, {
+        access_token: idToken,
+      });
+      return response; // Return the response here
+    } catch (error) {
+      console.error(error);
+      throw error; // Rethrow the error so it can be handled in the caller function
+    }
+  }
 
   return (
     <View>

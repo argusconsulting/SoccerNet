@@ -46,7 +46,7 @@ export const postApi = async (
       })
       .catch(error => {
         console.log('hey post api error');
-        console.log('error', error.response.data);
+        console.log('error', error);
 
         return reject(error.response.data);
       });
