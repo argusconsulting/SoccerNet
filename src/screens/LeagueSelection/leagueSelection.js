@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -11,10 +11,22 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import MultiSelectDropdown from '../../components/select-dropdown/select-dropdown';
-import { t } from 'i18next';
+import {t} from 'i18next';
+import {useDispatch, useSelector} from 'react-redux';
+import {getAllLeagues} from '../../redux/leagueSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LeagueSelection = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const allLeagues = useSelector(state => state?.league?.leagueData);
+  const lang = useSelector(state => state?.language_store?.language);
+
+  console.log('lang-----------', lang);
+
+  useEffect(() => {
+    dispatch(getAllLeagues());
+  }, []);
 
   return (
     <View style={[tw`bg-[#05102E] h-full`, styles.container]}>
@@ -30,29 +42,30 @@ const LeagueSelection = () => {
           </TouchableOpacity>
           <Text
             style={tw`text-[#fff] text-[34px] font-401 leading-normal mt-3`}>
-         {t('selectFavLeague')}
+            {t('selectFavLeague')}
           </Text>
           <Text
             style={tw`text-[#A9A9A9] text-[16px] font-400 leading-tight mt-3 w-80`}>
-      {t('chooseMoreThanOne')}
+            {t('chooseMoreThanOne')}
           </Text>
 
           <MultiSelectDropdown
             leagueBy={t('leagueHeadingCountry')}
             leaguePlaceholder="Country leagues"
+            data={allLeagues?.data}
           />
 
-          <View style={tw`border-b-[#a2a2a2] border-[1px]`}/>
+          {/* <View style={tw`border-b-[#a2a2a2] border-[1px]`} />
           <MultiSelectDropdown
             leagueBy={t('leagueHeadingIntercontinental')}
             leaguePlaceholder="Intercontinental leagues"
           />
 
-<View style={tw`border-b-[#a2a2a2] border-[1px]`}/>
+          <View style={tw`border-b-[#a2a2a2] border-[1px]`} />
           <MultiSelectDropdown
             leagueBy={t('leagueHeadingWorldcup')}
             leaguePlaceholder="World cup leagues"
-          />
+          /> */}
         </View>
       </ScrollView>
 
@@ -66,7 +79,7 @@ const LeagueSelection = () => {
           end={{x: 1, y: 1}}
           style={styles.continueButtonGradient}>
           <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight`}>
-          {t('continue')}
+            {t('continue')}
           </Text>
         </LinearGradient>
       </TouchableOpacity>

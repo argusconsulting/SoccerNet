@@ -12,40 +12,7 @@ import {
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import tw from '../../styles/tailwind';
 
-const items = [
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fb1aa97f63',
-    flag: require('../../assets/league_icons/league-1.png'),
-    name: 'Saudi Pro League',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    flag: require('../../assets/league_icons/league-2.png'),
-    name: 'Saudi First Division L...',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d756',
-    flag: require('../../assets/league_icons/league-3.png'),
-    name: 'Saudi Second Di...',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    flag: require('../../assets/league_icons/league-1.png'),
-    name: 'Saudi King’s Cup',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e674d95',
-    flag: require('../../assets/league_icons/league-2.png'),
-    name: 'Saudi Crown Pri...',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d95',
-    flag: require('../../assets/league_icons/league-3.png'),
-    name: 'Saudi Super Cup',
-  },
-];
-
-const MultiSelectDropdown = ({leagueBy, leaguePlaceholder}) => {
+const MultiSelectDropdown = ({leagueBy, leaguePlaceholder, data}) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const [searchText, setSearchText] = useState('');
@@ -60,15 +27,19 @@ const MultiSelectDropdown = ({leagueBy, leaguePlaceholder}) => {
     }
   };
 
-  const filteredItems = items.filter(item =>
-    item.name.toLowerCase().includes(searchText.toLowerCase()),
+  // Filter data based on search text
+  const filteredData = data?.filter(item =>
+    item?.name?.toLowerCase()?.includes(searchText.toLowerCase()),
   );
 
   const renderSelectedItems = () => {
     return selectedItems.map(item => (
       <View key={item.id} style={[tw`w-1/3 p-2`, styles.selectedItemContainer]}>
-        <Image source={item.flag} style={tw`h-20 w-20 self-center`} />
-        <Text style={[tw`w-20 self-center`, styles.selectedItemText]}>
+        <Image
+          source={{uri: item.image_path}}
+          style={tw`h-20 w-20 self-center`}
+        />
+        <Text style={[tw`w-22 self-center`, styles.selectedItemText]}>
           {item.name}
         </Text>
         <TouchableOpacity
@@ -107,15 +78,16 @@ const MultiSelectDropdown = ({leagueBy, leaguePlaceholder}) => {
               style={tw`mt-2 mr-3`}
             />
             <TextInput
-              style={tw`text-[#fff]`}
+              style={tw`text-[#fff] flex-1`}
               placeholder="Search Leagues..."
               placeholderTextColor="#fff"
               value={searchText}
               onChangeText={text => setSearchText(text)}
             />
           </View>
+
           <FlatList
-            data={filteredItems}
+            data={filteredData} // Use the filtered data
             keyExtractor={item => item.id}
             renderItem={({item}) => (
               <TouchableOpacity
@@ -125,35 +97,13 @@ const MultiSelectDropdown = ({leagueBy, leaguePlaceholder}) => {
                     styles.selectedItem,
                 ]}
                 onPress={() => toggleItemSelection(item)}>
-                <Image source={item.flag} style={styles.flag} />
-                <Text style={styles.itemText}>{item.name}</Text>
+                <Image source={{uri: item.image_path}} style={styles.flag} />
+                <Text style={styles.itemText}>{item?.name}</Text>
               </TouchableOpacity>
             )}
             style={styles.list}
             nestedScrollEnabled={true}
           />
-          {/* <TouchableOpacity
-            onPress={() => setDropdownVisible(false)}
-            style={[
-              tw`mt-7 mx-6 rounded-md`,
-              {
-                width: '88%',
-                height: 55,
-              },
-            ]}>
-            <LinearGradient
-              colors={['#6A36CE', '#2575F6']}
-              start={{x: 0, y: 0}} // Start from top left
-              end={{x: 1, y: 1}} // End at bottom right
-              style={[
-                tw`rounded-xl justify-center`,
-                {flex: 1, justifyContent: 'center', alignItems: 'center'},
-              ]}>
-              <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight`}>
-                Continue
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity> */}
         </View>
       )}
 
@@ -227,6 +177,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     color: '#fff',
     fontSize: 16,
+    textAlign: 'center',
   },
   removeButton: {
     position: 'absolute',

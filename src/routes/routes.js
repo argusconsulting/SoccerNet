@@ -180,7 +180,7 @@ export const StackScreen = () => {
     // </Stack.Navigator>
     <Stack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName={token ? 'Home' : 'LanguageSelection'} // Set the starting screen based on token
+      initialRouteName={token ? 'LeagueSelection' : 'LanguageSelection'} // Set the starting screen based on token
     >
       <Stack.Screen name="LanguageSelection" component={LanguageSelection} />
       <Stack.Screen name="SplashScreen" component={SplashScreen} />

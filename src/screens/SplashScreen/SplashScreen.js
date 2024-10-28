@@ -13,15 +13,6 @@ const SplashScreen = () => {
   const [value, setValue] = useState(null);
   const {i18n, t} = useTranslation();
 
-  useEffect(() => {
-    const loadStoredLanguage = async () => {
-      const savedLanguage = await AsyncStorage.getItem('selectedLanguage');
-      // console.log('value of saved lang', savedLanguage);
-    };
-
-    loadStoredLanguage();
-  }, []);
-
   const btnHandler = () => {
     setValue('SignUp');
     setModalVisible(true);

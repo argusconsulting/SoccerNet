@@ -18,3 +18,6 @@ export const api_name_fan_reaction = 'photos';
 export const api_name_google_login = 'verify-google-token';
 export const api_name_fb_login = 'verify-facebook-token';
 export const api_name_change_password = 'reset/password';
+
+// sportmonks
+export const api_name_allLeagues = 'leagues';

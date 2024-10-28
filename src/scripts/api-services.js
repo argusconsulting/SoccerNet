@@ -1,9 +1,12 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {ProjectUrl} from '../../env';
+import {ProjectUrl, SportsMonksToken, SportsMonkUrl} from '../../env';
 
 const api = axios.create({
   baseURL: ProjectUrl,
+});
+const sportMonkApi = axios.create({
+  baseURL: SportsMonkUrl,
 });
 
 //* 2xx ->  Success
@@ -30,6 +33,19 @@ api.interceptors.request.use(
     return Promise.reject(error);
   },
 );
+
+// Set interceptors for SportsMonk API
+sportMonkApi.interceptors.request.use(
+  async config => {
+    const token = await AsyncStorage.getItem('sportMonkToken'); // Assuming a different token
+    if (token) {
+      config.headers.Authorization = 'Bearer ' + token;
+    }
+    return config;
+  },
+  error => Promise.reject(error),
+);
+
 export const postApi = async (
   path,
   data = {},
@@ -49,65 +65,6 @@ export const postApi = async (
         console.log('error', error);
 
         return reject(error.response.data);
-      });
-  });
-  return result;
-};
-
-export const patchApi = async (
-  path,
-  data = {},
-  headers = {Accept: 'application/json'},
-) => {
-  try {
-    const response = await api.patch(path, data, {
-      headers: headers,
-    });
-    return response;
-  } catch (error) {
-    console.log('hey patch api error');
-    console.log(error.response.data);
-    throw error.response.data;
-  }
-};
-
-export const putApi = async (
-  path,
-  data = {}, // Default to an empty object if no data is provided
-  headers = {Accept: 'application/json'}, // Default headers
-) => {
-  try {
-    const response = await api.put(path, data, {
-      headers: headers,
-    });
-    return response;
-  } catch (error) {
-    console.error('PUT API error'); // Log a simple error message
-    if (error.response) {
-      console.error(error.response.data); // Log detailed error information if available
-      throw error.response.data; // Throw the error details for further handling
-    } else {
-      throw new Error('Unknown error occurred'); // If no response, throw a generic error
-    }
-  }
-};
-
-export const deleteApi = async (
-  path,
-  data,
-  headers = {Accept: 'application/json'},
-) => {
-  var result = await new Promise((resolve, reject) => {
-    api
-      .delete(path, {
-        headers: headers,
-        data: data,
-      })
-      .then(response => {
-        return resolve(response);
-      })
-      .catch(error => {
-        return reject(error.response?.data);
       });
   });
   return result;
@@ -140,4 +97,36 @@ export const getApi = async (
       });
   });
   return result;
+};
+
+// SportsMonk API POST function
+export const postSportsMonkApi = async (
+  path,
+  data = {},
+  headers = {Accept: 'application/json'},
+) => {
+  try {
+    const response = await sportMonkApi.post(path, data, {headers});
+    return response;
+  } catch (error) {
+    console.error('SportsMonk API POST Error:', error);
+    throw error.response?.data || error;
+  }
+};
+
+// SportsMonk API GET function
+export const getSportsMonkApi = async (
+  path,
+  params = {},
+  headers = {Accept: 'application/json'},
+) => {
+  headers.Authorization = `${SportsMonksToken}`;
+
+  try {
+    const response = await sportMonkApi.get(path, {headers, params});
+    return response.data;
+  } catch (error) {
+    console.error('SportsMonk API GET Error:', error);
+    throw error.response?.data || error;
+  }
 };
