@@ -30,7 +30,7 @@ const GoogleLogin = () => {
       var idToken = usrInfo?.data?.idToken;
       store.dispatch(setSocialLoginToken());
       const response = await _googleSocialLogin(idToken);
-      navigation.navigate('Home');
+      navigation.navigate('LeagueSelection');
       store.dispatch(setSocialProfile(response?.data));
       store.dispatch(setUserAuthToken(response?.data?.token));
       // navigation.navigate('Home');

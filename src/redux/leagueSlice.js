@@ -4,9 +4,11 @@ import {getSportsMonkApi} from '../scripts/api-services';
 
 export const getAllLeagues = createAsyncThunk(
   'leagues/allLeagues',
-  async (_, {rejectWithValue}) => {
+  async ({lang}) => {
     try {
-      const response = await getSportsMonkApi(api_name_allLeagues);
+      const response = await getSportsMonkApi(
+        `${api_name_allLeagues}?locale=${lang}`,
+      );
       return response;
     } catch (error) {
       console.log('Error fetching leagues API', error);
@@ -15,15 +17,19 @@ export const getAllLeagues = createAsyncThunk(
   },
 );
 
-// export const getAllFixturesByLeagues = createAsyncThunk(
-//   'leagues/allLeagues',
-//   async (_, {rejectWithValue}) => {
+// export const getLeaguesById = createAsyncThunk(
+//   'leagues/byId',
+//   async ({leagueId}, {rejectWithValue}) => {
 //     try {
-//       const response = await getSportsMonkApi(api_name_allLeagues);
-//       return response;
+//       console.log('Fetching league details for:', leagueId);
+//       const response = await getSportsMonkApi(
+//         `${api_name_allLeagues}/${leagueId}`,
+//       );
+//       console.log('iska res', response);
+//       return response; // Return the API response
 //     } catch (error) {
-//       console.log('Error fetching leagues API', error);
-//       return rejectWithValue(error);
+//       console.error('Error fetching league:', error);
+//       return rejectWithValue(error); // Proper error handling
 //     }
 //   },
 // );
@@ -33,6 +39,7 @@ const leagueSlice = createSlice({
   initialState: {
     isLoading: false,
     leagueData: [],
+    leagueByIdData: [],
     status: '',
   },
   reducers: {},
@@ -50,6 +57,17 @@ const leagueSlice = createSlice({
       state.status = 'rejected';
       state.isLoading = false;
     });
+
+    // builder.addCase(getLeaguesById.fulfilled, (state, action) => {
+    //   state.leagueByIdData = action?.payload;
+    //   state.status = 'fulfilled';
+    // });
+    // builder.addCase(getLeaguesById.pending, (state, action) => {
+    //   state.status = 'pending';
+    // });
+    // builder.addCase(getLeaguesById.rejected, (state, action) => {
+    //   state.status = 'rejected';
+    // });
   },
 });
 

@@ -18,11 +18,10 @@ const LeagueScreen = () => {
   const [expandedItem, setExpandedItem] = useState(null);
   const dispatch = useDispatch();
   const allLeagues = useSelector(state => state?.league?.leagueData);
-
-  console.log('leagueslist', allLeagues);
+  const lang = useSelector(state => state?.language_store?.language);
 
   useEffect(() => {
-    dispatch(getAllLeagues());
+    dispatch(getAllLeagues({lang}));
   }, []);
 
   const DATA = [

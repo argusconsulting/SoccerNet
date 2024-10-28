@@ -21,3 +21,5 @@ export const api_name_change_password = 'reset/password';
 
 // sportmonks
 export const api_name_allLeagues = 'leagues';
+export const api_name_LeaguesById = 'leagues';
+export const api_name_fixtures_date = 'fixtures/date';

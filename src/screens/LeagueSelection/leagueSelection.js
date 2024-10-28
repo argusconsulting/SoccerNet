@@ -22,10 +22,8 @@ const LeagueSelection = () => {
   const allLeagues = useSelector(state => state?.league?.leagueData);
   const lang = useSelector(state => state?.language_store?.language);
 
-  console.log('lang-----------', lang);
-
   useEffect(() => {
-    dispatch(getAllLeagues());
+    dispatch(getAllLeagues({lang}));
   }, []);
 
   return (

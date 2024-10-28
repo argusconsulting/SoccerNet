@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const languageSlice = createSlice({
   name: 'language',
   initialState: {
-    language: 'arb', // default language
+    language: 'ar', // default language
   },
   reducers: {
     setLanguage: (state, action) => {

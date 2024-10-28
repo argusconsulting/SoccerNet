@@ -25,14 +25,12 @@ const LanguageSelection = () => {
   );
   const {from} = route.params || {};
 
-  console.log('value of from', from);
-
   const DATA = [
     {
       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
       title: 'Arabic',
       image: require('../../assets/flags/arab.png'),
-      lng: 'arb',
+      lng: 'ar',
     },
     {
       id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
@@ -44,25 +42,25 @@ const LanguageSelection = () => {
       id: '58694a0f-3da1-471f-bd96-145571e29d72',
       title: 'Spanish',
       image: require('../../assets/flags/spain.png'),
-      lng: 'spanish',
+      lng: 'es',
     },
     {
       id: '58694a0f-3da1-4bd96-145571e29d72',
       title: 'French',
       image: require('../../assets/flags/france.png'),
-      lng: 'french',
+      lng: 'fr',
     },
     {
       id: '58694a0f-3da1-471f-96-145571e29d72',
       title: 'German',
       image: require('../../assets/flags/germany.png'),
-      lng: 'german',
+      lng: 'de',
     },
     {
       id: '58694a0f-3da1-471f-bd96-145571e2',
       title: 'Italian',
       image: require('../../assets/flags/italy.png'),
-      lng: 'italian',
+      lng: 'it',
     },
   ];
 

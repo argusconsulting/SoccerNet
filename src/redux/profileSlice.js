@@ -13,7 +13,6 @@ export const getProfileData = createAsyncThunk(
   async (_, {rejectWithValue}) => {
     try {
       const response = await getApi(api_name_get_profile);
-      console.log('response getProfileData', response);
       return response;
     } catch (error) {
       console.log('Error fetching profile API', error);
