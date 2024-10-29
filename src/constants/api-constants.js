@@ -18,9 +18,10 @@ export const api_name_fan_reaction = 'photos';
 export const api_name_google_login = 'verify-google-token';
 export const api_name_fb_login = 'verify-facebook-token';
 export const api_name_change_password = 'reset/password';
+export const api_name_allLeagues = 'leagues';
 
 // sportmonks
-export const api_name_allLeagues = 'leagues';
+// export const api_name_allLeagues = 'leagues';
 export const api_name_LeaguesById = 'leagues';
 export const api_name_fixtures_date = 'fixtures/date';
 export const api_name_fixtures_date_range = 'fixtures/between';

@@ -1,27 +1,44 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import Header from '../../components/header/header'
-import tw from '../../styles/tailwind'
-import ScoreCard from '../../components/score-card/score-card'
-import { matches } from '../../helpers/dummyData'
+import React, {useEffect, useState} from 'react';
+import {FlatList, View, Text} from 'react-native';
+import axios from 'axios';
+import tw from '../../styles/tailwind';
+import Header from '../../components/header/header';
+import VideoEmbed from '../../components/videoEmbed';
 
 const Highlights = () => {
+  const [videos, setVideos] = useState([]);
+
+  const apiHandler = async () => {
+    try {
+      const response = await axios.get('https://www.scorebat.com/video-api/v3');
+      setVideos(response.data.response); // Adjust according to API structure
+    } catch (error) {
+      console.error('Error fetching videos:', error);
+    }
+  };
+
+  useEffect(() => {
+    apiHandler();
+  }, []);
+
+  const renderVideo = ({item}) => (
+    <View style={tw`mb-5`}>
+      <Text style={tw`text-white text-lg font-bold mb-2`}>{item.title}</Text>
+      <VideoEmbed embed={item.videos[0].embed} />
+    </View>
+  );
 
   return (
-    <View style={tw`bg-[#05102E] flex-1 `}>
+    <View style={tw`bg-[#05102E] flex-1`}>
       <Header name="Highlights" />
-      <View style={tw``}>
       <FlatList
-          data={matches}
-          renderItem={({item}) => <ScoreCard match={item} width={'96%'} screen={'highlight'} navigate={'HighlightDetail'}/>}
-          keyExtractor={(item, index) => index.toString()}
-          contentContainerStyle={tw`px-3`}
-        />
-        </View>
+        data={videos}
+        renderItem={renderVideo}
+        keyExtractor={(item, index) => index.toString()}
+        contentContainerStyle={tw`p-3`}
+      />
     </View>
-  )
-}
+  );
+};
 
-export default Highlights
-
-const styles = StyleSheet.create({})
+export default Highlights;

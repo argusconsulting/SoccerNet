@@ -1,14 +1,12 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {api_name_allLeagues} from '../constants/api-constants';
-import {getSportsMonkApi} from '../scripts/api-services';
+import {getApi, getSportsMonkApi} from '../scripts/api-services';
 
 export const getAllLeagues = createAsyncThunk(
   'leagues/allLeagues',
   async ({lang}) => {
     try {
-      const response = await getSportsMonkApi(
-        `${api_name_allLeagues}?locale=${lang}`,
-      );
+      const response = await getApi(`${api_name_allLeagues}?locale=${lang}`);
       return response;
     } catch (error) {
       console.log('Error fetching leagues API', error);

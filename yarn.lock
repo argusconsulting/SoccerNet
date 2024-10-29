@@ -3859,6 +3859,7 @@ __metadata:
     react-native-share: ^11.0.4
     react-native-toast-message: ^2.2.1
     react-native-vector-icons: ^10.2.0
+    react-native-webview: ^13.12.3
     react-redux: ^9.1.2
     react-test-renderer: 18.3.1
     redux: ^5.0.1
@@ -6789,7 +6790,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"invariant@npm:^2.2.4":
+"invariant@npm:2.2.4, invariant@npm:^2.2.4":
   version: 2.2.4
   resolution: "invariant@npm:2.2.4"
   dependencies:
@@ -9814,6 +9815,19 @@ __metadata:
     fa6-upgrade: bin/fa6-upgrade.sh
     generate-icon: bin/generate-icon.js
   checksum: fda930df4e63f12533268f5b339ebe4c77c691eae43503328466b3087ed868a06a4593fd246e75ac6b5ec955543eec35608c7922191bdcc3b3a94ed7f3575ef0
+  languageName: node
+  linkType: hard
+
+"react-native-webview@npm:^13.12.3":
+  version: 13.12.3
+  resolution: "react-native-webview@npm:13.12.3"
+  dependencies:
+    escape-string-regexp: ^4.0.0
+    invariant: 2.2.4
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 94d824fedc6b5c0402926b99a96f71f4752416e4f038be827552015c0bf6d595d71ba656079618402662aec5e2c539018b0bff2906b6f95261f70893e5dd5d80
   languageName: node
   linkType: hard
 
