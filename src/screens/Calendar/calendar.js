@@ -3,25 +3,80 @@ import React, {useEffect, useState} from 'react';
 import tw from '../../styles/tailwind';
 import {Calendar} from 'react-native-calendars';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAllFixturesByDate} from '../../redux/fixturesSlice';
+import {
+  getAllFixturesByDate,
+  getAllFixturesByDateRange,
+} from '../../redux/fixturesSlice';
 import moment from 'moment';
 
 const CalendarScreen = () => {
   const dispatch = useDispatch();
   const data = useSelector(state => state?.fixtures?.fixturesByDate);
+  const dataByRange = useSelector(
+    state => state?.fixtures?.fixturesByDateRange,
+  );
+
+  console.log('dataByRange', dataByRange);
 
   const [selectedDate, setSelectedDate] = useState(
     moment().format('YYYY-MM-DD'), // Initialize with current date
   );
+  const [monthRange, setMonthRange] = useState({start: '', end: ''});
+  const [markedDates, setMarkedDates] = useState({});
 
-  console.log('Calendar Data:', data);
+  const getMonthRange = date => {
+    const start = moment(date).startOf('month').format('YYYY-MM-DD');
+    const end = moment(date).endOf('month').format('YYYY-MM-DD');
+    setMonthRange({start, end});
+  };
+
+  const markDatesWithMatches = data => {
+    const marks = {};
+    data?.forEach(item => {
+      const date = moment(item.starting_at).format('YYYY-MM-DD'); // Extract date
+      marks[date] = {
+        marked: true,
+        dotColor: '#00adf5',
+        activeOpacity: 0, // Optional to reduce opacity effect
+      };
+    });
+    setMarkedDates(marks); // Update marked dates state
+  };
+
+  useEffect(() => {
+    getMonthRange(moment()); // Initialize with current month
+  }, []);
 
   useEffect(() => {
     dispatch(getAllFixturesByDate(selectedDate));
   }, [dispatch, selectedDate]);
 
+  useEffect(() => {
+    if (monthRange.start && monthRange.end) {
+      dispatch(
+        getAllFixturesByDateRange({
+          start: monthRange.start,
+          end: monthRange.end,
+        }),
+      );
+    }
+  }, [dispatch, monthRange]);
+
+  useEffect(() => {
+    if (dataByRange?.length) {
+      markDatesWithMatches(dataByRange); // Mark dates when data is available
+    }
+  }, [dataByRange]);
+
   const handleDayPress = day => {
     setSelectedDate(day.dateString); // Update state with selected date
+  };
+
+  const handleMonthChange = month => {
+    // Calculate month range whenever the user switches months
+    const {year, month: monthIndex} = month;
+    const newDate = moment(`${year}-${monthIndex}-01`, 'YYYY-MM-DD');
+    getMonthRange(newDate);
   };
 
   const Item = ({item}) => {
@@ -29,17 +84,6 @@ const CalendarScreen = () => {
 
     return (
       <View style={tw`bg-[#303649] w-90 py-3 mt-5 self-center rounded-lg`}>
-        {/* <View style={tw`flex-row `}>
-          <Image
-            source={require('../../assets/league_icons/league-3.png')}
-            style={tw`w-9 h-9 self-center ml-3`}
-          />
-          <Text
-            style={tw`text-white text-[20px] font-401 leading-tight self-center mx-3 `}>
-            Premier League
-          </Text>
-        </View> */}
-
         <View style={tw`flex-row ml-5`}>
           <Text
             style={tw`text-white text-[18px] font-400 leading-tight self-center mx-1 `}>
@@ -78,6 +122,8 @@ const CalendarScreen = () => {
           monthTextColor: 'white',
         }}
         onDayPress={handleDayPress}
+        onMonthChange={handleMonthChange}
+        markedDates={markedDates}
       />
       <Text
         style={tw`text-[#a3a3a3] text-[18px] font-400 leading-tight self-end mr-5 mt-3 `}>
