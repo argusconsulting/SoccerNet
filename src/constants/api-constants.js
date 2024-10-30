@@ -19,6 +19,8 @@ export const api_name_google_login = 'verify-google-token';
 export const api_name_fb_login = 'verify-facebook-token';
 export const api_name_change_password = 'reset/password';
 export const api_name_allLeagues = 'leagues';
+export const api_name_sending_selected_leagues = 'user/select-leagues';
+export const api_name_selectedLeagues = 'get/select-leagues';
 
 // sportmonks
 // export const api_name_allLeagues = 'leagues';

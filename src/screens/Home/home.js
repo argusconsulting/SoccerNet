@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import tw from '../../styles/tailwind';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -16,46 +16,30 @@ import {matches} from '../../helpers/dummyData';
 import {useNavigation} from '@react-navigation/native';
 import Menu from '../../components/menu/menu';
 import {t} from 'i18next';
+import {getSelectedLeagues} from '../../redux/leagueSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import Loader from '../../components/loader/Loader';
 
 const Home = () => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
+  const lang = useSelector(state => state?.language_store?.language);
+  const data = useSelector(state => state?.league?.selectedLeagues);
+  const loading = useSelector(state => state?.league?.isLoadingSelectedLeagues);
+  const dispatch = useDispatch();
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
 
-  const items = [
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fb1aa97f63',
-      flag: require('../../assets/league_icons/league-1.png'),
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      flag: require('../../assets/league_icons/league-2.png'),
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d756',
-      flag: require('../../assets/league_icons/league-3.png'),
-    },
-    {
-      id: '3ac8afc-c605-48d3-a4f8-fb1aa97f63',
-      flag: require('../../assets/league_icons/league-1.png'),
-    },
-    {
-      id: '3ac68fc-c605-48d3-a4f8-fbd91aa97f63',
-      flag: require('../../assets/league_icons/league-2.png'),
-    },
-    {
-      id: '58694a0-3da1-471f-bd96-145571e29d756',
-      flag: require('../../assets/league_icons/league-3.png'),
-    },
-  ];
+  useEffect(() => {
+    dispatch(getSelectedLeagues({lang}));
+  }, []);
 
   const Item = ({item}) => (
     <View style={tw`bg-[#303649] p-3 mx-2 rounded-lg`}>
       <Image
-        source={item?.flag}
+        source={{uri: item?.image_path}}
         style={[tw`w-11 h-11 self-center`, {resizeMode: 'contain'}]}
       />
     </View>
@@ -102,14 +86,18 @@ const Home = () => {
             </Text>
           </TouchableOpacity>
         </View>
-        <FlatList
-          data={items}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          renderItem={({item}) => <Item item={item} />}
-          keyExtractor={item => item.id}
-          contentContainerStyle={tw`px-3`}
-        />
+        {loading ? (
+          <Loader />
+        ) : (
+          <FlatList
+            data={data?.leagues}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            renderItem={({item}) => <Item item={item} />}
+            keyExtractor={item => item.id}
+            contentContainerStyle={tw`px-3`}
+          />
+        )}
       </View>
 
       <View>

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -13,18 +13,34 @@ import LinearGradient from 'react-native-linear-gradient';
 import MultiSelectDropdown from '../../components/select-dropdown/select-dropdown';
 import {t} from 'i18next';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAllLeagues} from '../../redux/leagueSlice';
+import {getAllLeagues, postSelectedLeagues} from '../../redux/leagueSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Alertify from '../../scripts/toast';
 
 const LeagueSelection = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const allLeagues = useSelector(state => state?.league?.leagueData);
   const lang = useSelector(state => state?.language_store?.language);
+  const [error, setError] = useState(false);
+  const [selectedLeagues, setSelectedLeagues] = useState([]);
 
   useEffect(() => {
     dispatch(getAllLeagues({lang}));
   }, []);
+
+  const sendLeagues = () => {
+    if (selectedLeagues.length === 0) {
+      // Show error if no leagues are selected
+      setError(true);
+      Alertify.error(t('selectAtLeastOneLeague'));
+      return;
+    }
+    setError(false); // Reset error state if valid
+    const leagueIds = selectedLeagues.map(league => league.league_id);
+    dispatch(postSelectedLeagues(leagueIds));
+    navigation.navigate('Home');
+  };
 
   return (
     <View style={[tw`bg-[#05102E] h-full`, styles.container]}>
@@ -51,6 +67,7 @@ const LeagueSelection = () => {
             leagueBy={t('leagueHeadingCountry')}
             leaguePlaceholder="Country leagues"
             data={allLeagues?.data}
+            onSelectionChange={setSelectedLeagues}
           />
 
           {/* <View style={tw`border-b-[#a2a2a2] border-[1px]`} />
@@ -69,7 +86,7 @@ const LeagueSelection = () => {
 
       {/* Fixed Continue Button */}
       <TouchableOpacity
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => sendLeagues()}
         style={styles.continueButton}>
         <LinearGradient
           colors={['#6A36CE', '#2575F6']}

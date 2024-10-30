@@ -55,5 +55,6 @@
   "languageText": "Langue",
   "privacyPolicy": "Politique de confidentialité",
   "termsOfUse": "Conditions d'utilisation",
-  "support": "Support"
+  "support": "Support",
+  "selectAtLeastOneLeague": "Sélectionnez au moins une ligue."
 }

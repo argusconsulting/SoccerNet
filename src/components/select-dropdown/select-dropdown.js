@@ -12,29 +12,39 @@ import {
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import tw from '../../styles/tailwind';
 
-const MultiSelectDropdown = ({leagueBy, leaguePlaceholder, data}) => {
+const MultiSelectDropdown = ({
+  leagueBy,
+  leaguePlaceholder,
+  data,
+  onSelectionChange,
+}) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const [searchText, setSearchText] = useState('');
 
   const toggleItemSelection = item => {
-    if (selectedItems.find(selected => selected.id === item.id)) {
-      setSelectedItems(
-        selectedItems.filter(selected => selected.id !== item.id),
+    console.log('id', item);
+    let updatedSelection;
+    if (selectedItems.find(selected => selected.league_id === item.league_id)) {
+      updatedSelection = selectedItems.filter(
+        selected => selected.league_id !== item.league_id,
       );
     } else {
-      setSelectedItems([...selectedItems, item]);
+      updatedSelection = [...selectedItems, item];
     }
+    setSelectedItems(updatedSelection);
+    onSelectionChange(updatedSelection); // Notify parent of the change
   };
 
-  // Filter data based on search text
   const filteredData = data?.filter(item =>
     item?.name?.toLowerCase()?.includes(searchText.toLowerCase()),
   );
 
-  const renderSelectedItems = () => {
-    return selectedItems.map(item => (
-      <View key={item.id} style={[tw`w-1/3 p-2`, styles.selectedItemContainer]}>
+  const renderSelectedItems = () =>
+    selectedItems.map(item => (
+      <View
+        key={item.league_id}
+        style={[tw`w-1/3 p-2`, styles.selectedItemContainer]}>
         <Image
           source={{uri: item.image_path}}
           style={tw`h-20 w-20 self-center`}
@@ -49,7 +59,6 @@ const MultiSelectDropdown = ({leagueBy, leaguePlaceholder, data}) => {
         </TouchableOpacity>
       </View>
     ));
-  };
 
   return (
     <View style={styles.container}>
@@ -82,27 +91,27 @@ const MultiSelectDropdown = ({leagueBy, leaguePlaceholder, data}) => {
               placeholder="Search Leagues..."
               placeholderTextColor="#fff"
               value={searchText}
-              onChangeText={text => setSearchText(text)}
+              onChangeText={setSearchText}
             />
           </View>
 
           <FlatList
-            data={filteredData} // Use the filtered data
+            data={filteredData}
             keyExtractor={item => item.id}
             renderItem={({item}) => (
               <TouchableOpacity
                 style={[
                   styles.item,
-                  selectedItems.find(selected => selected.id === item.id) &&
-                    styles.selectedItem,
+                  selectedItems.find(
+                    selected => selected.league_id === item.league_id,
+                  ) && styles.selectedItem,
                 ]}
                 onPress={() => toggleItemSelection(item)}>
                 <Image source={{uri: item.image_path}} style={styles.flag} />
                 <Text style={styles.itemText}>{item?.name}</Text>
               </TouchableOpacity>
             )}
-            style={styles.list}
-            nestedScrollEnabled={true}
+            nestedScrollEnabled
           />
         </View>
       )}
