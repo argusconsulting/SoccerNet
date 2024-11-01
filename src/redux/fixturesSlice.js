@@ -20,12 +20,30 @@ export const getAllFixturesByDate = createAsyncThunk(
   },
 );
 
+// for calendar
 export const getAllFixturesByDateRange = createAsyncThunk(
   'fixtures/byDateRange',
   async ({start, end}) => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_fixtures_date_range}/${start}/${end}?per_page=50`,
+        `${api_name_fixtures_date_range}/${start}/${end}?per_page=200&filters=populate`,
+      );
+
+      return response;
+    } catch (error) {
+      console.log('Error fetching fixtures by date range API', error);
+      return rejectWithValue(error);
+    }
+  },
+);
+
+// for highlights
+export const getAllFixturesByDateRangeHighlights = createAsyncThunk(
+  'fixtures/byDateRangeHighlights',
+  async ({start, end}) => {
+    try {
+      const response = await getSportsMonkApi(
+        `${api_name_fixtures_date_range}/${start}/${end}?per_page=20&include=participants;league;scores;`,
       );
       console.log('res', response);
       return response;
@@ -42,6 +60,7 @@ const fixtureSlice = createSlice({
     isLoading: false,
     fixturesByDate: [],
     fixturesByDateRange: [],
+    fixturesByDateRangeHighlights: [],
     status: '',
   },
   reducers: {},
@@ -73,6 +92,29 @@ const fixtureSlice = createSlice({
       state.status = 'rejected';
       state.isLoading = false;
     });
+
+    builder.addCase(
+      getAllFixturesByDateRangeHighlights.fulfilled,
+      (state, action) => {
+        state.fixturesByDateRangeHighlights = action?.payload?.data;
+        state.status = 'fulfilled';
+        state.isLoading = false;
+      },
+    );
+    builder.addCase(
+      getAllFixturesByDateRangeHighlights.pending,
+      (state, action) => {
+        state.status = 'pending';
+        state.isLoading = true;
+      },
+    );
+    builder.addCase(
+      getAllFixturesByDateRangeHighlights.rejected,
+      (state, action) => {
+        state.status = 'rejected';
+        state.isLoading = false;
+      },
+    );
   },
 });
 

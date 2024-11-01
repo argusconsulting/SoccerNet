@@ -32,6 +32,7 @@ import Notification from '../screens/Notification/notification';
 import SpotLight from '../screens/rooms/spotListing';
 import Settings from '../screens/settings/settings';
 import ChangePassword from '../screens/change-password/change-password';
+import VideoHighlights from '../screens/video-highlights/videoHighlights';
 
 // Bottom Tab Navigation
 const Tab = createBottomTabNavigator();
@@ -180,7 +181,7 @@ export const StackScreen = () => {
     // </Stack.Navigator>
     <Stack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName={token ? 'LeagueSelection' : 'LanguageSelection'} // Set the starting screen based on token
+      initialRouteName={token ? 'Home' : 'LanguageSelection'} // Set the starting screen based on token
     >
       <Stack.Screen name="LanguageSelection" component={LanguageSelection} />
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
@@ -204,6 +205,7 @@ export const StackScreen = () => {
       <Stack.Screen name="Notification" component={Notification} />
       <Stack.Screen name="Settings" component={Settings} />
       <Stack.Screen name="ChangePassword" component={ChangePassword} />
+      <Stack.Screen name="videoHighlights" component={VideoHighlights} />
     </Stack.Navigator>
   );
 };

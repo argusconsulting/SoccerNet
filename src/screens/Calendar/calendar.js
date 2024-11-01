@@ -12,11 +12,10 @@ import moment from 'moment';
 const CalendarScreen = () => {
   const dispatch = useDispatch();
   const data = useSelector(state => state?.fixtures?.fixturesByDate);
+
   const dataByRange = useSelector(
     state => state?.fixtures?.fixturesByDateRange,
   );
-
-  console.log('dataByRange', dataByRange);
 
   const [selectedDate, setSelectedDate] = useState(
     moment().format('YYYY-MM-DD'), // Initialize with current date
