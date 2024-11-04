@@ -7,10 +7,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {lazy, Suspense, useState} from 'react';
+import React, {lazy, Suspense, useEffect, useState} from 'react';
 import tw from '../../../styles/tailwind';
 import Header from '../../../components/header/header';
 import {t} from 'i18next';
+import {useDispatch, useSelector} from 'react-redux';
+import {useRoute} from '@react-navigation/native';
+import {getFixturesById} from '../../../redux/fixturesSlice';
+import moment from 'moment';
 const Summary = lazy(() =>
   import('../../../components/detail-modules/summary'),
 );
@@ -28,6 +32,7 @@ const Statistics = lazy(() =>
 );
 
 const HighlightDetail = () => {
+  const route = useRoute();
   const detailsType = [
     {
       id: 1,
@@ -52,6 +57,41 @@ const HighlightDetail = () => {
   ];
 
   const [type, setType] = useState('Summary');
+  const dispatch = useDispatch();
+  const fixtureId = route?.params?.fixtureId;
+  const detailData = useSelector(state => state?.fixtures?.fixturesById);
+
+  console.log('in detail screen', detailData);
+
+  useEffect(() => {
+    dispatch(getFixturesById(fixtureId));
+  }, []);
+
+  // Function to extract scores for home and away teams
+  const homeTeam = detailData?.participants?.find(
+    participant => participant?.meta?.location === 'home',
+  );
+  const awayTeam = detailData?.participants?.find(
+    participant => participant?.meta?.location === 'away',
+  );
+
+  let homeScore = 0;
+  let awayScore = 0;
+
+  // Sum up the scores based on the participant_id
+  detailData?.scores?.forEach(score => {
+    if (
+      score.score.participant === 'home' &&
+      score.participant_id === homeTeam.id
+    ) {
+      homeScore += score.score.goals;
+    } else if (
+      score.score.participant === 'away' &&
+      score.participant_id === awayTeam.id
+    ) {
+      awayScore += score.score.goals;
+    }
+  });
 
   const renderItem = ({item, index}) => {
     const isLastItem = index === detailsType.length - 1;
@@ -83,34 +123,34 @@ const HighlightDetail = () => {
         <View style={[tw`  mt-2 mx-5`]}>
           <View style={tw`flex-row justify-between`}>
             <Image
-              source={require('../../../assets/league_icons/league-1.png')}
-              style={tw`w-5 h-5 mt-2 ml-3`}
+              source={{uri: detailData?.league?.image_path}}
+              style={tw`w-6 h-6 mt-2 ml-3`}
             />
             <Text
               style={tw`text-[#a9a9a9] text-[16px] font-400 leading-normal self-center mt-1.5`}>
-              1 August 2023
+              {moment(detailData?.starting_at).format('MMMM Do YYYY')}
             </Text>
 
             <Text
               style={tw`text-[#fff] text-[16px] font-401 leading-normal mt-1.5 mr-3`}>
-              89"
+              {detailData?.length}"
             </Text>
           </View>
 
           <View style={tw`flex-row justify-between mx-12 mt-3`}>
             <View>
               <Image
-                source={require('../../../assets/league_icons/league-2.png')}
+                source={{uri: homeTeam?.image_path}}
                 style={[tw`w-10 h-10 self-center`, {resizeMode: 'contain'}]}
               />
               <Text
                 style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5 `}>
-                Man United
+                {homeTeam?.name}
               </Text>
             </View>
             <Text
               style={tw`text-[#fff] text-[16px] font-401 leading-normal mt-1.5 ml-3`}>
-              1
+              {homeScore}
             </Text>
             <Text
               style={tw`text-[#fff] text-[16px] font-401 leading-normal mt-1.5 `}>
@@ -118,21 +158,21 @@ const HighlightDetail = () => {
             </Text>
             <Text
               style={tw`text-[#fff] text-[16px] font-401 leading-normal mt-1.5 mr-3`}>
-              3
+              {awayScore}
             </Text>
             <View>
               <Image
-                source={require('../../../assets/league_icons/league-3.png')}
+                source={{uri: awayTeam?.image_path}}
                 style={[tw`w-10 h-10 self-center`, {resizeMode: 'contain'}]}
               />
               <Text
                 style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5`}>
-                Manchester
+                {awayTeam?.name}
               </Text>
             </View>
           </View>
         </View>
-        <View style={tw`flex-row self-center mt-5`}>
+        {/* <View style={tw`flex-row self-center mt-5`}>
           <Text
             style={tw`text-[#a9a9a9] text-[16px] font-400 leading-normal self-center mt-1.5 w-31`}>
             R. Mahrez 57’ (Pen)
@@ -159,7 +199,7 @@ const HighlightDetail = () => {
             style={tw`text-[#a9a9a9] text-[16px] font-400 leading-normal self-center mt-1.5 w-35`}>
             Gabriel Magalhaes 59’
           </Text>
-        </View>
+        </View> */}
         <View>
           <View style={tw` border-t pt-3 ml-3 border-[#3e3e3e] mt-10 `} />
           <FlatList
@@ -177,7 +217,7 @@ const HighlightDetail = () => {
           {type === 'Summary' && <Summary />}
           {type === 'Statistics' && <Statistics />}
           {type === 'Standings' && <Standings />}
-          {type === 'Players' && <Players />}
+          {type === 'Players' && <Players fixtureId={fixtureId} />}
           {type === 'Commentary' && <Commentary />}
         </Suspense>
       </ScrollView>

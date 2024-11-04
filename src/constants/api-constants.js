@@ -27,3 +27,5 @@ export const api_name_selectedLeagues = 'get/select-leagues';
 export const api_name_LeaguesById = 'leagues';
 export const api_name_fixtures_date = 'fixtures/date';
 export const api_name_fixtures_date_range = 'fixtures/between';
+export const api_name_fixtures_id = 'fixtures';
+export const api_name_standings = 'standings';

@@ -36,7 +36,7 @@ const ScoreCard = ({match, width, screen, navigate}) => {
   return (
     <TouchableOpacity
       style={[tw`bg-[#303649] h-34  rounded-2xl mt-5 mx-2`, {width: width}]}
-      onPress={() => navigation.navigate(navigate)}>
+      onPress={() => navigation.navigate(navigate, {fixtureId: match?.id})}>
       <View style={tw`flex-row justify-between mx-3`}>
         <Image
           source={{uri: match?.league?.image_path}}

@@ -11,6 +11,7 @@ import discussionSlice from './discussionSlice';
 import fanPhotosSlice from './fanPhotosSlice';
 import leagueSlice from './leagueSlice';
 import fixturesSlice from './fixturesSlice';
+import standingSlice from './standingSlice';
 
 const persistConfig = {
   key: 'root',
@@ -35,6 +36,7 @@ const reducers = combineReducers({
   fanPhotos: fanPhotosSlice,
   league: leagueSlice,
   fixtures: fixturesSlice,
+  standing: standingSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

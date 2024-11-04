@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {
   api_name_fixtures_date,
   api_name_fixtures_date_range,
+  api_name_fixtures_id,
 } from '../constants/api-constants';
 import {getSportsMonkApi} from '../scripts/api-services';
 
@@ -45,10 +46,26 @@ export const getAllFixturesByDateRangeHighlights = createAsyncThunk(
       const response = await getSportsMonkApi(
         `${api_name_fixtures_date_range}/${start}/${end}?per_page=20&include=participants;league;scores;`,
       );
-      console.log('res', response);
       return response;
     } catch (error) {
       console.log('Error fetching fixtures by date range API', error);
+      return rejectWithValue(error);
+    }
+  },
+);
+
+// for fixtures id
+export const getFixturesById = createAsyncThunk(
+  'fixtures/byFixturesId',
+  async fixtureId => {
+    console.log('is fixtureId available', fixtureId);
+    try {
+      const response = await getSportsMonkApi(
+        `${api_name_fixtures_id}/${fixtureId}?include=participants;league;scores;`,
+      );
+      return response;
+    } catch (error) {
+      console.log('Error fetching fixtures by id API', error);
       return rejectWithValue(error);
     }
   },
@@ -58,9 +75,11 @@ const fixtureSlice = createSlice({
   name: 'leagues',
   initialState: {
     isLoading: false,
+    isLoadingDetail: false,
     fixturesByDate: [],
     fixturesByDateRange: [],
     fixturesByDateRangeHighlights: [],
+    fixturesById: [],
     status: '',
   },
   reducers: {},
@@ -79,6 +98,7 @@ const fixtureSlice = createSlice({
       state.isLoading = false;
     });
 
+    // by date range for calendar
     builder.addCase(getAllFixturesByDateRange.fulfilled, (state, action) => {
       state.fixturesByDateRange = action?.payload?.data;
       state.status = 'fulfilled';
@@ -93,6 +113,7 @@ const fixtureSlice = createSlice({
       state.isLoading = false;
     });
 
+    // for highlights
     builder.addCase(
       getAllFixturesByDateRangeHighlights.fulfilled,
       (state, action) => {
@@ -115,6 +136,21 @@ const fixtureSlice = createSlice({
         state.isLoading = false;
       },
     );
+
+    // by fixtures id
+    builder.addCase(getFixturesById.fulfilled, (state, action) => {
+      state.fixturesById = action?.payload?.data;
+      state.status = 'fulfilled';
+      state.isLoadingDetail = false;
+    });
+    builder.addCase(getFixturesById.pending, (state, action) => {
+      state.status = 'pending';
+      state.isLoadingDetail = true;
+    });
+    builder.addCase(getFixturesById.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.isLoadingDetail = false;
+    });
   },
 });
 

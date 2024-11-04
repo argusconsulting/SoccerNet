@@ -15,8 +15,6 @@ const Highlights = () => {
     state => state?.fixtures?.fixturesByDateRangeHighlights,
   );
 
-  console.log('in highlights', highlightData);
-
   const getWeekRange = date => {
     // Set the end date to yesterday
     const end = moment(date).subtract(1, 'day').format('YYYY-MM-DD');
