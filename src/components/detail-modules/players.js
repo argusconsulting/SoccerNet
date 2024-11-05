@@ -45,6 +45,7 @@ const Players = ({fixtureId}) => {
   // Adjust position style to render from bottom to top
   const getPositionStyle = (formationPosition, formation) => {
     const rows = parseFormation(formation);
+    const totalPlayers = rows.reduce((acc, row) => acc + row, 0);
     let currentRow = 0;
     let playerIndex = 0;
 
@@ -58,10 +59,8 @@ const Players = ({fixtureId}) => {
       playerIndex += rows[i];
     }
 
-    // Calculate top positioning
+    // Calculate top and left positioning
     const top = `${70 - currentRow * 20}%`; // Start from 70% for the goalkeeper to move upwards
-
-    // Calculate left positioning
     let left;
     if (formationPosition === 1) {
       // Place the goalkeeper in the center
@@ -89,7 +88,7 @@ const Players = ({fixtureId}) => {
           </Text>
         </View>
         <Text
-          style={tw`text-[#fff] text-[12px] font-401 text-center mt-1 w-20 ml--5`}>
+          style={tw`text-[#fff] text-[12px] font-401 text-center mt-1 w-20`}>
           {player.player_name}
         </Text>
       </View>

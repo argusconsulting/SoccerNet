@@ -43,7 +43,7 @@ const CalendarScreen = () => {
   };
 
   useEffect(() => {
-    getMonthRange(moment()); // Initialize with current month
+    getMonthRange(moment());
   }, []);
 
   useEffect(() => {

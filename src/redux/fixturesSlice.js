@@ -11,7 +11,7 @@ export const getAllFixturesByDate = createAsyncThunk(
   async currentDate => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_fixtures_date}/${currentDate}`,
+        `${api_name_fixtures_date}/${currentDate}?include=participants;league;scores;`,
       );
       return response;
     } catch (error) {

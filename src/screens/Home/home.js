@@ -19,6 +19,8 @@ import {t} from 'i18next';
 import {getSelectedLeagues} from '../../redux/leagueSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../components/loader/Loader';
+import {getAllFixturesByDate} from '../../redux/fixturesSlice';
+import moment from 'moment';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -27,6 +29,10 @@ const Home = () => {
   const data = useSelector(state => state?.league?.selectedLeagues);
   const loading = useSelector(state => state?.league?.isLoadingSelectedLeagues);
   const dispatch = useDispatch();
+  const currentDate = moment().subtract(1, 'days').format('YYYY-MM-DD'); // tomorrows date
+  const justFinishedData = useSelector(
+    state => state?.fixtures?.fixturesByDate,
+  );
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
@@ -34,6 +40,7 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(getSelectedLeagues({lang}));
+    dispatch(getAllFixturesByDate(currentDate));
   }, []);
 
   const Item = ({item}) => (
@@ -135,16 +142,27 @@ const Home = () => {
             {t('seeAll')}
           </Text>
         </View>
-        <FlatList
-          data={matches}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          renderItem={({item}) => (
-            <ScoreCard match={item} width={280} navigate={''} />
-          )}
-          keyExtractor={(item, index) => index.toString()}
-          contentContainerStyle={tw`items-center px-3`}
-        />
+        {justFinishedData?.data?.length > 0 ? (
+          <FlatList
+            data={justFinishedData?.data}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            renderItem={({item}) => (
+              <ScoreCard
+                match={item}
+                width={280}
+                navigate={'HighlightDetail'}
+              />
+            )}
+            keyExtractor={(item, index) => index.toString()}
+            contentContainerStyle={tw`items-center px-3`}
+          />
+        ) : (
+          <Text
+            style={tw`text-[#fff] text-[20px] font-401 leading-tight  mt-5 self-center px-5`}>
+            No Data Found
+          </Text>
+        )}
       </View>
 
       <Menu modalVisible={modalVisible} toggleModal={toggleModal} />
