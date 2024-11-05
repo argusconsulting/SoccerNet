@@ -61,8 +61,6 @@ const HighlightDetail = () => {
   const fixtureId = route?.params?.fixtureId;
   const detailData = useSelector(state => state?.fixtures?.fixturesById);
 
-  console.log('in detail screen', detailData);
-
   useEffect(() => {
     dispatch(getFixturesById(fixtureId));
   }, []);
@@ -215,7 +213,7 @@ const HighlightDetail = () => {
 
         <Suspense fallback={<Text>Loading...</Text>}>
           {type === 'Summary' && <Summary />}
-          {type === 'Statistics' && <Statistics />}
+          {type === 'Statistics' && <Statistics fixtureId={fixtureId} />}
           {type === 'Standings' && <Standings />}
           {type === 'Players' && <Players fixtureId={fixtureId} />}
           {type === 'Commentary' && <Commentary />}

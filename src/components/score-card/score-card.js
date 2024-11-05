@@ -56,7 +56,7 @@ const ScoreCard = ({match, width, screen, navigate}) => {
         ) : (
           <Text
             style={tw`text-[#fff] text-[18px] font-401 leading-normal mt-1.5 `}>
-            {match?.time}
+            {match?.length}"
           </Text>
         )}
       </View>

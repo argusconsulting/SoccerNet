@@ -12,8 +12,10 @@ import Header from '../../components/header/header';
 import moment from 'moment'; // You can use this library for date formatting
 import LinearGradient from 'react-native-linear-gradient';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {useNavigation} from '@react-navigation/native';
 
 const SpotLight = () => {
+  const navigation = useNavigation();
   const DATA = [
     {
       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -190,6 +192,16 @@ const SpotLight = () => {
         renderItem={({item}) => <Item item={item} />}
         keyExtractor={item => item.id}
       />
+
+      <TouchableOpacity
+        style={tw` rounded-3xl absolute bottom-15 self-center flex-row justify-center`}
+        activeOpacity={0.8}
+        onPress={() => navigation.navigate('CreateRooms')}>
+        <Image
+          source={require('../../assets/add.png')}
+          style={[tw`w-15 h-15`, {resizeMode: 'contain'}]}
+        />
+      </TouchableOpacity>
     </View>
   );
 };

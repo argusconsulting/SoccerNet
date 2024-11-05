@@ -3845,6 +3845,7 @@ __metadata:
     react-native: 0.75.3
     react-native-blob-util: ^0.19.11
     react-native-calendars: ^1.1307.0
+    react-native-date-picker: ^5.0.7
     react-native-fbsdk-next: ^13.1.3
     react-native-gesture-handler: ^2.19.0
     react-native-image-picker: ^7.1.2
@@ -9633,6 +9634,16 @@ __metadata:
     react-native: "*"
     react-native-web: "*"
   checksum: e808169b45c5e8021462a6914f7c3fb28e84ae8d58097ed7b3418fee41efa2bc44012abc09ff3f3bd6ee14427b9efe1b0f8d8b3a19cc01325b2f2cd0137d5d00
+  languageName: node
+  linkType: hard
+
+"react-native-date-picker@npm:^5.0.7":
+  version: 5.0.7
+  resolution: "react-native-date-picker@npm:5.0.7"
+  peerDependencies:
+    react: ">= 17.0.1"
+    react-native: ">= 0.64.3"
+  checksum: 94191bf3ce6e88a3acc4ca5e5514eaa6fc15c61666393d85ca258dba3a3efd9145c8fd31ed0f18676d7f083e17f08c760de8193ad24367a65761330084bcdc6b
   languageName: node
   linkType: hard
 

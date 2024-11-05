@@ -131,7 +131,7 @@ const Home = () => {
             horizontal
             showsHorizontalScrollIndicator={false}
             renderItem={({item}) => (
-              <ScoreCard match={item} width={280} navigate={''} />
+              <ScoreCard match={item} width={280} navigate={'LiveDetails'} />
             )}
             keyExtractor={(item, index) => index.toString()}
             contentContainerStyle={tw`items-center px-3`}

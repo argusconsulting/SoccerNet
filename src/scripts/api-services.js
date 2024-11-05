@@ -1,12 +1,20 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {ProjectUrl, SportsMonksToken, SportsMonkUrl} from '../../env';
+import {
+  ProjectUrl,
+  SportsMonkCoreUrl,
+  SportsMonksToken,
+  SportsMonkUrl,
+} from '../../env';
 
 const api = axios.create({
   baseURL: ProjectUrl,
 });
 const sportMonkApi = axios.create({
   baseURL: SportsMonkUrl,
+});
+const sportMonkCoreApi = axios.create({
+  baseURL: SportsMonkCoreUrl,
 });
 
 //* 2xx ->  Success
@@ -99,21 +107,6 @@ export const getApi = async (
   return result;
 };
 
-// SportsMonk API POST function
-export const postSportsMonkApi = async (
-  path,
-  data = {},
-  headers = {Accept: 'application/json'},
-) => {
-  try {
-    const response = await sportMonkApi.post(path, data, {headers});
-    return response;
-  } catch (error) {
-    console.error('SportsMonk API POST Error:', error);
-    throw error.response?.data || error;
-  }
-};
-
 // SportsMonk API GET function
 export const getSportsMonkApi = async (
   path,
@@ -124,6 +117,23 @@ export const getSportsMonkApi = async (
 
   try {
     const response = await sportMonkApi.get(path, {headers, params});
+    return response.data;
+  } catch (error) {
+    console.error('SportsMonk API GET Error:', error);
+    throw error.response?.data || error;
+  }
+};
+
+// CoreSportsMonk API GET function
+export const getSportsMonkCoreApi = async (
+  path,
+  params = {},
+  headers = {Accept: 'application/json'},
+) => {
+  headers.Authorization = `${SportsMonksToken}`;
+
+  try {
+    const response = await sportMonkCoreApi.get(path, {headers, params});
     return response.data;
   } catch (error) {
     console.error('SportsMonk API GET Error:', error);

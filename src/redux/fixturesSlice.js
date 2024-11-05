@@ -3,8 +3,9 @@ import {
   api_name_fixtures_date,
   api_name_fixtures_date_range,
   api_name_fixtures_id,
+  api_name_type_id,
 } from '../constants/api-constants';
-import {getSportsMonkApi} from '../scripts/api-services';
+import {getSportsMonkApi, getSportsMonkCoreApi} from '../scripts/api-services';
 
 export const getAllFixturesByDate = createAsyncThunk(
   'fixtures/byDate',
@@ -58,10 +59,25 @@ export const getAllFixturesByDateRangeHighlights = createAsyncThunk(
 export const getFixturesById = createAsyncThunk(
   'fixtures/byFixturesId',
   async fixtureId => {
-    console.log('is fixtureId available', fixtureId);
     try {
       const response = await getSportsMonkApi(
-        `${api_name_fixtures_id}/${fixtureId}?include=participants;league;scores;`,
+        `${api_name_fixtures_id}/${fixtureId}?include=participants;league;scores;statistics;`,
+      );
+      return response;
+    } catch (error) {
+      console.log('Error fetching fixtures by id API', error);
+      return rejectWithValue(error);
+    }
+  },
+);
+
+// for type
+export const getTypeById = createAsyncThunk(
+  'fixtures/byTypeId',
+  async typeId => {
+    try {
+      const response = await getSportsMonkCoreApi(
+        `${api_name_type_id}/${typeId}`,
       );
       return response;
     } catch (error) {
@@ -76,10 +92,12 @@ const fixtureSlice = createSlice({
   initialState: {
     isLoading: false,
     isLoadingDetail: false,
+    loading: false,
     fixturesByDate: [],
     fixturesByDateRange: [],
     fixturesByDateRangeHighlights: [],
     fixturesById: [],
+    typeNames: [],
     status: '',
   },
   reducers: {},
@@ -150,6 +168,22 @@ const fixtureSlice = createSlice({
     builder.addCase(getFixturesById.rejected, (state, action) => {
       state.status = 'rejected';
       state.isLoadingDetail = false;
+    });
+
+    // by type id
+    builder.addCase(getTypeById.fulfilled, (state, action) => {
+      const typeInfo = action?.payload?.data;
+      state.typeNames[typeInfo.id] = typeInfo;
+      state.status = 'fulfilled';
+      state.loading = false;
+    });
+    builder.addCase(getTypeById.pending, (state, action) => {
+      state.status = 'pending';
+      state.loading = true;
+    });
+    builder.addCase(getTypeById.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.loading = false;
     });
   },
 });

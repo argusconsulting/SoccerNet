@@ -3,6 +3,7 @@ export const APP_MODE = __DEV__ ? 'development' : 'production';
 
 export const ProjectUrl = 'https://kickscore.eprime.app/api/';
 export const SportsMonkUrl = 'https://api.sportmonks.com/v3/football';
+export const SportsMonkCoreUrl = 'https://api.sportmonks.com/v3/core';
 export const SportsMonksToken =
   'YR4bZDKYUzsLEl3Uz8k5Dg0evC719ZNY6RmmOWl8l93iIEe67nRd4URieBIM';
 export const SENTRY_ANDROID_DSN =

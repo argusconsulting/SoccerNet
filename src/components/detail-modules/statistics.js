@@ -1,60 +1,88 @@
-import React from 'react';
-import { Image, StyleSheet, Text, View, FlatList } from 'react-native';
+import React, {useEffect} from 'react';
+import {View, Text, FlatList, ActivityIndicator, Image} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {getFixturesById, getTypeById} from '../../redux/fixturesSlice';
 import tw from '../../styles/tailwind';
 
-const data = [
-  { key: '1', home: '72%', possession: 'Ball Possession', away: '28%' },
-  { key: '2', home: '65%', possession: 'Shots', away: '35%' },
-  { key: '3', home: '60%', possession: 'Shots on Goals', away: '40%' },
-  { key: '4', home: '55%', possession: 'Pass', away: '45%' },
-  { key: '5', home: '70%', possession: 'Pass Accuracy', away: '30%' },
-  { key: '6', home: '68%', possession: 'Foul', away: '32%' },
-  { key: '7', home: '60%', possession: 'Shots on Goals', away: '40%' },
-  { key: '8', home: '55%', possession: 'Pass', away: '45%' },
-  { key: '9', home: '70%', possession: 'Pass Accuracy', away: '30%' },
-  { key: '16', home: '68%', possession: 'Foul', away: '32%' },
-    { key: '10', home: '60%', possession: 'Shots on Goals', away: '40%' },
-  { key: '11', home: '55%', possession: 'Pass', away: '45%' },
-  { key: '13', home: '70%', possession: 'Pass Accuracy', away: '30%' },
+const Statistics = ({fixtureId}) => {
+  const dispatch = useDispatch();
+  const data = useSelector(state => state?.fixtures?.fixturesById);
+  const typeNames = useSelector(state => state?.fixtures?.typeNames);
+  const loading = useSelector(state => state?.fixtures?.loading);
 
-];
+  useEffect(() => {
+    dispatch(getFixturesById(fixtureId));
 
-const renderItem = ({ item }) => (
-  <View style={tw`flex-row justify-between py-2`}>
-    <Text style={tw`text-white text-[16px]`}>{item.home}</Text>
-    <Text style={tw`text-[#fff] text-[16px] font-400 leading-normal self-center`}>
-      {item.possession}
-    </Text>
-    <Text style={tw`text-white text-[16px]`}>{item.away}</Text>
-  </View>
-);
+    // Extract unique type IDs
+    const uniqueTypeIds = [
+      ...new Set(data?.statistics?.map(stat => stat.type_id)),
+    ];
 
-const Statistics = () => {
+    // Fetch type names for each unique type ID
+    uniqueTypeIds.forEach(typeId => {
+      dispatch(getTypeById(typeId));
+    });
+  }, [dispatch, fixtureId]);
+
+  const renderItem = ({item}) => {
+    const typeInfo = typeNames?.[item.type_id];
+    const typeName = typeInfo ? typeInfo.name : 'Loading...';
+
+    // Find the home and away values
+    const homeStat = data?.statistics.find(
+      stat =>
+        stat.participant_id === data?.participants[0]?.id &&
+        stat.type_id === item.type_id,
+    );
+    const awayStat = data?.statistics.find(
+      stat =>
+        stat.participant_id === data?.participants[1]?.id &&
+        stat.type_id === item.type_id,
+    );
+
+    return (
+      <View style={tw`flex-row justify-between py-2`}>
+        <Text style={tw`text-white text-[16px]`}>
+          {homeStat?.data.value || 0}
+        </Text>
+        {/* Home value */}
+        <Text style={tw`text-white text-[16px]`}>{typeName}</Text>
+        {/* Type name */}
+        <Text style={tw`text-white text-[16px]`}>
+          {awayStat?.data.value || 0}
+        </Text>
+        {/* Away value */}
+      </View>
+    );
+  };
+
   return (
     <View style={tw`bg-[#303649] p-5 m-5`}>
-      <View style={tw`flex-row justify-between mb-4`}>
+      <View style={tw`flex-row justify-between`}>
         <Image
-          source={require('../../assets/league_icons/league-1.png')}
-          style={[tw`w-8 h-8`, { resizeMode: 'contain' }]}
+          source={{uri: data?.participants?.[0]?.image_path}}
+          style={tw`w-8 h-8`}
         />
-        <Text style={tw`text-[#fff] text-[20px] font-400 leading-normal self-center`}>
+        <Text
+          style={tw`text-[#fff] text-[20px] font-400 leading-normal self-center mb-4`}>
           TEAM STATS
         </Text>
         <Image
-          source={require('../../assets/league_icons/league-3.png')}
-          style={[tw`w-8 h-8`, { resizeMode: 'contain' }]}
+          source={{uri: data?.participants?.[1]?.image_path}}
+          style={tw`w-8 h-8`}
         />
       </View>
-
-      <FlatList
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={item => item.key}
-      />
+      {loading ? (
+        <ActivityIndicator size="large" color="#fff" />
+      ) : (
+        <FlatList
+          data={data?.statistics}
+          renderItem={renderItem}
+          keyExtractor={item => item.id.toString()}
+        />
+      )}
     </View>
   );
 };
 
 export default Statistics;
-
-const styles = StyleSheet.create({});
