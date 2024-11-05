@@ -29,3 +29,4 @@ export const api_name_fixtures_date = 'fixtures/date';
 export const api_name_fixtures_date_range = 'fixtures/between';
 export const api_name_fixtures_id = 'fixtures';
 export const api_name_standings = 'standings';
+export const api_name_liveScore_inPlay = 'livescores/inplay';

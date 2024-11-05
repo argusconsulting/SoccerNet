@@ -21,6 +21,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../components/loader/Loader';
 import {getAllFixturesByDate} from '../../redux/fixturesSlice';
 import moment from 'moment';
+import {getLiveScoresInPlay} from '../../redux/liveScoreSlice';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -33,6 +34,9 @@ const Home = () => {
   const justFinishedData = useSelector(
     state => state?.fixtures?.fixturesByDate,
   );
+  const inPlayLiveScores = useSelector(
+    state => state?.liveScore?.liveScoreInPlayData,
+  );
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
@@ -41,6 +45,7 @@ const Home = () => {
   useEffect(() => {
     dispatch(getSelectedLeagues({lang}));
     dispatch(getAllFixturesByDate(currentDate));
+    dispatch(getLiveScoresInPlay());
   }, []);
 
   const Item = ({item}) => (
@@ -113,22 +118,30 @@ const Home = () => {
             style={tw`text-white text-[22px] font-401 leading-tight  mt-3  px-5`}>
             {t('liveNow')}
           </Text>
-          <Text
-            style={tw`text-[#8195FF] text-[14px] font-401 leading-tight  mt-5  px-5`}>
-            {t('seeAll')}
-          </Text>
-        </View>
-
-        <FlatList
-          data={matches}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          renderItem={({item}) => (
-            <ScoreCard match={item} width={280} navigate={''} />
+          {inPlayLiveScores?.data?.length > 0 && (
+            <Text
+              style={tw`text-[#8195FF] text-[14px] font-401 leading-tight  mt-5  px-5`}>
+              {t('seeAll')}
+            </Text>
           )}
-          keyExtractor={(item, index) => index.toString()}
-          contentContainerStyle={tw`items-center px-3`}
-        />
+        </View>
+        {inPlayLiveScores?.data?.length > 0 ? (
+          <FlatList
+            data={inPlayLiveScores?.data}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            renderItem={({item}) => (
+              <ScoreCard match={item} width={280} navigate={''} />
+            )}
+            keyExtractor={(item, index) => index.toString()}
+            contentContainerStyle={tw`items-center px-3`}
+          />
+        ) : (
+          <Text
+            style={tw`text-[#fff] text-[20px] font-401 leading-tight  mt-5 self-center px-5`}>
+            No Data Found !
+          </Text>
+        )}
       </View>
 
       <View>
@@ -137,10 +150,12 @@ const Home = () => {
             style={tw`text-white text-[22px] font-401 leading-tight  mt-3 px-5`}>
             {t('justFinished')}
           </Text>
-          <Text
-            style={tw`text-[#8195FF] text-[14px] font-401 leading-tight  mt-5  px-5`}>
-            {t('seeAll')}
-          </Text>
+          {justFinishedData?.data?.length > 0 && (
+            <Text
+              style={tw`text-[#8195FF] text-[14px] font-401 leading-tight  mt-5  px-5`}>
+              {t('seeAll')}
+            </Text>
+          )}
         </View>
         {justFinishedData?.data?.length > 0 ? (
           <FlatList
@@ -160,7 +175,7 @@ const Home = () => {
         ) : (
           <Text
             style={tw`text-[#fff] text-[20px] font-401 leading-tight  mt-5 self-center px-5`}>
-            No Data Found
+            No Data Found !
           </Text>
         )}
       </View>
