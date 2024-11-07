@@ -12,14 +12,13 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SearchBar from '../../components/search-bar/search-bar';
 import ScoreCard from '../../components/score-card/score-card';
-import {matches} from '../../helpers/dummyData';
 import {useNavigation} from '@react-navigation/native';
 import Menu from '../../components/menu/menu';
 import {t} from 'i18next';
 import {getSelectedLeagues} from '../../redux/leagueSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../components/loader/Loader';
-import {getAllFixturesByDate} from '../../redux/fixturesSlice';
+import {getAllFixturesByDateRangeHighlights} from '../../redux/fixturesSlice';
 import moment from 'moment';
 import {getLiveScoresInPlay} from '../../redux/liveScoreSlice';
 
@@ -30,10 +29,11 @@ const Home = () => {
   const data = useSelector(state => state?.league?.selectedLeagues);
   const loading = useSelector(state => state?.league?.isLoadingSelectedLeagues);
   const dispatch = useDispatch();
-  const currentDate = moment().subtract(1, 'days').format('YYYY-MM-DD'); // tomorrows date
+  const [monthRange, setMonthRange] = useState({start: '', end: ''});
   const justFinishedData = useSelector(
-    state => state?.fixtures?.fixturesByDate,
+    state => state?.fixtures?.fixturesByDateRangeHighlights,
   );
+
   const inPlayLiveScores = useSelector(
     state => state?.liveScore?.liveScoreInPlayData,
   );
@@ -42,9 +42,34 @@ const Home = () => {
     setModalVisible(!modalVisible);
   };
 
+  const getWeekRange = date => {
+    // Set the end date to yesterday
+    const end = moment(date).subtract(1, 'day').format('YYYY-MM-DD');
+
+    // Set the start date to seven days before yesterday
+    const start = moment(end).subtract(7, 'days').format('YYYY-MM-DD');
+
+    setMonthRange({start, end});
+  };
+
+  useEffect(() => {
+    getWeekRange(moment()); // Initialize with current month
+  }, []);
+
+  useEffect(() => {
+    if (monthRange.start && monthRange.end) {
+      dispatch(
+        getAllFixturesByDateRangeHighlights({
+          start: monthRange.start,
+          end: monthRange.end,
+        }),
+      );
+    }
+  }, [dispatch, monthRange]);
+
   useEffect(() => {
     dispatch(getSelectedLeagues({lang}));
-    dispatch(getAllFixturesByDate(currentDate));
+
     dispatch(getLiveScoresInPlay());
   }, []);
 
@@ -150,16 +175,18 @@ const Home = () => {
             style={tw`text-white text-[22px] font-401 leading-tight  mt-3 px-5`}>
             {t('justFinished')}
           </Text>
-          {justFinishedData?.data?.length > 0 && (
-            <Text
-              style={tw`text-[#8195FF] text-[14px] font-401 leading-tight  mt-5  px-5`}>
-              {t('seeAll')}
-            </Text>
-          )}
+          {/* {justFinishedData?.length > 0 && (
+            <TouchableOpacity onPress={() => navigation.navigate('Highlights')}>
+              <Text
+                style={tw`text-[#8195FF] text-[14px] font-401 leading-tight  mt-5  px-5`}>
+                {t('seeAll')}
+              </Text>
+            </TouchableOpacity>
+          )} */}
         </View>
-        {justFinishedData?.data?.length > 0 ? (
+        {justFinishedData?.length > 0 ? (
           <FlatList
-            data={justFinishedData?.data}
+            data={justFinishedData}
             horizontal
             showsHorizontalScrollIndicator={false}
             renderItem={({item}) => (

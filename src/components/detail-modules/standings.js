@@ -19,11 +19,31 @@ const Standings = () => {
 
   // Update the Item component to display the index
   const Item = ({item, index}) => {
+    const overallGoals = item?.details?.find(
+      e => e?.type?.code === 'overall-goals-against',
+    )?.value;
+
+    const overallPlayed = item?.details?.find(
+      e => e?.type?.code === 'overall-matches-played',
+    )?.value;
+
+    const overallDraw = item?.details?.find(
+      e => e?.type?.code === 'overall-draw',
+    )?.value;
+
+    const overallWon = item?.details?.find(
+      e => e?.type?.code === 'overall-won',
+    )?.value;
+
+    const overallLost = item?.details?.find(
+      e => e?.type?.code === 'overall-lost',
+    )?.value;
+
     return (
       <View style={tw`flex-row justify-between py-2 items-center`}>
         {/* Show the index + 1 to make the count start from 1 */}
         <Text style={tw`text-white text-[14px]`}>{index + 1}</Text>
-        <View style={tw`flex-row w-30`}>
+        <View style={tw`flex-row w-20  ml--2`}>
           <Image
             source={{uri: item?.participant?.image_path}}
             style={[tw`w-4 h-4 mr-2 self-center`, {resizeMode: 'contain'}]}
@@ -32,11 +52,19 @@ const Standings = () => {
             {item.participant?.name}
           </Text>
         </View>
-        <Text style={tw`text-white text-[14px] self-center`}>{item.match}</Text>
-        <Text style={tw`text-white text-[14px] self-center`}>{item.wins}</Text>
-        <Text style={tw`text-white text-[14px] self-center`}>{item.draw}</Text>
-        <Text style={tw`text-white text-[14px] self-center`}>{item.loose}</Text>
-        <Text style={tw`text-white text-[14px] self-center`}>{item.goals}</Text>
+        <Text style={tw`text-white text-[14px] self-center`}>
+          {overallPlayed}
+        </Text>
+        <Text style={tw`text-white text-[14px] self-center`}>{overallWon}</Text>
+        <Text style={tw`text-white text-[14px] self-center`}>
+          {overallDraw}
+        </Text>
+        <Text style={tw`text-white text-[14px] self-center`}>
+          {overallLost}
+        </Text>
+        <Text style={tw`text-white text-[14px] self-center`}>
+          {overallGoals}
+        </Text>
         <Text style={tw`text-white text-[14px] self-center`}>
           {item.points}
         </Text>

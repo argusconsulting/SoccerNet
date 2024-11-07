@@ -10,7 +10,7 @@ export const getAllStandings = createAsyncThunk(
   async () => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_standings}?include=participant`,
+        `${api_name_standings}?include=participant;details.type;`,
       );
       console.log('res of standings', response);
       return response;

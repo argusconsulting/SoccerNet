@@ -13,6 +13,7 @@ import leagueSlice from './leagueSlice';
 import fixturesSlice from './fixturesSlice';
 import standingSlice from './standingSlice';
 import liveScoreSlice from './liveScoreSlice';
+import meetingRoom from './fanSlice';
 
 const persistConfig = {
   key: 'root',
@@ -39,6 +40,7 @@ const reducers = combineReducers({
   fixtures: fixturesSlice,
   standing: standingSlice,
   liveScore: liveScoreSlice,
+  room: meetingRoom,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

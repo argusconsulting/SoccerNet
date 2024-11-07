@@ -7,11 +7,28 @@ import {
 import {getApi, getSportsMonkApi, postApi} from '../scripts/api-services';
 import Alertify from '../scripts/toast';
 
+// for front page only
 export const getAllLeagues = createAsyncThunk(
   'leagues/allLeagues',
   async ({lang}) => {
     try {
       const response = await getApi(`${api_name_allLeagues}?locale=${lang}`);
+      return response;
+    } catch (error) {
+      console.log('Error fetching leagues API', error);
+      return rejectWithValue(error);
+    }
+  },
+);
+
+// for showing all leagues
+export const getAllLeaguesWithFixtures = createAsyncThunk(
+  'leagues/allLeaguesFixtures',
+  async ({lang}) => {
+    try {
+      const response = await getSportsMonkApi(
+        `${api_name_allLeagues}?locale=${lang}&include=upcoming`,
+      );
       return response;
     } catch (error) {
       console.log('Error fetching leagues API', error);
@@ -61,6 +78,7 @@ const leagueSlice = createSlice({
     leagueData: [],
     selectedLeagues: [],
     isLoadingSelectedLeagues: false,
+    allLeagueData: [],
     status: '',
   },
   reducers: {},
@@ -92,6 +110,21 @@ const leagueSlice = createSlice({
     builder.addCase(getSelectedLeagues.rejected, (state, action) => {
       state.status = 'rejected';
       state.isLoadingSelectedLeagues = false;
+    });
+
+    // all leagues by Fixture
+    builder.addCase(getAllLeaguesWithFixtures.fulfilled, (state, action) => {
+      state.allLeagueData = action?.payload;
+      state.status = 'fulfilled';
+      state.isLoading = false;
+    });
+    builder.addCase(getAllLeaguesWithFixtures.pending, (state, action) => {
+      state.status = 'pending';
+      state.isLoading = true;
+    });
+    builder.addCase(getAllLeaguesWithFixtures.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.isLoading = false;
     });
   },
 });

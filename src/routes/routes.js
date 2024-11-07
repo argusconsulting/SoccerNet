@@ -34,6 +34,7 @@ import Settings from '../screens/settings/settings';
 import ChangePassword from '../screens/change-password/change-password';
 import VideoHighlights from '../screens/video-highlights/videoHighlights';
 import CreateRooms from '../screens/rooms/createRooms';
+import MeetingChat from '../screens/rooms/meetingChat';
 
 // Bottom Tab Navigation
 const Tab = createBottomTabNavigator();
@@ -208,6 +209,7 @@ export const StackScreen = () => {
       <Stack.Screen name="ChangePassword" component={ChangePassword} />
       <Stack.Screen name="videoHighlights" component={VideoHighlights} />
       <Stack.Screen name="CreateRooms" component={CreateRooms} />
+      <Stack.Screen name="MeetingChat" component={MeetingChat} />
     </Stack.Navigator>
   );
 };

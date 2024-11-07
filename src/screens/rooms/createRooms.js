@@ -13,14 +13,35 @@ import {t} from 'i18next';
 import DatePicker from 'react-native-date-picker';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
+import {useDispatch} from 'react-redux';
+import {createMeetingRooms} from '../../redux/fanSlice';
+import {useNavigation} from '@react-navigation/native';
 
 const CreateRooms = () => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [value, setValue] = useState(null);
   const [roomName, setRoomName] = useState(null);
-  const [date, setDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(null); // Initially set to null
   const [open, setOpen] = useState(false);
 
-  const formattedDateTime = moment(date).format('YYYY-MM-DD , HH:mm:ss');
+  const formattedDateTime = selectedDate
+    ? moment(selectedDate).format('YYYY-MM-DD HH:mm:ss')
+    : ''; // Format only if date is not null
+
+  const onSubmitHandler = () => {
+    const reqData = {
+      name: roomName,
+      description: value,
+      schedule_start: formattedDateTime,
+    };
+    dispatch(createMeetingRooms(reqData)).then(() => {
+      setRoomName('');
+      setValue(' ');
+      setSelectedDate(null);
+      navigation.navigate('SpotLight');
+    });
+  };
   return (
     <View style={tw`bg-[#05102E] flex-1 `}>
       <Header name="Create a Room" />
@@ -31,7 +52,7 @@ const CreateRooms = () => {
         </Text>
         <TextInput
           type="text"
-          style={tw`border border-[#a9a9a9] text-[#a9a9a9]  h-10 w-full rounded-md px-4`}
+          style={tw`border border-[#a9a9a9] text-[#a9a9a9] h-10 w-full rounded-md px-4`}
           placeholder={t('namePlaceholder')}
           value={roomName}
           maxLength={25}
@@ -66,10 +87,10 @@ const CreateRooms = () => {
           ]}>
           <LinearGradient
             colors={['#6A36CE', '#2575F6']}
-            start={{x: 0, y: 0}} // Start from top left
-            end={{x: 1, y: 1}} // End at bottom right
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 1}}
             style={[
-              tw`rounded-lg justify-center , flex-row`,
+              tw`rounded-lg justify-center flex-row`,
               {flex: 1, justifyContent: 'center', alignItems: 'center'},
             ]}>
             <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight`}>
@@ -77,13 +98,16 @@ const CreateRooms = () => {
             </Text>
           </LinearGradient>
         </TouchableOpacity>
-        <Text
-          style={tw`text-[#fff] text-[20px] font-400 mx-1 mt-1 leading-tight mt-8`}>
-          Selected Date & Time: {formattedDateTime}
-        </Text>
+
+        {selectedDate && (
+          <Text
+            style={tw`text-[#fff] text-[20px] font-400 mx-1 mt-1 leading-tight mt-8`}>
+            Selected Date & Time: {formattedDateTime}
+          </Text>
+        )}
 
         <TouchableOpacity
-          onPress={() => setOpen(true)}
+          onPress={() => onSubmitHandler()}
           style={[
             tw`mt-30 rounded-lg justify-center `,
             {
@@ -94,10 +118,10 @@ const CreateRooms = () => {
           ]}>
           <LinearGradient
             colors={['#6A36CE', '#2575F6']}
-            start={{x: 0, y: 0}} // Start from top left
-            end={{x: 1, y: 1}} // End at bottom right
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 1}}
             style={[
-              tw`rounded-lg justify-center , flex-row`,
+              tw`rounded-lg justify-center flex-row`,
               {flex: 1, justifyContent: 'center', alignItems: 'center'},
             ]}>
             <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight`}>
@@ -109,10 +133,10 @@ const CreateRooms = () => {
         <DatePicker
           modal
           open={open}
-          date={date}
-          onConfirm={date => {
+          date={selectedDate || new Date()} // Set a default date if date is null
+          onConfirm={selectedDate => {
             setOpen(false);
-            setDate(date);
+            setSelectedDate(selectedDate);
           }}
           onCancel={() => {
             setOpen(false);

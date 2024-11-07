@@ -10,8 +10,6 @@ import Alertify from '../scripts/toast';
 export const getFanPhotos = createAsyncThunk('fanPhotos/photos', async () => {
   try {
     const response = await getApi(`${api_name_fan_photos}`);
-    console.log('res----->', response);
-
     return response;
   } catch (error) {
     console.log('get fan photos list error', error);
@@ -30,9 +28,6 @@ export const getFanReactions = createAsyncThunk(
         `${api_name_fan_reaction}/${id}/react`,
         reqData,
       );
-
-      console.log('res----->', response);
-
       return response;
     } catch (error) {
       console.log('get fan photos list error', error);

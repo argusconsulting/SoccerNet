@@ -21,6 +21,7 @@ export const api_name_change_password = 'reset/password';
 export const api_name_allLeagues = 'leagues';
 export const api_name_sending_selected_leagues = 'user/select-leagues';
 export const api_name_selectedLeagues = 'get/select-leagues';
+export const api_name_create_fan_rooms = 'groups';
 
 // sportmonks
 // export const api_name_allLeagues = 'leagues';

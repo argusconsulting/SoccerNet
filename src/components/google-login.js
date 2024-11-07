@@ -4,7 +4,11 @@ import {
 } from '@react-native-google-signin/google-signin';
 import React, {useEffect, useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {setSocialLoginToken, setUserAuthToken} from '../redux/authSlice';
+import {
+  setSocialLoginToken,
+  setUserAuthToken,
+  setUserID,
+} from '../redux/authSlice';
 import tw from '../styles/tailwind';
 import {store} from '../redux/store';
 import {useNavigation} from '@react-navigation/native';
@@ -33,6 +37,7 @@ const GoogleLogin = () => {
       navigation.navigate('LeagueSelection');
       store.dispatch(setSocialProfile(response?.data));
       store.dispatch(setUserAuthToken(response?.data?.token));
+      store.dispatch(setUserID(response?.data?.user?.id));
       // navigation.navigate('Home');
       return await GoogleSignin.signOut();
     } catch (error) {
@@ -53,6 +58,7 @@ const GoogleLogin = () => {
       const response = await postApi(api_name_google_login, {
         token: idToken,
       });
+      console.log('google res', response);
 
       return response; // Return the response here
     } catch (error) {

@@ -11,57 +11,23 @@ import tw from '../../styles/tailwind';
 import {useNavigation} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAllLeagues} from '../../redux/leagueSlice';
+import {
+  getAllLeagues,
+  getAllLeaguesWithFixtures,
+} from '../../redux/leagueSlice';
 
 const LeagueScreen = () => {
   const navigation = useNavigation();
   const [expandedItem, setExpandedItem] = useState(null);
   const dispatch = useDispatch();
-  const allLeagues = useSelector(state => state?.league?.leagueData);
+  const allLeagues = useSelector(state => state?.league?.allLeagueData);
   const lang = useSelector(state => state?.language_store?.language);
 
-  useEffect(() => {
-    dispatch(getAllLeagues({lang}));
-  }, []);
+  console.log('allLeGUES', allLeagues);
 
-  const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      logo: require('../../assets/league_icons/league-1.png'),
-      title: 'Premier League',
-      details: {
-        homeLogo: require('../../assets/league_icons/league-2.png'),
-        awayLogo: require('../../assets/league_icons/league-1.png'),
-        homeTitle: 'Premier League',
-        awayTitle: 'Premier League',
-        date: '1 August 2029',
-      },
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      logo: require('../../assets/league_icons/league-1.png'),
-      title: 'La Liga',
-      details: {
-        homeLogo: require('../../assets/league_icons/league-3.png'),
-        awayLogo: require('../../assets/league_icons/league-2.png'),
-        homeTitle: 'Premier League',
-        awayTitle: 'Premier League',
-        date: '1 August 2029',
-      },
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      logo: require('../../assets/league_icons/league-1.png'),
-      title: 'Serie A',
-      details: {
-        homeLogo: require('../../assets/league_icons/league-1.png'),
-        awayLogo: require('../../assets/league_icons/league-3.png'),
-        homeTitle: 'Premier League',
-        awayTitle: 'Saudi League',
-        date: '1 August 2029',
-      },
-    },
-  ];
+  useEffect(() => {
+    dispatch(getAllLeaguesWithFixtures({lang}));
+  }, []);
 
   const toggleItem = id => {
     setExpandedItem(prevState => (prevState === id ? null : id));
@@ -77,43 +43,42 @@ const LeagueScreen = () => {
             source={{uri: item?.image_path}}
             style={[tw`w-8 h-8 mr-5`, {resizeMode: 'contain'}]}
           />
-          <Text style={styles.title}>{item?.name}</Text>
+          <Text
+            style={tw`text-[#fff] text-[18px] font-401 leading-normal mt-0.5`}>
+            {item?.name}
+          </Text>
         </View>
         <AntDesign
           name={expandedItem === item.id ? 'caretup' : 'caretdown'}
           size={15}
           color={'#fff'}
+          style={tw`mt-1`}
         />
       </TouchableOpacity>
+
       {expandedItem === item.id && (
         <>
-          <View style={tw`flex-row mt-3 self-center`}>
-            <Image
-              source={item?.details?.homeLogo}
-              style={[tw`w-5 h-5 mt-1 mr-1`, {resizeMode: 'contain'}]}
-            />
+          {item?.upcoming?.length > 0 ? (
+            item?.upcoming?.map((e, index) => (
+              <View key={index} style={tw`mt-3`}>
+                <View style={tw`flex-row self-center`}>
+                  <Text
+                    style={tw`text-[#fff] text-[18px] font-400 leading-normal mt-0.5`}>
+                    {e?.name}
+                  </Text>
+                </View>
+                <Text
+                  style={tw`text-[#a2a2a2] text-[15px] font-400 leading-normal mt-2 self-center`}>
+                  {e?.starting_at}
+                </Text>
+              </View>
+            ))
+          ) : (
             <Text
-              style={tw`text-[#fff] text-[15px] font-400 leading-normal  mt-0.5`}>
-              {item?.details?.homeTitle}
+              style={tw`text-[#fff] text-[18px] font-400 leading-normal mt-1 self-center `}>
+              No fixtures available...
             </Text>
-            <Text
-              style={tw`text-[#fff] text-[16px] font-400 leading-normal mx-2`}>
-              v/s
-            </Text>
-            <Image
-              source={item?.details?.awayLogo}
-              style={[tw`w-5 h-5 mt-1 mr-1`, {resizeMode: 'contain'}]}
-            />
-            <Text
-              style={tw`text-[#fff] text-[15px] font-400 leading-normal mt-0.5`}>
-              {item?.details?.awayTitle}
-            </Text>
-          </View>
-
-          <Text
-            style={tw`text-[#a2a2a2] text-[15px] font-400 leading-normal  mt-2 self-center`}>
-            {item?.details?.date}
-          </Text>
+          )}
         </>
       )}
     </View>
