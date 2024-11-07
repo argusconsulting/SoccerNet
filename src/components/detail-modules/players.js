@@ -15,6 +15,8 @@ const Players = ({fixtureId}) => {
   const formation = useSelector(state => state?.standing?.lineUpFormations);
   const [selectedTeam, setSelectedTeam] = useState('home'); // State to manage selected team
 
+  console.log('formation', formation);
+
   useEffect(() => {
     dispatch(getLineups(fixtureId));
   }, [dispatch, fixtureId]);
@@ -91,39 +93,6 @@ const Players = ({fixtureId}) => {
     return {top, left};
   };
 
-  // const getPositionStyle = (formationPosition, formation) => {
-  //   const rows = parseFormation(formation);
-
-  //   // Check if the formation has exactly 3 segments (e.g., "5-3-2")
-  //   const isThreeSegmentFormation = rows.length === 3;
-
-  //   if (isThreeSegmentFormation && formationPosition === 1) {
-  //     // Center the goalkeeper if there are exactly 3 segments
-  //     return {top: '80%', left: '45%'};
-  //   }
-
-  //   // Default positioning logic for formations with 4 segments or non-goalkeeper players in 3-segment formations
-  //   let currentRow = 0;
-  //   let playerIndex = formationPosition - 1;
-
-  //   for (let i = 0; i < rows.length; i++) {
-  //     if (playerIndex < rows[i]) {
-  //       currentRow = i;
-  //       break;
-  //     }
-  //     playerIndex -= rows[i];
-  //   }
-
-  //   // Calculate top and left positioning based on row and player index
-  //   const top = `${70 - currentRow * 20}%`;
-  //   const left =
-  //     rows[currentRow] === 1
-  //       ? '45%'
-  //       : `${5 + (playerIndex * 80) / (rows[currentRow] - 1)}%`;
-
-  //   return {top, left};
-  // };
-
   const renderPlayers = lineups => {
     return lineups.map(player => (
       <View
@@ -138,12 +107,12 @@ const Players = ({fixtureId}) => {
         <View
           style={tw`bg-red-600 w-8 h-8 rounded-full justify-center items-center border-[#fff] border-[0.8px]`}>
           <Text style={tw`text-[#fff] text-[12px] font-401`}>
-            {player.jersey_number}
+            {player?.jersey_number}
           </Text>
         </View>
         <Text
           style={tw`text-[#fff] text-[12px] font-401 text-center mt-1 w-15 ml--3`}>
-          {player.player_name}
+          {player?.player_name}
         </Text>
       </View>
     ));
@@ -153,52 +122,60 @@ const Players = ({fixtureId}) => {
 
   return (
     <View style={tw`m-5`}>
-      <View style={tw`flex-row justify-center mb-3`}>
-        <TouchableOpacity
-          onPress={() => setSelectedTeam('home')}
-          style={[
-            tw`px-4 py-2 rounded-md`,
-            selectedTeam === 'home' ? tw`bg-blue-500` : tw`bg-[#05102E]`,
-          ]}>
-          <Text style={tw`text-white text-[18px] font-401`}>
-            HomeTeam: {homeTeam.name}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setSelectedTeam('away')}
-          style={[
-            tw`px-4 py-2 rounded-md ml-3`,
-            selectedTeam === 'away' ? tw`bg-blue-500` : tw`bg-[#05102E]`,
-          ]}>
-          <Text style={tw`text-white text-[16px] font-401`}>
-            AwayTeam: {awayTeam?.name}
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      <ImageBackground
-        source={require('../../assets/footballField.png')}
-        style={tw`h-200 w-full`}>
-        <View style={tw`flex-row mt-2 mx-2 justify-between`}>
-          <View style={tw`flex-row`}>
-            <Image
-              source={{uri: currentTeam?.image}}
-              style={[tw`w-7 h-7 ml-3`, {resizeMode: 'contain'}]}
-            />
-            <Text
-              style={tw`text-[#fff] text-[20px] font-401 leading-normal ml-5`}>
-              {currentTeam?.name}
-            </Text>
+      {formation?.lineups?.length > 0 ? (
+        <>
+          <View style={tw`flex-row justify-center mb-3`}>
+            <TouchableOpacity
+              onPress={() => setSelectedTeam('home')}
+              style={[
+                tw`px-4 py-2 rounded-md`,
+                selectedTeam === 'home' ? tw`bg-blue-500` : tw`bg-[#05102E]`,
+              ]}>
+              <Text style={tw`text-white text-[18px] font-401`}>
+                HomeTeam: {homeTeam?.name}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setSelectedTeam('away')}
+              style={[
+                tw`px-4 py-2 rounded-md ml-3`,
+                selectedTeam === 'away' ? tw`bg-blue-500` : tw`bg-[#05102E]`,
+              ]}>
+              <Text style={tw`text-white text-[16px] font-401`}>
+                AwayTeam: {awayTeam?.name}
+              </Text>
+            </TouchableOpacity>
           </View>
-          <View>
-            <Text
-              style={tw`text-[#fff] text-[20px] font-401 leading-normal mr-3`}>
-              {currentTeam?.formation}
-            </Text>
-          </View>
-        </View>
-        {currentTeam && renderPlayers(currentTeam.lineups)}
-      </ImageBackground>
+          <ImageBackground
+            source={require('../../assets/footballField.png')}
+            style={tw`h-200 w-full`}>
+            <View style={tw`flex-row mt-2 mx-2 justify-between`}>
+              <View style={tw`flex-row`}>
+                <Image
+                  source={{uri: currentTeam?.image}}
+                  style={[tw`w-7 h-7 ml-3`, {resizeMode: 'contain'}]}
+                />
+                <Text
+                  style={tw`text-[#fff] text-[20px] font-401 leading-normal ml-5`}>
+                  {currentTeam?.name}
+                </Text>
+              </View>
+              <View>
+                <Text
+                  style={tw`text-[#fff] text-[20px] font-401 leading-normal mr-3`}>
+                  {currentTeam?.formation}
+                </Text>
+              </View>
+            </View>
+            {currentTeam && renderPlayers(currentTeam.lineups)}
+          </ImageBackground>
+        </>
+      ) : (
+        <Text
+          style={tw`text-[#fff] text-[20px] font-401 self-center leading-normal mr-3`}>
+          No Data Found !
+        </Text>
+      )}
     </View>
   );
 };
