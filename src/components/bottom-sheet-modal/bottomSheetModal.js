@@ -406,7 +406,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
         </View>
 
         <Text
-          style={tw`text-white text-[20px] font-400 leading-tight self-center mx-3 mt-7 `}>
+          style={tw`text-white text-[20px] font-400 leading-tight self-center mx-3 mt-4 `}>
           {isLogin ? t('loginWith') : t('signupWith')}
         </Text>
         <View style={tw`flex-row mt-3 self-center `}>
@@ -437,7 +437,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
           /> */}
         </View>
         <TouchableOpacity
-          style={tw`flex-row mt-7 self-center`}
+          style={tw`flex-row mt-5 self-center`}
           onPress={toggleLoginSignup}>
           <Text
             style={tw`text-[#a9a9a9] text-[18px] font-400 leading-tight self-center mx-1 `}>

@@ -14,7 +14,7 @@ const Settings = () => {
 
       <TouchableOpacity
         activeOpacity={0.7}
-        style={tw`mt-5 py-3 flex-row justify-between items-center bg-[#464646]`}
+        style={tw`mt-5 py-3 flex-row justify-between items-center bg-[#303649]`}
         onPress={() =>
           navigation.navigate('LanguageSelection', {from: 'Settings'})
         }>
@@ -34,7 +34,7 @@ const Settings = () => {
       <TouchableOpacity
         onPress={() => navigation.navigate('ChangePassword')}
         activeOpacity={0.7}
-        style={tw`mt-5 py-3 flex-row justify-between items-center bg-[#464646] mt-5`}>
+        style={tw`mt-5 py-3 flex-row justify-between items-center bg-[#303649] mt-5`}>
         {/* Icon and Text Group */}
         <View style={tw`flex-row items-center mx-8`}>
           <View>
@@ -50,7 +50,7 @@ const Settings = () => {
 
       <TouchableOpacity
         activeOpacity={0.7}
-        style={tw`mt-5 py-3 flex-row justify-between items-center bg-[#464646] mt-5`}>
+        style={tw`mt-5 py-3 flex-row justify-between items-center bg-[#303649] mt-5`}>
         {/* Icon and Text Group */}
         <View style={tw`flex-row items-center mx-8`}>
           <View>
@@ -66,7 +66,7 @@ const Settings = () => {
 
       <TouchableOpacity
         activeOpacity={0.7}
-        style={tw`mt-5 py-3 flex-row justify-between items-center bg-[#464646] mt-5`}>
+        style={tw`mt-5 py-3 flex-row justify-between items-center bg-[#303649] mt-5`}>
         {/* Icon and Text Group */}
         <View style={tw`flex-row items-center mx-8`}>
           <View>
@@ -82,7 +82,7 @@ const Settings = () => {
 
       <TouchableOpacity
         activeOpacity={0.7}
-        style={tw`mt-5 py-3 flex-row justify-between items-center bg-[#464646] mt-5`}>
+        style={tw`mt-5 py-3 flex-row justify-between items-center bg-[#303649] mt-5`}>
         {/* Icon and Text Group */}
         <View style={tw`flex-row items-center mx-8`}>
           <View>

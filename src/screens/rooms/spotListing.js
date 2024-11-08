@@ -58,15 +58,18 @@ const SpotLight = () => {
       }
     };
 
-    const onCardClick = groupId => {
+    const onCardClick = ({groupId, groupName}) => {
       if (isJoined) {
-        navigation.navigate('MeetingChat', {groupId: groupId});
+        navigation.navigate('MeetingChat', {
+          groupId: groupId,
+          groupName: groupName,
+        });
       }
     };
     return (
       <TouchableOpacity
         style={tw`bg-[#303649] p-4 rounded-lg w-43.5 m-2`}
-        onPress={() => onCardClick(item?.id)}>
+        onPress={() => onCardClick({groupId: item?.id, groupName: item?.name})}>
         <Text
           style={[
             tw`text-white text-[20px] font-401 leading-normal mb-1`,

@@ -55,5 +55,6 @@
   "privacyPolicy": "Privacy Policy",
   "termsOfUse": "Terms of Use",
   "support": "Support",
-  "selectAtLeastOneLeague": "Select at least 1 league."
+  "selectAtLeastOneLeague": "Select at least 1 league.",
+  "countryPlaceHolder": "Enter your country"
 }

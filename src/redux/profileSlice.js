@@ -30,6 +30,7 @@ export const updateProfileData = createAsyncThunk(
       formData.append('name', userProfileData?.name);
       formData.append('email', userProfileData?.email);
       formData.append('contact_number', userProfileData?.contact_number);
+      formData.append('country', userProfileData?.country);
 
       if (Object.keys(imageData)?.length > 0) {
         formData.append('avatar_url', {
@@ -42,6 +43,7 @@ export const updateProfileData = createAsyncThunk(
       const response = await postApi(api_name_updateProfile, formData, {
         'Content-Type': 'multipart/form-data',
       });
+      // console.log('res', response);
       if (response) {
         Alertify.success(response?.data?.message);
       }
@@ -77,6 +79,7 @@ const profileSlice = createSlice({
       name: '',
       email: '',
       contact_number: '',
+      country: '',
     },
     status: '',
   },

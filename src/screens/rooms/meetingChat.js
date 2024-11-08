@@ -30,6 +30,7 @@ const MeetingChat = () => {
   const data = useSelector(state => state.room?.messages);
   const loading = useSelector(state => state.room?.isLoadingMessage);
   const groupId = route?.params?.groupId;
+  const groupName = route?.params?.groupName;
 
   const leaveHandler = () => {
     dispatch(leaveMeetingRooms({userId, groupId})).then(() => {
@@ -102,7 +103,7 @@ const MeetingChat = () => {
           </TouchableOpacity>
           <Text
             style={tw`text-[#fff] text-[20px] font-401 leading-tight self-center`}>
-            Tactics & Strategies
+            {groupName}
           </Text>
         </View>
         <TouchableOpacity

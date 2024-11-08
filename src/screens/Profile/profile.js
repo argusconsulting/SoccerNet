@@ -106,6 +106,11 @@ const Profile = () => {
       userProfileData.contact_number == undefined
     ) {
       Alertify.error('Please enter your phone');
+    } else if (
+      userProfileData.country == '' ||
+      userProfileData.country == undefined
+    ) {
+      Alertify.error('Please enter your country');
     } else {
       dispatch(
         updateProfileData({
@@ -212,7 +217,7 @@ const Profile = () => {
       )}
 
       {/* Icon and Text Group */}
-      <View style={tw`flex-row items-center mt-10`}>
+      <View style={tw`flex-row items-center mt-7`}>
         <View style={tw`bg-[#585858] w-8 h-8 rounded-full justify-center mx-5`}>
           <AntDesign
             name={'user'}
@@ -295,6 +300,30 @@ const Profile = () => {
         </View>
       </View>
 
+      <View style={tw`flex-row items-center mt-10`}>
+        <View style={tw`bg-[#585858] w-8 h-8 rounded-full justify-center mx-5`}>
+          <AntDesign
+            name={'flag'}
+            size={20}
+            color={'#fff'}
+            style={tw`self-center`}
+          />
+        </View>
+        <TextInput
+          type="text"
+          style={tw`border-b border-[#a9a9a9] text-[#a9a9a9]  h-10 w-70 rounded-lg px-2`}
+          placeholder={t('countryPlaceHolder')}
+          value={userProfileData?.country}
+          maxLength={25}
+          onChangeText={text =>
+            handleFieldChange({
+              key: 'country',
+              value: text,
+            })
+          }
+        />
+      </View>
+
       {/* settings */}
 
       <TouchableOpacity
@@ -326,7 +355,7 @@ const Profile = () => {
       <TouchableOpacity
         onPress={handleUpdateProfile}
         style={[
-          tw`mt-1 rounded-xl justify-center  mt-20`,
+          tw`mt-1 rounded-xl justify-center  mt-10`,
           {
             width: '90%',
             height: 55,

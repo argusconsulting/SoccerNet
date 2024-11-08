@@ -62,7 +62,7 @@ const Poll = () => {
   };
 
   return (
-    <View style={[tw`bg-[#000] flex-1`]}>
+    <View style={[tw`bg-[#05102E] flex-1`]}>
       <ScrollView>
         <Header name="Poll" />
         {isLoading ? (
