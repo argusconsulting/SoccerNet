@@ -12,7 +12,6 @@ export const getAllStandings = createAsyncThunk(
       const response = await getSportsMonkApi(
         `${api_name_standings}?include=participant;details.type;`,
       );
-      console.log('res of standings', response);
       return response;
     } catch (error) {
       console.log('Error fetching fixtures by date API', error);

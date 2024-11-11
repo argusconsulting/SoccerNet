@@ -29,6 +29,11 @@ const Home = () => {
   const data = useSelector(state => state?.league?.selectedLeagues);
   const loading = useSelector(state => state?.league?.isLoadingSelectedLeagues);
   const dispatch = useDispatch();
+  const [page, setPage] = useState(1);
+  const goalsValues =
+    inPlayLiveScores?.data?.flatMap(item =>
+      item.scores.map(score => score.score.goals),
+    ) || [];
   const [monthRange, setMonthRange] = useState({start: '', end: ''});
   const justFinishedData = useSelector(
     state => state?.fixtures?.fixturesByDateRangeHighlights,
@@ -62,6 +67,7 @@ const Home = () => {
         getAllFixturesByDateRangeHighlights({
           start: monthRange.start,
           end: monthRange.end,
+          page,
         }),
       );
     }
@@ -69,9 +75,11 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(getSelectedLeagues({lang}));
-
-    dispatch(getLiveScoresInPlay());
   }, []);
+
+  useEffect(() => {
+    dispatch(getLiveScoresInPlay());
+  }, [dispatch]);
 
   const Item = ({item}) => (
     <View style={tw`bg-[#303649] p-3 mx-2 rounded-lg`}>
@@ -155,7 +163,7 @@ const Home = () => {
             data={inPlayLiveScores?.data}
             horizontal
             showsHorizontalScrollIndicator={false}
-            renderItem={({item}) => (
+            renderItem={({item, index}) => (
               <ScoreCard match={item} width={280} navigate={'LiveDetails'} />
             )}
             keyExtractor={(item, index) => index.toString()}
@@ -175,18 +183,19 @@ const Home = () => {
             style={tw`text-white text-[22px] font-401 leading-tight  mt-3 px-5`}>
             {t('justFinished')}
           </Text>
-          {/* {justFinishedData?.length > 0 && (
-            <TouchableOpacity onPress={() => navigation.navigate('Highlights')}>
+          {justFinishedData?.data?.length > 0 && (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('JustFinished')}>
               <Text
                 style={tw`text-[#8195FF] text-[14px] font-401 leading-tight  mt-5  px-5`}>
                 {t('seeAll')}
               </Text>
             </TouchableOpacity>
-          )} */}
+          )}
         </View>
-        {justFinishedData?.length > 0 ? (
+        {justFinishedData?.data?.length > 0 ? (
           <FlatList
-            data={justFinishedData}
+            data={justFinishedData?.data?.slice(0, 5)}
             horizontal
             showsHorizontalScrollIndicator={false}
             renderItem={({item}) => (

@@ -96,14 +96,9 @@ const FacebookLogin = () => {
       <TouchableOpacity onPress={() => fbLogin()}>
         <Image
           source={require('../assets/icons/facebook.png')}
-          style={[tw`w-9 h-9 self-center `, {resizeMode: 'contain'}]}
+          style={[tw`w-9 h-9 self-center mt-1`, {resizeMode: 'contain'}]}
         />
       </TouchableOpacity>
-      {/* <LoginButton
-        // permissions={['public_profile', 'email']}
-        onLoginFinished={handleLoginFinished}
-        onLogoutFinished={() => console.log('logout.')}
-      /> */}
     </View>
   );
 };

@@ -30,6 +30,9 @@ const Players = lazy(() =>
 const Statistics = lazy(() =>
   import('../../../components/detail-modules/statistics'),
 );
+const PlayerInfo = lazy(() =>
+  import('../../../components/detail-modules/player-info'),
+);
 
 const HighlightDetail = () => {
   const route = useRoute();
@@ -213,6 +216,9 @@ const HighlightDetail = () => {
 
         <Suspense fallback={<Text>Loading...</Text>}>
           {type === 'Summary' && <Summary />}
+          {/* {type === 'Summary' && (
+            <PlayerInfo participants={detailData?.participants} />
+          )} */}
           {type === 'Statistics' && <Statistics fixtureId={fixtureId} />}
           {type === 'Standings' && <Standings />}
           {type === 'Players' && <Players fixtureId={fixtureId} />}

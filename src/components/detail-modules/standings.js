@@ -80,7 +80,7 @@ const Standings = () => {
           #
         </Text>
         <Text
-          style={tw`text-[#fff] text-[16px] font-400 leading-normal self-center w-23`}>
+          style={tw`text-[#fff] text-[16px] font-400 leading-normal self-center w-19`}>
           Team
         </Text>
         <Text

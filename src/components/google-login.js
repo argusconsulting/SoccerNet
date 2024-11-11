@@ -72,7 +72,7 @@ const GoogleLogin = () => {
       <TouchableOpacity onPress={() => signIn()}>
         <Image
           source={require('../assets/icons/google.png')}
-          style={[tw`w-8 h-8 self-center  mr-7`, {resizeMode: 'contain'}]}
+          style={[tw`w-8 h-8 self-center  mr-7 mt-1`, {resizeMode: 'contain'}]}
         />
       </TouchableOpacity>
     </View>

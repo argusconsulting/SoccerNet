@@ -32,6 +32,7 @@ import Alertify from '../../scripts/toast';
 import {useTranslation} from 'react-i18next';
 import GoogleLogin from '../google-login';
 import FacebookLogin from '../facebook-login';
+import MicrosoftLogin from '../microsoft-login';
 
 const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
   const phoneInput = useRef(null);
@@ -421,10 +422,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
             style={[tw`w-9 h-9 self-center mr-7`, {resizeMode: 'contain'}]}
           />
 
-          <Image
-            source={require('../../assets/icons/ms.png')}
-            style={[tw`w-7 h-7 self-center mr-7`, {resizeMode: 'contain'}]}
-          />
+          <MicrosoftLogin />
 
           <Image
             source={require('../../assets/icons/instagram.png')}

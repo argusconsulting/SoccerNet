@@ -41,7 +41,7 @@ const Statistics = ({fixtureId}) => {
     );
 
     return (
-      <View style={tw`flex-row justify-between py-2`}>
+      <View style={tw`flex-row justify-between py-2 mx-3`}>
         <Text style={tw`text-white text-[16px]`}>
           {homeStat?.data.value || 0}
         </Text>

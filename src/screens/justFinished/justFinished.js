@@ -8,7 +8,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getAllFixturesByDateRangeHighlights} from '../../redux/fixturesSlice';
 import Loader from '../../components/loader/Loader';
 
-const Highlights = () => {
+const JustFinished = () => {
   const dispatch = useDispatch();
   const flatListRef = useRef(null);
   const [monthRange, setMonthRange] = useState({start: '', end: ''});
@@ -22,7 +22,7 @@ const Highlights = () => {
 
   const getWeekRange = date => {
     const end = moment(date).subtract(1, 'day').format('YYYY-MM-DD');
-    const start = moment(end).subtract(30, 'days').format('YYYY-MM-DD');
+    const start = moment(end).subtract(7, 'days').format('YYYY-MM-DD');
     setMonthRange({start, end});
   };
 
@@ -57,7 +57,7 @@ const Highlights = () => {
 
   return (
     <View style={tw`bg-[#05102E] flex-1`}>
-      <Header name="Highlights" />
+      <Header name="Just Finished" />
       <View style={tw``}>
         {isLoading ? (
           <Loader />
@@ -96,6 +96,6 @@ const Highlights = () => {
   );
 };
 
-export default Highlights;
+export default JustFinished;
 
 const styles = StyleSheet.create({});

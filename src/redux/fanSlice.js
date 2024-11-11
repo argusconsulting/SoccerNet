@@ -108,7 +108,6 @@ export const getMessages = createAsyncThunk(
         `${api_name_create_fan_rooms}/${groupId}/messages`,
       );
 
-      console.log('getting res of get mess', response);
       return response;
     } catch (error) {
       console.log('error in get rooms mes ', error);

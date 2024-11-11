@@ -42,10 +42,11 @@ export const getAllFixturesByDateRange = createAsyncThunk(
 // for highlights
 export const getAllFixturesByDateRangeHighlights = createAsyncThunk(
   'fixtures/byDateRangeHighlights',
-  async ({start, end}) => {
+  async ({start, end, page}) => {
+    console.log('page', page);
     try {
       const response = await getSportsMonkApi(
-        `${api_name_fixtures_date_range}/${start}/${end}?per_page=20&include=participants;league;scores;`,
+        `${api_name_fixtures_date_range}/${start}/${end}?include=participants;league;scores&page=${page}`,
       );
       return response;
     } catch (error) {
@@ -135,7 +136,7 @@ const fixtureSlice = createSlice({
     builder.addCase(
       getAllFixturesByDateRangeHighlights.fulfilled,
       (state, action) => {
-        state.fixturesByDateRangeHighlights = action?.payload?.data;
+        state.fixturesByDateRangeHighlights = action?.payload;
         state.status = 'fulfilled';
         state.isLoading = false;
       },
