@@ -23,8 +23,6 @@ const LeagueScreen = () => {
   const allLeagues = useSelector(state => state?.league?.allLeagueData);
   const lang = useSelector(state => state?.language_store?.language);
 
-  console.log('allLeGUES', allLeagues);
-
   useEffect(() => {
     dispatch(getAllLeaguesWithFixtures({lang}));
   }, []);

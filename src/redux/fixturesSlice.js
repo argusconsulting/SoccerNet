@@ -72,6 +72,22 @@ export const getFixturesById = createAsyncThunk(
   },
 );
 
+// for lineups
+export const getFixturesByIdLineUps = createAsyncThunk(
+  'fixtures/byFixturesIdLineUps',
+  async fixtureId => {
+    try {
+      const response = await getSportsMonkApi(
+        `${api_name_fixtures_id}/${fixtureId}?include=participants;lineups.player;lineups.type`,
+      );
+      return response;
+    } catch (error) {
+      console.log('Error fetching fixtures by id lineups API', error);
+      return rejectWithValue(error);
+    }
+  },
+);
+
 // for type
 export const getTypeById = createAsyncThunk(
   'fixtures/byTypeId',
@@ -98,6 +114,7 @@ const fixtureSlice = createSlice({
     fixturesByDateRange: [],
     fixturesByDateRangeHighlights: [],
     fixturesById: [],
+    fixturesByIdLineUps: [],
     typeNames: [],
     status: '',
   },
@@ -167,6 +184,21 @@ const fixtureSlice = createSlice({
       state.isLoadingDetail = true;
     });
     builder.addCase(getFixturesById.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.isLoadingDetail = false;
+    });
+
+    // by fixtures id for lineups
+    builder.addCase(getFixturesByIdLineUps.fulfilled, (state, action) => {
+      state.fixturesByIdLineUps = action?.payload?.data;
+      state.status = 'fulfilled';
+      state.isLoadingDetail = false;
+    });
+    builder.addCase(getFixturesByIdLineUps.pending, (state, action) => {
+      state.status = 'pending';
+      state.isLoadingDetail = true;
+    });
+    builder.addCase(getFixturesByIdLineUps.rejected, (state, action) => {
       state.status = 'rejected';
       state.isLoadingDetail = false;
     });

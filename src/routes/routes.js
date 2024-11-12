@@ -36,6 +36,8 @@ import VideoHighlights from '../screens/video-highlights/videoHighlights';
 import CreateRooms from '../screens/rooms/createRooms';
 import MeetingChat from '../screens/rooms/meetingChat';
 import JustFinished from '../screens/justFinished/justFinished';
+import PlayerInfo from '../components/detail-modules/player-info';
+import Players from '../components/detail-modules/players';
 
 // Bottom Tab Navigation
 const Tab = createBottomTabNavigator();
@@ -212,6 +214,8 @@ export const StackScreen = () => {
       <Stack.Screen name="CreateRooms" component={CreateRooms} />
       <Stack.Screen name="MeetingChat" component={MeetingChat} />
       <Stack.Screen name="JustFinished" component={JustFinished} />
+      <Stack.Screen name="Players" component={Players} />
+      <Stack.Screen name="PlayerInfo" component={PlayerInfo} />
     </Stack.Navigator>
   );
 };

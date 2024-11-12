@@ -12,7 +12,7 @@ import tw from '../../../styles/tailwind';
 import Header from '../../../components/header/header';
 import {t} from 'i18next';
 import {useDispatch, useSelector} from 'react-redux';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {getFixturesById} from '../../../redux/fixturesSlice';
 import moment from 'moment';
 const Summary = lazy(() =>
@@ -33,9 +33,13 @@ const Statistics = lazy(() =>
 const PlayerInfo = lazy(() =>
   import('../../../components/detail-modules/player-info'),
 );
+const LineUps = lazy(() =>
+  import('../../../components/detail-modules/lineUps'),
+);
 
 const HighlightDetail = () => {
   const route = useRoute();
+  const navigation = useNavigation();
   const detailsType = [
     {
       id: 1,
@@ -51,7 +55,7 @@ const HighlightDetail = () => {
     },
     {
       id: 4,
-      name: 'Players',
+      name: 'LineUps',
     },
     {
       id: 5,
@@ -140,10 +144,20 @@ const HighlightDetail = () => {
 
           <View style={tw`flex-row justify-between mx-12 mt-3`}>
             <View>
-              <Image
-                source={{uri: homeTeam?.image_path}}
-                style={[tw`w-10 h-10 self-center`, {resizeMode: 'contain'}]}
-              />
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Players', {
+                    fixtureId: fixtureId,
+                    teamId: homeTeam.id,
+                    teamName: homeTeam?.name,
+                    teamImage: homeTeam?.image_path,
+                  })
+                }>
+                <Image
+                  source={{uri: homeTeam?.image_path}}
+                  style={[tw`w-10 h-10 self-center`, {resizeMode: 'contain'}]}
+                />
+              </TouchableOpacity>
               <Text
                 style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5 `}>
                 {homeTeam?.name}
@@ -162,10 +176,20 @@ const HighlightDetail = () => {
               {awayScore}
             </Text>
             <View>
-              <Image
-                source={{uri: awayTeam?.image_path}}
-                style={[tw`w-10 h-10 self-center`, {resizeMode: 'contain'}]}
-              />
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Players', {
+                    fixtureId: fixtureId,
+                    teamId: awayTeam?.id,
+                    teamName: awayTeam?.name,
+                    teamImage: awayTeam?.image_path,
+                  })
+                }>
+                <Image
+                  source={{uri: awayTeam?.image_path}}
+                  style={[tw`w-10 h-10 self-center`, {resizeMode: 'contain'}]}
+                />
+              </TouchableOpacity>
               <Text
                 style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5`}>
                 {awayTeam?.name}
@@ -215,13 +239,11 @@ const HighlightDetail = () => {
         </View>
 
         <Suspense fallback={<Text>Loading...</Text>}>
-          {type === 'Summary' && <Summary />}
-          {/* {type === 'Summary' && (
-            <PlayerInfo participants={detailData?.participants} />
-          )} */}
+          {/* {type === 'Summary' && <Summary />} */}
+          {/* {type === 'Summary' && <PlayerInfo fixtureId={fixtureId} />} */}
           {type === 'Statistics' && <Statistics fixtureId={fixtureId} />}
           {type === 'Standings' && <Standings />}
-          {type === 'Players' && <Players fixtureId={fixtureId} />}
+          {type === 'LineUps' && <LineUps fixtureId={fixtureId} />}
           {type === 'Commentary' && <Commentary />}
         </Suspense>
       </ScrollView>
