@@ -127,14 +127,22 @@ const Players = () => {
                 renderItem={({item}) => (
                   <View
                     style={tw`flex-row items-center mt-4 border-b-[#090909] border-b-[0.7px]`}>
-                    <Image
-                      source={{uri: item?.player?.image_path}}
-                      style={tw`w-8 h-8 mr-2 mb-2 rounded-full`}
-                    />
-                    <Text
-                      style={tw`text-[#000] text-[18px] font-400 leading-normal`}>
-                      {item?.player?.display_name}
-                    </Text>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('PlayerInfo', {
+                          playerId: item?.player?.id,
+                        })
+                      }
+                      style={tw`flex-row items-center`}>
+                      <Image
+                        source={{uri: item?.player?.image_path}}
+                        style={tw`w-8 h-8 mr-2 mb-2 rounded-full`}
+                      />
+                      <Text
+                        style={tw`text-[#000] text-[18px] font-400 leading-normal`}>
+                        {item?.player?.display_name}
+                      </Text>
+                    </TouchableOpacity>
                   </View>
                 )}
               />

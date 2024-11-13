@@ -3,6 +3,7 @@ import {getSportsMonkApi} from '../scripts/api-services';
 import {
   api_name_getAllPlayers,
   api_name_getPlayersById,
+  api_name_getSeasonsById,
 } from '../constants/api-constants';
 
 export const getAllPlayers = createAsyncThunk(
@@ -42,9 +43,8 @@ export const getSeasonsById = createAsyncThunk(
   async seasonId => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_getPlayersById}/${seasonId}`,
+        `${api_name_getSeasonsById}/${seasonId}`,
       );
-      console.log('res', response);
       return response;
     } catch (error) {
       console.log('Error fetching all seasons ', error);
@@ -95,7 +95,14 @@ const playerSlice = createSlice({
 
     // by Id
     builder.addCase(getSeasonsById.fulfilled, (state, action) => {
-      state.allSeasons = action?.payload?.data;
+      const season = action?.payload?.data;
+      if (season && season.id) {
+        // Store each season by its ID
+        state.allSeasons = {
+          ...state.allSeasons,
+          [season.id]: season,
+        };
+      }
       state.status = 'fulfilled';
       state.isLoading = false;
     });

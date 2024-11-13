@@ -34,3 +34,4 @@ export const api_name_liveScore_inPlay = 'livescores/latest';
 export const api_name_type_id = 'types';
 export const api_name_getAllPlayers = 'players/countries';
 export const api_name_getPlayersById = 'players';
+export const api_name_getSeasonsById = 'seasons';
