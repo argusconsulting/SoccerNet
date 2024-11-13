@@ -120,18 +120,19 @@ const Players = () => {
           <Text style={tw`text-[#fff] text-[18px] font-bold mt-5`}>Bench</Text>
           {substitutes?.length > 0 && (
             <View
-              style={[tw`p-3 rounded-md mt-2`, {backgroundColor: '#708090'}]}>
+              style={[tw`p-3 rounded-md mt-2`, {backgroundColor: '#a9a9a9'}]}>
               <FlatList
                 data={substitutes}
                 keyExtractor={item => item.id.toString()}
                 renderItem={({item}) => (
-                  <View style={tw`flex-row items-center mt-4`}>
+                  <View
+                    style={tw`flex-row items-center mt-4 border-b-[#090909] border-b-[0.7px]`}>
                     <Image
                       source={{uri: item?.player?.image_path}}
-                      style={tw`w-8 h-8 mr-2 rounded-full`}
+                      style={tw`w-8 h-8 mr-2 mb-2 rounded-full`}
                     />
                     <Text
-                      style={tw`text-[#fff] text-[18px] font-400 leading-normal`}>
+                      style={tw`text-[#000] text-[18px] font-400 leading-normal`}>
                       {item?.player?.display_name}
                     </Text>
                   </View>
