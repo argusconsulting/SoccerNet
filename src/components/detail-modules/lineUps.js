@@ -9,17 +9,29 @@ import React, {useEffect, useState} from 'react';
 import tw from '../../styles/tailwind';
 import {useDispatch, useSelector} from 'react-redux';
 import {getLineups} from '../../redux/standingSlice';
+import {fetchPlayerById, getPlayersById} from '../../redux/playerSlice'; // Import your player API action here
 
 const LineUps = ({fixtureId}) => {
   const dispatch = useDispatch();
   const formation = useSelector(state => state?.standing?.lineUpFormations);
-  const [selectedTeam, setSelectedTeam] = useState('home'); // State to manage selected team
-
-  console.log('formation', formation);
+  const [selectedTeam, setSelectedTeam] = useState('home');
+  const [playerDetails, setPlayerDetails] = useState({});
 
   useEffect(() => {
     dispatch(getLineups(fixtureId));
   }, [dispatch, fixtureId]);
+
+  const getPlayerDetails = async playerId => {
+    if (playerDetails[playerId]) {
+      // Return cached data if available
+      return playerDetails[playerId];
+    }
+    // Fetch player details by playerId and cache them
+    const playerData = await dispatch(getPlayersById(playerId)).unwrap();
+    // console.log('checking player data', playerData);
+    setPlayerDetails(prev => ({...prev, [playerId]: playerData}));
+    return playerData;
+  };
 
   const getTeamData = () => {
     if (!formation || !formation?.formations || !formation?.participants) {
@@ -87,35 +99,62 @@ const LineUps = ({fixtureId}) => {
     if (formationPosition === 1) {
       left = '45%';
     } else {
-      left = `${5 + (playerIndex * 80) / (rows[currentRow] - 1)}%`;
+      left = `${5 + (playerIndex * 77) / (rows[currentRow] - 1)}%`;
     }
 
     return {top, left};
   };
 
   const renderPlayers = lineups => {
-    return lineups.map(player => (
-      <View
-        key={player.id}
-        style={[
-          tw`absolute`,
-          getPositionStyle(
-            player.formation_position,
-            selectedTeam === 'home' ? homeTeam?.formation : awayTeam?.formation,
-          ),
-        ]}>
+    return lineups.map(player => {
+      const playerId = player.player_id; // Use player_id here for fetching details
+      const playerData = playerDetails[playerId];
+
+      useEffect(() => {
+        if (!playerData) {
+          getPlayerDetails(playerId);
+        }
+      }, [playerId]);
+
+      console.log('playerData', playerData);
+
+      return (
         <View
-          style={tw`bg-red-600 w-8 h-8 rounded-full justify-center items-center border-[#fff] border-[0.8px]`}>
-          <Text style={tw`text-[#fff] text-[12px] font-401`}>
-            {player?.jersey_number}
-          </Text>
+          key={player.player_id}
+          style={[
+            tw`absolute`,
+            getPositionStyle(
+              player.formation_position,
+              selectedTeam === 'home'
+                ? homeTeam?.formation
+                : awayTeam?.formation,
+            ),
+          ]}>
+          {playerData && (
+            <>
+              <View style={tw`bg-[#fff] rounded-full w-12 p-1`}>
+                <Image
+                  source={{uri: playerData?.data?.image_path}}
+                  style={[tw`w-10 h-10 rounded-full`, {resizeMode: 'cover'}]}
+                />
+              </View>
+              <View
+                style={tw`bg-red-100 absolute right-0 top-8 rounded-full w-5`}>
+                <Text
+                  style={tw`text-[#220000] text-[16px] font-401 text-center`}>
+                  {playerData?.data?.statistics?.[0]?.jersey_number}
+                </Text>
+              </View>
+
+              <Text
+                style={tw`text-[#fff] text-[16px] font-401 text-center mt-1 w-17 ml--3`}>
+                {playerData?.data?.display_name}
+              </Text>
+            </>
+          )}
         </View>
-        <Text
-          style={tw`text-[#fff] text-[12px] font-401 text-center mt-1 w-15 ml--3`}>
-          {player?.player_name}
-        </Text>
-      </View>
-    ));
+      );
+    });
   };
 
   const currentTeam = selectedTeam === 'home' ? homeTeam : awayTeam;
@@ -148,7 +187,7 @@ const LineUps = ({fixtureId}) => {
           </View>
           <ImageBackground
             source={require('../../assets/footballField.png')}
-            style={tw`h-200 w-full`}>
+            style={[tw`h-200 w-full`, {resizeMode: 'contain'}]}>
             <View style={tw`flex-row mt-2 mx-2 justify-between`}>
               <View style={tw`flex-row`}>
                 <Image
@@ -173,7 +212,7 @@ const LineUps = ({fixtureId}) => {
       ) : (
         <Text
           style={tw`text-[#fff] text-[20px] font-401 self-center leading-normal mr-3`}>
-          No Data Found !
+          No Data Found!
         </Text>
       )}
     </View>
