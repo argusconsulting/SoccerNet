@@ -43,8 +43,9 @@ export const getSeasonsById = createAsyncThunk(
   async seasonId => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_getSeasonsById}/${seasonId}`,
+        `${api_name_getSeasonsById}/${seasonId}?include=fixtures.participants`,
       );
+      console.log('res', response);
       return response;
     } catch (error) {
       console.log('Error fetching all seasons ', error);
