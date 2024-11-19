@@ -411,10 +411,6 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
           {isLogin ? t('loginWith') : t('signupWith')}
         </Text>
         <View style={tw`flex-row mt-3 self-center `}>
-          {/* <Image
-            source={require('../../assets/icons/google.png')}
-            style={[tw`w-8 h-8 self-center  mr-7`, {resizeMode: 'contain'}]}
-          /> */}
           <GoogleLogin />
 
           <Image
@@ -424,15 +420,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
 
           <MicrosoftLogin />
 
-          <Image
-            source={require('../../assets/icons/instagram.png')}
-            style={[tw`w-10 h-10 self-center mr-7`, {resizeMode: 'contain'}]}
-          />
           <FacebookLogin />
-          {/* <Image
-            source={require('../../assets/icons/facebook.png')}
-            style={[tw`w-9 h-9 self-center `, {resizeMode: 'contain'}]}
-          /> */}
         </View>
         <TouchableOpacity
           style={tw`flex-row mt-5 self-center`}

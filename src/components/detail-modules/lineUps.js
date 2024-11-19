@@ -9,13 +9,17 @@ import React, {useEffect, useState} from 'react';
 import tw from '../../styles/tailwind';
 import {useDispatch, useSelector} from 'react-redux';
 import {getLineups} from '../../redux/standingSlice';
-import {fetchPlayerById, getPlayersById} from '../../redux/playerSlice'; // Import your player API action here
+import {getPlayersById} from '../../redux/playerSlice';
+import Modal from 'react-native-modal';
 
 const LineUps = ({fixtureId}) => {
   const dispatch = useDispatch();
   const formation = useSelector(state => state?.standing?.lineUpFormations);
   const [selectedTeam, setSelectedTeam] = useState('home');
   const [playerDetails, setPlayerDetails] = useState({});
+  const requestCache = React.useRef({});
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedPlayer, setSelectedPlayer] = useState(null);
 
   useEffect(() => {
     dispatch(getLineups(fixtureId));
@@ -23,14 +27,37 @@ const LineUps = ({fixtureId}) => {
 
   const getPlayerDetails = async playerId => {
     if (playerDetails[playerId]) {
-      // Return cached data if available
+      // If data is already fetched, return it
       return playerDetails[playerId];
     }
-    // Fetch player details by playerId and cache them
-    const playerData = await dispatch(getPlayersById(playerId)).unwrap();
-    // console.log('checking player data', playerData);
-    setPlayerDetails(prev => ({...prev, [playerId]: playerData}));
-    return playerData;
+
+    if (requestCache.current[playerId]) {
+      // If a request is already ongoing, return the same promise
+      return requestCache.current[playerId];
+    }
+
+    // Make an API call and store the promise in the cache
+    const fetchPromise = dispatch(
+      getPlayersById({
+        playerId,
+        includeParams: 'statistics.details.type;country;position',
+      }),
+    )
+      .unwrap()
+      .then(playerData => {
+        // Cache the resolved data
+        setPlayerDetails(prev => ({...prev, [playerId]: playerData}));
+        delete requestCache.current[playerId]; // Clean up cache after resolution
+        return playerData;
+      })
+      .catch(error => {
+        console.error('Error fetching player details:', error);
+        delete requestCache.current[playerId]; // Clean up on error
+        throw error;
+      });
+
+    requestCache.current[playerId] = fetchPromise; // Store promise in cache
+    return fetchPromise;
   };
 
   const getTeamData = () => {
@@ -73,18 +100,16 @@ const LineUps = ({fixtureId}) => {
     return {homeTeam, awayTeam};
   };
 
-  const {homeTeam, awayTeam} = getTeamData();
-
   const parseFormation = formationString => {
-    return formationString.split('-').map(num => parseInt(num, 10));
+    return formationString.split('-')?.map(num => parseInt(num, 10));
   };
 
   const getPositionStyle = (formationPosition, formation) => {
     const rows = parseFormation(formation);
-    const totalPlayers = rows.reduce((acc, row) => acc + row, 0);
     let currentRow = 0;
     let playerIndex = 0;
 
+    // Determine the row and position within the row
     for (let i = rows.length - 1; i >= 0; i--) {
       if (formationPosition <= playerIndex + rows[i]) {
         currentRow = i;
@@ -94,33 +119,69 @@ const LineUps = ({fixtureId}) => {
       playerIndex += rows[i];
     }
 
-    const top = `${70 - currentRow * 20}%`;
+    // Vertical positioning
+    let top;
+    if (rows[currentRow] === 1) {
+      // Position goalkeeper at the top center
+      top = '5%'; // Adjust as needed to place the goalkeeper at the top
+    } else {
+      // Base vertical positioning for other rows
+      const baseTop = 70; // Default top for defenders
+      const rowSpacing = 20; // Vertical spacing between rows
+      top = `${baseTop - currentRow * rowSpacing}%`;
+    }
+
+    // Horizontal positioning
+    const playersInRow = rows[currentRow];
     let left;
-    if (formationPosition === 1) {
+    if (playersInRow === 1) {
+      // Center single player (goalkeeper)
       left = '45%';
     } else {
-      left = `${5 + (playerIndex * 77) / (rows[currentRow] - 1)}%`;
+      // Evenly distribute players in the row
+      const totalWidth = 65; // Width across which players are spread
+      const leftMargin = 13; // Margin from the left edge
+      const spacing = totalWidth / (playersInRow - 1);
+      left = `${leftMargin + playerIndex * spacing}%`;
     }
 
     return {top, left};
   };
 
+  useEffect(() => {
+    const fetchDetailsForPlayers = async () => {
+      const currentTeam = selectedTeam === 'home' ? homeTeam : awayTeam;
+
+      if (!currentTeam?.lineups?.length) return;
+
+      const playerIdsToFetch = currentTeam.lineups
+        .filter(player => !playerDetails[player?.player_id]) // Only fetch if not cached
+        .map(player => player.player_id);
+
+      // Fetch details for all players
+      try {
+        await Promise.all(
+          playerIdsToFetch.map(playerId => getPlayerDetails(playerId)),
+        );
+      } catch (error) {
+        console.error('Error fetching details for players:', error);
+      }
+    };
+
+    if (formation?.lineups?.length > 0) {
+      fetchDetailsForPlayers();
+    }
+  }, [selectedTeam, homeTeam, awayTeam, formation]); // No playerDetails dependency here
+
+  const {homeTeam, awayTeam} = getTeamData();
+
   const renderPlayers = lineups => {
     return lineups.map(player => {
-      const playerId = player.player_id; // Use player_id here for fetching details
-      const playerData = playerDetails[playerId];
-
-      useEffect(() => {
-        if (!playerData) {
-          getPlayerDetails(playerId);
-        }
-      }, [playerId]);
-
-      console.log('playerData', playerData);
+      const playerData = playerDetails[player?.player_id]; // Use cached data
 
       return (
         <View
-          key={player.player_id}
+          key={player?.player_id}
           style={[
             tw`absolute`,
             getPositionStyle(
@@ -131,26 +192,30 @@ const LineUps = ({fixtureId}) => {
             ),
           ]}>
           {playerData && (
-            <>
-              <View style={tw`bg-[#fff] rounded-full w-12 p-1`}>
+            <TouchableOpacity
+              onPress={() => {
+                setSelectedPlayer(playerData?.data); // Pass player details to the modal
+                setIsModalVisible(true); // Open the modal
+              }}>
+              <View style={tw`bg-[#fff] rounded-full w-9 p-1`}>
                 <Image
                   source={{uri: playerData?.data?.image_path}}
-                  style={[tw`w-10 h-10 rounded-full`, {resizeMode: 'cover'}]}
+                  style={[tw`w-7 h-7 rounded-full`, {resizeMode: 'cover'}]}
                 />
               </View>
               <View
-                style={tw`bg-red-100 absolute right-0 top-8 rounded-full w-5`}>
+                style={tw`bg-red-100 absolute right-5 top-6 rounded-full w-3`}>
                 <Text
-                  style={tw`text-[#220000] text-[16px] font-401 text-center`}>
+                  style={tw`text-[#220000] text-[10px] font-401 text-center`}>
                   {playerData?.data?.statistics?.[0]?.jersey_number}
                 </Text>
               </View>
 
               <Text
-                style={tw`text-[#fff] text-[16px] font-401 text-center mt-1 w-17 ml--3`}>
+                style={tw`text-[#fff] text-[12px] font-401 text-center mt-1 w-17 ml--3`}>
                 {playerData?.data?.display_name}
               </Text>
-            </>
+            </TouchableOpacity>
           )}
         </View>
       );
@@ -160,10 +225,10 @@ const LineUps = ({fixtureId}) => {
   const currentTeam = selectedTeam === 'home' ? homeTeam : awayTeam;
 
   return (
-    <View style={tw`m-5`}>
+    <View style={tw``}>
       {formation?.lineups?.length > 0 ? (
         <>
-          <View style={tw`flex-row justify-center mb-3`}>
+          <View style={tw`flex-row justify-center my-3`}>
             <TouchableOpacity
               onPress={() => setSelectedTeam('home')}
               style={[
@@ -185,28 +250,28 @@ const LineUps = ({fixtureId}) => {
               </Text>
             </TouchableOpacity>
           </View>
-          <ImageBackground
-            source={require('../../assets/footballField.png')}
-            style={[tw`h-200 w-full`, {resizeMode: 'contain'}]}>
-            <View style={tw`flex-row mt-2 mx-2 justify-between`}>
-              <View style={tw`flex-row`}>
-                <Image
-                  source={{uri: currentTeam?.image}}
-                  style={[tw`w-7 h-7 ml-3`, {resizeMode: 'contain'}]}
-                />
-                <Text
-                  style={tw`text-[#fff] text-[20px] font-401 leading-normal ml-5`}>
-                  {currentTeam?.name}
-                </Text>
-              </View>
-              <View>
-                <Text
-                  style={tw`text-[#fff] text-[20px] font-401 leading-normal mr-3`}>
-                  {currentTeam?.formation}
-                </Text>
-              </View>
+          <View style={tw`flex-row mt-2 mx-2 justify-between`}>
+            <View style={tw`flex-row`}>
+              <Image
+                source={{uri: currentTeam?.image}}
+                style={[tw`w-7 h-7 ml-3`, {resizeMode: 'contain'}]}
+              />
+              <Text
+                style={tw`text-[#fff] text-[20px] font-401 leading-normal ml-5`}>
+                {currentTeam?.name}
+              </Text>
             </View>
-            {currentTeam && renderPlayers(currentTeam.lineups)}
+            <View>
+              <Text
+                style={tw`text-[#fff] text-[20px] font-401 leading-normal mr-3`}>
+                {currentTeam?.formation}
+              </Text>
+            </View>
+          </View>
+          <ImageBackground
+            source={require('../../assets/field.png')}
+            style={[tw` w-100 h-100`, {resizeMode: 'contain'}]}>
+            {currentTeam && renderPlayers(currentTeam?.lineups)}
           </ImageBackground>
         </>
       ) : (
@@ -215,6 +280,59 @@ const LineUps = ({fixtureId}) => {
           No Data Found!
         </Text>
       )}
+
+      {/* <ImageBackground
+        source={require('../../assets/field.png')}
+        style={[tw`w-full h-70`]}>
+        <Text
+          style={tw`text-[#fff] text-[20px] font-401 self-center leading-normal mr-3`}>
+          No Data Found!
+        </Text>
+      </ImageBackground> */}
+
+      <Modal
+        isVisible={isModalVisible}
+        onBackdropPress={() => setIsModalVisible(false)}
+        style={tw`m-0 justify-end`}>
+        <View style={tw`bg-white p-5 rounded-t-lg`}>
+          {selectedPlayer ? (
+            <>
+              <View style={tw`flex-row items-center mb-3`}>
+                <Image
+                  source={{uri: selectedPlayer.image_path}}
+                  style={tw`w-16 h-16 rounded-full`}
+                />
+                <View
+                  style={tw`bg-[#303649] rounded-full px-1 absolute left-11 top-10.5 h-5.4`}>
+                  <Text
+                    style={tw`text-[#fff] text-[14px] font-400 leading-normal self-center`}>
+                    {selectedPlayer.statistics?.[0]?.jersey_number || 'N/A'}
+                  </Text>
+                </View>
+                <View style={tw`ml-4`}>
+                  <Text style={tw`text-lg font-bold text-black`}>
+                    {selectedPlayer.display_name}
+                  </Text>
+                  <Text style={tw`text-sm text-gray-500`}>
+                    Position: {selectedPlayer.position?.name || 'N/A'}
+                  </Text>
+                  <Text style={tw`text-sm text-gray-500`}>
+                    Country: {selectedPlayer.country?.name || 'N/A'}
+                  </Text>
+                </View>
+              </View>
+
+              <TouchableOpacity
+                onPress={() => setIsModalVisible(false)}
+                style={tw`bg-blue-500 p-2 rounded mt-4`}>
+                <Text style={tw`text-white text-center`}>Close</Text>
+              </TouchableOpacity>
+            </>
+          ) : (
+            <Text style={tw`text-black`}>Loading...</Text>
+          )}
+        </View>
+      </Modal>
     </View>
   );
 };

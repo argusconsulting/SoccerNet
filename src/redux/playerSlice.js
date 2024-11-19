@@ -25,11 +25,13 @@ export const getAllPlayers = createAsyncThunk(
 // playersById
 export const getPlayersById = createAsyncThunk(
   'players/playersById',
-  async playerId => {
+  async ({playerId, includeParams}, {rejectWithValue}) => {
     try {
+      const queryParams = includeParams ? `?include=${includeParams}` : '';
       const response = await getSportsMonkApi(
-        `${api_name_getPlayersById}/${playerId}?include=statistics.details.type;country;position`,
+        `${api_name_getPlayersById}/${playerId}${queryParams}`,
       );
+      console.log('res', response);
       return response;
     } catch (error) {
       console.log('Error fetching all players by countries API', error);

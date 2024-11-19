@@ -1,6 +1,7 @@
 import {
   FlatList,
   Image,
+  ImageBackground,
   ScrollView,
   StyleSheet,
   Text,
@@ -13,15 +14,20 @@ import Header from '../header/header';
 import {useRoute} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getPlayersById, getSeasonsById} from '../../redux/playerSlice';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 const PlayerInfo = () => {
   const route = useRoute();
   const playerId = route?.params?.playerId;
+  const teamImage = route?.params?.teamImage;
+  const teamName = route?.params?.teamName;
   const data = useSelector(state => state?.player?.playerData);
   const seasons = useSelector(state => state?.player?.allSeasons);
   const dispatch = useDispatch();
 
   const [selectedSeasonId, setSelectedSeasonId] = useState(null);
+
+  console.log('data', data);
 
   const targetStatNames = [
     'Shots Total',
@@ -53,7 +59,12 @@ const PlayerInfo = () => {
       ) || [];
 
   useEffect(() => {
-    dispatch(getPlayersById(playerId));
+    dispatch(
+      getPlayersById({
+        playerId,
+        includeParams: 'statistics.details.type;country;position',
+      }),
+    );
   }, [playerId, dispatch]);
 
   useEffect(() => {
@@ -78,89 +89,126 @@ const PlayerInfo = () => {
     setSelectedSeasonId(seasonId);
   };
 
+  const categoryImages = {
+    Goalkeeper: require('../../assets/icons/football-goalkeeper-catching-the-ball.png'),
+    Defender: require('../../assets/icons/football-player-blocking-another-player.png'),
+    Midfielder: require('../../assets/icons/football-player-kicking-ball.png'),
+    Striker: require('../../assets/icons/football-player-setting-ball.png'),
+  };
+  const positionName = data?.position?.name;
+
   return (
     <View style={tw`bg-[#05102E] flex-1`}>
       <Header name="" />
       <ScrollView>
-        <Image
-          source={{uri: data?.image_path}}
-          style={tw`w-15 h-15 mr-2 rounded-full self-center`}
-        />
-        <Text
-          style={tw`text-[#fff] text-[24px] self-center font-401 leading-normal mt-2`}>
-          {data?.display_name}
-        </Text>
-        <Text
-          style={tw`text-[#a9a9a9] text-[20px] self-center font-401 leading-normal`}>
-          {data?.position?.name}
-        </Text>
-
-        <View style={tw`bg-[#a9a9a9] w-90 mt-3 mx-5 rounded-md py-5`}>
+        {/* {data?.statistics?.[0]?.jersey_number} */}
+        <ImageBackground
+          source={require('../../assets/Player-profile.png')}
+          style={tw`w-full h-100 justify-center items-center`} // Adjust height and width as needed
+          imageStyle={{resizeMode: 'contain'}} // Use "contain" or "stretch" as per your requirement
+        >
+          <ImageBackground
+            source={require('../../assets/jersey-bg.png')}
+            style={[tw`w-7 h-14 absolute top-1`, {resizeMode: 'contain'}]} // Profile image size
+          >
+            <Text
+              style={tw`text-[#fff] text-[22px] self-center mt-4 font-401 leading-normal`}>
+              {data?.statistics?.[0]?.jersey_number}
+            </Text>
+          </ImageBackground>
           <Image
-            source={{uri: data?.country?.image_path}}
-            style={tw`w-15 h-15 mr-2 rounded-full self-center `}
+            source={{uri: data?.image_path}}
+            style={tw`w-32 h-32 rounded-full mb-20 absolute top-23`} // Profile image size
           />
           <Text
-            style={tw`text-[#fff] text-[24px] font-401 self-center leading-normal mt-2`}>
-            {data?.country?.official_name}
+            style={tw`text-[#fff] text-[22px] self-center mt-70 font-402 leading-normal`}>
+            {data?.display_name}
           </Text>
+          <View style={tw`flex-row border-b-[#fff] border-b-[0.3px] mt-3 pb-1`}>
+            {positionName && categoryImages[positionName] && (
+              <Image
+                source={categoryImages[positionName]}
+                style={tw`w-6 h-6 mr-2`} // Adjust image size as per your requirement
+              />
+            )}
+            <Text
+              style={tw`text-[#fff] text-[16px] self-center font-401 leading-normal mr-5`}>
+              {positionName}
+            </Text>
+            <Entypo
+              name={'man'}
+              size={20}
+              color={'#0096FF'}
+              style={tw`self-center`}
+            />
+            <Text
+              style={[
+                tw`text-[#fff] text-[16px] self-center font-401 leading-normal`,
+                {textTransform: 'capitalize'},
+              ]}>
+              {data?.gender}
+            </Text>
+          </View>
+          <View style={tw`flex-row  mt-3`}>
+            <Image
+              source={{uri: teamImage}}
+              style={tw`w-7 h-7 mr-3 rounded-full `}
+            />
+            <Text
+              style={tw`text-[#fff] text-[22px] self-center font-402 leading-normal`}>
+              {teamName}
+            </Text>
+          </View>
+        </ImageBackground>
 
+        <View style={tw`bg-[#303649] w-90 mt-3 mx-5 rounded-md py-5`}>
           <View style={tw`flex-row justify-between mx-5`}>
-            <View>
+            <View style={tw`flex-row `}>
+              <Entypo
+                name={'calendar'}
+                size={20}
+                color={'#fff'}
+                style={tw`self-center mr-2`}
+              />
               <Text
-                style={tw`text-[#000] text-[20px] font-401 leading-normal mt-2`}>
+                style={tw`text-[#fff] text-[20px] font-401 leading-normal mt-1`}>
                 Date of Birth
               </Text>
-              <Text
-                style={tw`text-[#fff] text-[16px] font-401 leading-normal self-center`}>
-                {data?.date_of_birth}
-              </Text>
             </View>
-
-            <View>
-              <Text
-                style={tw`text-[#000] text-[20px] font-401 leading-normal mt-2`}>
-                Jersey Number
-              </Text>
-              <Text
-                style={tw`text-[#fff] text-[16px] font-401 leading-normal self-center`}>
-                {data?.statistics?.[0]?.jersey_number}
-              </Text>
-            </View>
+            <Text
+              style={tw`text-[#fff] text-[20px] font-401 leading-normal self-center mt-1`}>
+              {data?.date_of_birth}
+            </Text>
           </View>
           <View style={tw`flex-row justify-between mx-5`}>
-            <View>
+            <View style={tw`flex-row mt-2 `}>
+              <Image
+                source={require('../../assets/icons/measuring-tape.png')}
+                style={tw`w-5 h-5 mr-3 mt-0.5 `}
+              />
               <Text
-                style={tw`text-[#000] text-[20px] font-401 leading-normal mt-2`}>
+                style={tw`text-[#fff] text-[20px] font-401 leading-normal `}>
                 Height
               </Text>
-              <Text
-                style={tw`text-[#fff] text-[16px] font-401 leading-normal self-center`}>
-                {data?.height} cm
-              </Text>
             </View>
-
-            <View>
-              <Text
-                style={tw`text-[#000] text-[20px] font-401 leading-normal mt-2`}>
-                Gender
-              </Text>
-              <Text
-                style={[
-                  tw`text-[#fff] text-[16px] font-401 leading-normal  self-center`,
-                  {textTransform: 'capitalize'},
-                ]}>
-                {data?.gender}
-              </Text>
-            </View>
+            <Text
+              style={tw`text-[#fff] text-[20px] font-401 leading-normal self-center mt-2`}>
+              {data?.height} CM
+            </Text>
           </View>
         </View>
 
-        {/* Displaying Seasons */}
-        <View style={tw`bg-[#a9a9a9] w-90 mt-3 mx-5 rounded-md py-5`}>
-          <Text style={tw`text-[#000] text-[20px] font-401 leading-normal`}>
-            Seasons
-          </Text>
+        {/* Displaying filtered statistics based on the selected season */}
+        <View style={tw`bg-[#303649] w-90 mt-3 mx-5 rounded-md py-5`}>
+          <View style={tw`flex-row  mx-5`}>
+            <Image
+              source={require('../../assets/icons/season.png')}
+              style={tw`w-5 h-5 mr-3 mt-0.5 `}
+            />
+            <Text style={tw`text-[#fff] text-[20px] font-401 leading-normal `}>
+              Seasons
+            </Text>
+          </View>
           <ScrollView
             horizontal={true}
             showsHorizontalScrollIndicator={false}
@@ -169,28 +217,22 @@ const PlayerInfo = () => {
               <TouchableOpacity
                 key={index}
                 style={[
-                  tw`bg-red-300 mx-2 p-2 rounded-lg`,
-                  selectedSeasonId === season.id ? tw`bg-red-500` : null,
+                  tw`bg-red-300 ml-5 p-2 rounded-lg mb-5`,
+                  selectedSeasonId === season.id
+                    ? tw`bg-[#435AE5]`
+                    : tw`bg-[#05102E]`,
                 ]}
                 onPress={() => handleSeasonClick(season.id)}>
-                <Text style={tw`text-[#fff] text-[16px]`}>
+                <Text style={tw`text-[#fff] text-[16px] `}>
                   {season.name || 'No name available'}
                 </Text>
               </TouchableOpacity>
             ))}
           </ScrollView>
-        </View>
-
-        {/* Displaying filtered statistics based on the selected season */}
-        <View style={tw`bg-[#a9a9a9] w-90 mt-3 mx-5 rounded-md py-5`}>
-          <Text
-            style={tw`text-[#000] text-[20px] font-401 leading-normal mt-2`}>
-            Statistics
-          </Text>
           {filteredStats.length > 0 ? (
             filteredStats.map((stat, index) => (
-              <View key={index} style={tw`mt-2`}>
-                <Text style={tw`text-[#000] text-[16px] font-400`}>
+              <View key={index} style={tw`mt-2 mx-5`}>
+                <Text style={tw`text-[#fff] text-[16px] font-400`}>
                   {stat.type.name}:{' '}
                   {stat.value.total ?? stat.value.average ?? 'N/A'}
                 </Text>
