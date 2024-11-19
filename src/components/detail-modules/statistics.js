@@ -24,6 +24,11 @@ const Statistics = ({fixtureId}) => {
     });
   }, [dispatch, fixtureId]);
 
+  // Remove duplicate stats by `type_id`
+  const uniqueStatistics = Array.from(
+    new Map(data?.statistics?.map(stat => [stat.type_id, stat])).values(),
+  );
+
   const renderItem = ({item}) => {
     const typeInfo = typeNames?.[item.type_id];
     const typeName = typeInfo ? typeInfo.name : 'Loading...';
@@ -41,45 +46,67 @@ const Statistics = ({fixtureId}) => {
     );
 
     return (
-      <View style={tw`flex-row justify-between py-2 mx-3`}>
-        <Text style={tw`text-white text-[16px]`}>
+      <View
+        style={tw`flex-row items-center justify-between py-3 px-4 mb-3 bg-[#424a5a] rounded-lg`}>
+        {/* Home Value */}
+        <Text style={tw`text-white text-[16px] font-bold`}>
           {homeStat?.data.value || 0}
         </Text>
-        {/* Home value */}
-        <Text style={tw`text-white text-[16px]`}>{typeName}</Text>
-        {/* Type name */}
-        <Text style={tw`text-white text-[16px]`}>
+
+        {/* Stat Type with Icon */}
+        <View style={tw`flex-row items-center justify-center flex-1`}>
+          <Text style={tw`text-[#f0f0f0] text-[14px] font-semibold`}>
+            {typeName}
+          </Text>
+        </View>
+
+        {/* Away Value */}
+        <Text style={tw`text-white text-[16px] font-bold`}>
           {awayStat?.data.value || 0}
         </Text>
-        {/* Away value */}
       </View>
     );
   };
 
   return (
-    <View style={tw`bg-[#303649] p-5 m-5`}>
-      <View style={tw`flex-row justify-between`}>
+    <View style={tw`bg-[#303649] p-5 m-5 rounded-lg shadow-md`}>
+      {/* Header Section */}
+      <View style={tw`flex-row justify-between items-center mb-5`}>
         <Image
           source={{uri: data?.participants?.[0]?.image_path}}
-          style={tw`w-8 h-8`}
+          style={tw`w-10 h-10 rounded-full`}
         />
         <Text
-          style={tw`text-[#fff] text-[20px] font-400 leading-normal self-center mb-4`}>
+          style={tw`text-[#fff] text-[20px] font-bold leading-normal self-center`}>
           TEAM STATS
         </Text>
         <Image
           source={{uri: data?.participants?.[1]?.image_path}}
-          style={tw`w-8 h-8`}
+          style={tw`w-10 h-10 rounded-full`}
         />
       </View>
+
+      {/* List Section */}
       {loading ? (
         <ActivityIndicator size="large" color="#fff" />
       ) : (
-        <FlatList
-          data={data?.statistics}
-          renderItem={renderItem}
-          keyExtractor={item => item.id.toString()}
-        />
+        <>
+          {/* Column Titles */}
+          <View
+            style={tw`flex-row justify-between px-4 pb-2 border-b border-gray-600`}>
+            <Text style={tw`text-white text-[14px] font-bold`}>Home</Text>
+            <Text style={tw`text-white text-[14px] font-bold`}>Statistics</Text>
+            <Text style={tw`text-white text-[14px] font-bold`}>Away</Text>
+          </View>
+
+          {/* Statistics */}
+          <FlatList
+            data={uniqueStatistics}
+            renderItem={renderItem}
+            keyExtractor={item => item.type_id.toString()}
+            contentContainerStyle={tw`pt-4`}
+          />
+        </>
       )}
     </View>
   );
