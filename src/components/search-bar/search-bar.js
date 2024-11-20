@@ -1,15 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {
-  FlatList,
-  Image,
-  Platform,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {StyleSheet, TextInput, View} from 'react-native';
 import tw from '../../styles/tailwind';
 
 export default function SearchBar({onSearch}) {
@@ -26,7 +17,10 @@ export default function SearchBar({onSearch}) {
           style={tw`text-[#fff]`}
           placeholder="Search..."
           placeholderTextColor="#a9a9a9"
-          onChangeText={onSearch}
+          onChangeText={text => {
+            console.log('TextInput value:', text); // Log the value entered
+            onSearch(text); // Pass the value to the parent component
+          }}
         />
       </View>
     </>

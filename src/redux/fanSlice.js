@@ -26,6 +26,7 @@ export const getMeetingRooms = createAsyncThunk(
   'meetingRoom/getRooms',
   async () => {
     try {
+      console.log('called');
       const response = await getApi(`${api_name_create_fan_rooms}`);
       return response;
     } catch (error) {

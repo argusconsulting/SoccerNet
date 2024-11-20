@@ -109,6 +109,14 @@ const LineUps = ({fixtureId}) => {
     let currentRow = 0;
     let playerIndex = 0;
 
+    // Special case: formationPosition is 1 (e.g., goalkeeper)
+    if (formationPosition === 1) {
+      return {
+        top: '10%', // Place at the top of the image
+        left: '45%', // Center horizontally
+      };
+    }
+
     // Determine the row and position within the row
     for (let i = rows.length - 1; i >= 0; i--) {
       if (formationPosition <= playerIndex + rows[i]) {
@@ -119,34 +127,72 @@ const LineUps = ({fixtureId}) => {
       playerIndex += rows[i];
     }
 
-    // Vertical positioning
-    let top;
-    if (rows[currentRow] === 1) {
-      // Position goalkeeper at the top center
-      top = '5%'; // Adjust as needed to place the goalkeeper at the top
-    } else {
-      // Base vertical positioning for other rows
-      const baseTop = 70; // Default top for defenders
-      const rowSpacing = 20; // Vertical spacing between rows
-      top = `${baseTop - currentRow * rowSpacing}%`;
-    }
+    // Vertical positioning (lower for midfielders and attackers)
+    const baseTop = 67; // Default top for defenders
+    const topAdjustment = currentRow * 22; // Adjust per row
+    const isMidfielderOrAttacker = currentRow > 0; // Check if it's not defenders
+    const top = `${
+      baseTop - topAdjustment + (isMidfielderOrAttacker ? 3 : 0)
+    }%`;
 
-    // Horizontal positioning
+    // Horizontal positioning (even spacing across the row)
     const playersInRow = rows[currentRow];
+    const totalWidth = 60; // The percentage width across which players are spread
+    const leftMargin = 15; // Margin from the left edge
+    const spacing = totalWidth / (playersInRow - 1);
+
     let left;
     if (playersInRow === 1) {
-      // Center single player (goalkeeper)
+      // Center single player (e.g., goalkeepers)
       left = '45%';
     } else {
-      // Evenly distribute players in the row
-      const totalWidth = 65; // Width across which players are spread
-      const leftMargin = 13; // Margin from the left edge
-      const spacing = totalWidth / (playersInRow - 1);
+      // Evenly space players in the row
       left = `${leftMargin + playerIndex * spacing}%`;
     }
 
     return {top, left};
   };
+
+  // const getPositionStyle = (formationPosition, formation) => {
+  //   const rows = parseFormation(formation);
+  //   let currentRow = 0;
+  //   let playerIndex = 0;
+
+  //   // Determine the row and position within the row
+  //   for (let i = rows.length - 1; i >= 0; i--) {
+  //     if (formationPosition <= playerIndex + rows[i]) {
+  //       currentRow = i;
+  //       playerIndex = formationPosition - playerIndex - 1;
+  //       break;
+  //     }
+  //     playerIndex += rows[i];
+  //   }
+
+  //   // Vertical positioning (lower for midfielders and attackers)
+  //   const baseTop = 67; // Default top for defenders
+  //   const topAdjustment = currentRow * 22; // Adjust per row
+  //   const isMidfielderOrAttacker = currentRow > 0; // Check if it's not defenders
+  //   const top = `${
+  //     baseTop - topAdjustment + (isMidfielderOrAttacker ? 3 : 0)
+  //   }%`;
+
+  //   // Horizontal positioning (even spacing across the row)
+  //   const playersInRow = rows[currentRow];
+  //   const totalWidth = 60; // The percentage width across which players are spread
+  //   const leftMargin = 15; // Margin from the left edge
+  //   const spacing = totalWidth / (playersInRow - 1);
+
+  //   let left;
+  //   if (playersInRow === 1) {
+  //     // Center single player (e.g., goalkeepers)
+  //     left = '45%';
+  //   } else {
+  //     // Evenly space players in the row
+  //     left = `${leftMargin + playerIndex * spacing}%`;
+  //   }
+
+  //   return {top, left};
+  // };
 
   useEffect(() => {
     const fetchDetailsForPlayers = async () => {

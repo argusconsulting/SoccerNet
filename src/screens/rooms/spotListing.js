@@ -1,3 +1,4 @@
+import React, {useCallback, useEffect} from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -6,7 +7,6 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect} from 'react';
 import tw from '../../styles/tailwind';
 import Header from '../../components/header/header';
 import moment from 'moment'; // You can use this library for date formatting
@@ -14,11 +14,14 @@ import LinearGradient from 'react-native-linear-gradient';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
+import debounce from 'lodash/debounce';
 import {
   getMeetingRooms,
   joinMeetingRooms,
   leaveMeetingRooms,
 } from '../../redux/fanSlice';
+import SearchBar from '../../components/search-bar/search-bar';
+import {searchHandler, setSearchData} from '../../redux/searchSlice';
 
 const SpotLight = () => {
   const navigation = useNavigation();
@@ -26,6 +29,7 @@ const SpotLight = () => {
 
   const data = useSelector(state => state.room?.roomData);
   const userId = useSelector(state => state.auth_store.userID);
+  const searchedData = useSelector(state => state?.search.searchData);
 
   useEffect(() => {
     const willFocusSubscription = navigation.addListener('focus', () => {
@@ -34,17 +38,29 @@ const SpotLight = () => {
     return willFocusSubscription;
   }, [dispatch]);
 
-  const formatDate = dateTime => {
-    return moment(dateTime, 'YYYY-MM-DD hh:mm A').format('D MMMM YYYY'); // Correctly parse and format the date
+  const debouncedSearch = useCallback(
+    debounce(query => {
+      if (query) {
+        dispatch(searchHandler(query));
+      } else {
+        dispatch(setSearchData());
+        dispatch(getMeetingRooms());
+      }
+    }, 500), // Adjust delay (in milliseconds) as per your requirements
+    [dispatch],
+  );
+
+  // Handle search input
+  const handleSearch = query => {
+    debouncedSearch(query);
   };
 
-  // Function to extract time from the dateTime
-  const extractTime = dateTime => {
-    return moment(dateTime, 'YYYY-MM-DD hh:mm A').format('h:mm A'); // Correctly parse and extract the time
+  const formatDate = dateTime => {
+    return moment(dateTime, 'YYYY-MM-DD hh:mm A').format('D MMMM YYYY');
   };
 
   const Item = ({item}) => {
-    const isJoined = item.users.some(user => user.id === userId); // Check if user is in group
+    const isJoined = item.users.some(user => user.id === userId);
 
     const handlePress = groupId => {
       if (isJoined) {
@@ -66,6 +82,7 @@ const SpotLight = () => {
         });
       }
     };
+
     return (
       <TouchableOpacity
         style={tw`bg-[#303649] p-4 rounded-lg w-43.5 m-2`}
@@ -77,18 +94,13 @@ const SpotLight = () => {
           ]}>
           {item.name}
         </Text>
-
-        {/* Date on one line, time on the next */}
         <Text style={tw`text-[#F5C451] text-[18px] font-400 leading-normal`}>
           {formatDate(item.schedule_start)}
         </Text>
-
         <Text
           style={tw`text-[#dbdbdb] text-[18px] font-400 leading-normal mb-2`}>
           {item?.description}
         </Text>
-
-        {/* User Icons */}
         <View style={tw`flex-row items-center mb-2`}>
           {item.users.map((user, index) => (
             <View
@@ -139,19 +151,29 @@ const SpotLight = () => {
     );
   };
 
+  const displayedData = searchedData?.length > 0 ? searchedData : data;
+
   return (
     <View style={tw`bg-[#05102E] flex-1`}>
       <Header name="Rooms" />
-      <FlatList
-        numColumns={2}
-        contentContainerStyle={tw`p-1`} // Added padding for equal spacing
-        columnWrapperStyle={tw`justify-between`}
-        showsHorizontalScrollIndicator={false}
-        data={data}
-        renderItem={({item}) => <Item item={item} />}
-        keyExtractor={item => item.id}
-      />
-
+      <View style={tw`px-5`}>
+        <SearchBar onSearch={handleSearch} />
+      </View>
+      {displayedData?.length > 0 ? (
+        <FlatList
+          numColumns={2}
+          contentContainerStyle={tw`p-1`}
+          columnWrapperStyle={tw`justify-between`}
+          showsHorizontalScrollIndicator={false}
+          data={displayedData}
+          renderItem={({item}) => <Item item={item} />}
+          keyExtractor={item => item.id}
+        />
+      ) : (
+        <Text style={tw`text-white text-center mt-10 text-[16px]`}>
+          No results found.
+        </Text>
+      )}
       <TouchableOpacity
         style={tw` rounded-3xl absolute bottom-15 self-center flex-row justify-center`}
         activeOpacity={0.8}
@@ -166,5 +188,3 @@ const SpotLight = () => {
 };
 
 export default SpotLight;
-
-const styles = StyleSheet.create({});
