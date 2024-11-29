@@ -1,4 +1,5 @@
 import {
+  Alert,
   FlatList,
   Image,
   StyleSheet,
@@ -12,8 +13,10 @@ import LinearGradient from 'react-native-linear-gradient';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import TextInput from '../../components/library/text-input';
 import {useDispatch, useSelector} from 'react-redux';
+import Entypo from 'react-native-vector-icons/Entypo';
 import {
   getMessages,
+  inActiveRoomHandler,
   leaveMeetingRooms,
   sendMessages,
 } from '../../redux/fanSlice';
@@ -106,35 +109,37 @@ const MeetingChat = () => {
             {groupName}
           </Text>
         </View>
-        <TouchableOpacity
-          onPress={() => leaveHandler()}
-          style={[
-            tw`rounded-lg justify-center`,
-            {
-              width: '25%',
-              height: 30,
-              alignSelf: 'center',
-            },
-          ]}>
-          <LinearGradient
-            colors={['#6A36CE', '#2575F6']}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 1}}
+        <View style={tw`flex-row `}>
+          <TouchableOpacity
+            onPress={() => leaveHandler()}
             style={[
-              tw`rounded-lg justify-center flex-row`,
-              {flex: 1, justifyContent: 'center', alignItems: 'center'},
+              tw`rounded-lg justify-center `,
+              {
+                width: '40',
+                height: 30,
+                alignSelf: 'center',
+              },
             ]}>
-            <AntDesign
-              name={'arrowleft'}
-              size={20}
-              color={'#fff'}
-              style={tw`mr-2 self-center`}
-            />
-            <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight`}>
-              Leave
-            </Text>
-          </LinearGradient>
-        </TouchableOpacity>
+            <LinearGradient
+              colors={['#6A36CE', '#2575F6']}
+              start={{x: 0, y: 0}}
+              end={{x: 1, y: 1}}
+              style={[
+                tw`rounded-lg justify-center flex-row px-2`,
+                {flex: 1, justifyContent: 'center', alignItems: 'center'},
+              ]}>
+              <AntDesign
+                name={'arrowleft'}
+                size={20}
+                color={'#fff'}
+                style={tw`mr-2 self-center`}
+              />
+              <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight`}>
+                Leave
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Chat */}

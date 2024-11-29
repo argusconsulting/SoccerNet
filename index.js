@@ -8,9 +8,15 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {persistor} from './src/redux/store';
 import {PersistGate} from 'redux-persist/integration/react';
 import Toast from 'react-native-toast-message';
-import { config } from './src/scripts/toast';
+import {config} from './src/scripts/toast';
+import {useEffect} from 'react';
+import {InitializeNotification} from './src/components/notification-component';
 
 const Root = () => {
+  useEffect(() => {
+    InitializeNotification();
+  }, []);
+
   return (
     <>
       <GestureHandlerRootView style={{flex: 1}}>

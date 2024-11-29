@@ -33,6 +33,7 @@ import {useTranslation} from 'react-i18next';
 import GoogleLogin from '../google-login';
 import FacebookLogin from '../facebook-login';
 import MicrosoftLogin from '../microsoft-login';
+import {GetFCMToken} from '../notification-component';
 
 const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
   const phoneInput = useRef(null);
@@ -114,7 +115,8 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
         ToastAndroid.show('Please enter your password', ToastAndroid.LONG);
         return;
       }
-
+      const device_token = await GetFCMToken();
+      // console.log('device token value ', device_token);
       setSubmitLoader(true);
       postApi(api_name_login, {
         login_type: checked,

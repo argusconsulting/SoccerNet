@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {getApi, postApi} from '../scripts/api-services';
 import {
+  api_name_active_inactive,
   api_name_create_fan_rooms,
   api_name_get_countries,
   api_name_get_filter,
@@ -12,7 +13,6 @@ export const createMeetingRooms = createAsyncThunk(
   async reqData => {
     try {
       const response = await postApi(`${api_name_create_fan_rooms}`, reqData);
-      // console.log('bj', response);
       if (response?.status === 201) {
         Alertify.success('Meeting room created successfully');
       }
@@ -54,22 +54,45 @@ export const getFilterData = createAsyncThunk(
 );
 
 // filter
-export const filter = createAsyncThunk(
+export const filterHandler = createAsyncThunk(
   'meetingRoom/filter',
   async (selectedIds, {rejectWithValue}) => {
     const reqData = {
       country_ids: selectedIds,
     };
-
-    console.log('Request Data:', reqData);
-
     try {
-      const response = await getApi(`${api_name_get_filter}`, reqData); // Ensure the correct method (GET/POST)
-      console.log('API Response:', response); // Log the response for debugging
+      const response = await postApi(`${api_name_get_filter}`, reqData); // Ensure the correct method (GET/POST)
       return response; // Return the response to be used in the reducer
     } catch (error) {
       console.log('Error in filter API:', error);
       return rejectWithValue(error.message || error); // Reject with an error message if necessary
+    }
+  },
+);
+
+// active / inactive
+export const inActiveRoomHandler = createAsyncThunk(
+  'meetingRoom/inActive',
+  async ({status, groupId}, {rejectWithValue}) => {
+    // Prepare the request data
+    const reqData = {
+      is_active: status, // Use the boolean value directly
+    };
+
+    try {
+      const response = await postApi(
+        `${api_name_active_inactive}/${groupId}/toggle-status`,
+        reqData,
+      );
+      console.log('Response from toggle-status API:', response);
+
+      // Return the response to the Redux slice or component
+      return response;
+    } catch (error) {
+      console.error('Error in active/inactive API:', error);
+
+      // Reject with an error message if necessary
+      return rejectWithValue(error.message || error);
     }
   },
 );
@@ -164,9 +187,13 @@ export const meetingRoom = createSlice({
     roomData: [],
     messages: [],
     filterData: [],
-    filter: [],
+    filterRes: [],
   },
-  reducers: {},
+  reducers: {
+    setFilterResData: (state, action) => {
+      state.filterRes = [];
+    },
+  },
 
   extraReducers: builder => {
     builder
@@ -206,17 +233,19 @@ export const meetingRoom = createSlice({
       });
 
     builder
-      .addCase(filter.pending, (state, action) => {
+      .addCase(filterHandler.pending, (state, action) => {
         state.isLoading = true;
+        state.filterRes = [];
       })
-      .addCase(filter.fulfilled, (state, action) => {
+      .addCase(filterHandler.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.filter = action?.payload?.groups;
+        state.filterRes = action?.payload;
       })
-      .addCase(filter.rejected, (state, action) => {
+      .addCase(filterHandler.rejected, (state, action) => {
         state.isLoading = false;
       });
   },
 });
 
+export const {setFilterResData} = meetingRoom.actions;
 export default meetingRoom.reducer;

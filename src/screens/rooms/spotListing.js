@@ -1,12 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   FlatList,
-  StyleSheet,
   Text,
   View,
   Image,
   TouchableOpacity,
-  Button,
+  Alert,
 } from 'react-native';
 import tw from '../../styles/tailwind';
 import Header from '../../components/header/header';
@@ -19,16 +18,19 @@ import {Checkbox} from 'react-native-paper';
 import debounce from 'lodash/debounce';
 import Modal from 'react-native-modal';
 import {
-  filter,
+  filterHandler,
   getFilterData,
   getMeetingRooms,
+  inActiveRoomHandler,
   joinMeetingRooms,
   leaveMeetingRooms,
+  setFilterResData,
 } from '../../redux/fanSlice';
-import Entypo from 'react-native-vector-icons/Entypo';
 import SearchBar from '../../components/search-bar/search-bar';
 import {searchHandler, setSearchData} from '../../redux/searchSlice';
 import Loader from '../../components/loader/Loader';
+import Entypo from 'react-native-vector-icons/Entypo';
+import {getProfileData} from '../../redux/profileSlice';
 
 const SpotLight = () => {
   const navigation = useNavigation();
@@ -36,10 +38,15 @@ const SpotLight = () => {
   const loading = useSelector(state => state.room?.isLoading);
   const data = useSelector(state => state.room?.roomData);
   const filterData = useSelector(state => state.room?.filterData);
-  // const filteredRoomData = useSelector(state => state.room?.filter);
+  const final = useSelector(state => state.room?.filterRes);
   const userId = useSelector(state => state.auth_store.userID);
   const searchedData = useSelector(state => state?.search.searchData);
+  const userProfileData = useSelector(state => state.profile.userProfileData);
+
+  console.log('userProfileData', userProfileData);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isProfileCheckModal, setProfileCheckModal] = useState(false);
+  const filteredRoomData = final?.data?.groups;
 
   const [selectedIds, setSelectedIds] = useState([]);
 
@@ -57,12 +64,22 @@ const SpotLight = () => {
 
   const toggleModal = () => {
     dispatch(getFilterData());
-    setModalVisible(!isModalVisible);
+    setModalVisible(true);
   };
+
+  useEffect(() => {
+    // Check if userProfileData.country is empty or undefined
+    if (!userProfileData?.country) {
+      setProfileCheckModal(true);
+    } else {
+      setProfileCheckModal(false);
+    }
+  }, [userProfileData]);
 
   useEffect(() => {
     const willFocusSubscription = navigation.addListener('focus', () => {
       dispatch(getMeetingRooms());
+      dispatch(getProfileData());
     });
     return willFocusSubscription;
   }, [dispatch]);
@@ -87,6 +104,24 @@ const SpotLight = () => {
   const formatDate = dateTime => {
     return moment(dateTime, 'YYYY-MM-DD hh:mm A').format('D MMMM YYYY');
   };
+
+  const createTwoButtonAlert = (groupId, isActive) =>
+    Alert.alert(
+      'Change Room Status',
+      `Are you sure you want to mark this room as ${
+        isActive ? 'inactive' : 'active'
+      }?`,
+      [
+        {text: 'Cancel', style: 'cancel'},
+        {
+          text: 'Confirm',
+          onPress: () => {
+            dispatch(inActiveRoomHandler({status: !isActive, groupId}));
+            dispatch(getMeetingRooms());
+          },
+        },
+      ],
+    );
 
   const Item = ({item}) => {
     const isJoined = item.users.some(user => user.id === userId);
@@ -114,7 +149,12 @@ const SpotLight = () => {
 
     return (
       <TouchableOpacity
-        style={tw`bg-[#303649] p-4 rounded-lg w-43.5 m-2`}
+        style={
+          item?.is_active === false
+            ? tw`bg-[#545454] p-4 rounded-lg w-43.5 m-2`
+            : tw`bg-[#303649] p-4 rounded-lg w-43.5 m-2`
+        }
+        disabled={item?.is_active === false}
         onPress={() => onCardClick({groupId: item?.id, groupName: item?.name})}>
         <View style={tw`flex-row justify-between`}>
           <Text
@@ -124,8 +164,15 @@ const SpotLight = () => {
             ]}>
             {item.name}
           </Text>
-          <TouchableOpacity style={tw`self-center`}>
-            <Entypo name={'dots-three-vertical'} size={18} color={'#fff'} />
+          <TouchableOpacity
+            style={tw`self-center`}
+            onPress={() => createTwoButtonAlert(item?.id, item?.is_active)}>
+            <Entypo
+              name={'dots-three-vertical'}
+              size={18}
+              color={'#fff'}
+              style={tw`ml-3`}
+            />
           </TouchableOpacity>
         </View>
         <Text style={tw`text-[#F5C451] text-[18px] font-400 leading-normal`}>
@@ -157,6 +204,7 @@ const SpotLight = () => {
           )}
         </View>
         <TouchableOpacity
+          disabled={item?.is_active === false}
           onPress={() => handlePress(item?.id)}
           style={[
             tw`mt-1 rounded-lg justify-center`,
@@ -186,9 +234,25 @@ const SpotLight = () => {
   };
 
   const onSubmitHandler = () => {
-    dispatch(filter(selectedIds));
+    dispatch(filterHandler(selectedIds));
+    setModalVisible(false);
   };
-  const displayedData = searchedData?.length > 0 ? searchedData : data;
+
+  const displayedData =
+    final?.data && filteredRoomData?.length > 0 // Check if filtered data exists
+      ? filteredRoomData
+      : searchedData?.length > 0 // Check if search data exists
+      ? searchedData
+      : !final?.data // Check if no filters are applied
+      ? data
+      : [];
+
+  // const displayedData =
+  //   filteredRoomData?.length > 0
+  //     ? filteredRoomData
+  //     : searchedData?.length > 0
+  //     ? searchedData
+  //     : data;
 
   return (
     <View style={tw`bg-[#05102E] flex-1`}>
@@ -205,9 +269,10 @@ const SpotLight = () => {
           <AntDesign name={'filter'} size={18} color={'#fff'} />
         </TouchableOpacity>
       </View>
+
       {loading ? (
         <Loader />
-      ) : displayedData?.length > 0 ? (
+      ) : displayedData?.length > 0 ? ( // If there's data to display
         <FlatList
           numColumns={2}
           contentContainerStyle={tw`p-1`}
@@ -217,11 +282,18 @@ const SpotLight = () => {
           renderItem={({item}) => <Item item={item} />}
           keyExtractor={item => item.id}
         />
-      ) : (
-        <Text style={tw`text-white text-center mt-10 text-[16px] font-400`}>
+      ) : final?.data ? ( // Filters applied but no data found
+        <Text
+          style={tw`text-[#fff] text-[20px] mt-15 mr-3 font-401 leading-tight self-center`}>
           No results found.
         </Text>
+      ) : (
+        <Text
+          style={tw`text-[#fff] text-[20px] mt-15 mr-3 font-401 leading-tight self-center`}>
+          No data available.
+        </Text>
       )}
+
       <TouchableOpacity
         style={tw` rounded-3xl absolute bottom-15 self-center flex-row justify-center`}
         activeOpacity={0.8}
@@ -235,43 +307,63 @@ const SpotLight = () => {
       <Modal
         isVisible={isModalVisible}
         onBackdropPress={() => setModalVisible(false)}>
-        <View style={tw` bg-[#B2BEB5] w-full h-[60%] rounded-lg`}>
+        <View style={tw`bg-[#B2BEB5] w-full h-[50%] rounded-lg`}>
           <View style={tw`flex-row justify-between`}>
             <Text
               style={tw`text-[#000] text-[24px] m-5 font-401 leading-tight`}>
               Filter
             </Text>
-            <TouchableOpacity
-              style={tw`self-center mr-5`}
-              onPress={toggleModal}>
-              <AntDesign name={'close'} size={20} color={'#000'} />
-            </TouchableOpacity>
+            <View style={tw`flex-row`}>
+              <TouchableOpacity
+                onPress={() => {
+                  dispatch(setFilterResData());
+                  setModalVisible(false);
+                }}>
+                <Text
+                  style={tw`text-blue-500 text-[20px] mt-5 mr-3 font-401 leading-tight`}>
+                  Clear Filters
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={tw`self-center mr-5`}
+                onPress={() => setModalVisible(false)}>
+                <AntDesign name={'close'} size={20} color={'#000'} />
+              </TouchableOpacity>
+            </View>
           </View>
           {loading ? (
             <Loader />
-          ) : (
-            filterData.map(e => {
-              return (
-                <View style={tw`flex-row mx-3 mt-3 `} key={e.id}>
+          ) : filterData && filterData.length > 0 ? (
+            <FlatList
+              data={filterData}
+              numColumns={2} // Ensure two items per row
+              keyExtractor={item => item.id.toString()}
+              renderItem={({item}) => (
+                <View style={tw`w-[45%] mx-3 mt-3 flex-row items-center`}>
                   <Checkbox
                     status={
-                      selectedIds.includes(e.id) ? 'checked' : 'unchecked'
+                      selectedIds.includes(item.id) ? 'checked' : 'unchecked'
                     }
-                    onPress={() => handleCheckboxPress(e.id)}
+                    onPress={() => handleCheckboxPress(item.id)}
                   />
                   <Text
-                    style={tw`text-[#000] text-[22px] mt-1 font-401 leading-tight`}>
-                    {e?.name}
+                    style={tw`text-[#000] text-[22px] ml-2 font-401 leading-tight`}>
+                    {item?.name}
                   </Text>
                 </View>
-              );
-            })
+              )}
+              columnWrapperStyle={tw`justify-between`} // Ensures spacing between columns
+            />
+          ) : (
+            <Text style={tw`text-[#000] text-[18px] mt-10 text-center`}>
+              No data available.
+            </Text>
           )}
 
           <TouchableOpacity
             onPress={() => onSubmitHandler()}
             style={[
-              tw`mt-15 mx-2 rounded-md justify-center self-center`,
+              tw`my-5 mx-2 rounded-md justify-center self-center`,
               {
                 width: '90%',
                 height: 50,
@@ -292,6 +384,51 @@ const SpotLight = () => {
           </TouchableOpacity>
         </View>
       </Modal>
+
+      {loading ? (
+        <View></View>
+      ) : (
+        <Modal isVisible={isProfileCheckModal}>
+          <View style={tw`bg-[#F9F9F9] w-[90%] rounded-lg self-center`}>
+            {/* Add an image or GIF */}
+            <Image
+              source={{uri: 'https://i.gifer.com/7efs.gif'}} // Replace with your desired image/GIF URL
+              style={tw`w-full h-[200px] rounded-t-lg`}
+              resizeMode="cover"
+            />
+
+            {/* Modal Content */}
+            <View style={tw`p-5`}>
+              <Text
+                style={tw`text-[#333] text-[18px] font-semibold text-center`}>
+                Complete Your Profile
+              </Text>
+              <Text style={tw`text-[#555] text-[16px] mt-3 text-center`}>
+                You need to submit all your details to proceed further. Please
+                go back to your profile and update the necessary information.
+              </Text>
+            </View>
+
+            {/* Gradient Button */}
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('Profile');
+                setProfileCheckModal(false);
+              }}
+              style={tw`my-5 mx-5 rounded-md`}>
+              <LinearGradient
+                colors={['#6A36CE', '#2575F6']}
+                start={{x: 0, y: 0}}
+                end={{x: 1, y: 1}}
+                style={tw`rounded-md py-3 flex-row justify-center items-center`}>
+                <Text style={tw`text-[#fff] text-[16px] font-semibold`}>
+                  Go Back to Profile
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+      )}
     </View>
   );
 };

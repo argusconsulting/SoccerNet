@@ -14,7 +14,6 @@ import MultiSelectDropdown from '../../components/select-dropdown/select-dropdow
 import {t} from 'i18next';
 import {useDispatch, useSelector} from 'react-redux';
 import {getAllLeagues, postSelectedLeagues} from '../../redux/leagueSlice';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Alertify from '../../scripts/toast';
 
 const LeagueSelection = () => {

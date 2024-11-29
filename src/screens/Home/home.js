@@ -74,7 +74,12 @@ const Home = () => {
   }, [dispatch, monthRange]);
 
   useEffect(() => {
-    dispatch(getSelectedLeagues({lang}));
+    const timer = setTimeout(() => {
+      dispatch(getSelectedLeagues({lang}));
+    }, 2000); // Delay of 2 seconds (2000 ms)
+
+    // Cleanup the timeout to avoid memory leaks
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -151,12 +156,12 @@ const Home = () => {
             style={tw`text-white text-[22px] font-401 leading-tight  mt-3  px-5`}>
             {t('liveNow')}
           </Text>
-          {inPlayLiveScores?.data?.length > 0 && (
+          {/* {inPlayLiveScores?.data?.length > 0 && (
             <Text
               style={tw`text-[#8195FF] text-[14px] font-401 leading-tight  mt-5  px-5`}>
               {t('seeAll')}
             </Text>
-          )}
+          )} */}
         </View>
         {inPlayLiveScores?.data?.length > 0 ? (
           <FlatList

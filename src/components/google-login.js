@@ -32,6 +32,7 @@ const GoogleLogin = () => {
       const usrInfo = await GoogleSignin.signIn();
       setUserInfo(usrInfo);
       var idToken = usrInfo?.data?.idToken;
+      console.log('idToekn', idToken);
       store.dispatch(setSocialLoginToken());
       const response = await _googleSocialLogin(idToken);
       navigation.navigate('LeagueSelection');

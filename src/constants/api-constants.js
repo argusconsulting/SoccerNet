@@ -25,6 +25,7 @@ export const api_name_create_fan_rooms = 'groups';
 export const api_name_search = 'groups/search';
 export const api_name_get_countries = 'get/countries';
 export const api_name_get_filter = 'groups/filter-by-country';
+export const api_name_active_inactive = 'groups';
 
 // sportmonks
 // export const api_name_allLeagues = 'leagues';
