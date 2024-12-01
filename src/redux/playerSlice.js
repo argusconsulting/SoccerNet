@@ -62,10 +62,14 @@ const playerSlice = createSlice({
     isLoading: false,
     allPlayers: [],
     playerData: [],
-    allSeasons: [],
+    allSeasons: {},
     status: '',
   },
-  reducers: {},
+  reducers: {
+    clearSeasons(state) {
+      state.allSeasons = {};
+    },
+  },
   extraReducers: builder => {
     builder.addCase(getAllPlayers.fulfilled, (state, action) => {
       state.allPlayers = action?.payload;
@@ -120,4 +124,5 @@ const playerSlice = createSlice({
   },
 });
 
+export const {clearSeasons} = playerSlice.actions;
 export default playerSlice.reducer;

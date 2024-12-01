@@ -13,7 +13,11 @@ import tw from '../../styles/tailwind';
 import Header from '../header/header';
 import {useRoute} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {getPlayersById, getSeasonsById} from '../../redux/playerSlice';
+import {
+  clearSeasons,
+  getPlayersById,
+  getSeasonsById,
+} from '../../redux/playerSlice';
 import Entypo from 'react-native-vector-icons/Entypo';
 
 const PlayerInfo = () => {
@@ -27,12 +31,7 @@ const PlayerInfo = () => {
 
   const [selectedSeasonId, setSelectedSeasonId] = useState(null);
 
-  console.log('data', data);
-
   const targetStatNames = [
-    'Shots Total',
-    'Penalties',
-    'Fouls',
     'Substitutions',
     'Goals Conceded',
     'Clearances',
@@ -42,6 +41,16 @@ const PlayerInfo = () => {
     'Saves',
     'Bench',
   ];
+  const statImageMap = {
+    Saves: require('../../assets/gloves.png'),
+    Bench: require('../../assets/bench.png'),
+    Rating: require('../../assets/star.png'),
+    Substitutions: require('../../assets/player-substitution.png'),
+    'Goals Conceded': require('../../assets/goal.png'),
+    'Minutes Played': require('../../assets/stopwatch.png'),
+    Appearances: require('../../assets/apper.png'),
+    Clearances: require('../../assets/soccer-player.png'),
+  };
 
   // Filter statistics based on the selected season
   const filteredStats =
@@ -59,6 +68,8 @@ const PlayerInfo = () => {
       ) || [];
 
   useEffect(() => {
+    dispatch(clearSeasons());
+
     dispatch(
       getPlayersById({
         playerId,
@@ -93,9 +104,16 @@ const PlayerInfo = () => {
     Goalkeeper: require('../../assets/icons/football-goalkeeper-catching-the-ball.png'),
     Defender: require('../../assets/icons/football-player-blocking-another-player.png'),
     Midfielder: require('../../assets/icons/football-player-kicking-ball.png'),
-    Striker: require('../../assets/icons/football-player-setting-ball.png'),
+    Attacker: require('../../assets/icons/football-player-setting-ball.png'),
   };
   const positionName = data?.position?.name;
+
+  const renderStatImage = statName => {
+    // If the statName is in the image map, return the associated image
+    return statImageMap[statName] ? (
+      <Image source={statImageMap[statName]} style={tw`w-15 h-15 `} />
+    ) : null; // You can return a default image or null if not found
+  };
 
   return (
     <View style={tw`bg-[#05102E] flex-1`}>
@@ -230,16 +248,22 @@ const PlayerInfo = () => {
             ))}
           </ScrollView>
           {filteredStats.length > 0 ? (
-            filteredStats.map((stat, index) => (
-              <View key={index} style={tw`mt-2 mx-5`}>
-                <Text style={tw`text-[#fff] text-[16px] font-400`}>
-                  {stat.type.name}:{' '}
-                  {stat.value.total ?? stat.value.average ?? 'N/A'}
-                </Text>
-              </View>
-            ))
+            <View style={tw`flex-row flex-wrap mt-2 mx-2`}>
+              {filteredStats.map((stat, index) => (
+                <View key={index} style={tw`w-1/2 p-2  items-center`}>
+                  {renderStatImage(stat.type.name)}
+                  <Text
+                    style={tw`text-[#fff] text-[20px] my-3 self-center font-401`}>
+                    {stat.value.total ?? stat.value.average ?? 'N/A'}
+                  </Text>
+                  <Text style={tw`text-[#fff] text-[18px] mb-5 font-400`}>
+                    {stat.type.name}
+                  </Text>
+                </View>
+              ))}
+            </View>
           ) : (
-            <Text style={tw`text-[#000] text-[16px] font-400 mt-5 self-center`}>
+            <Text style={tw`text-[#fff] text-[16px] font-400 mt-5 self-center`}>
               No statistics available for this season
             </Text>
           )}
