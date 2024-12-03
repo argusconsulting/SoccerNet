@@ -28,7 +28,6 @@ const LeagueScreen = () => {
   }, []);
 
   const toggleItem = seasonId => {
-    console.log('seasonId', seasonId);
     setExpandedItem(expandedItem === seasonId ? null : seasonId); // Toggle expansion by seasonId
     dispatch(getSeasonsById(seasonId)); // Fetch season data for the specific current season ID
   };

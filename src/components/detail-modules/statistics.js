@@ -98,14 +98,19 @@ const Statistics = ({fixtureId}) => {
             <Text style={tw`text-white text-[14px] font-bold`}>Statistics</Text>
             <Text style={tw`text-white text-[14px] font-bold`}>Away</Text>
           </View>
-
+          {uniqueStatistics.length > 0 ? (
+            <FlatList
+              data={uniqueStatistics}
+              renderItem={renderItem}
+              keyExtractor={item => item.type_id.toString()}
+              contentContainerStyle={tw`pt-4`}
+            />
+          ) : (
+            <Text style={tw`text-white text-[24px] font-401 self-center my-10`}>
+              No Statistics Found !
+            </Text>
+          )}
           {/* Statistics */}
-          <FlatList
-            data={uniqueStatistics}
-            renderItem={renderItem}
-            keyExtractor={item => item.type_id.toString()}
-            contentContainerStyle={tw`pt-4`}
-          />
         </>
       )}
     </View>

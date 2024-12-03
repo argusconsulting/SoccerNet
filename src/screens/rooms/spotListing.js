@@ -116,7 +116,7 @@ const SpotLight = () => {
           text: 'Confirm',
           onPress: () => {
             dispatch(inActiveRoomHandler({status: !isActive, groupId}));
-            dispatch(getMeetingRooms());
+            // dispatch(getMeetingRooms());
           },
         },
       ],
@@ -158,7 +158,7 @@ const SpotLight = () => {
         <View style={tw`flex-row justify-between`}>
           <Text
             style={[
-              tw`text-white text-[20px] font-401 leading-normal mb-1`,
+              tw`text-white text-[20px] font-401 leading-normal mb-1 w-30`,
               {textTransform: 'capitalize'},
             ]}>
             {item.name}

@@ -73,7 +73,7 @@ export const filterHandler = createAsyncThunk(
 // active / inactive
 export const inActiveRoomHandler = createAsyncThunk(
   'meetingRoom/inActive',
-  async ({status, groupId}, {rejectWithValue}) => {
+  async ({status, groupId}, {rejectWithValue, dispatch}) => {
     // Prepare the request data
     const reqData = {
       is_active: status, // Use the boolean value directly
@@ -84,13 +84,12 @@ export const inActiveRoomHandler = createAsyncThunk(
         `${api_name_active_inactive}/${groupId}/toggle-status`,
         reqData,
       );
-      console.log('Response from toggle-status API:', response);
 
-      // Return the response to the Redux slice or component
+      dispatch(getMeetingRooms());
       return response;
     } catch (error) {
       console.error('Error in active/inactive API:', error);
-
+      Alertify.error('Only the group creator can update the status');
       // Reject with an error message if necessary
       return rejectWithValue(error.message || error);
     }

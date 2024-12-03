@@ -61,7 +61,7 @@ const MeetingChat = () => {
       console.log('pusherInstance', pusherInstance);
 
       await pusherInstance.init({
-        apiKey: 'f42f7c7b6d48287929b7',
+        apiKey: '34e8ce6685ada31490ca',
         cluster: 'ap2',
         authEndpoint: 'https://kickscore.eprime.app/api/broadcasting/auth',
       });
@@ -69,11 +69,14 @@ const MeetingChat = () => {
       await pusherInstance.connect();
       const channel = await pusherInstance.subscribe({
         channelName: `group.${groupId}`,
-        onSubscriptionSucceeded: channelName => {
-          console.log(`Successfully subscribed to channel: ${channelName}`);
+        onSubscriptionSucceeded: data => {
+          console.log('Subscription succeeded:', data);
         },
       });
-      console.log('Subscribed channel object:', channel);
+
+      channel.bind('pusher:subscription_error', error => {
+        console.log('Subscription error:', error);
+      });
     };
 
     initializePusher();
