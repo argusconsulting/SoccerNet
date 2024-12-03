@@ -1,6 +1,7 @@
 import {
   FlatList,
   Image,
+  ImageBackground,
   ScrollView,
   StyleSheet,
   Text,
@@ -41,10 +42,10 @@ const HighlightDetail = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const detailsType = [
-    {
-      id: 1,
-      name: 'Summary',
-    },
+    // {
+    //   id: 1,
+    //   name: 'Summary',
+    // },
     {
       id: 2,
       name: 'Statistics',
@@ -63,7 +64,7 @@ const HighlightDetail = () => {
     },
   ];
 
-  const [type, setType] = useState('Summary');
+  const [type, setType] = useState('Statistics');
   const dispatch = useDispatch();
   const fixtureId = route?.params?.fixtureId;
   const detailData = useSelector(state => state?.fixtures?.fixturesById);
@@ -123,110 +124,87 @@ const HighlightDetail = () => {
 
   return (
     <View style={tw`bg-[#05102E] flex-1 `}>
-      <Header name="" />
       <ScrollView>
-        <View style={[tw`  mt-2 mx-5`]}>
-          <View style={tw`flex-row justify-between`}>
-            <Image
-              source={{uri: detailData?.league?.image_path}}
-              style={tw`w-6 h-6 mt-2 ml-3`}
-            />
-            <Text
-              style={tw`text-[#a9a9a9] text-[16px] font-400 leading-normal self-center mt-1.5`}>
-              {moment(detailData?.starting_at).format('MMMM Do YYYY')}
-            </Text>
-
-            <Text
-              style={tw`text-[#fff] text-[16px] font-401 leading-normal mt-1.5 mr-3`}>
-              {detailData?.length}"
-            </Text>
-          </View>
-
-          <View style={tw`flex-row justify-between mx-12 mt-3`}>
-            <View>
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('Players', {
-                    fixtureId: fixtureId,
-                    teamId: homeTeam.id,
-                    teamName: homeTeam?.name,
-                    teamImage: homeTeam?.image_path,
-                  })
-                }>
-                <Image
-                  source={{uri: homeTeam?.image_path}}
-                  style={[tw`w-10 h-10 self-center`, {resizeMode: 'contain'}]}
-                />
-              </TouchableOpacity>
+        <ImageBackground
+          source={require('../../../assets/detail-bg.png')}
+          style={[tw`w-full h-50`, {resizeMode: 'contain'}]}>
+          <Header name="" />
+          <View style={[tw` px-5 pb-10`]}>
+            <View style={tw`flex-row justify-between `}>
+              <Image
+                source={{uri: detailData?.league?.image_path}}
+                style={tw`w-6 h-6 mt-2 ml-3`}
+              />
               <Text
-                style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5 `}>
-                {homeTeam?.name}
+                style={tw`text-[#fff] text-[16px] font-400 leading-normal self-center mt-1.5`}>
+                {moment(detailData?.starting_at).format('MMMM Do YYYY')}
+              </Text>
+
+              <Text
+                style={tw`text-[#fff] text-[16px] font-401 leading-normal mt-1.5 mr-3`}>
+                {detailData?.length}"
               </Text>
             </View>
-            <Text
-              style={tw`text-[#fff] text-[16px] font-401 leading-normal mt-1.5 ml-3`}>
-              {homeScore}
-            </Text>
-            <Text
-              style={tw`text-[#fff] text-[16px] font-401 leading-normal mt-1.5 `}>
-              -
-            </Text>
-            <Text
-              style={tw`text-[#fff] text-[16px] font-401 leading-normal mt-1.5 mr-3`}>
-              {awayScore}
-            </Text>
-            <View>
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('Players', {
-                    fixtureId: fixtureId,
-                    teamId: awayTeam?.id,
-                    teamName: awayTeam?.name,
-                    teamImage: awayTeam?.image_path,
-                  })
-                }>
-                <Image
-                  source={{uri: awayTeam?.image_path}}
-                  style={[tw`w-10 h-10 self-center`, {resizeMode: 'contain'}]}
-                />
-              </TouchableOpacity>
+
+            <View style={tw`flex-row justify-between mx-12 mt-3`}>
+              <View>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('Players', {
+                      fixtureId: fixtureId,
+                      teamId: homeTeam.id,
+                      teamName: homeTeam?.name,
+                      teamImage: homeTeam?.image_path,
+                    })
+                  }>
+                  <Image
+                    source={{uri: homeTeam?.image_path}}
+                    style={[tw`w-10 h-10 self-center`, {resizeMode: 'contain'}]}
+                  />
+                </TouchableOpacity>
+                <Text
+                  style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5 `}>
+                  {homeTeam?.name}
+                </Text>
+              </View>
               <Text
-                style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5`}>
-                {awayTeam?.name}
+                style={tw`text-[#fff] text-[16px] font-401 leading-normal mt-1.5 ml-3`}>
+                {homeScore}
               </Text>
+              <Text
+                style={tw`text-[#fff] text-[16px] font-401 leading-normal mt-1.5 `}>
+                -
+              </Text>
+              <Text
+                style={tw`text-[#fff] text-[16px] font-401 leading-normal mt-1.5 mr-3`}>
+                {awayScore}
+              </Text>
+              <View>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('Players', {
+                      fixtureId: fixtureId,
+                      teamId: awayTeam?.id,
+                      teamName: awayTeam?.name,
+                      teamImage: awayTeam?.image_path,
+                    })
+                  }>
+                  <Image
+                    source={{uri: awayTeam?.image_path}}
+                    style={[tw`w-10 h-10 self-center`, {resizeMode: 'contain'}]}
+                  />
+                </TouchableOpacity>
+                <Text
+                  style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5`}>
+                  {awayTeam?.name}
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
-        {/* <View style={tw`flex-row self-center mt-5`}>
-          <Text
-            style={tw`text-[#a9a9a9] text-[16px] font-400 leading-normal self-center mt-1.5 w-31`}>
-            R. Mahrez 57’ (Pen)
-          </Text>
-          <Image
-            source={require('../../../assets/icons/football.png')}
-            style={[tw`w-5 h-5 mt-2 mx-5`, {resizeMode: 'contain'}]}
-          />
+        </ImageBackground>
 
-          <Text
-            style={tw`text-[#a9a9a9] text-[16px] font-400 leading-normal self-center mt-1.5 w-30`}>
-            R. Mahrez 57’ (Pen)
-          </Text>
-        </View>
-        <View style={tw`flex-row self-center mt-2`}>
-          <Text
-            style={tw`text-[#a9a9a9] text-[16px] font-400 leading-normal self-center mt-1.5 w-35`}></Text>
-          <Image
-            source={require('../../../assets/icons/red-card.png')}
-            style={[tw`w-5 h-5 mt-2 mx-5`, {resizeMode: 'contain'}]}
-          />
-
-          <Text
-            style={tw`text-[#a9a9a9] text-[16px] font-400 leading-normal self-center mt-1.5 w-35`}>
-            Gabriel Magalhaes 59’
-          </Text>
-        </View> */}
         <View>
-          <View style={tw` border-t pt-3 ml-3 border-[#3e3e3e] mt-10 `} />
+          <View style={tw` border-t pt-3  border-[#3e3e3e] mt-2 `} />
           <FlatList
             data={detailsType}
             horizontal
@@ -235,7 +213,7 @@ const HighlightDetail = () => {
             renderItem={renderItem}
             keyExtractor={item => item.id.toString()}
           />
-          <View style={tw` border-b pt-3 ml-3 border-[#3e3e3e] `} />
+          <View style={tw` border-b pt-3  border-[#3e3e3e] `} />
         </View>
 
         <Suspense fallback={<Text>Loading...</Text>}>

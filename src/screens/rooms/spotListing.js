@@ -43,7 +43,6 @@ const SpotLight = () => {
   const searchedData = useSelector(state => state?.search.searchData);
   const userProfileData = useSelector(state => state.profile.userProfileData);
 
-  console.log('userProfileData', userProfileData);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isProfileCheckModal, setProfileCheckModal] = useState(false);
   const filteredRoomData = final?.data?.groups;

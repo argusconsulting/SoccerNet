@@ -13,7 +13,7 @@ import Loader from '../../components/loader/Loader'; // Assuming Loader is your 
 const TriviaQuestions = ({}) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
-const [isCorrect, setIsCorrect] = useState(null);
+  const [isCorrect, setIsCorrect] = useState(null);
   const route = useRoute();
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -43,22 +43,22 @@ const [isCorrect, setIsCorrect] = useState(null);
     }
   };
 
-  const handleOptionSelect = (option) => {
+  const handleOptionSelect = option => {
     setSelectedOption(option.id);
     setIsCorrect(option.is_correct);
   };
 
-  const renderQuestion = ({ item }) => (
+  const renderQuestion = ({item}) => (
     <View>
       <RenderHtml
         contentWidth={100}
-        source={{ html: item?.question_text }}
+        source={{html: item?.question_text}}
         tagsStyles={customStyles}
       />
-  
+
       <View style={tw`mt-5`}>
         {/* Looping over options */}
-        {item?.options?.map((option) => (
+        {item?.options?.map(option => (
           <TouchableOpacity
             key={option.id}
             style={[
@@ -66,14 +66,13 @@ const [isCorrect, setIsCorrect] = useState(null);
               selectedOption === option.id
                 ? isCorrect
                   ? tw`bg-green-500` // Correct option
-                  : tw`bg-red-500`   // Wrong option
-                : tw`bg-[#303649]`    // Default option background
+                  : tw`bg-red-500` // Wrong option
+                : tw`bg-[#303649]`, // Default option background
             ]}
-            onPress={() => handleOptionSelect(option)}
-          >
+            onPress={() => handleOptionSelect(option)}>
             <RenderHtml
               contentWidth={100}
-              source={{ html: `${option.option_text || 'No text available'}` }}
+              source={{html: `${option.option_text || 'No text available'}`}}
               tagsStyles={customStyles}
             />
           </TouchableOpacity>
@@ -137,7 +136,8 @@ const [isCorrect, setIsCorrect] = useState(null);
                   tw`rounded-xl justify-center`,
                   {flex: 1, justifyContent: 'center', alignItems: 'center'},
                 ]}>
-                <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight`}>
+                <Text
+                  style={tw`text-[#fff] text-[20px] font-401 leading-tight`}>
                   Back
                 </Text>
               </LinearGradient>
@@ -159,7 +159,8 @@ const [isCorrect, setIsCorrect] = useState(null);
                   tw`rounded-xl justify-center`,
                   {flex: 1, justifyContent: 'center', alignItems: 'center'},
                 ]}>
-                <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight`}>
+                <Text
+                  style={tw`text-[#fff] text-[20px] font-401 leading-tight`}>
                   Next
                 </Text>
               </LinearGradient>

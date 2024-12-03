@@ -15,6 +15,12 @@ import TextInput from '../../components/library/text-input';
 import {useDispatch, useSelector} from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {
+  Pusher,
+  PusherMember,
+  PusherChannel,
+  PusherEvent,
+} from '@pusher/pusher-websocket-react-native';
+import {
   getMessages,
   inActiveRoomHandler,
   leaveMeetingRooms,
@@ -29,6 +35,7 @@ const MeetingChat = () => {
   const navigation = useNavigation();
   const [message, setMessage] = useState(null);
   const [loadingInitial, setLoadingInitial] = useState(true);
+  const [pusher, setPusher] = useState(null);
   const userId = useSelector(state => state.auth_store.userID);
   const data = useSelector(state => state.room?.messages);
   const loading = useSelector(state => state.room?.isLoadingMessage);
@@ -47,19 +54,51 @@ const MeetingChat = () => {
     });
   };
 
+  // Initialize Pusher
   useEffect(() => {
-    // Initial load with loader
+    const initializePusher = async () => {
+      const pusherInstance = Pusher.getInstance();
+      console.log('pusherInstance', pusherInstance);
+
+      await pusherInstance.init({
+        apiKey: 'f42f7c7b6d48287929b7',
+        cluster: 'ap2',
+        authEndpoint: 'https://kickscore.eprime.app/api/broadcasting/auth',
+      });
+
+      await pusherInstance.connect();
+      const channel = await pusherInstance.subscribe({
+        channelName: `group.${groupId}`,
+        onSubscriptionSucceeded: channelName => {
+          console.log(`Successfully subscribed to channel: ${channelName}`);
+        },
+      });
+      console.log('Subscribed channel object:', channel);
+    };
+
+    initializePusher();
+  }, [groupId]);
+
+  // Fetch messages on component mount
+  useEffect(() => {
     dispatch(getMessages(groupId)).finally(() => {
-      setLoadingInitial(false); // Loader hides after initial load
+      setLoadingInitial(false);
     });
-
-    // Interval for fetching messages every 2 seconds without loader
-    const intervalId = setInterval(() => {
-      dispatch(getMessages(groupId));
-    }, 2000);
-
-    return () => clearInterval(intervalId); // Clean up on unmount
   }, [dispatch, groupId]);
+
+  // useEffect(() => {
+  //   // Initial load with loader
+  //   dispatch(getMessages(groupId)).finally(() => {
+  //     setLoadingInitial(false); // Loader hides after initial load
+  //   });
+
+  //   // Interval for fetching messages every 2 seconds without loader
+  //   const intervalId = setInterval(() => {
+  //     dispatch(getMessages(groupId));
+  //   }, 2000);
+
+  //   return () => clearInterval(intervalId); // Clean up on unmount
+  // }, [dispatch, groupId]);
 
   const Item = ({item}) => {
     const isSender = item?.user?.id === userId;

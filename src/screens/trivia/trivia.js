@@ -32,36 +32,76 @@ const Trivia = () => {
   const navigation = useNavigation(); // Move useNavigation here
   const {isLoading, triviaCategory} = useSelector(state => state.trivia);
 
-
-
   useEffect(() => {
     dispatch(getTriviaCategory());
   }, []);
 
-  const renderItem = ({item}) => {
-    console.log("item---------", item)
+  const renderItem = ({item, index}) => {
+    // Define a mapping for box and text colors
+    const colorMapping = [
+      {borderColor: '#2196F3', textColor: '#2196F3'}, // Blue
+      {borderColor: '#FFC107', textColor: '#FFC107'}, // Yellow
+      {borderColor: '#E91E63', textColor: '#E91E63'}, // Red
+      {borderColor: '#4CAF50', textColor: '#4CAF50'}, // Green
+    ];
+
+    // Get the color configuration for the current index
+    const colors = colorMapping[index] || {
+      borderColor: '#FFFFFF',
+      textColor: '#A9A9A9',
+    }; // Default colors
+
+    const imageMapping = {
+      'Football Facts': require('../../assets/Football_Facts.png'),
+      'Rules of the Games': require('../../assets/Rules_of_the_Game.png'),
+      'Record Breakers': require('../../assets/Record_Breakers.png'),
+      'Historical Moments': require('../../assets/Historical_Moments.png'),
+    };
+
     return (
       <TouchableOpacity
-    
-        onPress={() => {navigation.navigate('TriviaQuestions', {categoryId: item?.id , categoryName: item?.name});
-        }}>
-<Image
-  source={typeof item?.image === 'string' ? {uri: item?.image} : item?.image} 
-   style={[
-          tw`rounded-xl border-[#fff] border-[0.5px]  `,
+        style={[
+          tw`rounded-xl justify-center items-center`,
           styles.box,
-          {width: boxSize, height: boxSize},
+          {
+            width: boxSize,
+            height: boxSize,
+            borderColor: colors.borderColor,
+            borderWidth: 1,
+          },
         ]}
-/> 
-
-       </TouchableOpacity>
+        onPress={() => {
+          navigation.navigate('TriviaQuestions', {
+            categoryId: item?.id,
+            categoryName: item?.name,
+          });
+        }}>
+        {imageMapping[item?.name] && (
+          <Image
+            source={imageMapping[item?.name]}
+            style={tw`w-16 h-16 mb-2`}
+            resizeMode="contain"
+          />
+        )}
+        <Text
+          style={[
+            tw`text-[18px] font-400 leading-tight self-center w-17 mt-2 text-center`,
+            {color: colors.textColor},
+          ]}>
+          {item?.name}
+        </Text>
+      </TouchableOpacity>
     );
   };
 
   return (
     <View style={tw`bg-[#05102E] flex-1 `}>
-      <Header name="Trivia" />
+      <Header name="" />
 
+      <Image
+        source={require('../../assets/Trivia.png')}
+        style={tw`w-61 mb-10 h-15 self-center`}
+      />
       {isLoading ? (
         <Loader />
       ) : (
@@ -73,6 +113,11 @@ const Trivia = () => {
           contentContainerStyle={styles.container}
         />
       )}
+
+      <Image
+        source={require('../../assets/trivia-bg.png')}
+        style={tw`w-full h-40 self-center`}
+      />
     </View>
   );
 };
@@ -88,7 +133,6 @@ const styles = StyleSheet.create({
     margin: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    resizeMode:"cover"
+    resizeMode: 'cover',
   },
-
 });

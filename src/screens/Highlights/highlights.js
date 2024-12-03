@@ -14,7 +14,7 @@ const Highlights = () => {
   const [monthRange, setMonthRange] = useState({start: '', end: ''});
   const [page, setPage] = useState(1);
   const isLoading = useSelector(state => state?.fixtures?.isLoading);
-  const [allHighlights, setAllHighlights] = useState([]); // Accumulate all loaded data
+  const [allHighlights, setAllHighlights] = useState([]);
 
   const highlightData = useSelector(
     state => state?.fixtures?.fixturesByDateRangeHighlights,
@@ -41,7 +41,6 @@ const Highlights = () => {
       );
 
       if (response?.payload?.data) {
-        // Append new data to previously loaded data
         setAllHighlights(prevData => [...prevData, ...response.payload.data]);
       }
     }

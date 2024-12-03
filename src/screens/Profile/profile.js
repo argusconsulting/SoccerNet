@@ -88,7 +88,6 @@ const Profile = () => {
 
         // Set the image data to state
         setImageData(data);
-        console.log('check the data is ', data);
       }
     });
   };

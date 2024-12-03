@@ -2797,6 +2797,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@pusher/pusher-websocket-react-native@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "@pusher/pusher-websocket-react-native@npm:1.3.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: b9f62398b9443d9ec02c44071923fb4e8b057db541fcfc37bb35ffdf2fc13dd6c515083ac5dc62cec500d758a249d8a07d830905ca2df5be11bdde2f30eb88e4
+  languageName: node
+  linkType: hard
+
 "@react-native-async-storage/async-storage@npm:^2.0.0":
   version: 2.0.0
   resolution: "@react-native-async-storage/async-storage@npm:2.0.0"
@@ -3842,6 +3852,7 @@ __metadata:
     "@babel/preset-env": ^7.20.0
     "@babel/runtime": ^7.20.0
     "@notifee/react-native": ^9.1.3
+    "@pusher/pusher-websocket-react-native": ^1.3.1
     "@react-native-async-storage/async-storage": ^2.0.0
     "@react-native-firebase/app": ^21.0.0
     "@react-native-firebase/auth": ^21.0.0
