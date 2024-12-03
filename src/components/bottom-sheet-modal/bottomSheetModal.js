@@ -122,6 +122,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
         login_type: checked,
         login: checked === 'email' ? emailValue : value,
         password: password,
+        fcm_token: device_token,
       })
         .then(async response => {
           Alertify.success(response?.data.message);

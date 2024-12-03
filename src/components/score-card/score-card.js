@@ -5,6 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import moment from 'moment';
 
 const ScoreCard = ({match, width, screen, navigate}) => {
+  console.log('match', match);
   const navigation = useNavigation();
 
   // Function to extract scores for home and away teams
@@ -32,6 +33,18 @@ const ScoreCard = ({match, width, screen, navigate}) => {
       awayScore += score.score.goals;
     }
   });
+
+  // Check if any participant has the placeholder image
+  const hasPlaceholderImage = match?.participants?.some(
+    participant =>
+      participant?.image_path ===
+      'https://cdn.sportmonks.com/images/soccer/team_placeholder.png',
+  );
+
+  // Do not render the ScoreCard if any participant has the placeholder image
+  if (hasPlaceholderImage) {
+    return null;
+  }
 
   return (
     <TouchableOpacity

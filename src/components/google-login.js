@@ -15,6 +15,7 @@ import {useNavigation} from '@react-navigation/native';
 import {setSocialProfile} from '../redux/profileSlice';
 import {api_name_google_login} from '../constants/api-constants';
 import {postApi} from '../scripts/api-services';
+import {GetFCMToken} from './notification-component';
 
 const GoogleLogin = () => {
   const [userInfo, setUserInfo] = useState(null);
@@ -31,10 +32,12 @@ const GoogleLogin = () => {
       await GoogleSignin.hasPlayServices();
       const usrInfo = await GoogleSignin.signIn();
       setUserInfo(usrInfo);
+      const device_token = await GetFCMToken();
       var idToken = usrInfo?.data?.idToken;
-      console.log('idToekn', idToken);
+      // console.log('idToekn', idToken);
       store.dispatch(setSocialLoginToken());
-      const response = await _googleSocialLogin(idToken);
+
+      const response = await _googleSocialLogin(idToken, device_token);
       navigation.navigate('LeagueSelection');
       store.dispatch(setSocialProfile(response?.data));
       store.dispatch(setUserAuthToken(response?.data?.token));
@@ -54,10 +57,11 @@ const GoogleLogin = () => {
     }
   };
 
-  async function _googleSocialLogin(idToken) {
+  async function _googleSocialLogin(idToken, device_token) {
     try {
       const response = await postApi(api_name_google_login, {
         token: idToken,
+        fcm_token: device_token,
       });
       console.log('google res', response);
 
