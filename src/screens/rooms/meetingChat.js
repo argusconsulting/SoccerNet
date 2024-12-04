@@ -13,13 +13,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import TextInput from '../../components/library/text-input';
 import {useDispatch, useSelector} from 'react-redux';
-import Entypo from 'react-native-vector-icons/Entypo';
-import {
-  Pusher,
-  PusherMember,
-  PusherChannel,
-  PusherEvent,
-} from '@pusher/pusher-websocket-react-native';
+import {Pusher} from '@pusher/pusher-websocket-react-native';
 import {
   getMessages,
   inActiveRoomHandler,
@@ -34,13 +28,13 @@ const MeetingChat = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const [message, setMessage] = useState(null);
+  const [messages, setMessages] = useState([]);
   const [loadingInitial, setLoadingInitial] = useState(true);
-  const [pusher, setPusher] = useState(null);
   const userId = useSelector(state => state.auth_store.userID);
-  const data = useSelector(state => state.room?.messages);
-  const loading = useSelector(state => state.room?.isLoadingMessage);
   const groupId = route?.params?.groupId;
   const groupName = route?.params?.groupName;
+
+  console.log('id, name', groupId, groupName);
 
   const leaveHandler = () => {
     dispatch(leaveMeetingRooms({userId, groupId})).then(() => {
@@ -56,9 +50,10 @@ const MeetingChat = () => {
 
   // Initialize Pusher
   useEffect(() => {
+    let channel; // Declare channel outside of useEffect to ensure it's accessible for cleanup
+
     const initializePusher = async () => {
       const pusherInstance = Pusher.getInstance();
-      console.log('pusherInstance', pusherInstance);
 
       await pusherInstance.init({
         apiKey: '34e8ce6685ada31490ca',
@@ -67,10 +62,36 @@ const MeetingChat = () => {
       });
 
       await pusherInstance.connect();
-      const channel = await pusherInstance.subscribe({
+
+      // Subscribe to the channel
+      channel = await pusherInstance.subscribe({
         channelName: `group.${groupId}`,
-        onSubscriptionSucceeded: data => {
-          console.log('Subscription succeeded:', data);
+        onSubscriptionSucceeded: (channelName, data) => {
+          // console.log(`Subscribed to ${channelName}`);
+        },
+        onEvent: event => {
+          console.log(`Event received: ${event}`);
+
+          try {
+            const parsedData = JSON.parse(event?.data);
+            const messageData = parsedData?.message;
+
+            if (messageData) {
+              const newMessage = {
+                id: messageData.id, // Ensure the message has a unique ID
+                user: messageData.user,
+                content: messageData.content,
+                createdAt: new Date(messageData.createdAt),
+              };
+
+              // Append the new message to the `messages` state
+              setMessages(prevMessages => [...prevMessages, newMessage]);
+            } else {
+              console.warn('Message data is missing:', parsedData);
+            }
+          } catch (error) {
+            console.error('Error parsing event data:', error);
+          }
         },
       });
 
@@ -80,34 +101,39 @@ const MeetingChat = () => {
     };
 
     initializePusher();
-  }, [groupId]);
+
+    // Cleanup function to unsubscribe from the channel when the component unmounts
+    return () => {
+      if (channel) {
+        channel.unsubscribe();
+        console.log('Unsubscribed from the channel');
+      }
+    };
+  }, [groupId]); // Dependency array ensures the effect runs again when groupId changes
 
   // Fetch messages on component mount
   useEffect(() => {
-    dispatch(getMessages(groupId)).finally(() => {
-      setLoadingInitial(false);
-    });
+    // Fetch messages only once on initial mount
+    dispatch(getMessages(groupId))
+      .then(fetchedMessages => {
+        if (Array.isArray(fetchedMessages?.payload?.messages)) {
+          setMessages(fetchedMessages?.payload?.messages); // Directly set messages
+        } else {
+          console.warn(
+            'Fetched messages are not in an array format:',
+            fetchedMessages,
+          );
+        }
+      })
+      .finally(() => {
+        setLoadingInitial(false);
+      });
   }, [dispatch, groupId]);
-
-  // useEffect(() => {
-  //   // Initial load with loader
-  //   dispatch(getMessages(groupId)).finally(() => {
-  //     setLoadingInitial(false); // Loader hides after initial load
-  //   });
-
-  //   // Interval for fetching messages every 2 seconds without loader
-  //   const intervalId = setInterval(() => {
-  //     dispatch(getMessages(groupId));
-  //   }, 2000);
-
-  //   return () => clearInterval(intervalId); // Clean up on unmount
-  // }, [dispatch, groupId]);
 
   const Item = ({item}) => {
     const isSender = item?.user?.id === userId;
-
     return (
-      <View style={[tw`flex-1`, isSender ? tw`items-end` : tw`items-start`]}>
+      <View style={[tw` `, isSender ? tw`items-end` : tw`items-start`]}>
         {!isSender && (
           <View style={[tw`flex-row mt-4`]}>
             <Image
@@ -188,11 +214,13 @@ const MeetingChat = () => {
       {loadingInitial ? (
         <Loader />
       ) : (
-        <FlatList
-          data={data}
-          renderItem={({item}) => <Item item={item} />}
-          keyExtractor={item => item.id}
-        />
+        <View style={tw`mb-30`}>
+          <FlatList
+            data={messages}
+            renderItem={({item}) => <Item item={item} />}
+            keyExtractor={item => item.id?.toString()}
+          />
+        </View>
       )}
 
       {/* Fixed Bottom Input Row */}

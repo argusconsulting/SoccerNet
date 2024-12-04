@@ -85,7 +85,7 @@ const Trivia = () => {
         )}
         <Text
           style={[
-            tw`text-[18px] font-400 leading-tight self-center w-17 mt-2 text-center`,
+            tw`text-[18px] font-402 leading-tight self-center w-24 mt-2 text-center`,
             {color: colors.textColor},
           ]}>
           {item?.name}
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   box: {
-    backgroundColor: '#303649',
+    backgroundColor: 'transparent',
     margin: 10,
     justifyContent: 'center',
     alignItems: 'center',

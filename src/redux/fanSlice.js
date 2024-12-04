@@ -78,7 +78,7 @@ export const inActiveRoomHandler = createAsyncThunk(
     const reqData = {
       is_active: status, // Use the boolean value directly
     };
-
+    console.log('status, groupid', status, groupId);
     try {
       const response = await postApi(
         `${api_name_active_inactive}/${groupId}/toggle-status`,
@@ -89,7 +89,7 @@ export const inActiveRoomHandler = createAsyncThunk(
       return response;
     } catch (error) {
       console.error('Error in active/inactive API:', error);
-      Alertify.error('Only the group creator can update the status');
+      // Alertify.error('Only the group creator can update the status');
       // Reject with an error message if necessary
       return rejectWithValue(error.message || error);
     }

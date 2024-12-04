@@ -200,7 +200,7 @@ const Home = () => {
         </View>
         {justFinishedData?.data?.length > 0 ? (
           <FlatList
-            data={justFinishedData?.data?.slice(0, 5)}
+            data={justFinishedData?.data?.slice(0, 15)}
             horizontal
             showsHorizontalScrollIndicator={false}
             renderItem={({item}) => (

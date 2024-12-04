@@ -115,8 +115,9 @@ const SpotLight = () => {
         {
           text: 'Confirm',
           onPress: () => {
-            dispatch(inActiveRoomHandler({status: !isActive, groupId}));
-            // dispatch(getMeetingRooms());
+            setTimeout(() => {
+              dispatch(inActiveRoomHandler({status: !isActive, groupId}));
+            }, 2000);
           },
         },
       ],
@@ -125,14 +126,17 @@ const SpotLight = () => {
   const Item = ({item}) => {
     const isJoined = item.users.some(user => user.id === userId);
 
-    const handlePress = groupId => {
+    const handlePress = (groupId, groupName) => {
       if (isJoined) {
         dispatch(leaveMeetingRooms({userId, groupId})).then(() => {
           dispatch(getMeetingRooms());
         });
       } else {
         dispatch(joinMeetingRooms({userId, groupId})).then(() =>
-          navigation.navigate('MeetingChat', {groupId: groupId}),
+          navigation.navigate('MeetingChat', {
+            groupId: groupId,
+            groupName: groupName,
+          }),
         );
       }
     };
@@ -204,7 +208,7 @@ const SpotLight = () => {
         </View>
         <TouchableOpacity
           disabled={item?.is_active === false}
-          onPress={() => handlePress(item?.id)}
+          onPress={() => handlePress(item?.id, item?.name)}
           style={[
             tw`mt-1 rounded-lg justify-center`,
             {width: '100%', height: 40, alignSelf: 'center'},
