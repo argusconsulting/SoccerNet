@@ -84,9 +84,25 @@ const CalendarScreen = () => {
     return (
       <View style={tw`bg-[#303649] w-90 py-3 mt-5 self-center rounded-lg`}>
         <View style={tw`flex-row ml-5`}>
+          <Image
+            source={{uri: item?.participants?.[0]?.image_path}}
+            style={[tw`w-6 h-6`, {resizeMode: 'contain'}]}
+          />
           <Text
             style={tw`text-white text-[18px] font-400 leading-tight self-center mx-1 `}>
-            {item?.name}
+            {item?.participants?.[0]?.name}
+          </Text>
+          <Text
+            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-1 `}>
+            v/s
+          </Text>
+          <Image
+            source={{uri: item?.participants?.[1]?.image_path}}
+            style={[tw`w-6 h-6`, {resizeMode: 'contain'}]}
+          />
+          <Text
+            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-1 `}>
+            {item?.participants?.[1]?.name}
           </Text>
 
           <Text
@@ -129,6 +145,7 @@ const CalendarScreen = () => {
         Date: {selectedDate}
       </Text>
 
+      {console.log('data?.data', data?.data)}
       {data?.data ? (
         <FlatList
           data={data?.data}
