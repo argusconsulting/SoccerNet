@@ -30,10 +30,7 @@ const Home = () => {
   const loading = useSelector(state => state?.league?.isLoadingSelectedLeagues);
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
-  const goalsValues =
-    inPlayLiveScores?.data?.flatMap(item =>
-      item.scores.map(score => score.score.goals),
-    ) || [];
+
   const [monthRange, setMonthRange] = useState({start: '', end: ''});
   const justFinishedData = useSelector(
     state => state?.fixtures?.fixturesByDateRangeHighlights,

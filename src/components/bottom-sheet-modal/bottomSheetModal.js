@@ -34,6 +34,8 @@ import GoogleLogin from '../google-login';
 import FacebookLogin from '../facebook-login';
 import MicrosoftLogin from '../microsoft-login';
 import {GetFCMToken} from '../notification-component';
+import {getSelectedLeagues} from '../../redux/leagueSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
   const phoneInput = useRef(null);
@@ -48,6 +50,30 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
   const [emailValue, setEmailValue] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [checkSavedLeagues, setCheckSavedLeagues] = useState([]);
+
+  const getSelectedLeagues = async currentUserId => {
+    try {
+      const savedData = await AsyncStorage.getItem('selectedLeagues');
+      if (savedData) {
+        const {userId, leagues} = JSON.parse(savedData);
+
+        if (userId === currentUserId && leagues?.length > 0) {
+          // User matches and has selected leagues
+          navigation.navigate('Home');
+        } else {
+          // Different user or no leagues selected
+          navigation.navigate('LeagueSelection');
+        }
+      } else {
+        // No data found
+        navigation.navigate('LeagueSelection');
+      }
+    } catch (error) {
+      console.error('Error checking selected leagues:', error);
+      navigation.navigate('LeagueSelection');
+    }
+  };
 
   useEffect(() => {
     setIsLogin(selectedValue === 'Login');
@@ -134,7 +160,9 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
             dispatch(setUserID(response?.data?.user?.id));
             dispatch(setUserDetails(response?.data?.user));
             onClose();
-            navigation.navigate('LeagueSelection');
+
+            // navigation.navigate('LeagueSelection');
+            getSelectedLeagues(response?.data?.user?.id);
 
             setSubmitLoader(false);
           } else {
