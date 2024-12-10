@@ -76,35 +76,35 @@ const Standings = () => {
     <View style={tw`bg-[#303649] p-5 m-5`}>
       <View style={tw`flex-row justify-between mb-4`}>
         <Text
-          style={tw`text-[#fff] text-[16px] font-400 leading-normal self-center`}>
+          style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>
           #
         </Text>
         <Text
-          style={tw`text-[#fff] text-[16px] font-400 leading-normal self-center w-19`}>
+          style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center w-19`}>
           Team
         </Text>
         <Text
-          style={tw`text-[#fff] text-[16px] font-400 leading-normal self-center`}>
+          style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>
           M
         </Text>
         <Text
-          style={tw`text-[#fff] text-[16px] font-400 leading-normal self-center`}>
+          style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>
           W
         </Text>
         <Text
-          style={tw`text-[#fff] text-[16px] font-400 leading-normal self-center`}>
+          style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>
           D
         </Text>
         <Text
-          style={tw`text-[#fff] text-[16px] font-400 leading-normal self-center`}>
+          style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>
           L
         </Text>
         <Text
-          style={tw`text-[#fff] text-[16px] font-400 leading-normal self-center`}>
+          style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>
           G
         </Text>
         <Text
-          style={tw`text-[#fff] text-[16px] font-400 leading-normal self-center`}>
+          style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>
           PTS
         </Text>
       </View>

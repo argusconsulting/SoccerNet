@@ -92,6 +92,24 @@ const Home = () => {
     </View>
   );
 
+  // const debouncedSearch = useCallback(
+  //   debounce(query => {
+  //     if (query) {
+  //       dispatch(searchHandler(query));
+  //     } else {
+  //       dispatch(setSearchData());
+  //       dispatch(getMeetingRooms());
+  //     }
+  //   }, 500), // Adjust delay (in milliseconds) as per your requirements
+  //   [dispatch],
+  // );
+
+  // Handle search input
+  const handleSearch = query => {
+    console.log("query", query)
+    debouncedSearch(query);
+  };
+
   return (
     <View style={tw`bg-[#05102E] flex-1 `}>
       <View style={tw`flex-row justify-between p-5`}>
@@ -118,7 +136,7 @@ const Home = () => {
           {t('whatsOnYourMind')}
         </Text>
 
-        <SearchBar />
+        <SearchBar onSearch={handleSearch} placeholderText={'Search for Leagues...'}/>
       </View>
       <View>
         <View style={tw`flex-row justify-between mb-5`}>
