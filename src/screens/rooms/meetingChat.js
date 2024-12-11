@@ -13,7 +13,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import TextInput from '../../components/library/text-input';
 import {useDispatch, useSelector} from 'react-redux';
-import {Pusher} from '@pusher/pusher-websocket-react-native';
+// import {Pusher} from '@pusher/pusher-websocket-react-native';
 import {
   getMessages,
   inActiveRoomHandler,
@@ -49,67 +49,67 @@ const MeetingChat = () => {
   };
 
   // Initialize Pusher
-  useEffect(() => {
-    let channel; // Declare channel outside of useEffect to ensure it's accessible for cleanup
+  // useEffect(() => {
+  //   let channel; // Declare channel outside of useEffect to ensure it's accessible for cleanup
 
-    const initializePusher = async () => {
-      const pusherInstance = Pusher.getInstance();
+  //   const initializePusher = async () => {
+  //     const pusherInstance = Pusher.getInstance();
 
-      await pusherInstance.init({
-        apiKey: '34e8ce6685ada31490ca',
-        cluster: 'ap2',
-        authEndpoint: 'https://kickscore.eprime.app/api/broadcasting/auth',
-      });
+  //     await pusherInstance.init({
+  //       apiKey: '34e8ce6685ada31490ca',
+  //       cluster: 'ap2',
+  //       authEndpoint: 'https://kickscore.eprime.app/api/broadcasting/auth',
+  //     });
 
-      await pusherInstance.connect();
+  //     await pusherInstance.connect();
 
-      // Subscribe to the channel
-      channel = await pusherInstance.subscribe({
-        channelName: `group.${groupId}`,
-        onSubscriptionSucceeded: (channelName, data) => {
-          // console.log(`Subscribed to ${channelName}`);
-        },
-        onEvent: event => {
-          console.log(`Event received: ${event}`);
+  //     // Subscribe to the channel
+  //     channel = await pusherInstance.subscribe({
+  //       channelName: `group.${groupId}`,
+  //       onSubscriptionSucceeded: (channelName, data) => {
+  //         // console.log(`Subscribed to ${channelName}`);
+  //       },
+  //       onEvent: event => {
+  //         console.log(`Event received: ${event}`);
 
-          try {
-            const parsedData = JSON.parse(event?.data);
-            const messageData = parsedData?.message;
+  //         try {
+  //           const parsedData = JSON.parse(event?.data);
+  //           const messageData = parsedData?.message;
 
-            if (messageData) {
-              const newMessage = {
-                id: messageData.id, // Ensure the message has a unique ID
-                user: messageData.user,
-                content: messageData.content,
-                createdAt: new Date(messageData.createdAt),
-              };
+  //           if (messageData) {
+  //             const newMessage = {
+  //               id: messageData.id, // Ensure the message has a unique ID
+  //               user: messageData.user,
+  //               content: messageData.content,
+  //               createdAt: new Date(messageData.createdAt),
+  //             };
 
-              // Append the new message to the `messages` state
-              setMessages(prevMessages => [...prevMessages, newMessage]);
-            } else {
-              console.warn('Message data is missing:', parsedData);
-            }
-          } catch (error) {
-            console.error('Error parsing event data:', error);
-          }
-        },
-      });
+  //             // Append the new message to the `messages` state
+  //             setMessages(prevMessages => [...prevMessages, newMessage]);
+  //           } else {
+  //             console.warn('Message data is missing:', parsedData);
+  //           }
+  //         } catch (error) {
+  //           console.error('Error parsing event data:', error);
+  //         }
+  //       },
+  //     });
 
-      channel.bind('pusher:subscription_error', error => {
-        console.log('Subscription error:', error);
-      });
-    };
+  //     channel.bind('pusher:subscription_error', error => {
+  //       console.log('Subscription error:', error);
+  //     });
+  //   };
 
-    initializePusher();
+  //   initializePusher();
 
-    // Cleanup function to unsubscribe from the channel when the component unmounts
-    return () => {
-      if (channel) {
-        channel.unsubscribe();
-        console.log('Unsubscribed from the channel');
-      }
-    };
-  }, [groupId]); // Dependency array ensures the effect runs again when groupId changes
+  //   // Cleanup function to unsubscribe from the channel when the component unmounts
+  //   return () => {
+  //     if (channel) {
+  //       channel.unsubscribe();
+  //       console.log('Unsubscribed from the channel');
+  //     }
+  //   };
+  // }, [groupId]); // Dependency array ensures the effect runs again when groupId changes
 
   // Fetch messages on component mount
   useEffect(() => {
