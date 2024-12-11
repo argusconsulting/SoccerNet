@@ -3,7 +3,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {StyleSheet, TextInput, View} from 'react-native';
 import tw from '../../styles/tailwind';
 
-export default function SearchBar({onSearch}) {
+export default function SearchBar({onSearch , placeholderText}) {
   return (
     <>
       <View style={[tw`flex-row`, styles.searchInput]}>
@@ -15,7 +15,7 @@ export default function SearchBar({onSearch}) {
         />
         <TextInput
           style={tw`text-[#fff]`}
-          placeholder="Search..."
+          placeholder={placeholderText}
           placeholderTextColor="#a9a9a9"
           onChangeText={text => {
             console.log('TextInput value:', text); // Log the value entered

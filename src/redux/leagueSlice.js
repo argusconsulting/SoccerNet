@@ -44,7 +44,6 @@ export const getSelectedLeagues = createAsyncThunk(
       const response = await getApi(
         `${api_name_selectedLeagues}?locale=${lang}`,
       );
-      console.log('res of getting', response);
       return response;
     } catch (error) {
       console.log('Error fetching leagues API', error);
@@ -64,7 +63,6 @@ export const postSelectedLeagues = createAsyncThunk(
         api_name_sending_selected_leagues,
         reqData,
       );
-      console.log('sending data', response);
       return response;
     } catch (error) {
       console.log('Error sending selected leagues API', error);

@@ -129,8 +129,8 @@ const HighlightDetail = () => {
           source={require('../../../assets/detail-bg.png')}
           style={[tw`w-full h-50`, {resizeMode: 'contain'}]}>
           <Header name="" />
-          <View style={[tw` px-5 pb-10`]}>
-            <View style={tw`flex-row justify-between `}>
+          <View style={[tw` px-5 pb-10  mt--5`]}>
+            <View style={tw`flex-row justify-between mb-4 `}>
               <Image
                 source={{uri: detailData?.league?.image_path}}
                 style={tw`w-6 h-6 mt-2 ml-3`}
@@ -146,9 +146,10 @@ const HighlightDetail = () => {
               </Text>
             </View>
 
-            <View style={tw`flex-row justify-between mx-12 mt-3`}>
+            <View style={tw`flex-row justify-between mx-12 mt-1`}>
               <View>
                 <TouchableOpacity
+                  style={[tw`self-center justify-center items-center`]} // Wrapper styling for positioning
                   onPress={() =>
                     navigation.navigate('Players', {
                       fixtureId: fixtureId,
@@ -157,13 +158,35 @@ const HighlightDetail = () => {
                       teamImage: homeTeam?.image_path,
                     })
                   }>
-                  <Image
-                    source={{uri: homeTeam?.image_path}}
-                    style={[tw`w-10 h-10 self-center`, {resizeMode: 'contain'}]}
-                  />
+                  <View style={[tw`relative w-14 h-14`]}>
+                    {/* Shadowed circle */}
+                    <View
+                      style={[
+                        tw`absolute inset-0`, // Ensures it fills the parent container
+                        {
+                          backgroundColor: 'rgba(0, 0, 0, 0.2)', // Semi-transparent shadow effect
+                          borderRadius: 999, // Circular container
+                          shadowColor: '#fff',
+                          shadowOffset: {width: 0, height: 3},
+                          shadowOpacity: 0.1,
+                          shadowRadius: 6,
+                          elevation: 12, // For Android shadow
+                        },
+                      ]}
+                    />
+                    {/* Image centered inside the shadowed circle */}
+                    <Image
+                      source={{uri: homeTeam?.image_path}}
+                      style={[
+                        tw`w-10 h-10 self-center mt-2`, // Image size and centering
+                        {resizeMode: 'contain', borderRadius: 999}, // Make the image circular
+                      ]}
+                    />
+                  </View>
                 </TouchableOpacity>
+
                 <Text
-                  style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5 `}>
+                  style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5 self-center`}>
                   {homeTeam?.name}
                 </Text>
               </View>
@@ -181,6 +204,7 @@ const HighlightDetail = () => {
               </Text>
               <View>
                 <TouchableOpacity
+                  style={[tw`self-center justify-center items-center`]}
                   onPress={() =>
                     navigation.navigate('Players', {
                       fixtureId: fixtureId,
@@ -189,13 +213,33 @@ const HighlightDetail = () => {
                       teamImage: awayTeam?.image_path,
                     })
                   }>
-                  <Image
-                    source={{uri: awayTeam?.image_path}}
-                    style={[tw`w-10 h-10 self-center`, {resizeMode: 'contain'}]}
-                  />
+                  <View style={[tw`relative w-14 h-14`]}>
+                    {/* Shadowed circle */}
+                    <View
+                      style={[
+                        tw`absolute inset-0`, // Ensures it fills the parent container
+                        {
+                          backgroundColor: 'rgba(0, 0, 0, 0.2)', // Semi-transparent shadow effect
+                          borderRadius: 999, // Circular container
+                          shadowColor: '#fff',
+                          shadowOffset: {width: 0, height: 3},
+                          shadowOpacity: 0.1,
+                          shadowRadius: 6,
+                          elevation: 12, // For Android shadow
+                        },
+                      ]}
+                    />
+                    <Image
+                      source={{uri: awayTeam?.image_path}}
+                      style={[
+                        tw`w-10 h-10 self-center mt-2`, // Image size and centering
+                        {resizeMode: 'contain', borderRadius: 999}, // Make the image circular
+                      ]}
+                    />
+                  </View>
                 </TouchableOpacity>
                 <Text
-                  style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5`}>
+                  style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5 self-center`}>
                   {awayTeam?.name}
                 </Text>
               </View>

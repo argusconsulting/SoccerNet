@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import tw from '../../styles/tailwind';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import MultiSelectDropdown from '../../components/select-dropdown/select-dropdown';
@@ -21,6 +22,7 @@ const LeagueSelection = () => {
   const dispatch = useDispatch();
   const allLeagues = useSelector(state => state?.league?.leagueData);
   const lang = useSelector(state => state?.language_store?.language);
+  const userId = useSelector(state => state.auth_store.userID);
   const [error, setError] = useState(false);
   const [selectedLeagues, setSelectedLeagues] = useState([]);
 
@@ -28,7 +30,7 @@ const LeagueSelection = () => {
     dispatch(getAllLeagues({lang}));
   }, []);
 
-  const sendLeagues = () => {
+  const sendLeagues = async () => {
     if (selectedLeagues.length === 0) {
       // Show error if no leagues are selected
       setError(true);
@@ -37,6 +39,8 @@ const LeagueSelection = () => {
     }
     setError(false); // Reset error state if valid
     const leagueIds = selectedLeagues.map(league => league.league_id);
+    const data = {userId, leagues: leagueIds};
+    await AsyncStorage.setItem('selectedLeagues', JSON.stringify(data));
     dispatch(postSelectedLeagues(leagueIds));
     navigation.navigate('Home');
   };

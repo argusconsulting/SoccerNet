@@ -1,6 +1,7 @@
 import {
   FlatList,
   Image,
+  ImageBackground,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -10,7 +11,7 @@ import React, {lazy, Suspense, useEffect, useState} from 'react';
 import Header from '../../../components/header/header';
 import tw from '../../../styles/tailwind';
 import {useDispatch, useSelector} from 'react-redux';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {getFixturesById} from '../../../redux/fixturesSlice';
 import moment from 'moment';
 const News = lazy(() => import('../../news/news'));
@@ -25,11 +26,8 @@ const LiveDetails = () => {
   const route = useRoute();
   const dispatch = useDispatch();
   const fixtureId = route?.params?.fixtureId;
-
+  const navigation = useNavigation()
   const detailData = useSelector(state => state?.fixtures?.fixturesById);
-
-  console.log('detail', detailData);
-
   useEffect(() => {
     dispatch(getFixturesById(fixtureId));
   }, []);
@@ -94,16 +92,19 @@ const LiveDetails = () => {
 
   return (
     <View style={tw`bg-[#05102E] flex-1 `}>
+       <ImageBackground
+          source={require('../../../assets/detail-bg.png')}
+          style={[tw`w-full h-50`, {resizeMode: 'contain'}]}>
       <Header name="" />
 
-      <View style={[tw`  mt-2 mx-5`]}>
+      <View style={[tw` px-5 pb-10  mt--5`]}>
         <View style={tw`flex-row justify-between`}>
           <Image
             source={{uri: detailData?.league?.image_path}}
             style={tw`w-5 h-5 mt-2 ml-3`}
           />
           <Text
-            style={tw`text-[#a9a9a9] text-[16px] font-400 leading-normal self-center mt-1.5`}>
+            style={tw`text-[#fff] text-[16px] font-400 leading-normal self-center mt-1.5`}>
             {moment(detailData?.starting_at).format('MMMM Do YYYY')}
           </Text>
 
@@ -113,14 +114,47 @@ const LiveDetails = () => {
           </Text>
         </View>
 
-        <View style={tw`flex-row justify-between mx-12 mt-3`}>
+        <View style={tw`flex-row justify-between mx-12 mt-7`}>
           <View>
-            <Image
-              source={{uri: homeTeam?.image_path}}
-              style={[tw`w-10 h-10 self-center`, {resizeMode: 'contain'}]}
-            />
+          <TouchableOpacity
+                  style={[tw`self-center justify-center items-center`]} // Wrapper styling for positioning
+                  onPress={() =>
+                    navigation.navigate('Players', {
+                      fixtureId: fixtureId,
+                      teamId: homeTeam.id,
+                      teamName: homeTeam?.name,
+                      teamImage: homeTeam?.image_path,
+                    })
+                  }>
+                  <View style={[tw`relative w-14 h-14`]}>
+                    {/* Shadowed circle */}
+                    <View
+                      style={[
+                        tw`absolute inset-0`, // Ensures it fills the parent container
+                        {
+                          backgroundColor: 'rgba(0, 0, 0, 0.2)', // Semi-transparent shadow effect
+                          borderRadius: 999, // Circular container
+                          shadowColor: '#fff',
+                          shadowOffset: {width: 0, height: 3},
+                          shadowOpacity: 0.1,
+                          shadowRadius: 6,
+                          elevation: 12, // For Android shadow
+                        },
+                      ]}
+                    />
+                    {/* Image centered inside the shadowed circle */}
+                    <Image
+                      source={{uri: homeTeam?.image_path}}
+                      style={[
+                        tw`w-10 h-10 self-center mt-2`, // Image size and centering
+                        {resizeMode: 'contain', borderRadius: 999}, // Make the image circular
+                      ]}
+                    />
+                  </View>
+                </TouchableOpacity>
+
             <Text
-              style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5 `}>
+              style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5 self-center `}>
               {homeTeam?.name}
             </Text>
           </View>
@@ -137,17 +171,49 @@ const LiveDetails = () => {
             {awayScore}
           </Text>
           <View>
-            <Image
-              source={{uri: awayTeam?.image_path}}
-              style={[tw`w-10 h-10 self-center`, {resizeMode: 'contain'}]}
-            />
+          <TouchableOpacity
+                  style={[tw`self-center justify-center items-center`]}
+                  onPress={() =>
+                    navigation.navigate('Players', {
+                      fixtureId: fixtureId,
+                      teamId: awayTeam?.id,
+                      teamName: awayTeam?.name,
+                      teamImage: awayTeam?.image_path,
+                    })
+                  }>
+                  <View style={[tw`relative w-14 h-14`]}>
+                    {/* Shadowed circle */}
+                    <View
+                      style={[
+                        tw`absolute inset-0`, // Ensures it fills the parent container
+                        {
+                          backgroundColor: 'rgba(0, 0, 0, 0.2)', // Semi-transparent shadow effect
+                          borderRadius: 999, // Circular container
+                          shadowColor: '#fff',
+                          shadowOffset: {width: 0, height: 3},
+                          shadowOpacity: 0.1,
+                          shadowRadius: 6,
+                          elevation: 12, // For Android shadow
+                        },
+                      ]}
+                    />
+                    <Image
+                      source={{uri: awayTeam?.image_path}}
+                      style={[
+                        tw`w-10 h-10 self-center mt-2`, // Image size and centering
+                        {resizeMode: 'contain', borderRadius: 999}, // Make the image circular
+                      ]}
+                    />
+                  </View>
+                </TouchableOpacity>
             <Text
-              style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5`}>
+              style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5 self-center`}>
               {awayTeam?.name}
             </Text>
           </View>
         </View>
       </View>
+      </ImageBackground>
 
       <View>
         <View style={tw` border-t pt-3 ml-3 border-[#3e3e3e] mt-10 `} />
