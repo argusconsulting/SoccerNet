@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Alert,
+  Dimensions,
 } from 'react-native';
 import tw from '../../styles/tailwind';
 import Header from '../../components/header/header';
@@ -42,7 +43,7 @@ const SpotLight = () => {
   const userId = useSelector(state => state.auth_store.userID);
   const searchedData = useSelector(state => state?.search.searchData);
   const userProfileData = useSelector(state => state.profile.userProfileData);
-
+  const screenWidth = Dimensions.get('window').width;
   const [isModalVisible, setModalVisible] = useState(false);
   const [isProfileCheckModal, setProfileCheckModal] = useState(false);
   const filteredRoomData = final?.data?.groups;
@@ -151,88 +152,90 @@ const SpotLight = () => {
     };
 
     return (
-      <TouchableOpacity
-        style={
-          item?.is_active === false
-            ? tw`bg-[#545454] p-4 rounded-lg w-43.5 m-2`
-            : tw`bg-[#303649] p-4 rounded-lg w-43.5 m-2`
-        }
-        disabled={item?.is_active === false}
-        onPress={() => onCardClick({groupId: item?.id, groupName: item?.name})}>
-        <View style={tw`flex-row justify-between`}>
-          <Text
-            style={[
-              tw`text-white text-[20px] font-401 leading-normal mb-1 w-30`,
-              {textTransform: 'capitalize'},
-            ]}>
-            {item.name}
-          </Text>
-          <TouchableOpacity
-            style={tw`self-center`}
-            onPress={() => createTwoButtonAlert(item?.id, item?.is_active)}>
-            <Entypo
-              name={'dots-three-vertical'}
-              size={18}
-              color={'#fff'}
-              style={tw`ml-3`}
-            />
-          </TouchableOpacity>
-        </View>
-        <Text style={tw`text-[#F5C451] text-[18px] font-400 leading-normal`}>
-          {formatDate(item.schedule_start)}
-        </Text>
-        <Text
-          style={tw`text-[#dbdbdb] text-[18px] font-400 leading-normal mb-2`}>
-          {item?.description}
-        </Text>
-        <View style={tw`flex-row items-center mb-2`}>
-          {item.users.map((user, index) => (
-            <View
-              key={user.id}
-              style={[
-                tw`w-5 h-5 rounded-full overflow-hidden border-2 border-white`,
-                {marginLeft: index > 0 ? -10 : 0},
-              ]}>
-              <Image
-                source={{uri: user.formatted_avatar_url}}
-                style={[tw`w-full h-full`, {resizeMode: 'contain'}]}
-              />
-            </View>
-          ))}
-          {item.users.length > 0 && (
-            <Text
-              style={tw`text-white text-[16px] font-400 leading-normal ml-3`}>
-              {`${item.users.length} active now`}
-            </Text>
-          )}
-        </View>
-        <TouchableOpacity
-          disabled={item?.is_active === false}
-          onPress={() => handlePress(item?.id, item?.name)}
-          style={[
-            tw`mt-1 rounded-lg justify-center`,
-            {width: '100%', height: 40, alignSelf: 'center'},
-          ]}>
-          <LinearGradient
-            colors={['#6A36CE', '#2575F6']}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 1}}
-            style={[
-              tw`rounded-lg justify-center flex-row`,
-              {flex: 1, justifyContent: 'center', alignItems: 'center'},
-            ]}>
-            <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight`}>
-              {isJoined ? 'Leave' : 'Join'}
-            </Text>
-            <AntDesign
-              name={isJoined ? 'arrowleft' : 'arrowright'}
-              size={20}
-              color={'#fff'}
-              style={tw`ml-2 self-center`}
-            />
-          </LinearGradient>
-        </TouchableOpacity>
-      </TouchableOpacity>
+<TouchableOpacity
+  style={[
+    item?.is_active === false
+      ? tw`bg-[#545454] p-4 rounded-lg  m-2`
+      : tw`bg-[#303649] p-4 rounded-lg  m-2`,
+    {  width: screenWidth  /2 - 20 , flexDirection: 'column', justifyContent: 'space-between', minHeight: 180 }, // Add flex and minHeight
+  ]}
+  disabled={item?.is_active === false}
+  onPress={() => onCardClick({ groupId: item?.id, groupName: item?.name })}>
+  
+  <View style={tw`flex-row justify-between`}>
+    <Text
+      style={[
+        tw`text-white text-[20px] font-401 leading-normal mb-1 w-30 h-15`,
+        { textTransform: 'capitalize' },
+      ]}>
+      {item.name}
+    </Text>
+    <TouchableOpacity onPress={() => createTwoButtonAlert(item?.id, item?.is_active)}>
+      <Entypo
+        name={'dots-three-vertical'}
+        size={18}
+        color={'#fff'}
+        style={tw`ml-3 self-center mt-2`}
+      />
+    </TouchableOpacity>
+  </View>
+
+  <Text style={tw`text-[#F5C451] text-[18px] font-400 leading-normal`}>
+    {formatDate(item.schedule_start)}
+  </Text>
+  <Text style={tw`text-[#dbdbdb] text-[18px] font-400 leading-normal mb-2`}>
+    {item?.description}
+  </Text>
+  <View style={tw`flex-row items-center mb-2`}>
+    {item.users.map((user, index) => (
+      <View
+        key={user.id}
+        style={[
+          tw`w-5 h-5 rounded-full overflow-hidden border-2 border-white`,
+          { marginLeft: index > 0 ? -10 : 0 },
+        ]}>
+        <Image
+          source={{ uri: user.formatted_avatar_url }}
+          style={[tw`w-full h-full`, { resizeMode: 'contain' }]}
+        />
+      </View>
+    ))}
+    {item.users.length > 0 && (
+      <Text style={tw`text-white text-[16px] font-400 leading-normal ml-3`}>
+        {`${item.users.length} active now`}
+      </Text>
+    )}
+  </View>
+
+  {/* Fixed button at the bottom */}
+  <TouchableOpacity
+    disabled={item?.is_active === false}
+    onPress={() => handlePress(item?.id, item?.name)}
+    style={[
+      tw`mt-1 rounded-lg justify-center`,  // Remove bottom-0 and absolute
+      { width: '100%', height: 40, alignSelf: 'center' },
+    ]}>
+    <LinearGradient
+      colors={['#6A36CE', '#2575F6']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={[
+        tw`rounded-lg justify-center flex-row`,
+        { flex: 1, justifyContent: 'center', alignItems: 'center' },
+      ]}>
+      <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight`}>
+        {isJoined ? 'Leave' : 'Join'}
+      </Text>
+      <AntDesign
+        name={isJoined ? 'arrowleft' : 'arrowright'}
+        size={20}
+        color={'#fff'}
+        style={tw`ml-2 self-center`}
+      />
+    </LinearGradient>
+  </TouchableOpacity>
+</TouchableOpacity>
+
     );
   };
 
@@ -250,18 +253,12 @@ const SpotLight = () => {
       ? data
       : [];
 
-  // const displayedData =
-  //   filteredRoomData?.length > 0
-  //     ? filteredRoomData
-  //     : searchedData?.length > 0
-  //     ? searchedData
-  //     : data;
 
   return (
     <View style={tw`bg-[#05102E] flex-1`}>
       <Header name="Rooms" />
       <View style={tw`px-5`}>
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar onSearch={handleSearch} placeholderText={'Search by room names...'} />
 
         <TouchableOpacity
           style={tw`justify-end flex-row`}

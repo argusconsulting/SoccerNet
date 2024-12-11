@@ -31,6 +31,8 @@ const Players = () => {
   const dispatch = useDispatch();
   const data = useSelector(state => state?.fixtures?.fixturesByIdLineUps);
 
+  console.log("my players data", data)
+
   useEffect(() => {
     dispatch(getFixturesByIdLineUps(fixtureId));
   }, [dispatch, fixtureId]);
@@ -74,131 +76,132 @@ const Players = () => {
 
   return (
     <View style={tw`bg-[#05102E] flex-1 `}>
-      <FlatList
-        ListHeaderComponent={
-          <ImageBackground
-            source={require('../../assets/player-bg.png')}
-            style={[tw`w-full h-40`, {resizeMode: 'contain'}]}>
-            <Header />
+    <FlatList
+  ListHeaderComponent={
+    <ImageBackground
+      source={require('../../assets/player-bg.png')}
+      style={[tw`w-full h-40`, {resizeMode: 'contain'}]}>
+      <Header />
+      <View style={tw`flex-row`}>
+        <Image
+          source={{uri: teamImage}}
+          style={[tw`w-17 h-17 mx-3`, {resizeMode: 'contain'}]}
+        />
+        <Text
+          style={tw`text-[#fff] text-[25px] font-401 leading-normal self-center mt-2`}>
+          {teamName}
+        </Text>
+      </View>
+    </ImageBackground>
+  }
+  data={renderData}
+  keyExtractor={(item, index) => index.toString()}
+  renderItem={({item}) => {
+    if (data?.lineups?.length > 0) {
+      if (item.type === 'category') {
+        return (
+          <View style={tw`mx-5`}>
             <View style={tw`flex-row`}>
               <Image
-                source={{uri: teamImage}}
-                style={[tw`w-17 h-17 mx-3`, {resizeMode: 'contain'}]}
+                source={categoryImages[item.category]}
+                style={[tw`w-6 h-6 ml-1 mr-3 mt-3.5`, {resizeMode: 'contain'}]}
               />
               <Text
-                style={tw`text-[#fff] text-[25px] font-401 leading-normal self-center mt-2`}>
-                {teamName}
+                style={tw`text-[#fff] text-[18px] font-401 leading-normal mt-4`}>
+                {item.category}
               </Text>
             </View>
-          </ImageBackground>
-        }
-        data={renderData}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({item}) => {
-          if (item.type === 'category') {
-            return (
-              <View style={tw`mx-5`}>
-                <View style={tw`flex-row `}>
-                  <Image
-                    source={categoryImages[item.category]}
-                    style={[
-                      tw`w-6 h-6 ml-1 mr-3 mt-3.5`,
-                      {resizeMode: 'contain'},
-                    ]}
-                  />
-                  <Text
-                    style={tw`text-[#fff] text-[18px] font-401 leading-normal mt-4`}>
-                    {item.category}
-                  </Text>
-                </View>
-                {item.players.map(player => {
-                  console.log('players', player);
-                  return (
-                    <View
-                      key={player.id}
-                      style={tw`flex-row justify-between mt-2 bg-[#303649] rounded-md p-2.5`}>
-                      <TouchableOpacity
-                        onPress={() =>
-                          navigation.navigate('PlayerInfo', {
-                            playerId: player?.player?.id,
-                            teamImage: teamImage,
-                            teamName: teamName,
-                          })
-                        }
-                        style={tw`flex-row items-center`}>
-                        <View
-                          style={tw`bg-[#fff] rounded-lg mr-3 overflow-hidden`}>
-                          <Image
-                            source={{uri: player?.player?.image_path}}
-                            style={tw`w-10 h-10`}
-                          />
-                        </View>
-                        <Text
-                          style={tw`text-[#fff] text-[18px] font-401 leading-normal`}>
-                          {player?.player?.display_name}
-                        </Text>
-                      </TouchableOpacity>
-                      <Image
-                        source={require('../../assets/american-football.png')}
-                        style={[
-                          tw`w-6 h-6 self-center`,
-                          {resizeMode: 'contain'},
-                        ]}
-                      />
-                    </View>
-                  );
-                })}
-              </View>
-            );
-          } else if (item.type === 'bench') {
-            return (
-              <View style={tw`mx-5`}>
-                <Text style={tw`text-[#fff] text-[18px] font-bold mt-5`}>
-                  Bench
-                </Text>
+            {item.players.map(player => {
+              console.log('players', player);
+              return (
                 <View
-                  style={[
-                    tw`p-3 rounded-md mt-2`,
-                    {backgroundColor: '#303649'},
-                  ]}>
-                  {item.players.map(player => (
-                    <View
-                      key={player.id}
-                      style={tw`flex-row items-center mt-4 justify-between`}>
-                      <TouchableOpacity
-                        onPress={() =>
-                          navigation.navigate('PlayerInfo', {
-                            playerId: player?.player?.id,
-                          })
-                        }
-                        style={tw`flex-row items-center`}>
-                        <View
-                          style={tw`bg-[#fff] rounded-lg mr-3 overflow-hidden p-1`}>
-                          <Image
-                            source={{uri: player?.player?.image_path}}
-                            style={tw`w-8 h-8 rounded-full`}
-                          />
-                        </View>
-                        <Text
-                          style={tw`text-[#fff] text-[18px] font-401 leading-normal`}>
-                          {player?.player?.display_name}
-                        </Text>
-                      </TouchableOpacity>
+                  key={player.id}
+                  style={tw`flex-row justify-between mt-2 bg-[#303649] rounded-md p-2.5`}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate('PlayerInfo', {
+                        playerId: player?.player?.id,
+                        teamImage: teamImage,
+                        teamName: teamName,
+                      })
+                    }
+                    style={tw`flex-row items-center`}>
+                    <View style={tw`bg-[#fff] rounded-lg mr-3 overflow-hidden`}>
                       <Image
-                        source={require('../../assets/american-football.png')}
-                        style={[
-                          tw`w-6 h-6 self-center`,
-                          {resizeMode: 'contain'},
-                        ]}
+                        source={{uri: player?.player?.image_path}}
+                        style={tw`w-10 h-10`}
                       />
                     </View>
-                  ))}
+                    <Text
+                      style={tw`text-[#fff] text-[18px] font-401 leading-normal`}>
+                      {player?.player?.display_name}
+                    </Text>
+                  </TouchableOpacity>
+                  <Image
+                    source={require('../../assets/american-football.png')}
+                    style={[tw`w-6 h-6 self-center`, {resizeMode: 'contain'}]}
+                  />
                 </View>
-              </View>
-            );
-          }
-        }}
-      />
+              );
+            })}
+          </View>
+        );
+      } else if (item.type === 'bench') {
+        return (
+          <View style={tw`mx-5`}>
+            <Text style={tw`text-[#fff] text-[18px] font-bold mt-5`}>Bench</Text>
+            <View style={[tw`p-3 rounded-md mt-2`, {backgroundColor: '#303649'}]}>
+              {item.players.map(player => (
+                <View key={player.id} style={tw`flex-row items-center mt-4 justify-between`}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate('PlayerInfo', {
+                        playerId: player?.player?.id,
+                      })
+                    }
+                    style={tw`flex-row items-center`}>
+                    <View style={tw`bg-[#fff] rounded-lg mr-3 overflow-hidden p-1`}>
+                      <Image
+                        source={{uri: player?.player?.image_path}}
+                        style={tw`w-8 h-8 rounded-full`}
+                      />
+                    </View>
+                    <Text style={tw`text-[#fff] text-[18px] font-401 leading-normal`}>
+                      {player?.player?.display_name}
+                    </Text>
+                  </TouchableOpacity>
+                  <Image
+                    source={require('../../assets/american-football.png')}
+                    style={[tw`w-6 h-6 self-center`, {resizeMode: 'contain'}]}
+                  />
+                </View>
+              ))}
+            </View>
+          </View>
+        );
+      }
+    } else {
+      // Show the "No data found" message if the lineups array is empty
+      return (
+        <View style={tw`w-full items-center justify-center mt-5`}>
+          <Text style={tw`text-[#fff] text-[20px] font-401 leading-normal`}>
+            No Team data found !
+          </Text>
+        </View>
+      );
+    }
+  }}
+  ListFooterComponent={
+    data?.lineups?.length === 0 && (
+      <View style={tw`w-full items-center justify-center mt-5`}>
+        <Text style={tw`text-[#fff] text-[20px] font-401 leading-normal`}>
+          No Team data found !
+        </Text>
+      </View>
+    )
+  }
+/>
+
     </View>
   );
 };
