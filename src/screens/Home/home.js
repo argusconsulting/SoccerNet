@@ -43,8 +43,6 @@ const Home = () => {
     state => state?.liveScore?.liveScoreInPlayData,
   );
 
-  console.log('searchedData', searchedData);
-
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
@@ -141,13 +139,16 @@ const Home = () => {
 
           <SearchBar
             onSearch={handleSearch}
-            placeholderText={'Search By Team Names ...'}
+            placeholderText={'Search By Leagues ...'}
           />
           {searchedData?.length > 0 && (
             <View style={tw`bg-[#303649] rounded-lg py-2`}>
               {searchedData?.map(e => {
                 return (
                   <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('LeagueScreen', { seasonId: e?.currentseason?.id }) // Pass the league's id
+                  }
                     style={tw`border-b-[0.5px] border-[#fff] mx-3 flex-row `}>
                     <Image
                       source={{uri: e?.image_path}}

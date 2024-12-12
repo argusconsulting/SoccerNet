@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import tw from '../../styles/tailwind';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useDispatch, useSelector} from 'react-redux';
 import {getAllLeaguesWithFixtures} from '../../redux/leagueSlice';
@@ -17,26 +17,35 @@ import Loader from '../../components/loader/Loader';
 
 const LeagueScreen = () => {
   const navigation = useNavigation();
+  const route = useRoute();
   const [expandedItem, setExpandedItem] = useState(null);
   const dispatch = useDispatch();
   const allLeagues = useSelector(state => state?.league?.allLeagueData);
   const lang = useSelector(state => state?.language_store?.language);
-  const seasons = useSelector(state => state?.player?.allSeasons); // Assuming fetched season data is stored here
+  const seasons = useSelector(state => state?.player?.allSeasons);
   const loading = useSelector(state => state?.player?.isLoading);
+
   useEffect(() => {
     dispatch(getAllLeaguesWithFixtures({lang}));
-  }, []);
+  }, [dispatch, lang]);
+
+  useEffect(() => {
+    if (route.params?.seasonId) {
+      setExpandedItem(route.params.seasonId);
+      dispatch(getSeasonsById(route.params.seasonId));
+    }
+  }, [route.params?.seasonId, dispatch]);
 
   const toggleItem = seasonId => {
-    setExpandedItem(expandedItem === seasonId ? null : seasonId); // Toggle expansion by seasonId
-    dispatch(getSeasonsById(seasonId)); // Fetch season data for the specific current season ID
+    setExpandedItem(expandedItem === seasonId ? null : seasonId); 
+    if (expandedItem !== seasonId) {
+      dispatch(getSeasonsById(seasonId)); 
+    }
   };
 
   const Item = ({item}) => {
     const currentSeasonId = item.currentseason?.id;
-    const seasonData = seasons?.[currentSeasonId]; // Access season data using the ID
-
-    const seasonName = seasonData?.name || item.currentseason?.name;
+    const seasonData = seasons?.[currentSeasonId]; 
     const fixtures = seasonData?.fixtures || [];
 
     return (
@@ -65,10 +74,6 @@ const LeagueScreen = () => {
         {/* Display season name and fixtures when item is expanded */}
         {expandedItem === currentSeasonId && (
           <>
-            <Text style={tw`text-[#fff] text-[20px] font-400 mt-5`}>
-              Season : {seasonName || 'No season name'}
-            </Text>
-
             {loading ? (
               <Loader />
             ) : fixtures.length > 0 ? (
@@ -80,7 +85,7 @@ const LeagueScreen = () => {
                     })
                   }
                   key={index}
-                  style={tw` mt-5 border-b-[#a2a2a2] border-b-[1px] w-full`}>
+                  style={tw`mt-5 border-b-[#a2a2a2] border-b-[1px] w-full`}>
                   <View style={tw`flex-row items-center self-center`}>
                     {fixture.participants.map((participant, idx) => (
                       <React.Fragment key={participant.id}>
@@ -104,7 +109,7 @@ const LeagueScreen = () => {
                     ))}
                   </View>
                   <Text
-                    style={tw`text-[#a2a2a2] text-[16px] self-center mt-2 mb-2 `}>
+                    style={tw`text-[#a2a2a2] text-[16px] self-center mt-2 mb-2`}>
                     {fixture.starting_at}
                   </Text>
                 </TouchableOpacity>

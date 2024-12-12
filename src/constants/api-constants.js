@@ -39,4 +39,4 @@ export const api_name_type_id = 'types';
 export const api_name_getAllPlayers = 'players/countries';
 export const api_name_getPlayersById = 'players';
 export const api_name_getSeasonsById = 'seasons';
-export const api_name_getTeamSearch = 'teams/search';
+export const api_name_getTeamSearch = 'leagues/search';

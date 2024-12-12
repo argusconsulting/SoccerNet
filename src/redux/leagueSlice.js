@@ -27,7 +27,7 @@ export const getAllLeaguesWithFixtures = createAsyncThunk(
   async ({lang}) => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_allLeagues}?locale=${lang}&include=currentSeason`,
+        `${api_name_allLeagues}?locale=${lang}&include=currentSeason;latest`,
       );
       return response;
     } catch (error) {

@@ -19,7 +19,7 @@ export const teamSearchHandler = createAsyncThunk(
   'search/teamSearchApi',
   async query => {
     try {
-      const response = await getSportsMonkApi(`${api_name_getTeamSearch}/${query}`);
+      const response = await getSportsMonkApi(`${api_name_getTeamSearch}/${query}?include=currentSeason`);
       return response;
     } catch (error) {
       console.log('Error in team search', error);
