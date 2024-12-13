@@ -3035,6 +3035,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-picker/picker@npm:^2.10.2":
+  version: 2.10.2
+  resolution: "@react-native-picker/picker@npm:2.10.2"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: b0da314c10fd35db920f891f0e5d45807a8e2c4e5693512308af5685ba2abfb08a0af7d39c8249da6fc7a935f1974e513fc7f4522a278caa48b0fc3c16f31038
+  languageName: node
+  linkType: hard
+
 "@react-native/assets-registry@npm:0.75.3":
   version: 0.75.3
   resolution: "@react-native/assets-registry@npm:0.75.3"
@@ -3846,6 +3856,7 @@ __metadata:
     "@react-native-firebase/auth": ^21.6.1
     "@react-native-firebase/messaging": ^21.6.1
     "@react-native-google-signin/google-signin": ^13.1.0
+    "@react-native-picker/picker": ^2.10.2
     "@react-native/babel-preset": 0.75.3
     "@react-native/eslint-config": 0.75.3
     "@react-native/metro-config": 0.75.3
@@ -3871,6 +3882,7 @@ __metadata:
     react-native-blob-util: ^0.19.11
     react-native-calendars: ^1.1307.0
     react-native-date-picker: ^5.0.7
+    react-native-dropdown-country-picker: ^1.0.11
     react-native-fbsdk-next: ^13.1.3
     react-native-gesture-handler: ^2.19.0
     react-native-image-picker: ^7.1.2
@@ -3878,6 +3890,7 @@ __metadata:
     react-native-modal: ^13.0.1
     react-native-paper: ^5.12.5
     react-native-phone-number-input: ^2.1.0
+    react-native-picker-select: ^9.3.1
     react-native-render-html: ^6.3.4
     react-native-restart: ^0.0.27
     react-native-safe-area-context: ^4.11.0
@@ -8010,6 +8023,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.isequal@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "lodash.isequal@npm:4.5.0"
+  checksum: da27515dc5230eb1140ba65ff8de3613649620e8656b19a6270afe4866b7bd461d9ba2ac8a48dcc57f7adac4ee80e1de9f965d89d4d81a0ad52bb3eec2609644
+  languageName: node
+  linkType: hard
+
+"lodash.isobject@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "lodash.isobject@npm:3.0.2"
+  checksum: 6c1667cbc4494d0a13a3617a4b23278d6d02dac520311f2bbb43f16f2cf71d2e6eb9dec8057315b77459df4890c756a256a087d3f4baa44a79ab5d6c968b060e
+  languageName: node
+  linkType: hard
+
 "lodash.merge@npm:^4.6.2":
   version: 4.6.2
   resolution: "lodash.merge@npm:4.6.2"
@@ -9632,6 +9659,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-dropdown-country-picker@npm:^1.0.11":
+  version: 1.0.11
+  resolution: "react-native-dropdown-country-picker@npm:1.0.11"
+  checksum: 5f5f1f4568c4695221968de0a5895045f65797f79de5e20301a237cf97d9a605712ba58744ae39d0061e8e29b151563ba09543b46550d1fa962a3849a61453a1
+  languageName: node
+  linkType: hard
+
 "react-native-fbsdk-next@npm:^13.1.3":
   version: 13.1.3
   resolution: "react-native-fbsdk-next@npm:13.1.3"
@@ -9719,6 +9753,18 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 562ce88e149cab49c5196c8233e5b2223f56942e143660ac70c6d57b0b1f0bc901be11c55ea02167c14bd092773c7c6cafcac4970f8986fc0ae26d4768de3859
+  languageName: node
+  linkType: hard
+
+"react-native-picker-select@npm:^9.3.1":
+  version: 9.3.1
+  resolution: "react-native-picker-select@npm:9.3.1"
+  dependencies:
+    lodash.isequal: ^4.5.0
+    lodash.isobject: ^3.0.2
+  peerDependencies:
+    "@react-native-picker/picker": ^2.4.0
+  checksum: ba03c79bff736f225f6cf06a971a5058739ef27c26d2f66edf31e80250fc40be29085d4b15a35339c31b4d4830d362594f8d5933a25a0f2f1f9d702189e2d611
   languageName: node
   linkType: hard
 

@@ -16,9 +16,9 @@ import {setSocialProfile} from '../redux/profileSlice';
 import {api_name_google_login} from '../constants/api-constants';
 import {postApi} from '../scripts/api-services';
 import {GetFCMToken} from './notification-component';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const GoogleLogin = () => {
-  const [userInfo, setUserInfo] = useState(null);
   const navigation = useNavigation();
   useEffect(() => {
     GoogleSignin.configure({
@@ -27,18 +27,42 @@ const GoogleLogin = () => {
     });
   }, []);
 
+  const getSelectedLeagues = async currentUserId => {
+    try {
+      const savedData = await AsyncStorage.getItem('selectedLeagues');
+      if (savedData) {
+        const {userId, leagues} = JSON.parse(savedData);
+
+        if (userId === currentUserId && leagues?.length > 0) {
+          // User matches and has selected leagues
+          navigation.navigate('Home');
+        } else {
+          // Different user or no leagues selected
+          navigation.navigate('LeagueSelection');
+        }
+      } else {
+        // No data found
+        navigation.navigate('LeagueSelection');
+      }
+    } catch (error) {
+      console.error('Error checking selected leagues:', error);
+      navigation.navigate('LeagueSelection');
+    }
+  };
+
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const usrInfo = await GoogleSignin.signIn();
-      setUserInfo(usrInfo);
+      // setUserInfo(usrInfo);
       const device_token = await GetFCMToken();
       var idToken = usrInfo?.data?.idToken;
       // console.log('idToekn', idToken);
       store.dispatch(setSocialLoginToken());
 
       const response = await _googleSocialLogin(idToken, device_token);
-      navigation.navigate('LeagueSelection');
+      // navigation.navigate('LeagueSelection');
+      getSelectedLeagues(response?.data?.user?.id);
       store.dispatch(setSocialProfile(response?.data));
       store.dispatch(setUserAuthToken(response?.data?.token));
       store.dispatch(setUserID(response?.data?.user?.id));

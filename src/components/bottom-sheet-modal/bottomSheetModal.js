@@ -50,7 +50,6 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
   const [emailValue, setEmailValue] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [checkSavedLeagues, setCheckSavedLeagues] = useState([]);
 
   const getSelectedLeagues = async currentUserId => {
     try {
