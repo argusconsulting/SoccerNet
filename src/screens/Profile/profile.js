@@ -320,21 +320,9 @@ const Profile = () => {
           value: selectedCountry,
         })
       }
-        value={userProfileData.country}
+        value={userProfileData?.country}
       />
-        {/* <TextInput
-          type="text"
-          style={tw`border-b border-[#a9a9a9] text-[#a9a9a9]  h-10 w-70 rounded-lg px-2`}
-          placeholder={t('countryPlaceHolder')}
-          value={userProfileData?.country}
-          maxLength={25}
-          onChangeText={text =>
-            handleFieldChange({
-              key: 'country',
-              value: text,
-            })
-          }
-        /> */}
+       
       </View>
 
       {/* settings */}

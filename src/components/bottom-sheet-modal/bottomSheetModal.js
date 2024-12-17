@@ -333,10 +333,14 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
               />
 
               {isLogin && (
+                  <TouchableOpacity onPress={()=> {
+                    onClose();
+                    navigation.navigate('ForgotPassword')}}>
                 <Text
                   style={tw`text-[#a9a9a9] text-[16px] font-401 leading-tight mt-3 mx-1`}>
                   Forgot password ?
                 </Text>
+                </TouchableOpacity>
               )}
             </>
           ) : (
@@ -385,10 +389,14 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
               />
 
               {isLogin && (
+                <TouchableOpacity onPress={()=> {
+                  onClose();
+                  navigation.navigate('ForgotPassword')}}>
                 <Text
                   style={tw`text-[#a9a9a9] text-[16px] font-401 leading-tight mt-3 mx-1`}>
                   Forgot password ?
                 </Text>
+                </TouchableOpacity>
               )}
             </>
           )}

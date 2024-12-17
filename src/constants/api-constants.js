@@ -1,4 +1,5 @@
 export const api_name_login = 'login';
+export const api_name_forgotPassword = 'forgot-password';
 export const api_name_register = 'register';
 export const api_name_logout = 'logout';
 export const api_name_updateProfile = 'profile';

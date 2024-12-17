@@ -38,6 +38,7 @@ import MeetingChat from '../screens/rooms/meetingChat';
 import JustFinished from '../screens/justFinished/justFinished';
 import PlayerInfo from '../components/detail-modules/player-info';
 import Players from '../components/detail-modules/players';
+import ForgotPassword from '../screens/Forgot-Password/forgotPassword';
 
 // Bottom Tab Navigation
 const Tab = createBottomTabNavigator();
@@ -216,6 +217,7 @@ export const StackScreen = () => {
       <Stack.Screen name="JustFinished" component={JustFinished} />
       <Stack.Screen name="Players" component={Players} />
       <Stack.Screen name="PlayerInfo" component={PlayerInfo} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
     </Stack.Navigator>
   );
 };
