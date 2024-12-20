@@ -22,6 +22,7 @@ import {
 } from '../../redux/fanSlice';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import Loader from '../../components/loader/Loader';
+import GroupCall from '../../components/group-call/groupCall';
 
 const MeetingChat = () => {
   const dispatch = useDispatch();
@@ -173,10 +174,13 @@ const MeetingChat = () => {
             />
           </TouchableOpacity>
           <Text
-            style={tw`text-[#fff] text-[20px] font-401 leading-tight self-center`}>
+            style={[tw`text-[#fff] text-[20px] font-401 leading-tight self-center`,{textTransform:"capitalize"}]}>
             {groupName}
           </Text>
         </View>
+
+        <View style={tw`flex-row`}>
+         <GroupCall/>
         <View style={tw`flex-row `}>
           <TouchableOpacity
             onPress={() => leaveHandler()}
@@ -207,6 +211,7 @@ const MeetingChat = () => {
               </Text>
             </LinearGradient>
           </TouchableOpacity>
+        </View>
         </View>
       </View>
 

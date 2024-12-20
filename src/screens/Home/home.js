@@ -86,11 +86,29 @@ const Home = () => {
   }, [dispatch]);
 
   const Item = ({item}) => (
-    <View style={tw`bg-[#303649] p-3 mx-2 rounded-lg`}>
-      <Image
-        source={{uri: item?.image_path}}
-        style={[tw`w-11 h-11 self-center`, {resizeMode: 'contain'}]}
-      />
+    <View style={tw`bg-[#303649] p-1.5 mx-2 rounded-lg`}>
+     <View
+            style={[
+              tw`w-14 h-14 self-center`, // Parent container size
+              {
+                backgroundColor: 'rgba(0, 0, 0, 0.1)', // Background for shadow area (optional for contrast)
+                shadowColor: '#fff', // Shadow color
+                shadowOffset: {width: 0, height: 1}, // Shadow position
+                shadowOpacity: 0.25, // Shadow transparency
+                shadowRadius: 4, // Shadow blur
+                elevation: 16, // Shadow for Android
+                borderRadius: 999, // Circular shadow
+              },
+            ]}>
+            {/* Image centered inside the shadowed circle */}
+            <Image
+              source={{uri: item?.image_path}}
+              style={[
+                tw`w-10 h-10 self-center mt-2`, // Image size and centering
+                {resizeMode: 'contain', borderRadius: 999}, // Make the image circular
+              ]}
+            />
+          </View>
     </View>
   );
 
@@ -132,15 +150,15 @@ const Home = () => {
           </TouchableOpacity>
         </View>
         <View style={tw`px-5`}>
-          <Text
+          {/* <Text
             style={tw`text-white text-[22px] font-401 leading-tight  mt-3 mb-5 `}>
             {t('whatsOnYourMind')}
-          </Text>
+          </Text> */}
 
-          <SearchBar
+          {/* <SearchBar
             onSearch={handleSearch}
             placeholderText={'Search By Leagues ...'}
-          />
+          /> */}
           {searchedData?.length > 0 && (
             <View style={tw`bg-[#303649] rounded-lg py-2`}>
               {searchedData?.map(e => {

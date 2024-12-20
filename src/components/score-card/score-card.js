@@ -73,12 +73,31 @@ const ScoreCard = ({match, width, screen, navigate}) => {
         )}
       </View>
 
-      <View style={tw`flex-row justify-between mx-10 mt-2`}>
+      <View style={tw`flex-row justify-between mx-10 `}>
         <View>
-          <Image
-            source={{uri: homeTeam?.image_path}}
-            style={[tw`w-12 h-12 self-center`, {resizeMode: 'contain'}]}
-          />
+          <View
+            style={[
+              tw`w-14 h-14 self-center`, // Parent container size
+              {
+                backgroundColor: '#fff', // Background for shadow area (optional for contrast)
+                shadowColor: '#fff', // Shadow color
+                shadowOffset: {width: 0, height: 1}, // Shadow position
+                shadowOpacity: 0.25, // Shadow transparency
+                shadowRadius: 4, // Shadow blur
+                elevation: 16, // Shadow for Android
+                borderRadius: 999, // Circular shadow
+              },
+            ]}>
+            {/* Image centered inside the shadowed circle */}
+            <Image
+              source={{uri: homeTeam?.image_path}}
+              style={[
+                tw`w-10 h-10 self-center mt-2`, // Image size and centering
+                {resizeMode: 'contain', borderRadius: 999}, // Make the image circular
+              ]}
+            />
+          </View>
+
           <Text
             style={tw`text-[#fff] text-[16px] font-400 leading-normal mt-1.5 `}>
             {homeTeam?.name}
@@ -97,10 +116,28 @@ const ScoreCard = ({match, width, screen, navigate}) => {
           {awayScore}
         </Text>
         <View>
-          <Image
-            source={{uri: awayTeam?.image_path}}
-            style={[tw`w-12 h-12 self-center`, {resizeMode: 'contain'}]}
-          />
+          <View
+            style={[
+              tw`w-14 h-14 self-center`, // Parent container size
+              {
+                backgroundColor: '#fff', // Background for shadow area (optional for contrast)
+                shadowColor: '#fff', // Shadow color
+                shadowOffset: {width: 0, height: 1}, // Shadow position
+                shadowOpacity: 0.25, // Shadow transparency
+                shadowRadius: 4, // Shadow blur
+                elevation: 16, // Shadow for Android
+                borderRadius: 999, // Circular shadow
+              },
+            ]}>
+            {/* Image centered inside the shadowed circle */}
+            <Image
+              source={{uri: awayTeam?.image_path}}
+              style={[
+                tw`w-10 h-10 self-center mt-2`, // Image size and centering
+                {resizeMode: 'contain', borderRadius: 999}, // Make the image circular
+              ]}
+            />
+          </View>
           <Text
             style={tw`text-[#fff] text-[16px] font-400 leading-normal mt-1.5`}>
             {awayTeam?.name}

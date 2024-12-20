@@ -7,14 +7,17 @@ import moment from 'moment';
 import {useDispatch, useSelector} from 'react-redux';
 import {getAllFixturesByDateRangeHighlights} from '../../redux/fixturesSlice';
 import Loader from '../../components/loader/Loader';
+import SearchBar from '../../components/search-bar/search-bar';
 
 const Highlights = () => {
   const dispatch = useDispatch();
   const flatListRef = useRef(null);
   const [monthRange, setMonthRange] = useState({start: '', end: ''});
   const [page, setPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState(''); // State for search input
   const isLoading = useSelector(state => state?.fixtures?.isLoading);
-  const [allHighlights, setAllHighlights] = useState([]);
+  const [allHighlights, setAllHighlights] = useState([]); // Full data
+  const [filteredHighlights, setFilteredHighlights] = useState([]); // Displayed data
 
   const highlightData = useSelector(
     state => state?.fixtures?.fixturesByDateRangeHighlights,
@@ -41,7 +44,9 @@ const Highlights = () => {
       );
 
       if (response?.payload?.data) {
-        setAllHighlights(prevData => [...prevData, ...response.payload.data]);
+        const newHighlights = response.payload.data;
+        setAllHighlights(prevData => [...prevData, ...newHighlights]);
+        setFilteredHighlights(prevData => [...prevData, ...newHighlights]); // Initialize filtered data
       }
     }
   };
@@ -50,6 +55,21 @@ const Highlights = () => {
     loadHighlights();
   }, [monthRange, page]);
 
+  const handleSearch = query => {
+    setSearchQuery(query); // Update the search query
+  
+    if (query.trim() === '') {
+      setFilteredHighlights(allHighlights); // Show all highlights if query is empty
+    } else {
+      const filtered = allHighlights.filter(item =>
+        item?.participants?.some(participant =>
+          participant?.name?.toLowerCase().includes(query.toLowerCase()),
+        ),
+      );
+      setFilteredHighlights(filtered);
+    }
+  };
+
   const handleNextPage = () => {
     setPage(prevPage => prevPage + 1);
   };
@@ -57,13 +77,19 @@ const Highlights = () => {
   return (
     <View style={tw`bg-[#05102E] flex-1`}>
       <Header name="Highlights" />
+      <View style={tw`mx-5`}>
+        <SearchBar
+          onSearch={handleSearch} // Connect search bar to the handleSearch function
+          placeholderText={'Search by team name ...'}
+        />
+      </View>
       <View style={tw``}>
         {isLoading ? (
           <Loader />
         ) : (
           <FlatList
             ref={flatListRef}
-            data={allHighlights}
+            data={filteredHighlights} // Use filtered data
             renderItem={({item}) => (
               <ScoreCard
                 match={item}
