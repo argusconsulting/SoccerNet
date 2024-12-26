@@ -84,7 +84,7 @@ const ScoreCard = ({match, width, screen, navigate}) => {
                 shadowOffset: {width: 0, height: 1}, // Shadow position
                 shadowOpacity: 0.25, // Shadow transparency
                 shadowRadius: 4, // Shadow blur
-                elevation: 16, // Shadow for Android
+                elevation: 5, // Shadow for Android
                 borderRadius: 999, // Circular shadow
               },
             ]}>
@@ -124,8 +124,8 @@ const ScoreCard = ({match, width, screen, navigate}) => {
                 shadowColor: '#fff', // Shadow color
                 shadowOffset: {width: 0, height: 1}, // Shadow position
                 shadowOpacity: 0.25, // Shadow transparency
-                shadowRadius: 4, // Shadow blur
-                elevation: 16, // Shadow for Android
+               shadowRadius: 4, // Shadow blur
+                 elevation: 5, // Shadow for Android
                 borderRadius: 999, // Circular shadow
               },
             ]}>

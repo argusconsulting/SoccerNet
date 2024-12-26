@@ -1,6 +1,7 @@
 import {
   FlatList,
   Image,
+  ImageBackground,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -24,6 +25,7 @@ import moment from 'moment';
 import {getLiveScoresInPlay} from '../../redux/liveScoreSlice';
 import {clearTeamSearchData, teamSearchHandler} from '../../redux/searchSlice';
 import {ScrollView} from 'react-native-gesture-handler';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -96,7 +98,7 @@ const Home = () => {
                 shadowOffset: {width: 0, height: 1}, // Shadow position
                 shadowOpacity: 0.25, // Shadow transparency
                 shadowRadius: 4, // Shadow blur
-                elevation: 16, // Shadow for Android
+                elevation: 20, // Shadow for Android
                 borderRadius: 999, // Circular shadow
               },
             ]}>
@@ -130,7 +132,7 @@ const Home = () => {
 
   return (
     <View style={tw`bg-[#05102E] flex-1 `}>
-      <ScrollView>
+  
         <View style={tw`flex-row justify-between p-5`}>
           <TouchableOpacity
             onPress={() => setModalVisible(true)}
@@ -229,6 +231,7 @@ const Home = () => {
           {inPlayLiveScores?.data?.length > 0 ? (
             <FlatList
               data={inPlayLiveScores?.data}
+              // data={justFinishedData?.data}
               horizontal
               showsHorizontalScrollIndicator={false}
               renderItem={({item, index}) => (
@@ -238,14 +241,18 @@ const Home = () => {
               contentContainerStyle={tw`items-center px-3`}
             />
           ) : (
+            <TouchableOpacity
+            style={[tw`bg-[#303649] h-34  rounded-2xl mt-5 mx-2 self-center w-93 justify-center` ]}>
+              <Image source={require('../../assets/no-data-live-now.png')} style={tw`w-10 h-10 self-center`}/>
             <Text
-              style={tw`text-[#fff] text-[20px] font-401 leading-tight  mt-5 self-center px-5`}>
-              No Data Found !
+              style={tw`text-[#fff] text-[20px] font-401 leading-tight  self-center px-5`}>
+             Oops! Come back later.
             </Text>
+            </TouchableOpacity>
           )}
         </View>
 
-        <View>
+        <View >
           <View style={tw`flex-row justify-between mt-3 mb-2`}>
             <Text
               style={tw`text-white text-[22px] font-401 leading-tight  mt-3 px-5`}>
@@ -283,7 +290,22 @@ const Home = () => {
             </Text>
           )}
         </View>
-      </ScrollView>
+        <View style={[tw`absolute bottom-0 w-full h-60`,{zIndex: -1}]}>
+    <Image
+      source={require('../../assets/Homescreen-bg.png')}
+      style={tw`w-full h-60`}
+      resizeMode="cover"
+    
+    />
+    <LinearGradient
+    colors={['rgba(0, 0, 0, 0.8)', 'rgba(0, 0, 0, 0)']}
+    start={{x: 0.5, y: 0}} // Top center
+    end={{x: 0.5, y: 1}} // Slight fade into transparency
+    style={tw`absolute top-0 w-full h-20 `} // Adjust height to control blur size
+  />
+  </View>
+       
+      
       <Menu modalVisible={modalVisible} toggleModal={toggleModal} />
     </View>
   );

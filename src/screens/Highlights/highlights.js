@@ -105,7 +105,7 @@ const Highlights = () => {
                 {highlightData?.pagination?.has_more && (
                   <TouchableOpacity
                     onPress={handleNextPage}
-                    style={tw`bg-blue-400 w-30 h-8 rounded-lg justify-center`}>
+                    style={tw`bg-blue-400 w-30 h-8 rounded-lg justify-center mb-10`}>
                     <Text
                       style={tw`text-white text-[18px] font-401 leading-tight self-center`}>
                       Next

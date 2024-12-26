@@ -20,14 +20,15 @@ import {
   RtcConnection,
   IRtcEngineEventHandler,
 } from 'react-native-agora';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import tw from '../../styles/tailwind';
+import { getProfileData } from '../../redux/profileSlice';
 
 // Define basic information
 const appId = 'fe78bc42c5464befadcf442ed64d9485';
 const token =
-  '007eJxTYLi25Nm2+nNr901Y+1tVMyh+1sp3/7erTAt59CtjpuirskunFRjSUs0tkpJNjJJNTcxMklLTElOS00xMjFJTzExSLE0sTJn/Jac3BDIyqHSkMzMyQCCIz8kQlp+ZnOqckVjCwAAAhSQlkw==';
+  '007eJxTYJg8v5blicWc865v7Q7V6u9LNU5/Un/F01Tm2yHWW0+cslMVGNJSzS2Skk2Mkk1NzEySUtMSU5LTTEyMUlPMTFIsTSxMRSZkpTcEMjLsVxNnYWSAQBCfkyEsPzM51TkjsYSBAQAuOCFx';
 const channelName = 'VoiceChat';
 
 const GroupCall = () => {
@@ -35,14 +36,22 @@ const GroupCall = () => {
   interface AuthStore {
     userID: number; // or `string` based on your actual data
   }
+  interface ProfileStore {
+    userProfileData: {
+      name: string;
+      avatar_url: string;
+      email: string;
+    };
+  }
 
   interface RootState {
     auth_store: AuthStore;
+    profile: ProfileStore;
   }
 
   const navigation = useNavigation<NavigationProp<any>>();
   const uid = useSelector((state: RootState) => state.auth_store.userID);
-
+  const userProfileData = useSelector((state: RootState) => state.profile.userProfileData);
   const agoraEngineRef = useRef<IRtcEngine>(); // IRtcEngine instance
   const [isJoined, setIsJoined] = useState(false); // Whether the local user has joined the channel
   const [isHost, setIsHost] = useState(true); // User role
@@ -51,9 +60,10 @@ const GroupCall = () => {
   const eventHandler = useRef<IRtcEngineEventHandler>(); // Callback functions
 
   useEffect(() => {
-    // Initialize the engine when the App starts
+
     setupVideoSDKEngine();
-    // Release memory when the App is closed
+
+   
     return () => {
       agoraEngineRef.current?.unregisterEventHandler(eventHandler.current!);
       agoraEngineRef.current?.release();
@@ -151,6 +161,8 @@ const GroupCall = () => {
       navigation.navigate('CallScreen', {
         agoraEngine: agoraEngineRef.current,
         uid, // Pass UID for identification
+        userName: userProfileData?.name, // Replace with the actual user name
+        userImage: userProfileData?.avatar_url, 
       });
     } catch (error) {
       console.error('Failed to join channel:', error);
