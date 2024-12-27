@@ -41,3 +41,4 @@ export const api_name_getAllPlayers = 'players/countries';
 export const api_name_getPlayersById = 'players';
 export const api_name_getSeasonsById = 'seasons';
 export const api_name_getTeamSearch = 'leagues/search';
+export const api_name_getWinningProbabilty = 'predictions/probabilities/fixtures';

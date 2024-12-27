@@ -33,7 +33,7 @@ const ScoreCard = ({match, width, screen, navigate}) => {
     }
   });
 
-  // Check if any participant has the placeholder image
+  // // Check if any participant has the placeholder image
   const hasPlaceholderImage = match?.participants?.some(
     participant =>
       participant?.image_path ===

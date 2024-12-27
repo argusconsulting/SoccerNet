@@ -1,4 +1,6 @@
 import {
+  Alert,
+  BackHandler,
   FlatList,
   Image,
   ImageBackground,
@@ -14,7 +16,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SearchBar from '../../components/search-bar/search-bar';
 import ScoreCard from '../../components/score-card/score-card';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import Menu from '../../components/menu/menu';
 import {t} from 'i18next';
 import {getSelectedLeagues} from '../../redux/leagueSlice';
@@ -87,6 +89,26 @@ const Home = () => {
     dispatch(getLiveScoresInPlay());
   }, [dispatch]);
 
+  useFocusEffect(
+    useCallback(() => {
+      const backAction = () => {
+        // Show confirmation to exit the app
+        Alert.alert('Hold on!', 'Are you sure you want to exit?', [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Exit', onPress: () => BackHandler.exitApp() },
+        ]);
+        return true; // Prevent default back action
+      };
+
+      // Add BackHandler listener when the screen is focused
+      BackHandler.addEventListener('hardwareBackPress', backAction);
+
+      // Cleanup listener when the screen loses focus
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', backAction);
+    }, [])
+  );
+
   const Item = ({item}) => (
     <View style={tw`bg-[#303649] p-1.5 mx-2 rounded-lg`}>
      <View
@@ -94,10 +116,7 @@ const Home = () => {
               tw`w-14 h-14 self-center`, // Parent container size
               {
                 backgroundColor: 'rgba(0, 0, 0, 0.1)', // Background for shadow area (optional for contrast)
-                shadowColor: '#fff', // Shadow color
-                shadowOffset: {width: 0, height: 1}, // Shadow position
-                shadowOpacity: 0.25, // Shadow transparency
-                shadowRadius: 4, // Shadow blur
+                shadowColor: 'rgba(0, 0, 0, 0.3)', // Shadow color
                 elevation: 20, // Shadow for Android
                 borderRadius: 999, // Circular shadow
               },
@@ -113,22 +132,6 @@ const Home = () => {
           </View>
     </View>
   );
-
-  const debouncedSearch = useCallback(
-    debounce(query => {
-      if (query) {
-        dispatch(teamSearchHandler(query));
-      } else {
-        dispatch(clearTeamSearchData());
-      }
-    }, 500), // Adjust delay (in milliseconds) as per your requirements
-    [dispatch],
-  );
-
-  // Handle search input
-  const handleSearch = query => {
-    debouncedSearch(query);
-  };
 
   return (
     <View style={tw`bg-[#05102E] flex-1 `}>
@@ -221,17 +224,11 @@ const Home = () => {
               style={tw`text-white text-[22px] font-401 leading-tight  mt-3  px-5`}>
               {t('liveNow')}
             </Text>
-            {/* {inPlayLiveScores?.data?.length > 0 && (
-            <Text
-              style={tw`text-[#8195FF] text-[14px] font-401 leading-tight  mt-5  px-5`}>
-              {t('seeAll')}
-            </Text>
-          )} */}
+
           </View>
           {inPlayLiveScores?.data?.length > 0 ? (
             <FlatList
               data={inPlayLiveScores?.data}
-              // data={justFinishedData?.data}
               horizontal
               showsHorizontalScrollIndicator={false}
               renderItem={({item, index}) => (
@@ -243,12 +240,12 @@ const Home = () => {
           ) : (
             <TouchableOpacity
             style={[tw`bg-[#303649] h-34  rounded-2xl mt-5 mx-2 self-center w-93 justify-center` ]}>
-              <Image source={require('../../assets/no-data-live-now.png')} style={tw`w-10 h-10 self-center`}/>
+              <Image source={require('../../assets/no-data-live-now.png')} style={tw`w-14 h-14 self-center`}/>
             <Text
               style={tw`text-[#fff] text-[20px] font-401 leading-tight  self-center px-5`}>
              Oops! Come back later.
             </Text>
-            </TouchableOpacity>
+             </TouchableOpacity>
           )}
         </View>
 
@@ -289,8 +286,8 @@ const Home = () => {
               No Data Found !
             </Text>
           )}
-        </View>
-        <View style={[tw`absolute bottom-0 w-full h-60`,{zIndex: -1}]}>
+        </View> 
+         <View style={[tw`absolute bottom-0 w-full h-60`,{zIndex: -1}]}>
     <Image
       source={require('../../assets/Homescreen-bg.png')}
       style={tw`w-full h-60`}
