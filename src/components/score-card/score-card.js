@@ -47,7 +47,7 @@ const ScoreCard = ({match, width, screen, navigate}) => {
 
   return (
     <TouchableOpacity
-      style={[tw`bg-[#303649] h-34  rounded-2xl mt-5 mx-2`, {width: width}]}
+      style={[tw`bg-[#303649] h-36  rounded-2xl mt-5 mx-2`, {width: width}]}
       onPress={() => navigation.navigate(navigate, {fixtureId: match?.id})}>
       <View style={tw`flex-row justify-between mx-3`}>
         <Image
@@ -99,7 +99,7 @@ const ScoreCard = ({match, width, screen, navigate}) => {
           </View>
 
           <Text
-            style={tw`text-[#fff] text-[16px] font-400 leading-normal mt-1.5 `}>
+            style={[tw`text-[#fff] text-[16px] font-400 leading-tight mt-1.5  self-center `,{textAlign:"center"}]}>
             {homeTeam?.name}
           </Text>
         </View>
@@ -139,7 +139,7 @@ const ScoreCard = ({match, width, screen, navigate}) => {
             />
           </View>
           <Text
-            style={tw`text-[#fff] text-[16px] font-400 leading-normal mt-1.5`}>
+            style={[tw`text-[#fff] text-[16px] font-400 leading-tight mt-1.5  self-center `,{textAlign:"center"}]}>
             {awayTeam?.name}
           </Text>
         </View>

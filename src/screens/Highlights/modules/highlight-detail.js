@@ -17,6 +17,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {getFixturesById} from '../../../redux/fixturesSlice';
 import moment from 'moment';
 import { getPredictionProbability } from '../../../redux/predictionSlice';
+import HoldOnAnimation from '../../../components/loader/animation-loader';
 const Summary = lazy(() =>
   import('../../../components/detail-modules/summary'),
 );
@@ -264,7 +265,7 @@ const HighlightDetail = () => {
           <View style={tw` border-b pt-3  border-[#3e3e3e] `} />
         </View>
 
-        <Suspense fallback={<Text>Loading...</Text>}>
+        <Suspense fallback={<HoldOnAnimation/>}>
           {/* {type === 'Summary' && <Summary />} */}
           {/* {type === 'Summary' && <PlayerInfo fixtureId={fixtureId} />} */}
           {type === 'Statistics' && <Statistics fixtureId={fixtureId} />}
