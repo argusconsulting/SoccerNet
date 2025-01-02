@@ -239,7 +239,7 @@ const Home = () => {
             />
           ) : (
             <TouchableOpacity
-            style={[tw`bg-[#303649] h-34  rounded-2xl mt-5 mx-2 self-center w-93 justify-center` ]}>
+            style={[tw`bg-[#303649] h-34  rounded-2xl mt-5 mx-5 w-92 justify-center` ]}>
               <Image source={require('../../assets/no-data-live-now.png')} style={tw`w-14 h-14 self-center`}/>
             <Text
               style={tw`text-[#fff] text-[20px] font-401 leading-tight  self-center px-5`}>

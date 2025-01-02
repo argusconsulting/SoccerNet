@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getAllFixturesByDateRangeHighlights} from '../../redux/fixturesSlice';
 import Loader from '../../components/loader/Loader';
 import SearchBar from '../../components/search-bar/search-bar';
+import HoldOnAnimation from '../../components/loader/animation-loader';
 
 const Highlights = () => {
   const dispatch = useDispatch();
@@ -85,7 +86,9 @@ const Highlights = () => {
       </View>
       <View style={tw``}>
         {isLoading ? (
-          <Loader />
+          <View style={tw`mt-20`}>
+         <HoldOnAnimation/>
+         </View>
         ) : (
           <FlatList
             ref={flatListRef}

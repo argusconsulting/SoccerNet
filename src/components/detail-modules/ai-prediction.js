@@ -1,5 +1,5 @@
-import { Image, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect } from 'react'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import tw from '../../styles/tailwind'
 import LinearGradient from 'react-native-linear-gradient'
 import { useDispatch, useSelector } from 'react-redux'
@@ -11,14 +11,29 @@ const dispatch = useDispatch()
   const doubleChanceData = useSelector(state => state?.prediction?.doubleChanceData)
   const filteredPredictionData = predictionData?.filter(item => item.type_id === 237);
   const filteredDoubleChanceData = doubleChanceData?.predictions?.filter(item => item.type_id === 239);
-  // console.log("value of filt-----------------", doubleChanceData)
-  console.log("value of filteredDoubleChanceData-----------------", filteredDoubleChanceData)
+  const [showPredictions, setShowPredictions] = useState(false);
+  const [showDoubleChance, setShowDoubleChance] = useState(false);
+
 
   useEffect(() => {
+    const fetchPredictions = () => {
+      dispatch(getPredictionProbability(fixtureId));
+      dispatch(getPredictionDoubleChance(fixtureId));
+    };
 
-    dispatch(getPredictionProbability(fixtureId))
-    dispatch(getPredictionDoubleChance(fixtureId))
-  }, []);
+    // Call the APIs initially
+    fetchPredictions();
+
+    // Set an interval to call the APIs every 10 minutes
+    const interval = setInterval(fetchPredictions, 10 * 60 * 1000);
+
+    // Cleanup the interval when the component unmounts
+    return () => clearInterval(interval);
+  }, [dispatch, fixtureId]);
+
+
+  
+
 
   return (
     <>
@@ -28,12 +43,12 @@ const dispatch = useDispatch()
             Who will win?
                 </Text>
 
-                <Text
+                {/* <Text
                   style={tw`text-[#F5C451] text-[16px] font-400 leading-normal mt-1.5 self-center`}>
            22,323  Votes
-                </Text>
+                </Text> */}
 
-                <View style={tw`flex-row justify-between mt-3 `}>
+                <View style={tw`flex-row justify-between mt-6 `}>
                     <View>
                     <Image
                       source={{uri: homeTeam?.image_path}}
@@ -46,8 +61,8 @@ const dispatch = useDispatch()
                   style={tw`text-[#fff] text-[18px] font-402 leading-normal mt-1.5 self-center`}>
           {homeTeam?.name}
                 </Text>
-                <View
-       
+                <TouchableOpacity
+       onPress={() => setShowPredictions(true)}
         style={[
           tw`mt-4 mx-5 rounded-full justify-center w-20 h-20`,
         
@@ -60,9 +75,11 @@ const dispatch = useDispatch()
             tw`rounded-full justify-center`,
             {flex: 1, justifyContent: 'center', alignItems: 'center'},
           ]}>
-        <Text  style={tw`text-[#fff] text-[16px] font-402 leading-normal  self-center`}>{filteredPredictionData?.[0]?.predictions?.home} %</Text>
-        </LinearGradient>
-      </View>
+  <Text style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>
+                {showPredictions ? `${filteredPredictionData?.[0]?.predictions?.home.toFixed(2)} %` : 'Yes'}
+              </Text>       
+               </LinearGradient>
+      </TouchableOpacity>
       </View>
 
 <View>
@@ -77,8 +94,8 @@ const dispatch = useDispatch()
                   style={tw`text-[#fff] text-[18px] font-402 leading-normal  self-center mt-1.5`}>
        Draw
                 </Text>
-      <View
-       
+      <TouchableOpacity
+       onPress={() => setShowPredictions(true)}
        style={[
          tw`mt-4 mx-5 rounded-full justify-center w-20 h-20`,
        
@@ -91,9 +108,11 @@ const dispatch = useDispatch()
            tw`rounded-full justify-center`,
            {flex: 1, justifyContent: 'center', alignItems: 'center'},
          ]}>
-       <Text  style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>{filteredPredictionData?.[0]?.predictions?.draw} %</Text>
-       </LinearGradient>
-     </View>
+ <Text style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>
+                {showPredictions ? `${filteredPredictionData?.[0]?.predictions?.draw.toFixed(2)} %` : '--'}
+              </Text>
+                     </LinearGradient>
+     </TouchableOpacity>
      </View>
 
 <View>
@@ -108,8 +127,8 @@ const dispatch = useDispatch()
                   style={tw`text-[#fff] text-[18px] font-402 leading-normal mt-1.5 self-center`}>
         {awayTeam?.name}
                 </Text>
-     <View
-       
+     <TouchableOpacity
+         onPress={() => setShowPredictions(true)}
        style={[
          tw`mt-4 mx-5 rounded-full justify-center w-20 h-20`,
        
@@ -122,9 +141,11 @@ const dispatch = useDispatch()
            tw`rounded-full justify-center`,
            {flex: 1, justifyContent: 'center', alignItems: 'center'},
          ]}>
-       <Text  style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>{filteredPredictionData?.[0]?.predictions?.away} %</Text>
-       </LinearGradient>
-     </View>
+ <Text style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>
+                {showPredictions ? `${filteredPredictionData?.[0]?.predictions?.away.toFixed(2)} %` : 'No'}
+              </Text>
+                     </LinearGradient>
+     </TouchableOpacity>
      </View>
                 </View>
              
@@ -145,8 +166,8 @@ const dispatch = useDispatch()
                   style={tw`text-[#fff] text-[18px] font-402 leading-normal mt-1.5 self-center`}>
            1x
                 </Text>
-                <View
-       
+                <TouchableOpacity
+           onPress={() => setShowDoubleChance(true)}
         style={[
           tw`mt-4  mx-5 rounded-full justify-center w-20 h-20 self-center`,
         
@@ -159,9 +180,9 @@ const dispatch = useDispatch()
             tw`rounded-full justify-center`,
             {flex: 1, justifyContent: 'center', alignItems: 'center'},
           ]}>
-        <Text  style={tw`text-[#fff] text-[16px] font-402 leading-normal  self-center`}>{filteredDoubleChanceData?.[0]?.predictions?.home_away} %</Text>
+        <Text  style={tw`text-[#fff] text-[16px] font-402 leading-normal  self-center`}>{showDoubleChance ? `${filteredDoubleChanceData?.[0]?.predictions?.home_away.toFixed(2)} %` : "1X"} </Text>
         </LinearGradient>
-      </View>
+      </TouchableOpacity>
       </View>
 
 <View>
@@ -170,8 +191,8 @@ const dispatch = useDispatch()
                   style={tw`text-[#fff] text-[18px] font-402 leading-normal  self-center mt-1.5`}>
       No Draw
                 </Text>
-      <View
-       
+                <TouchableOpacity
+           onPress={() => setShowDoubleChance(true)}
        style={[
          tw`mt-4 mx-5 rounded-full justify-center w-20 h-20`,
        
@@ -184,9 +205,9 @@ const dispatch = useDispatch()
            tw`rounded-full justify-center`,
            {flex: 1, justifyContent: 'center', alignItems: 'center'},
          ]}>
-       <Text  style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>{filteredDoubleChanceData?.[0]?.predictions?.draw_home} %</Text>
+       <Text  style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>{showDoubleChance ? `${filteredDoubleChanceData?.[0]?.predictions?.draw_home.toFixed(2)} %`: "--"}</Text>
        </LinearGradient>
-     </View>
+     </TouchableOpacity>
      </View>
 
 <View>
@@ -194,8 +215,8 @@ const dispatch = useDispatch()
                   style={tw`text-[#fff] text-[18px] font-402 leading-normal mt-1.5 self-center`}>
           x2
                 </Text>
-     <View
-       
+                <TouchableOpacity
+           onPress={() => setShowDoubleChance(true)}
        style={[
          tw`mt-4 mx-5 rounded-full justify-center w-20 h-20`,
        
@@ -208,9 +229,9 @@ const dispatch = useDispatch()
            tw`rounded-full justify-center`,
            {flex: 1, justifyContent: 'center', alignItems: 'center'},
          ]}>
-       <Text  style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>{filteredDoubleChanceData?.[0]?.predictions?.draw_away} %</Text>
+       <Text  style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>{showDoubleChance ? `${filteredDoubleChanceData?.[0]?.predictions?.draw_away.toFixed(2)} %`: "X2"}</Text>
        </LinearGradient>
-     </View>
+     </TouchableOpacity>
      </View>
                 </View>
              

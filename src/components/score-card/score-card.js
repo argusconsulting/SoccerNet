@@ -73,7 +73,7 @@ const ScoreCard = ({match, width, screen, navigate}) => {
         )}
       </View>
 
-      <View style={tw`flex-row justify-between mx-10 `}>
+      <View style={tw`flex-row justify-between mx-10 mt-3 `}>
         <View>
           <View
             style={[
