@@ -43,3 +43,4 @@ export const api_name_getSeasonsById = 'seasons';
 export const api_name_getTeamSearch = 'leagues/search';
 export const api_name_getWinningProbabilty = 'predictions/probabilities/fixtures';
 export const api_name_getDoubleChance = 'fixtures';
+export const api_name_getCommentriesByFixtureId = "commentaries/fixtures"

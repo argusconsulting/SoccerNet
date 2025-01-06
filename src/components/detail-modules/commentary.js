@@ -1,8 +1,20 @@
 import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import tw from '../../styles/tailwind';
+import { getCommentriesData } from '../../redux/commentriesSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Commentary = () => {
+
+  const dispatch = useDispatch()
+  const commentaryData = useSelector(state => state?.commentries?.commentriesData)
+
+
+    useEffect(() => {
+      dispatch(getCommentriesData(fixtureId));
+
+    },[] )
+  
   const DATA = [
     {
       minutes: '12',
@@ -55,17 +67,17 @@ const Commentary = () => {
       <View style={tw`flex-row w-full`}>
         <View style={tw`w-7`}>
           <Text style={tw`text-[#fff] text-[16px] font-401 leading-tight`}>
-            {item?.minutes}"
+            {item?.minute}"
           </Text>
         </View>
         <View style={tw`w-70`}>
           <Text style={tw`text-[#a2a2a2] text-[14px] font-400 leading-tight w-70`}>
-            {item?.commentary}
+            {item?.comment}
           </Text>
         </View>
       </View>
   
-      {item?.goal && (
+      {item?.is_goal && (
         <View style={tw`flex-row mx-5 mt-3`}>
           <Image
             source={item?.goal?.img}
@@ -95,7 +107,7 @@ const Commentary = () => {
   return (
     <View style={tw`p-7`}>
      <FlatList
-  data={DATA}
+  data={commentaryData}
   renderItem={({ item, index }) => <Item item={item} index={index} />}
   keyExtractor={(item, index) => index.toString()}
 />

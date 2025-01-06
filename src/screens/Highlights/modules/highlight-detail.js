@@ -14,13 +14,9 @@ import Header from '../../../components/header/header';
 import {t} from 'i18next';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {getFixturesById} from '../../../redux/fixturesSlice';
 import moment from 'moment';
-import { getPredictionProbability } from '../../../redux/predictionSlice';
 import HoldOnAnimation from '../../../components/loader/animation-loader';
-const Summary = lazy(() =>
-  import('../../../components/detail-modules/summary'),
-);
+
 const Commentary = lazy(() =>
   import('../../../components/detail-modules/commentary'),
 );
@@ -32,9 +28,6 @@ const Players = lazy(() =>
 );
 const Statistics = lazy(() =>
   import('../../../components/detail-modules/statistics'),
-);
-const PlayerInfo = lazy(() =>
-  import('../../../components/detail-modules/player-info'),
 );
 const LineUps = lazy(() =>
   import('../../../components/detail-modules/lineUps'),
@@ -271,7 +264,7 @@ const HighlightDetail = () => {
           {type === 'Statistics' && <Statistics fixtureId={fixtureId} />}
           {type === 'Standings' && <Standings />}
           {type === 'LineUps' && <LineUps fixtureId={fixtureId} />}
-          {type === 'Commentary' && <Commentary />}
+          {type === 'Commentary' && <Commentary fixtureId={fixtureId} />}
             {type === 'Ai Prediction' && <AiPrediction fixtureId={fixtureId} homeTeam={homeTeam} awayTeam={awayTeam}/>}
         </Suspense>
       </ScrollView>
