@@ -70,7 +70,7 @@ function Menu({modalVisible, toggleModal}) {
     {
       id: '0a378-3eae-4a0c-810b-67e799f',
       icon: require('../../assets/icons/highlights.png'),
-      title: 'Video Highlights',
+      title: 'VideoHighlights',
     },
     {
       id: '0a3d5f78-3e6e-4a0c-810b-6637687e799f',
@@ -137,7 +137,7 @@ function Menu({modalVisible, toggleModal}) {
         toggleModal();
         navigation.navigate('Photos');
         break;
-      case 'Video Highlights':
+      case 'VideoHighlights':
         toggleModal();
         navigation.navigate('videoHighlights');
         break;

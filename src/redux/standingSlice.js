@@ -7,14 +7,14 @@ import {
 
 export const getAllStandings = createAsyncThunk(
   'standings/getAllStandings',
-  async () => {
+  async (lang) => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_standings}?include=participant;details.type;`,
+        `${api_name_standings}?include=participant;details.type&locale=${lang}`,
       );
       return response;
     } catch (error) {
-      console.log('Error fetching fixtures by date API', error);
+      console.log('Error fetching all standing', error);
       return rejectWithValue(error);
     }
   },
@@ -23,16 +23,16 @@ export const getAllStandings = createAsyncThunk(
 // for fixtures id with lineups
 export const getLineups = createAsyncThunk(
   'standings/lineups',
-  async fixtureId => {
+  async ({fixtureId, lang}) => {
     console.log('is fixtureId available', fixtureId);
     try {
       const response = await getSportsMonkApi(
-        `${api_name_fixtures_id}/${fixtureId}?include=formations;lineups;participants&filters=lineupTypes:11`,
+        `${api_name_fixtures_id}/${fixtureId}?include=formations;lineups;participants&filters=lineupTypes:11&locale=${lang}`,
       );
       console.log('line ups', response);
       return response;
     } catch (error) {
-      console.log('Error fetching fixtures by id API', error);
+      console.log('Error fetching lineup', error);
       return rejectWithValue(error);
     }
   },

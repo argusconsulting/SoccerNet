@@ -56,5 +56,20 @@
   "privacyPolicy": "سياسة الخصوصية",
   "termsOfUse": "شروط الاستخدام",
   "support": "الدعم",
-  "selectAtLeastOneLeague": "اختر على الأقل دوريًا واحدًا"
+  "selectAtLeastOneLeague": "اختر على الأقل دوريًا واحدًا",
+  "VideoHighlights":"ملخص الفيديو",
+  "Oops!ComeBackLater":"أوبس! عُد لاحقاً.",
+    "LineUps":"التشكيلات",
+  "AiPrediction":"التنبؤ الذكي",
+  "Home":"الرئيسية",
+  "Away":"خارج",
+"TEAMSTATS":"إحصائيات الفريق",
+"Team":"الفريق",
+"M":"م",
+"W":"ف",
+"D":"ت",
+"L":"خ",
+"G":"أ",
+"PTS":"ن"
+
 }

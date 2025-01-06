@@ -56,5 +56,19 @@
   "termsOfUse": "Terms of Use",
   "support": "Support",
   "selectAtLeastOneLeague": "Select at least 1 league.",
-  "countryPlaceHolder": "Enter your country"
+  "countryPlaceHolder": "Enter your country",
+  "VideoHighlights":"Video Highlights",
+  "Oops!ComeBackLater":"Oops! Come back later.",
+  "LineUps":"LineUps",
+  "AiPrediction":"AI-Prediction",
+  "Home":"Home",
+  "Away":"Away",
+"TEAMSTATS":"TEAMSTATS",
+"Team":"Team",
+"M":"M",
+"W":"W",
+"D":"D",
+"L":"L",
+"G":"G",
+"PTS":"PTS"
 }

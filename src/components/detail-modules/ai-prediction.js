@@ -14,7 +14,7 @@ const dispatch = useDispatch()
   const [showPredictions, setShowPredictions] = useState(false);
   const [showDoubleChance, setShowDoubleChance] = useState(false);
 
-
+console.log("fix", fixtureId)
   useEffect(() => {
     const fetchPredictions = () => {
       dispatch(getPredictionProbability(fixtureId));

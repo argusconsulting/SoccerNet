@@ -55,5 +55,21 @@
   "privacyPolicy": "Politica sulla privacy",
   "termsOfUse": "Termini di utilizzo",
   "support": "Supporto",
-  "selectAtLeastOneLeague": "Seleziona almeno una lega."
+  "selectAtLeastOneLeague": "Seleziona almeno una lega.",
+  "VideoHighlights":"Sintesi video",
+  "Oops!ComeBackLater":"Ops! Torna più tardi.",
+    "LineUps":"Formazioni",
+  "AiPrediction":"Previsione IA",
+  "Home":"Casa",
+  "Away":"Trasferta",
+"TEAMSTATS":"STATISTICHE DELLA SQUADRA",
+"Team":"Squadra",
+"M":"M",
+"W":"V",
+"D":"P",
+"L":"S",
+"G":"G",
+"PTS":"PT"
+
+
 }

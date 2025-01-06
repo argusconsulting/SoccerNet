@@ -3,13 +3,16 @@ import React, {useEffect} from 'react';
 import tw from '../../styles/tailwind';
 import {useDispatch, useSelector} from 'react-redux';
 import {getAllStandings} from '../../redux/standingSlice';
+import { t } from 'i18next';
 
 const Standings = () => {
   const dispatch = useDispatch();
   const standingData = useSelector(state => state?.standing?.standingsData);
+  const lang = useSelector(state => state?.language_store?.language);
+
 
   useEffect(() => {
-    dispatch(getAllStandings());
+    dispatch(getAllStandings(lang));
   }, [dispatch]);
 
   // Sort the standingData in ascending order based on item.position
@@ -81,31 +84,31 @@ const Standings = () => {
         </Text>
         <Text
           style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center w-19`}>
-          Team
+          {t('Team')}
         </Text>
         <Text
           style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>
-          M
+          {t('M')}
         </Text>
         <Text
           style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>
-          W
+          {t('W')}
         </Text>
         <Text
           style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>
-          D
+          {t('D')}
         </Text>
         <Text
           style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>
-          L
+          {t('L')}
         </Text>
         <Text
           style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>
-          G
+          {t('G')}
         </Text>
         <Text
           style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>
-          PTS
+          {t('PTS')}
         </Text>
       </View>
 

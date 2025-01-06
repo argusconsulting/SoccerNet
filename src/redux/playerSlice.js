@@ -25,11 +25,11 @@ export const getAllPlayers = createAsyncThunk(
 // playersById
 export const getPlayersById = createAsyncThunk(
   'players/playersById',
-  async ({playerId, includeParams}, {rejectWithValue}) => {
+  async ({playerId,lang, includeParams}, {rejectWithValue}) => {
     try {
       const queryParams = includeParams ? `?include=${includeParams}` : '';
       const response = await getSportsMonkApi(
-        `${api_name_getPlayersById}/${playerId}${queryParams}`,
+        `${api_name_getPlayersById}/${playerId}${queryParams}&locale=${lang}`,
       );
       console.log('res', response);
       return response;

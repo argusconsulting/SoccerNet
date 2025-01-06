@@ -56,5 +56,21 @@
   "privacyPolicy": "Politique de confidentialité",
   "termsOfUse": "Conditions d'utilisation",
   "support": "Support",
-  "selectAtLeastOneLeague": "Sélectionnez au moins une ligue."
+  "selectAtLeastOneLeague": "Sélectionnez au moins une ligue.",
+  "VideoHighlights":"Résumé vidéo",
+  "Oops!ComeBackLater":"Oups ! Revenez plus tard.",
+    "LineUps":"Composition des équipes",
+  "AiPrediction":"Prédiction IA",
+  "Home":"Domicile",
+  "Away":"Extérieur",
+"TEAMSTATS":"STATISTIQUES DE L'ÉQUIPE",
+"Team":"Équipe",
+"M":"M",
+"W":"V",
+"D":"N",
+"L":"D",
+"G":"B",
+"PTS":"PTS"
+
+
 }

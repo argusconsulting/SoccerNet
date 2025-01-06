@@ -72,15 +72,16 @@ const Home = () => {
           start: monthRange.start,
           end: monthRange.end,
           page,
+          lang
         }),
       );
     }
-  }, [dispatch, monthRange]);
+  }, [dispatch, monthRange , lang]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       dispatch(getSelectedLeagues({lang}));
-    }, 2000); // Delay of 2 seconds (2000 ms)
+    }, 2000); 
 
     return () => clearTimeout(timer);
   }, []);
@@ -243,7 +244,7 @@ const Home = () => {
               <Image source={require('../../assets/no-data-live-now.png')} style={tw`w-14 h-14 self-center`}/>
             <Text
               style={tw`text-[#fff] text-[20px] font-401 leading-tight  self-center px-5`}>
-             Oops! Come back later.
+             {t('Oops!ComeBackLater')}
             </Text>
              </TouchableOpacity>
           )}

@@ -3,15 +3,18 @@ import {View, Text, FlatList, ActivityIndicator, Image} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getFixturesById, getTypeById} from '../../redux/fixturesSlice';
 import tw from '../../styles/tailwind';
+import { t } from 'i18next';
 
 const Statistics = ({fixtureId}) => {
   const dispatch = useDispatch();
   const data = useSelector(state => state?.fixtures?.fixturesById);
   const typeNames = useSelector(state => state?.fixtures?.typeNames);
   const loading = useSelector(state => state?.fixtures?.loading);
+    const lang = useSelector(state => state?.language_store?.language);
+  
 
   useEffect(() => {
-    dispatch(getFixturesById(fixtureId));
+    dispatch(getFixturesById({fixtureId, lang}));
 
     // Extract unique type IDs
     const uniqueTypeIds = [
@@ -20,9 +23,9 @@ const Statistics = ({fixtureId}) => {
 
     // Fetch type names for each unique type ID
     uniqueTypeIds.forEach(typeId => {
-      dispatch(getTypeById(typeId));
+      dispatch(getTypeById({typeId, lang}));
     });
-  }, [dispatch, fixtureId]);
+  }, [dispatch, fixtureId , lang]);
 
   // Remove duplicate stats by `type_id`
   const uniqueStatistics = Array.from(
@@ -71,14 +74,14 @@ const Statistics = ({fixtureId}) => {
   return (
     <View style={tw`bg-[#303649] p-5 m-5 rounded-lg shadow-md`}>
       {/* Header Section */}
-      <View style={tw`flex-row justify-between items-center mb-5`}>
+      <View style={tw`flex-row justify-between items-center mb-5 mx-3`}>
         <Image
           source={{uri: data?.participants?.[0]?.image_path}}
           style={tw`w-10 h-10 rounded-full`}
         />
         <Text
           style={tw`text-[#fff] text-[20px] font-bold leading-normal self-center`}>
-          TEAM STATS
+          {t('TEAMSTATS')}
         </Text>
         <Image
           source={{uri: data?.participants?.[1]?.image_path}}
@@ -94,9 +97,9 @@ const Statistics = ({fixtureId}) => {
           {/* Column Titles */}
           <View
             style={tw`flex-row justify-between px-4 pb-2 border-b border-gray-600`}>
-            <Text style={tw`text-white text-[14px] font-bold`}>Home</Text>
-            <Text style={tw`text-white text-[14px] font-bold`}>Statistics</Text>
-            <Text style={tw`text-white text-[14px] font-bold`}>Away</Text>
+            <Text style={tw`text-white text-[14px] font-bold`}>{t('Home')}</Text>
+            <Text style={tw`text-white text-[14px] font-bold`}>{t('Statistics')}</Text>
+            <Text style={tw`text-white text-[14px] font-bold`}>{t('Away')}</Text>
           </View>
           {uniqueStatistics.length > 0 ? (
             <FlatList

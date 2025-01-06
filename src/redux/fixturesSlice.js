@@ -42,11 +42,11 @@ export const getAllFixturesByDateRange = createAsyncThunk(
 // for highlights
 export const getAllFixturesByDateRangeHighlights = createAsyncThunk(
   'fixtures/byDateRangeHighlights',
-  async ({start, end, page}) => {
-    console.log('page', page);
+  async ({start, end, page, lang}) => {
+    console.log('page', lang);
     try {
       const response = await getSportsMonkApi(
-        `${api_name_fixtures_date_range}/${start}/${end}?include=participants;league;scores&page=${page}`,
+        `${api_name_fixtures_date_range}/${start}/${end}?include=participants;league;scores&page=${page}&locale=${lang}`,
       );
       return response;
     } catch (error) {
@@ -59,10 +59,10 @@ export const getAllFixturesByDateRangeHighlights = createAsyncThunk(
 // for fixtures id
 export const getFixturesById = createAsyncThunk(
   'fixtures/byFixturesId',
-  async fixtureId => {
+  async ({fixtureId, lang}) => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_fixtures_id}/${fixtureId}?include=participants;league;scores;statistics;`,
+        `${api_name_fixtures_id}/${fixtureId}?include=participants;league;scores;statistics&locale=${lang}`,
       );
       return response;
     } catch (error) {
@@ -91,10 +91,10 @@ export const getFixturesByIdLineUps = createAsyncThunk(
 // for type
 export const getTypeById = createAsyncThunk(
   'fixtures/byTypeId',
-  async typeId => {
+  async ({typeId, lang}) => {
     try {
       const response = await getSportsMonkCoreApi(
-        `${api_name_type_id}/${typeId}`,
+        `${api_name_type_id}/${typeId}?locale=${lang}`,
       );
       return response;
     } catch (error) {

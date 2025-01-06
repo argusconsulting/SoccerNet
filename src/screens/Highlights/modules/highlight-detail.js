@@ -16,6 +16,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import moment from 'moment';
 import HoldOnAnimation from '../../../components/loader/animation-loader';
+import { getFixturesById } from '../../../redux/fixturesSlice';
 
 const Commentary = lazy(() =>
   import('../../../components/detail-modules/commentary'),
@@ -60,7 +61,7 @@ const HighlightDetail = () => {
     },
     {
       id: 1,
-      name: 'Ai Prediction',
+      name: 'AiPrediction',
     },
   ];
 
@@ -68,8 +69,11 @@ const HighlightDetail = () => {
   const dispatch = useDispatch();
   const fixtureId = route?.params?.fixtureId;
   const detailData = useSelector(state => state?.fixtures?.fixturesById);
-
-
+    const lang = useSelector(state => state?.language_store?.language);
+  
+  useEffect(()=>{
+    dispatch(getFixturesById({fixtureId, lang}))
+  },[dispatch, lang])
 
   // Function to extract scores for home and away teams
   const homeTeam = detailData?.participants?.find(
@@ -265,7 +269,7 @@ const HighlightDetail = () => {
           {type === 'Standings' && <Standings />}
           {type === 'LineUps' && <LineUps fixtureId={fixtureId} />}
           {type === 'Commentary' && <Commentary fixtureId={fixtureId} />}
-            {type === 'Ai Prediction' && <AiPrediction fixtureId={fixtureId} homeTeam={homeTeam} awayTeam={awayTeam}/>}
+            {type === 'AiPrediction' && <AiPrediction fixtureId={fixtureId} homeTeam={homeTeam} awayTeam={awayTeam}/>}
         </Suspense>
       </ScrollView>
     </View>

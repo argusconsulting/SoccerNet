@@ -1,5 +1,5 @@
 import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import tw from '../../styles/tailwind';
 import { getCommentriesData } from '../../redux/commentriesSlice';
 import { useDispatch, useSelector } from 'react-redux';

@@ -19,7 +19,7 @@ const Highlights = () => {
   const isLoading = useSelector(state => state?.fixtures?.isLoading);
   const [allHighlights, setAllHighlights] = useState([]); // Full data
   const [filteredHighlights, setFilteredHighlights] = useState([]); // Displayed data
-
+  const lang = useSelector(state => state?.language_store?.language);
   const highlightData = useSelector(
     state => state?.fixtures?.fixturesByDateRangeHighlights,
   );
@@ -41,6 +41,7 @@ const Highlights = () => {
           start: monthRange.start,
           end: monthRange.end,
           page,
+          lang
         }),
       );
 
@@ -54,7 +55,7 @@ const Highlights = () => {
 
   useEffect(() => {
     loadHighlights();
-  }, [monthRange, page]);
+  }, [monthRange, page, lang]);
 
   const handleSearch = query => {
     setSearchQuery(query); // Update the search query

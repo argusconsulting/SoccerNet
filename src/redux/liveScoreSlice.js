@@ -7,11 +7,11 @@ export const getLiveScoresInPlay = createAsyncThunk(
   async () => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_liveScore_inPlay}?include=participants;league;scores;`,
+        `${api_name_liveScore_inPlay}?include=participants;league;scores`,
       );
       return response;
     } catch (error) {
-      console.log('Error fetching fixtures by date API', error);
+      console.log('Error fetching live data', error);
       return rejectWithValue(error);
     }
   },
