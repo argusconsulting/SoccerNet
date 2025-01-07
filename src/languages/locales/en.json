@@ -70,5 +70,25 @@
 "D":"D",
 "L":"L",
 "G":"G",
-"PTS":"PTS"
+"PTS":"PTS",
+"Goalkeeper":"Goalkeeper",
+"Defenders":"Defenders",
+"Midfielders":"Midfielders",
+"Strikers":"Strikers",
+"Bench":"Bench",
+"Defender":"Defenders",
+"Midfielder":"Midfielders",
+"Striker":"Strikers",
+"Substitutions":"Substitutions",
+"Saves": "Saves",
+"Rating": "Rating",
+"Appearances": "Appearances",
+"Minutes Played":"MinutesPlayed",
+"Clearances": "Clearances",
+"Goals Conceded": "GoalsConceded",
+"Date of Birth": "Date of Birth",
+"Height": "Height",
+"Season": "Season",
+"Search by team name" :"Search by team name"
+
 }

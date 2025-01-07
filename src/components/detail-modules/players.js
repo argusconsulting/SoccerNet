@@ -13,6 +13,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getFixturesByIdLineUps} from '../../redux/fixturesSlice';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import Header from '../header/header';
+import { t } from 'i18next';
 
 const playerCategories = {
   Goalkeeper: [1],
@@ -30,11 +31,12 @@ const Players = () => {
   const teamImage = route?.params?.teamImage;
   const dispatch = useDispatch();
   const data = useSelector(state => state?.fixtures?.fixturesByIdLineUps);
+    const lang = useSelector(state => state?.language_store?.language);
+  
 
-  console.log("my players data", data)
 
   useEffect(() => {
-    dispatch(getFixturesByIdLineUps(fixtureId));
+    dispatch(getFixturesByIdLineUps({fixtureId, lang}));
   }, [dispatch, fixtureId]);
 
   // Filter out the players of the selected team
@@ -101,18 +103,29 @@ const Players = () => {
       if (item.type === 'category') {
         return (
           <View style={tw`mx-5`}>
-            <View style={tw`flex-row`}>
-              <Image
-                source={categoryImages[item.category]}
-                style={[tw`w-6 h-6 ml-1 mr-3 mt-3.5`, {resizeMode: 'contain'}]}
-              />
+            {lang === 'ar' ? <View style={tw`flex-row justify-end items-center`}>
+             
               <Text
                 style={tw`text-[#fff] text-[18px] font-401 leading-normal mt-4`}>
-                {item.category}
+                {t(item.category)}
               </Text>
-            </View>
+              <Image
+                source={categoryImages[item.category]}
+                style={[tw`w-6 h-6 ml-1 ml-3 mt-3.5`, {resizeMode: 'contain'}]}
+              />
+            </View> :
+             <View style={tw`flex-row`}>
+             <Image
+               source={categoryImages[item.category]}
+               style={[tw`w-6 h-6 ml-1 mr-3 mt-3.5`, {resizeMode: 'contain'}]}
+             />
+             <Text
+               style={tw`text-[#fff] text-[18px] font-401 leading-normal mt-4`}>
+               {t(item.category)}
+             </Text>
+           </View>}
+           
             {item.players.map(player => {
-              console.log('players', player);
               return (
                 <View
                   key={player.id}
@@ -123,6 +136,7 @@ const Players = () => {
                         playerId: player?.player?.id,
                         teamImage: teamImage,
                         teamName: teamName,
+                        playerName: player?.player?.display_name
                       })
                     }
                     style={tw`flex-row items-center`}>
@@ -149,7 +163,7 @@ const Players = () => {
       } else if (item.type === 'bench') {
         return (
           <View style={tw`mx-5`}>
-            <Text style={tw`text-[#fff] text-[18px] font-bold mt-5`}>Bench</Text>
+            <Text style={tw`text-[#fff] text-[18px] font-bold mt-5`}>{t('Bench')}</Text>
             <View style={[tw`p-3 rounded-md mt-2`, {backgroundColor: '#303649'}]}>
               {item.players.map(player => (
                 <View key={player.id} style={tw`flex-row items-center mt-4 justify-between`}>

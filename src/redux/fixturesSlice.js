@@ -75,10 +75,10 @@ export const getFixturesById = createAsyncThunk(
 // for lineups
 export const getFixturesByIdLineUps = createAsyncThunk(
   'fixtures/byFixturesIdLineUps',
-  async fixtureId => {
+  async ({fixtureId, lang}) => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_fixtures_id}/${fixtureId}?include=participants;lineups.player;lineups.type`,
+        `${api_name_fixtures_id}/${fixtureId}?include=participants;lineups.player;lineups.type&locale=${lang}`,
       );
       return response;
     } catch (error) {

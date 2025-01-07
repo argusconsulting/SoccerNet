@@ -69,7 +69,24 @@
 "D":"P",
 "L":"S",
 "G":"G",
-"PTS":"PT"
+"PTS":"PT",
+"Goalkeeper":"Portiere",
+"Defenders":"Difensori",
+"Midfielders":"Centrocampisti",
+"Strikers":"Attaccanti",
+"Bench":"Panchina",
+"Saves": "Parate",
+"Rating": "Valutazione",
+"Appearances": "Presenze",
+"Minutes Played": "Minuti giocati",
+"Clearances": "Sgomberi",
+"Goals Conceded": "Goal subiti",
+"Date of Birth": "Data di nascita",
+"Height": "Altezza",
+"Season": "Stagione",
+"Search by team name" :"Ricerca per nome della squadra"
+
+
 
 
 }

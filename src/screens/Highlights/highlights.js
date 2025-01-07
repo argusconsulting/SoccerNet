@@ -9,6 +9,7 @@ import {getAllFixturesByDateRangeHighlights} from '../../redux/fixturesSlice';
 import Loader from '../../components/loader/Loader';
 import SearchBar from '../../components/search-bar/search-bar';
 import HoldOnAnimation from '../../components/loader/animation-loader';
+import { t } from 'i18next';
 
 const Highlights = () => {
   const dispatch = useDispatch();
@@ -82,7 +83,7 @@ const Highlights = () => {
       <View style={tw`mx-5`}>
         <SearchBar
           onSearch={handleSearch} // Connect search bar to the handleSearch function
-          placeholderText={'Search by team name ...'}
+          placeholderText={t('Search by team name')}
         />
       </View>
       <View style={tw``}>

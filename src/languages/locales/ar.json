@@ -70,6 +70,24 @@
 "D":"ت",
 "L":"خ",
 "G":"أ",
-"PTS":"ن"
-
+"PTS":"ن",
+"Goalkeeper":"حارس المرمى",
+"Defenders":"المدافعون",
+"Midfielders":"لاعبو الوسط",
+"Strikers":"المهاجمون",
+"Bench":"دكة البدلاء",
+"Substitutions":"التبديلات",
+"Saves": "تصديات",
+"Rating": "تقييم",
+"Appearances": "المشاركات",
+"Minutes Played":"دقائق اللعب",
+"Clearances": "الإبعادات",
+"Goals Conceded": "أهداف مستقبلة",
+"Defender":"المدافعون",
+"Midfielder":"لاعبو الوسط",
+"Striker":"المهاجمون",
+"Date of Birth": "تاريخ الميلاد",
+"Height": "الطول",
+"Season": "الموسم",
+"Search by team name" :"بحث بالاسم الفريق"
 }
