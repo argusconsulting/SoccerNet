@@ -35,6 +35,7 @@ const Highlights = () => {
     getWeekRange(moment());
   }, []);
 
+
   const loadHighlights = async () => {
     if (monthRange.start && monthRange.end) {
       const response = await dispatch(
@@ -92,6 +93,7 @@ const Highlights = () => {
          <HoldOnAnimation/>
          </View>
         ) : (
+          filteredHighlights?.length > 0 ?
           <FlatList
             ref={flatListRef}
             data={filteredHighlights} // Use filtered data
@@ -101,7 +103,7 @@ const Highlights = () => {
                 width={'96%'}
                 screen={'highlight'}
                 navigate={'HighlightDetail'}
-              />
+              /> 
             )}
             keyExtractor={(item, index) => index.toString()}
             contentContainerStyle={tw`px-3 pb-25`}
@@ -119,7 +121,11 @@ const Highlights = () => {
                 )}
               </View>
             }
-          />
+          /> :
+          <Text
+          style={tw`text-white text-[18px] font-401 leading-tight self-center`}>
+          No Data Found !
+        </Text>
         )}
       </View>
     </View>

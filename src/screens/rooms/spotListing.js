@@ -13,7 +13,7 @@ import Header from '../../components/header/header';
 import moment from 'moment'; // You can use this library for date formatting
 import LinearGradient from 'react-native-linear-gradient';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Checkbox} from 'react-native-paper';
 import debounce from 'lodash/debounce';
@@ -84,6 +84,9 @@ const SpotLight = () => {
     return willFocusSubscription;
   }, [dispatch]);
 
+
+
+
   const debouncedSearch = useCallback(
     debounce(query => {
       if (query) {
@@ -126,7 +129,6 @@ const SpotLight = () => {
 
   const Item = ({item}) => {
     const isJoined = item.users.some(user => user.id === userId);
-
     const handlePress = (groupId, groupName) => {
       if (isJoined) {
         dispatch(leaveMeetingRooms({userId, groupId})).then(() => {
@@ -142,11 +144,12 @@ const SpotLight = () => {
       }
     };
 
-    const onCardClick = ({groupId, groupName}) => {
+    const onCardClick = ({groupId, groupName , creatorId}) => {
       if (isJoined) {
         navigation.navigate('MeetingChat', {
           groupId: groupId,
           groupName: groupName,
+          creatorId: creatorId
         });
       }
     };
@@ -160,7 +163,7 @@ const SpotLight = () => {
     {  width: screenWidth  /2 - 20 , flexDirection: 'column', justifyContent: 'space-between', minHeight: 180 }, // Add flex and minHeight
   ]}
   disabled={item?.is_active === false}
-  onPress={() => onCardClick({ groupId: item?.id, groupName: item?.name })}>
+  onPress={() => onCardClick({ groupId: item?.id, groupName: item?.name , creatorId : item?.created_by })}>
   
   <View style={tw`flex-row justify-between`}>
     <Text

@@ -4,11 +4,11 @@ import tw from '../../styles/tailwind';
 import { getCommentriesData } from '../../redux/commentriesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
-const Commentary = () => {
+const Commentary = ({fixtureId}) => {
 
   const dispatch = useDispatch()
   const commentaryData = useSelector(state => state?.commentries?.commentriesData)
-
+console.log("commentaryData", commentaryData)
 
     useEffect(() => {
       dispatch(getCommentriesData(fixtureId));
@@ -106,11 +106,14 @@ const Commentary = () => {
 
   return (
     <View style={tw`p-7`}>
-     <FlatList
+      {commentaryData == undefined ?    <Text style={tw`text-[#fff] text-[18px] font-401 w-70 leading-tight self-center text-center`}>
+           Oops ! No commentry available for this match.
+          </Text> :  <FlatList
   data={commentaryData}
   renderItem={({ item, index }) => <Item item={item} index={index} />}
   keyExtractor={(item, index) => index.toString()}
-/>
+/>}
+    
     </View>
   );
 };

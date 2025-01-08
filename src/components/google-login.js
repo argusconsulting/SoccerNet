@@ -17,9 +17,11 @@ import {api_name_google_login} from '../constants/api-constants';
 import {postApi} from '../scripts/api-services';
 import {GetFCMToken} from './notification-component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loader from './loader/Loader';
 
 const GoogleLogin = () => {
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     GoogleSignin.configure({
       webClientId:
@@ -51,6 +53,7 @@ const GoogleLogin = () => {
   };
 
   const signIn = async () => {
+    setLoading(true);
     try {
       await GoogleSignin.hasPlayServices();
       const usrInfo = await GoogleSignin.signIn();
@@ -61,11 +64,13 @@ const GoogleLogin = () => {
       store.dispatch(setSocialLoginToken());
 
       const response = await _googleSocialLogin(idToken, device_token);
-      // navigation.navigate('LeagueSelection');
+    
+   
       getSelectedLeagues(response?.data?.user?.id);
       store.dispatch(setSocialProfile(response?.data));
       store.dispatch(setUserAuthToken(response?.data?.token));
       store.dispatch(setUserID(response?.data?.user?.id));
+    
       // navigation.navigate('Home');
       return await GoogleSignin.signOut();
     } catch (error) {
@@ -78,6 +83,9 @@ const GoogleLogin = () => {
       } else {
         // some other error happened
       }
+    }
+    finally {
+      setLoading(false); // Hide the loader at the end of the process
     }
   };
 
@@ -98,12 +106,16 @@ const GoogleLogin = () => {
 
   return (
     <View>
+      {loading ? <View style={tw`mr-7 mt-5`}>
+         <Loader/>
+          </View>
+           :
       <TouchableOpacity onPress={() => signIn()}>
         <Image
           source={require('../assets/icons/google.png')}
           style={[tw`w-8 h-8 self-center  mr-7 mt-1`, {resizeMode: 'contain'}]}
         />
-      </TouchableOpacity>
+      </TouchableOpacity>}
     </View>
   );
 };

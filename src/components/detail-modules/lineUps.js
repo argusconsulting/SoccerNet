@@ -286,8 +286,8 @@ const LineUps = ({fixtureId}) => {
         </>
       ) : (
         <Text
-          style={tw`text-[#fff] text-[20px] font-401 self-center leading-normal mr-3`}>
-          No Data Found!
+          style={tw`text-[#fff] text-[20px] font-401 self-center leading-normal mt-5`}>
+          No Lineups Found!
         </Text>
       )}
 

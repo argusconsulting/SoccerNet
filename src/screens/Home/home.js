@@ -28,15 +28,14 @@ import {getLiveScoresInPlay} from '../../redux/liveScoreSlice';
 import {clearTeamSearchData, teamSearchHandler} from '../../redux/searchSlice';
 import {ScrollView} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
+import SelectedLeagues from '../../components/selected-leagues';
 
 const Home = () => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const lang = useSelector(state => state?.language_store?.language);
-  const data = useSelector(state => state?.league?.selectedLeagues);
-  const loading = useSelector(state => state?.league?.isLoadingSelectedLeagues);
   const dispatch = useDispatch();
-  const searchedData = useSelector(state => state?.search.teamSearchData);
+  // const searchedData = useSelector(state => state?.search.teamSearchData);
   const [page, setPage] = useState(1);
   const [monthRange, setMonthRange] = useState({start: '', end: ''});
   const justFinishedData = useSelector(
@@ -78,13 +77,7 @@ const Home = () => {
     }
   }, [dispatch, monthRange , lang]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      dispatch(getSelectedLeagues({lang}));
-    }, 2000); 
 
-    return () => clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
     dispatch(getLiveScoresInPlay());
@@ -110,29 +103,7 @@ const Home = () => {
     }, [])
   );
 
-  const Item = ({item}) => (
-    <View style={tw`bg-[#303649] p-1.5 mx-2 rounded-lg`}>
-     <View
-            style={[
-              tw`w-14 h-14 self-center`, // Parent container size
-              {
-                backgroundColor: 'rgba(0, 0, 0, 0.1)', // Background for shadow area (optional for contrast)
-                shadowColor: 'rgba(0, 0, 0, 0.3)', // Shadow color
-                elevation: 20, // Shadow for Android
-                borderRadius: 999, // Circular shadow
-              },
-            ]}>
-            {/* Image centered inside the shadowed circle */}
-            <Image
-              source={{uri: item?.image_path}}
-              style={[
-                tw`w-10 h-10 self-center mt-2`, // Image size and centering
-                {resizeMode: 'contain', borderRadius: 999}, // Make the image circular
-              ]}
-            />
-          </View>
-    </View>
-  );
+
 
   return (
     <View style={tw`bg-[#05102E] flex-1 `}>
@@ -165,7 +136,7 @@ const Home = () => {
             onSearch={handleSearch}
             placeholderText={'Search By Leagues ...'}
           /> */}
-          {searchedData?.length > 0 && (
+          {/* {searchedData?.length > 0 && (
             <View style={tw`bg-[#303649] rounded-lg py-2`}>
               {searchedData?.map(e => {
                 return (
@@ -189,35 +160,9 @@ const Home = () => {
                 );
               })}
             </View>
-          )}
+          )} */}
         </View>
-        <View>
-          <View style={tw`flex-row justify-between mb-5`}>
-            <Text
-              style={tw`text-white text-[22px] font-401 leading-tight  mt-3  px-5`}>
-              {t('league')}
-            </Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('LeagueScreen')}>
-              <Text
-                style={tw`text-[#8195FF] text-[14px] font-401 leading-tight  mt-5  px-5`}>
-                {t('seeAll')}
-              </Text>
-            </TouchableOpacity>
-          </View>
-          {loading ? (
-            <Loader />
-          ) : (
-            <FlatList
-              data={data?.leagues}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              renderItem={({item}) => <Item item={item} />}
-              keyExtractor={item => item.id}
-              contentContainerStyle={tw`px-3`}
-            />
-          )}
-        </View>
+    <SelectedLeagues/>
 
         <View>
           <View style={tw`flex-row justify-between mt-3 mb-2`}>

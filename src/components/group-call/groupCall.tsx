@@ -1,4 +1,4 @@
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {NavigationProp, useNavigation, useRoute} from '@react-navigation/native';
 import React, {useRef, useState, useEffect} from 'react';
 // Import user interface elements
 import {
@@ -24,14 +24,12 @@ import {useDispatch, useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import tw from '../../styles/tailwind';
 import { getProfileData } from '../../redux/profileSlice';
+import { postApi } from '../../scripts/api-services';
+import { api_name_agora_token } from '../../constants/api-constants';
 
-// Define basic information
-const appId = 'fe78bc42c5464befadcf442ed64d9485';
-const token =
-  '007eJxTYJg8v5blicWc865v7Q7V6u9LNU5/Un/F01Tm2yHWW0+cslMVGNJSzS2Skk2Mkk1NzEySUtMSU5LTTEyMUlPMTFIsTSxMRSZkpTcEMjLsVxNnYWSAQBCfkyEsPzM51TkjsYSBAQAuOCFx';
-const channelName = 'VoiceChat';
 
-const GroupCall = () => {
+
+
   // Define the Redux state type inline
   interface AuthStore {
     userID: number; // or `string` based on your actual data
@@ -49,6 +47,21 @@ const GroupCall = () => {
     profile: ProfileStore;
   }
 
+  interface GroupCallProps {
+    groupName: string;
+    creatorId: number
+  }
+// Define basic information
+const appId = 'fe78bc42c5464befadcf442ed64d9485';
+// const token =
+//   '007eJxTYJg8v5blicWc865v7Q7V6u9LNU5/Un/F01Tm2yHWW0+cslMVGNJSzS2Skk2Mkk1NzEySUtMSU5LTTEyMUlPMTFIsTSxMRSZkpTcEMjLsVxNnYWSAQBCfkyEsPzM51TkjsYSBAQAuOCFx';
+// const channelName = 'VoiceChat';
+
+
+
+
+const GroupCall: React.FC<GroupCallProps> = ({ groupName , creatorId}) => {
+
   const navigation = useNavigation<NavigationProp<any>>();
   const uid = useSelector((state: RootState) => state.auth_store.userID);
   const userProfileData = useSelector((state: RootState) => state.profile.userProfileData);
@@ -57,10 +70,35 @@ const GroupCall = () => {
   const [isHost, setIsHost] = useState(true); // User role
   const [remoteUid, setRemoteUid] = useState(0); // Uid of the remote user
   const [message, setMessage] = useState(''); // User prompt message
+  const [agoraToken , setAgoraToken] = useState(String)
   const eventHandler = useRef<IRtcEngineEventHandler>(); // Callback functions
 
   useEffect(() => {
 
+    async function getAgoraToken() {
+      try {
+      
+
+        postApi(api_name_agora_token, {
+          channel_name: groupName,
+          uid: uid,
+          role: creatorId == uid ? "publisher" : "subscriber"
+        
+        })
+          .then(async response => {
+        setAgoraToken(response?.data?.token)
+          
+          })
+          .catch(error => {
+          
+            console.log('Agora token Error', error?.message);
+          });
+      } catch (error) {
+        console.log('Login Error ', error);
+      }
+    }
+
+getAgoraToken()
     setupVideoSDKEngine();
 
    
@@ -81,7 +119,7 @@ const GroupCall = () => {
       const agoraEngine = agoraEngineRef.current;
       eventHandler.current = {
         onJoinChannelSuccess: () => {
-          showMessage('Successfully joined channel: ' + channelName);
+          showMessage('Successfully joined channel: ' + groupName);
           setIsJoined(true);
         },
         onUserJoined: (_connection: RtcConnection, uid: number) => {
@@ -145,8 +183,8 @@ const GroupCall = () => {
     if (isJoined) return; // Prevent duplicate joining
 
     try {
-      // Join channel with appropriate role and settings
-      await agoraEngineRef.current?.joinChannel(token, channelName, uid, {
+    
+      await agoraEngineRef.current?.joinChannel(agoraToken, groupName, uid, {
         channelProfile: ChannelProfileType.ChannelProfileCommunication,
         clientRoleType: isHost
           ? ClientRoleType.ClientRoleBroadcaster
@@ -181,6 +219,8 @@ const GroupCall = () => {
       console.log(e);
     }
   };
+
+
   return (
     <View>
       <TouchableOpacity onPress={join}>

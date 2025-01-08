@@ -9,6 +9,7 @@ export const getCommentriesData = createAsyncThunk(
       const response = await getSportsMonkApi(
         `${api_name_getCommentriesByFixtureId}/${fixtureId}`,
       );
+      console.log("res", response)
       return response;
     } catch (error) {
       console.log('Error fetching commentries by fixture id', error);

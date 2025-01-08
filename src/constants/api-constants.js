@@ -27,6 +27,7 @@ export const api_name_search = 'groups/search';
 export const api_name_get_countries = 'get/countries';
 export const api_name_get_filter = 'groups/filter-by-country';
 export const api_name_active_inactive = 'groups';
+export const api_name_agora_token = 'agora/token';
 
 // sportmonks
 // export const api_name_allLeagues = 'leagues';

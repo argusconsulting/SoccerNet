@@ -34,8 +34,9 @@ const MeetingChat = () => {
   const userId = useSelector(state => state.auth_store.userID);
   const groupId = route?.params?.groupId;
   const groupName = route?.params?.groupName;
+  const creatorId = route?.params?.creatorId;
 
-  console.log('id, name', groupId, groupName);
+
 
   const leaveHandler = () => {
     dispatch(leaveMeetingRooms({userId, groupId})).then(() => {
@@ -113,6 +114,8 @@ const MeetingChat = () => {
   // }, [groupId]); // Dependency array ensures the effect runs again when groupId changes
 
   // Fetch messages on component mount
+ 
+ 
   useEffect(() => {
     // Fetch messages only once on initial mount
     dispatch(getMessages(groupId))
@@ -180,7 +183,7 @@ const MeetingChat = () => {
         </View>
 
         <View style={tw`flex-row`}>
-         <GroupCall/>
+         <GroupCall groupName={groupName} creatorId={creatorId}/>
         <View style={tw`flex-row `}>
           <TouchableOpacity
             onPress={() => leaveHandler()}
@@ -216,7 +219,7 @@ const MeetingChat = () => {
       </View>
 
       {/* Chat */}
-      {loadingInitial ? (
+      {/* {loadingInitial ? (
         <Loader />
       ) : (
         <View style={tw`mb-30`}>
@@ -229,7 +232,7 @@ const MeetingChat = () => {
       )}
 
       {/* Fixed Bottom Input Row */}
-      <View style={[tw`flex-row p-2 bg-[#05102E]`, styles.inputContainer]}>
+      {/* <View style={[tw`flex-row p-2 bg-[#05102E]`, styles.inputContainer]}>
         <TextInput
           placeholder="Message ..."
           value={message}
@@ -242,7 +245,7 @@ const MeetingChat = () => {
             style={tw`w-12 h-12 ml-2 self-center`}
           />
         </TouchableOpacity>
-      </View>
+      </View>  */}
     </View>
   );
 };
