@@ -14,6 +14,9 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import tw from '../../styles/tailwind';
 import Header from '../../components/header/header';
+import { useDispatch } from 'react-redux';
+import { postApi } from '../../scripts/api-services';
+import { api_name_getUserDetail_from_Id } from '../../constants/api-constants';
 
 type CallScreenRouteParams = {
   CallScreen: {
@@ -34,6 +37,20 @@ const CallScreen: React.FC<CallScreenProps> = ({ route }) => {
   const { agoraEngine, uid, userImage, userName , leave } = route.params;
   const [remoteUsers, setRemoteUsers] = useState<any[]>([]);
   const [isMuted, setIsMuted] = useState(false);
+  const [fetchedUids, setFetchedUids] = useState<number[]>([]);
+
+  const fetchUserDetailsFromId = async (uids: number[]) => {
+    try {
+      const response = await postApi(api_name_getUserDetail_from_Id, {
+        user_ids: uids,
+      });
+      console.log('Fetched user details:', response);
+      return response;
+    } catch (error) {
+      console.error('Error fetching user details:', error);
+      return null;
+    }
+  };
 
   useEffect(() => {
     if (!agoraEngine) {
@@ -42,13 +59,29 @@ const CallScreen: React.FC<CallScreenProps> = ({ route }) => {
     }
 
     const eventHandler = {
-      onUserJoined: (_connection: RtcConnection, remoteUid: number) => {
+      onUserJoined: async (_connection: RtcConnection, remoteUid: number) => {
         console.log(`User joined: ${remoteUid}`);
-        setRemoteUsers(prev => [...prev, { uid: remoteUid, name: `User ${remoteUid}`, img: require('../../assets/profile.png') }]);
+
+        // Check if the UID is already fetched
+        if (!fetchedUids.includes(remoteUid)) {
+          const response = await fetchUserDetailsFromId([remoteUid]);
+          if (response && response.data) {
+            // Update the remote users state with fetched user details
+            setRemoteUsers((prev) => [
+              ...prev,
+              ...response?.data?.users?.map((user: any) => ({
+                uid: user.id,
+                name: user.name,
+                img: user.avatar_url || require('../../assets/profile.png'),
+              })),
+            ]);
+            setFetchedUids((prev) => [...prev, remoteUid]); // Mark UID as fetched
+          }
+        }
       },
       onUserOffline: (_connection: RtcConnection, remoteUid: number) => {
         console.log(`User left: ${remoteUid}`);
-        setRemoteUsers(prev => prev.filter(user => user.uid !== remoteUid));
+        setRemoteUsers((prev) => prev.filter((user) => user.uid !== remoteUid));
       },
     };
 
@@ -57,7 +90,8 @@ const CallScreen: React.FC<CallScreenProps> = ({ route }) => {
     return () => {
       agoraEngine.unregisterEventHandler(eventHandler);
     };
-  }, [agoraEngine]);
+  }, [agoraEngine, fetchedUids]);
+
 
   const handleMute = () => {
     agoraEngine.muteLocalAudioStream(!isMuted);
@@ -78,8 +112,8 @@ const CallScreen: React.FC<CallScreenProps> = ({ route }) => {
             style={[tw`m-2 rounded-lg w-45 py-4`, styles.glassBox]}
           >
             <Image
-              source={{uri:userImage}}
-              style={[tw`w-20 h-20 rounded-full`, { resizeMode: 'contain' }]}
+              source={{uri:item?.img}}
+              style={[tw`w-20 h-20 rounded-full`, { resizeMode: 'cover' }]}
             />
             <Text
               style={[
@@ -88,7 +122,7 @@ const CallScreen: React.FC<CallScreenProps> = ({ route }) => {
               ]}
             >
               {/* {item.name} */}
-              {userName}
+              {item?.name}
             </Text>
           </LinearGradient>
         )}

@@ -5,6 +5,7 @@ import {
   api_name_create_fan_rooms,
   api_name_get_countries,
   api_name_get_filter,
+  api_name_getUserDetail_from_Id,
 } from '../constants/api-constants';
 import Alertify from '../scripts/toast';
 
@@ -176,6 +177,8 @@ export const getMessages = createAsyncThunk(
     }
   },
 );
+
+
 
 export const meetingRoom = createSlice({
   name: 'meetingRoom',

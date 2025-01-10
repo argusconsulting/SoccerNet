@@ -177,10 +177,11 @@ getAgoraToken()
   const leave = () => {
     try {
       // Call leaveChannel method to leave the channel
-      
+
       agoraEngineRef.current?.leaveChannel();
       setRemoteUid(0);
       setIsJoined(false);
+      navigation.navigate('SpotLight')
       showMessage('Left the channel');
     } catch (e) {
       console.log(e);
@@ -198,14 +199,7 @@ getAgoraToken()
           style={tw`self-center mr-5 mt-1`}
         />
       </TouchableOpacity>
-      <TouchableOpacity onPress={leave}>
-        <AntDesign
-          name={'close'}
-          size={20}
-          color={'#fff'}
-          style={tw`self-center mr-5 mt-1`}
-        />
-      </TouchableOpacity>
+     
     </View>
   );
 
