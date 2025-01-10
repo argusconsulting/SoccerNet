@@ -16,10 +16,17 @@ const SelectedLeagues = React.memo(() => {
   const isFetched = useSelector((state) => state.league.isFetched);
 
   useEffect(() => {
-    if (!isFetched) {
-      dispatch(getSelectedLeagues({lang}));
-    }
+
+      const timeout = setTimeout(() => {
+        console.log("Fetching leagues...");
+        dispatch(getSelectedLeagues({ lang }));
+      }, 2000);
+  
+      return () => clearTimeout(timeout);
+    
   }, [isFetched, lang, dispatch]);
+  
+  
 
   // Memoized navigation callback to avoid re-creating the function
   const navigateToLeagueScreen = useCallback(() => {

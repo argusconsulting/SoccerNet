@@ -1,16 +1,16 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   FlatList,
+  Image,
   TouchableOpacity,
   Alert,
-  Image,
 } from 'react-native';
-import {IRtcEngine, RtcConnection} from 'react-native-agora';
-import {RouteProp} from '@react-navigation/native';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import { IRtcEngine, RtcConnection } from 'react-native-agora';
+import { RouteProp } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import tw from '../../styles/tailwind';
 import Header from '../../components/header/header';
@@ -20,26 +20,20 @@ type CallScreenRouteParams = {
     agoraEngine: IRtcEngine;
     uid: number;
     userName: string;
-    userImage: any; 
+    userImage: any;
+    leave: any
   };
 };
-
-interface AudioRoom {
-    img: any; // Replace `any` with the appropriate type for the image (e.g., ImageSourcePropType)
-    name: string;
-  }
 
 type CallScreenProps = {
   route: RouteProp<CallScreenRouteParams, 'CallScreen'>;
 };
 
-const CallScreen: React.FC<CallScreenProps> = ({route}) => {
+const CallScreen: React.FC<CallScreenProps> = ({ route }) => {
   const navigation = useNavigation<NavigationProp<any>>();
-  const {agoraEngine, uid , userImage , userName} = route.params;
-  const [remoteUids, setRemoteUids] = useState<number[]>([]);
+  const { agoraEngine, uid, userImage, userName , leave } = route.params;
+  const [remoteUsers, setRemoteUsers] = useState<any[]>([]);
   const [isMuted, setIsMuted] = useState(false);
-
-  console.log("name & img", userImage , userName)
 
   useEffect(() => {
     if (!agoraEngine) {
@@ -50,11 +44,11 @@ const CallScreen: React.FC<CallScreenProps> = ({route}) => {
     const eventHandler = {
       onUserJoined: (_connection: RtcConnection, remoteUid: number) => {
         console.log(`User joined: ${remoteUid}`);
-        setRemoteUids(prev => [...prev, remoteUid]);
+        setRemoteUsers(prev => [...prev, { uid: remoteUid, name: `User ${remoteUid}`, img: require('../../assets/profile.png') }]);
       },
       onUserOffline: (_connection: RtcConnection, remoteUid: number) => {
         console.log(`User left: ${remoteUid}`);
-        setRemoteUids(prev => prev.filter(id => id !== remoteUid));
+        setRemoteUsers(prev => prev.filter(user => user.uid !== remoteUid));
       },
     };
 
@@ -70,219 +64,87 @@ const CallScreen: React.FC<CallScreenProps> = ({route}) => {
     setIsMuted(!isMuted);
   };
 
-  const handleLeaveChannel = async () => {
-    try {
-      await agoraEngine.leaveChannel();
-      navigation.navigate('MeetingChat');
-      Alert.alert('You have left the call');
-      // Optionally, navigate back to the previous screen or home
-    } catch (err) {
-      // Remove the extra (Error)
-      console.error('Failed to leave the channel:');
-    }
-  };
-
-  const audioRooms = [
-    {
-        img: require('../../assets/profile.png'),
-        name: "Alex"
-    },
-    {
-        img: require('../../assets/profile.png'),
-        name: "Alex"
-    },
-    {
-        img: require('../../assets/profile.png'),
-        name: "Alex"
-    },
-    {
-        img: require('../../assets/profile.png'),
-        name: "Alex"
-    },
-    {
-        img: require('../../assets/profile.png'),
-        name: "Alex"
-    },
-    {
-        img: require('../../assets/profile.png'),
-        name: "Abhinav"
-    },
-    {
-        img: require('../../assets/profile.png'),
-        name: "paras"
-    },
-    {
-        img: require('../../assets/profile.png'),
-        name: "Alok"
-    },
-    {
-        img: require('../../assets/profile.png'),
-        name: "Amit"
-    },
-    {
-        img: require('../../assets/profile.png'),
-        name: "Shreyas"
-    },
-    {
-        img: require('../../assets/profile.png'),
-        name: "Gurmeet"
-    },
-    {
-        img: require('../../assets/profile.png'),
-        name: "Sanchit"
-    }
-
-  ]
 
   return (
     <View style={tw`bg-[#05102E] flex-1`}>
-   <Header name=""/>
-
-   {/* <FlatList
-      data={audioRooms}
-      numColumns={2}
-      keyExtractor={(item, index) => index.toString()}
-      renderItem={({ item }) => (
-        <LinearGradient
-          colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.1)']}
-          style={[
-            tw`m-2 rounded-lg w-45 py-4`,
-            styles.glassBox,
-          ]}
-        >
-          <Image
-            source={item.img}
-            style={[tw`w-20 h-20`, { resizeMode: 'contain' }]}
-          />
-          <Text
-            style={[
-              tw`text-[#fff] text-[22px] font-401 leading-tight mt-3`,
-              { textTransform: 'capitalize' },
-            ]}
-          >
-            {item.name}
-          </Text>
-        </LinearGradient>
-      )}
-      contentContainerStyle={{
-        alignItems: 'center', // Center items horizontally
-      }}
-      ListEmptyComponent={
-        <Text style={[tw`text-center`, { color: '#fff' }]}>
-          No users in the call yet.
-        </Text>
-      }
-    /> */}
+      <Header name="" />
       <FlatList
-         data={remoteUids}
-      
-        keyExtractor={item => item.toString()}
-        renderItem={({item}) => (
-          <View style={{flexDirection: 'row', marginVertical: 10}}>
-            <View style={styles.avatar} />
+        data={remoteUsers}
+        numColumns={2}
+        keyExtractor={(item) => item.uid.toString()}
+        renderItem={({ item }) => (
+          <LinearGradient
+            colors={['rgba(255,255,255,0.2)', 'rgba(255,255,255,0.1)']}
+            style={[tw`m-2 rounded-lg w-45 py-4`, styles.glassBox]}
+          >
+            <Image
+              source={{uri:userImage}}
+              style={[tw`w-20 h-20 rounded-full`, { resizeMode: 'contain' }]}
+            />
             <Text
               style={[
-                tw`text-[#fff] text-[20px] font-401 leading-tight `,
-                {textTransform: 'capitalize'},
-              ]}>
-              User {item}
+                tw`text-[#fff] text-[22px] font-401 leading-tight mt-3`,
+                { textTransform: 'capitalize' },
+              ]}
+            >
+              {/* {item.name} */}
+              {userName}
             </Text>
-          </View>
+          </LinearGradient>
         )}
+        contentContainerStyle={{
+          alignItems: 'center',
+        }}
         ListEmptyComponent={
-          <Text
-            style={[
-              tw`text-[#fff] text-[20px] font-401 leading-tight `,
-              {textTransform: 'capitalize'},
-            ]}>
+          <Text style={[tw`text-center`, { color: '#fff' }]}>
             No users in the call yet.
           </Text>
         }
       />
       <View style={styles.controls}>
-        {/* Mute/Unmute Button */}
-        <TouchableOpacity style={[tw`bg-[#fff] rounded-full p-2 self-center `,{overflow:"hidden"}]} onPress={handleMute}>
-          {isMuted ? (
-            <Image
-              source={require('../../assets/mute-microphone.png')}
-              style={[tw`w-12 h-12 self-center`, {resizeMode: 'contain'}]}
-            />
-          ) : (
-            <Image
-              source={require('../../assets/microphone.png')}
-              style={[tw`w-12 h-12 self-center`, {resizeMode: 'contain'}]}
-            />
-          )}
-
-        </TouchableOpacity>
-
-        <TouchableOpacity style={[tw`bg-[#fff] rounded-full p-2 self-center`,{overflow:"hidden"}]} >
-          {isMuted ? (
-            <Image
-              source={require('../../assets/no-sound.png')}
-              style={[tw`w-12 h-12 self-center`, {resizeMode: 'contain'}]}
-            />
-          ) : (
-            <Image
-              source={require('../../assets/speaker.png')}
-              style={[tw`w-12 h-12 self-center`, {resizeMode: 'contain'}]}
-            />
-          )}
-
-        </TouchableOpacity>
-
-        {/* Leave Channel Button */}
-        <TouchableOpacity onPress={handleLeaveChannel}>
+        <TouchableOpacity
+          style={[
+            tw`bg-[#fff] rounded-full p-2 self-center`,
+            { overflow: 'hidden' },
+          ]}
+          onPress={handleMute}
+        >
           <Image
-            source={require('../../assets/end-call.png')}
-            style={[tw`w-17 h-17`, {resizeMode: 'contain'}]}
+            source={
+              isMuted
+                ? require('../../assets/mute-microphone.png')
+                : require('../../assets/microphone.png')
+            }
+            style={[tw`w-12 h-12 self-center`, { resizeMode: 'contain' }]}
           />
         </TouchableOpacity>
-
-       
+        <TouchableOpacity onPress={leave}>
+          <Image
+            source={require('../../assets/end-call.png')}
+            style={[tw`w-17 h-17`, { resizeMode: 'contain' }]}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-    glassBox: {
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.3)', // Subtle border for the glass effect
-        backgroundColor: 'rgba(255, 255, 255, 0.1)', // Transparent background
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 4,
-        elevation: 5, // For Android shadow
-      },
-  avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#007aff',
-    marginRight: 10,
+  glassBox: {
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
   controls: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginVertical: 20,
-  },
-  button: {
-    padding: 15,
-    backgroundColor: '#007aff',
-    borderRadius: 10,
-    alignItems: 'center',
-    width: '40%',
-  },
-  leaveButton: {
-    backgroundColor: 'red',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
   },
 });
 

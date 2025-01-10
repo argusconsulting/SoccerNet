@@ -143,41 +143,6 @@ getAgoraToken()
     }
   };
 
-  // Define the join method called after clicking the join channel button
-  // const join = async () => {
-  //     if (isJoined) {
-  //         return;
-  //     }
-  //     try {
-  //         if (isHost) {
-  //             // Join the channel as a broadcaster
-  //             agoraEngineRef.current?.joinChannel(token, channelName, uid, {
-  //                 // Set channel profile to live broadcast
-  //                 channelProfile: ChannelProfileType.ChannelProfileCommunication,
-  //                 // Set user role to broadcaster
-  //                 clientRoleType: ClientRoleType.ClientRoleBroadcaster,
-  //                 // Publish audio collected by the microphone
-  //                 publishMicrophoneTrack: true,
-  //                 // Automatically subscribe to all audio streams
-  //                 autoSubscribeAudio: true,
-  //             });
-  //         } else {
-  //             // Join the channel as an audience
-  //             agoraEngineRef.current?.joinChannel(token, channelName, uid, {
-  //                 // Set channel profile to live broadcast
-  //                 channelProfile: ChannelProfileType.ChannelProfileCommunication,
-  //                 // Set user role to audience
-  //                 clientRoleType: ClientRoleType.ClientRoleAudience,
-  //                 // Do not publish audio collected by the microphone
-  //                 publishMicrophoneTrack: false,
-  //                 // Automatically subscribe to all audio streams
-  //                 autoSubscribeAudio: true,
-  //             });
-  //         }
-  //     } catch (e) {
-  //         console.log(e);
-  //     }
-  // };
 
   const join = async () => {
     if (isJoined) return; // Prevent duplicate joining
@@ -201,6 +166,7 @@ getAgoraToken()
         uid, // Pass UID for identification
         userName: userProfileData?.name, // Replace with the actual user name
         userImage: userProfileData?.avatar_url, 
+        leave
       });
     } catch (error) {
       console.error('Failed to join channel:', error);
@@ -211,6 +177,7 @@ getAgoraToken()
   const leave = () => {
     try {
       // Call leaveChannel method to leave the channel
+      
       agoraEngineRef.current?.leaveChannel();
       setRemoteUid(0);
       setIsJoined(false);
@@ -222,10 +189,18 @@ getAgoraToken()
 
 
   return (
-    <View>
+    <View style={tw`flex-row`}>
       <TouchableOpacity onPress={join}>
         <AntDesign
           name={'phone'}
+          size={20}
+          color={'#fff'}
+          style={tw`self-center mr-5 mt-1`}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={leave}>
+        <AntDesign
+          name={'close'}
           size={20}
           color={'#fff'}
           style={tw`self-center mr-5 mt-1`}

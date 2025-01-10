@@ -165,10 +165,10 @@ const SpotLight = () => {
   disabled={item?.is_active === false}
   onPress={() => onCardClick({ groupId: item?.id, groupName: item?.name , creatorId : item?.created_by })}>
   
-  <View style={tw`flex-row justify-between`}>
+  <View style={tw`flex-row justify-between  h-15 `}>
     <Text
       style={[
-        tw`text-white text-[20px] font-401 leading-normal mb-1 w-30 h-15`,
+        tw`text-white text-[20px] font-401 leading-normal mb-1 w-30`,
         { textTransform: 'capitalize' },
       ]}>
       {item.name}

@@ -45,6 +45,7 @@ const LeagueScreen = () => {
 
   const Item = ({item}) => {
     const currentSeasonId = item.currentseason?.id;
+    console.log("in leagues listing checking current season id", currentSeasonId)
     const seasonData = seasons?.[currentSeasonId];
     const fixtures = seasonData?.fixtures || [];
   
