@@ -28,8 +28,11 @@ const LiveDetails = () => {
   const fixtureId = route?.params?.fixtureId;
   const navigation = useNavigation()
   const detailData = useSelector(state => state?.fixtures?.fixturesById);
+    const lang = useSelector(state => state?.language_store?.language);
+  
+
   useEffect(() => {
-    dispatch(getFixturesById(fixtureId));
+    dispatch(getFixturesById({fixtureId, lang}));
   }, []);
 
   // Function to extract scores for home and away teams

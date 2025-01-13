@@ -34,9 +34,10 @@ type CallScreenProps = {
 
 const CallScreen: React.FC<CallScreenProps> = ({ route }) => {
   const navigation = useNavigation<NavigationProp<any>>();
-  const { agoraEngine, uid, userImage, userName , leave } = route.params;
+  const { agoraEngine,  leave } = route.params;
   const [remoteUsers, setRemoteUsers] = useState<any[]>([]);
   const [isMuted, setIsMuted] = useState(false);
+  const [isSpeakerEnabled, setIsSpeakerEnabled] = useState(false);
   const [fetchedUids, setFetchedUids] = useState<number[]>([]);
 
   const fetchUserDetailsFromId = async (uids: number[]) => {
@@ -98,6 +99,11 @@ const CallScreen: React.FC<CallScreenProps> = ({ route }) => {
     setIsMuted(!isMuted);
   };
 
+  const toggleSpeaker = () => {
+    agoraEngine.setEnableSpeakerphone(!isSpeakerEnabled);
+    setIsSpeakerEnabled(!isSpeakerEnabled);
+  };
+
 
   return (
     <View style={tw`bg-[#05102E] flex-1`}>
@@ -152,7 +158,25 @@ const CallScreen: React.FC<CallScreenProps> = ({ route }) => {
             style={[tw`w-12 h-12 self-center`, { resizeMode: 'contain' }]}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={leave}>
+
+        <TouchableOpacity
+          style={[
+            tw`bg-[#fff] rounded-full p-2 self-center`,
+            { overflow: 'hidden' },
+          ]}
+          onPress={toggleSpeaker}
+        >
+          <Image
+            source={
+              isSpeakerEnabled
+                ? require('../../assets/speaker.png')
+                : require('../../assets/no-sound.png')
+            }
+            style={[tw`w-12 h-12 self-center`, { resizeMode: 'contain' }]}
+          />
+        </TouchableOpacity>
+   
+        <TouchableOpacity onPress={()=>leave()}>
           <Image
             source={require('../../assets/end-call.png')}
             style={[tw`w-17 h-17`, { resizeMode: 'contain' }]}

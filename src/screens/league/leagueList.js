@@ -45,7 +45,6 @@ const LeagueScreen = () => {
 
   const Item = ({item}) => {
     const currentSeasonId = item.currentseason?.id;
-    console.log("in leagues listing checking current season id", currentSeasonId)
     const seasonData = seasons?.[currentSeasonId];
     const fixtures = seasonData?.fixtures || [];
   
@@ -103,16 +102,16 @@ const LeagueScreen = () => {
                         <View style={tw`flex-row  self-center`}>
                           <Image
                             source={{uri: participant?.image_path}}
-                            style={[tw`w-8 h-8`, {resizeMode: 'contain'}]}
+                            style={[tw`w-7 h-7 self-center `, {resizeMode: 'contain'}]}
                           />
                           <Text
-                            style={tw`text-[#a2a2a2] text-[20px] self-center font-400 mx-2`}>
+                            style={tw`text-[#a2a2a2] text-[16px] self-center font-400 mx-2 w-20 text-center`}>
                             {participant?.name}
                           </Text>
                         </View>
                         {/* Only display "vs" if it’s not the last participant */}
                         {idx < fixture.participants.length - 1 && (
-                          <Text style={tw`text-[#a2a2a2] text-[20px] mx-2`}>
+                          <Text style={tw`text-[#a2a2a2] text-[20px] mx-5`}>
                             vs
                           </Text>
                         )}

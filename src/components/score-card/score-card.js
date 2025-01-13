@@ -5,6 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import moment from 'moment';
 
 const ScoreCard = ({match, width, screen, navigate}) => {
+  console.log("=============", match)
   const navigation = useNavigation();
 
   // Function to extract scores for home and away teams

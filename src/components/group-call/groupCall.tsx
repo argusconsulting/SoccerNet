@@ -163,9 +163,6 @@ getAgoraToken()
       // Navigate to CallScreen after successfully joining
       navigation.navigate('CallScreen', {
         agoraEngine: agoraEngineRef.current,
-        uid, // Pass UID for identification
-        userName: userProfileData?.name, // Replace with the actual user name
-        userImage: userProfileData?.avatar_url, 
         leave
       });
     } catch (error) {
@@ -181,6 +178,7 @@ getAgoraToken()
       agoraEngineRef.current?.leaveChannel();
       setRemoteUid(0);
       setIsJoined(false);
+      console.log('left channel successfully');
       navigation.navigate('SpotLight')
       showMessage('Left the channel');
     } catch (e) {

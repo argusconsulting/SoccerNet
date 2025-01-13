@@ -77,7 +77,7 @@ console.log("commentaryData", commentaryData)
         </View>
       </View>
   
-      {item?.is_goal && (
+      {/* {item?.is_goal && (
         <View style={tw`flex-row mx-5 mt-3`}>
           <Image
             source={item?.goal?.img}
@@ -99,7 +99,7 @@ console.log("commentaryData", commentaryData)
             {item?.redCard.playerName}"
           </Text>
         </View>
-      )}
+      )} */}
     </View>
   );
   

@@ -4,6 +4,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  RefreshControl,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -35,6 +36,7 @@ const Home = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const lang = useSelector(state => state?.language_store?.language);
   const dispatch = useDispatch();
+  const [refreshing, setRefreshing] = useState(false);
   // const searchedData = useSelector(state => state?.search.teamSearchData);
   const [page, setPage] = useState(1);
   const [monthRange, setMonthRange] = useState({start: '', end: ''});
@@ -64,24 +66,29 @@ const Home = () => {
     getWeekRange(moment()); // Initialize with current month
   }, []);
 
-  useEffect(() => {
+  const fetchData = useCallback(() => {
     if (monthRange.start && monthRange.end) {
       dispatch(
         getAllFixturesByDateRangeHighlights({
           start: monthRange.start,
           end: monthRange.end,
           page,
-          lang
+          lang,
         }),
       );
     }
-  }, [dispatch, monthRange , lang]);
-
-
+    dispatch(getLiveScoresInPlay());
+  }, [dispatch, monthRange, lang, page]);
 
   useEffect(() => {
-    dispatch(getLiveScoresInPlay());
-  }, [dispatch]);
+    fetchData();
+  }, [fetchData]);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchData();
+    setRefreshing(false);
+  }, [fetchData]);
 
   useFocusEffect(
     useCallback(() => {
@@ -107,7 +114,10 @@ const Home = () => {
 
   return (
     <View style={tw`bg-[#05102E] flex-1 `}>
-  
+    <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         <View style={tw`flex-row justify-between p-5`}>
           <TouchableOpacity
             onPress={() => setModalVisible(true)}
@@ -233,6 +243,7 @@ const Home = () => {
             </Text>
           )}
         </View> 
+        </ScrollView>
          <View style={[tw`absolute bottom-0 w-full h-60`,{zIndex: -1}]}>
     <Image
       source={require('../../assets/Homescreen-bg.png')}

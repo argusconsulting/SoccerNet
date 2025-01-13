@@ -83,33 +83,34 @@ const CalendarScreen = () => {
 
     return (
       <View style={tw`bg-[#303649] w-90 py-3 mt-5 self-center rounded-lg`}>
-        <View style={tw`flex-row ml-5`}>
+        <View style={tw`flex-row self-center`}>
           <Image
             source={{uri: item?.participants?.[0]?.image_path}}
-            style={[tw`w-6 h-6`, {resizeMode: 'contain'}]}
+            style={[tw`w-6 h-6 self-center`, {resizeMode: 'contain'}]}
           />
           <Text
-            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-1 `}>
+            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-1 w-20 mr-3`}>
             {item?.participants?.[0]?.name}
           </Text>
           <Text
-            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-1 `}>
+            style={tw`text-white text-[18px] font-400 leading-tight self-center mr-4 `}>
             v/s
           </Text>
           <Image
             source={{uri: item?.participants?.[1]?.image_path}}
-            style={[tw`w-6 h-6`, {resizeMode: 'contain'}]}
+            style={[tw`w-6 h-6 self-center`, {resizeMode: 'contain'}]}
           />
           <Text
-            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-1 `}>
+            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-1 w-27`}>
             {item?.participants?.[1]?.name}
           </Text>
 
-          <Text
-            style={tw`text-[#a2a2a2] text-[18px] font-400 leading-tight self-center mx-3 `}>
-            {time}
-          </Text>
+        
         </View>
+        <Text
+            style={tw`text-[#a2a2a2] text-[18px] font-400 leading-tight self-center mt-5 `}>
+            {time} UTC
+          </Text>
       </View>
     );
   };
