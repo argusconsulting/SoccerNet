@@ -53,18 +53,10 @@ import { api_name_agora_token } from '../../constants/api-constants';
   }
 // Define basic information
 const appId = 'fe78bc42c5464befadcf442ed64d9485';
-// const token =
-//   '007eJxTYJg8v5blicWc865v7Q7V6u9LNU5/Un/F01Tm2yHWW0+cslMVGNJSzS2Skk2Mkk1NzEySUtMSU5LTTEyMUlPMTFIsTSxMRSZkpTcEMjLsVxNnYWSAQBCfkyEsPzM51TkjsYSBAQAuOCFx';
-// const channelName = 'VoiceChat';
-
-
-
 
 const GroupCall: React.FC<GroupCallProps> = ({ groupName , creatorId}) => {
-
   const navigation = useNavigation<NavigationProp<any>>();
   const uid = useSelector((state: RootState) => state.auth_store.userID);
-  const userProfileData = useSelector((state: RootState) => state.profile.userProfileData);
   const agoraEngineRef = useRef<IRtcEngine>(); // IRtcEngine instance
   const [isJoined, setIsJoined] = useState(false); // Whether the local user has joined the channel
   const [isHost, setIsHost] = useState(true); // User role
@@ -145,10 +137,15 @@ getAgoraToken()
 
 
   const join = async () => {
+    if (!agoraToken) {
+      console.log('Agora token is not available. Cannot join channel.');
+      return;
+    }
+
     if (isJoined) return; // Prevent duplicate joining
 
     try {
-    
+
       await agoraEngineRef.current?.joinChannel(agoraToken, groupName, uid, {
         channelProfile: ChannelProfileType.ChannelProfileCommunication,
         clientRoleType: isHost
