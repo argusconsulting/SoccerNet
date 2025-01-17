@@ -39,9 +39,8 @@ import JustFinished from '../screens/justFinished/justFinished';
 import PlayerInfo from '../components/detail-modules/player-info';
 import Players from '../components/detail-modules/players';
 import ForgotPassword from '../screens/Forgot-Password/forgotPassword';
-import InitialScreen from '../screens/rooms/VoiceCallScreen';
 import CallScreen from '../screens/rooms/CallScreen';
-import UserIdScreen from '../screens/rooms/UIDScreen';
+
 
 // Bottom Tab Navigation
 const Tab = createBottomTabNavigator();
@@ -190,9 +189,7 @@ export const StackScreen = () => {
       <Stack.Screen name="Players" component={Players} />
       <Stack.Screen name="PlayerInfo" component={PlayerInfo} />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-      <Stack.Screen name="InitialScreen" component={InitialScreen} />
       <Stack.Screen name="CallScreen" component={CallScreen} />
-      <Stack.Screen name="UIDScreen" component={UserIdScreen} />
     </Stack.Navigator>
   );
 };

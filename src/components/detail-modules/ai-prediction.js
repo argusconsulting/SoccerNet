@@ -58,7 +58,7 @@ console.log("fix", fixtureId)
                       ]}
                     />
                 <Text
-                  style={tw`text-[#fff] text-[18px] font-402 leading-normal mt-1.5 self-center`}>
+                  style={tw`text-[#fff] text-[18px] font-402 leading-normal mt-1.5 w-25 self-center text-center`}>
           {homeTeam?.name}
                 </Text>
                 <TouchableOpacity
@@ -97,7 +97,7 @@ console.log("fix", fixtureId)
       <TouchableOpacity
        onPress={() => setShowPredictions(true)}
        style={[
-         tw`mt-4 mx-5 rounded-full justify-center w-20 h-20`,
+         tw`mt-11 mx-5 rounded-full justify-center w-20 h-20`,
        
        ]}>
        <LinearGradient
@@ -124,7 +124,7 @@ console.log("fix", fixtureId)
                       ]}
                     />
      <Text
-                  style={tw`text-[#fff] text-[18px] font-402 leading-normal mt-1.5 self-center`}>
+                  style={tw`text-[#fff] text-[18px] font-402 leading-normal w-25 mt-1.5 self-center text-center`}>
         {awayTeam?.name}
                 </Text>
      <TouchableOpacity

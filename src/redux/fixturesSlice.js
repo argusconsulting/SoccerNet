@@ -12,7 +12,7 @@ export const getAllFixturesByDate = createAsyncThunk(
   async currentDate => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_fixtures_date}/${currentDate}?include=participants;league;scores;`,
+        `${api_name_fixtures_date}/${currentDate}?include=participants;league;scores;&timzone=Asia/Dubai`,
       );
       return response;
     } catch (error) {
@@ -28,7 +28,7 @@ export const getAllFixturesByDateRange = createAsyncThunk(
   async ({start, end}) => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_fixtures_date_range}/${start}/${end}?per_page=200&filters=populate`,
+        `${api_name_fixtures_date_range}/${start}/${end}?per_page=200&filters=populate&timezone=Asia/Dubai`,
       );
 
       return response;
@@ -46,7 +46,7 @@ export const getAllFixturesByDateRangeHighlights = createAsyncThunk(
     console.log('page', lang);
     try {
       const response = await getSportsMonkApi(
-        `${api_name_fixtures_date_range}/${start}/${end}?include=participants;league;scores&page=${page}&locale=${lang}`,
+        `${api_name_fixtures_date_range}/${start}/${end}?include=participants;league;scores&page=${page}&locale=${lang}&timezone=Asia/Dubai`,
       );
       return response;
     } catch (error) {
@@ -62,7 +62,7 @@ export const getFixturesById = createAsyncThunk(
   async ({fixtureId, lang}) => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_fixtures_id}/${fixtureId}?include=participants;league;scores;statistics&locale=${lang}`,
+        `${api_name_fixtures_id}/${fixtureId}?include=participants;league;scores;statistics&locale=${lang}&timezone=Asia/Dubai`,
       );
       return response;
     } catch (error) {
@@ -78,7 +78,7 @@ export const getFixturesByIdLineUps = createAsyncThunk(
   async ({fixtureId, lang}) => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_fixtures_id}/${fixtureId}?include=participants;lineups.player;lineups.type&locale=${lang}`,
+        `${api_name_fixtures_id}/${fixtureId}?include=participants;lineups.player;lineups.type&locale=${lang}&timezone=Asia/Dubai`,
       );
       return response;
     } catch (error) {

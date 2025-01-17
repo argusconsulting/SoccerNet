@@ -39,6 +39,7 @@ const CountryPicker = ({ onSelect, value }) => {
           <TextInput
             style={styles.searchInput}
             placeholder="Search country"
+            placeholderTextColor={"#000"}
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
@@ -84,6 +85,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderColor: "#ccc",
+    color: "#000",
   },
   countryItem: {
     padding: 10,

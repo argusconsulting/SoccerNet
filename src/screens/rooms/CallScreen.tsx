@@ -52,6 +52,7 @@ const CallScreen: React.FC<CallScreenProps> = ({ route }) => {
       return null;
     }
   };
+  
 
   useEffect(() => {
     if (!agoraEngine) {

@@ -26,6 +26,7 @@ import tw from '../../styles/tailwind';
 import { getProfileData } from '../../redux/profileSlice';
 import { postApi } from '../../scripts/api-services';
 import { api_name_agora_token } from '../../constants/api-constants';
+import Loader from '../loader/Loader';
 
 
 
@@ -63,34 +64,28 @@ const GroupCall: React.FC<GroupCallProps> = ({ groupName , creatorId}) => {
   const [remoteUid, setRemoteUid] = useState(0); // Uid of the remote user
   const [message, setMessage] = useState(''); // User prompt message
   const [agoraToken , setAgoraToken] = useState(String)
+  const [loading, setLoading] = useState(false);
   const eventHandler = useRef<IRtcEngineEventHandler>(); // Callback functions
 
   useEffect(() => {
 
-    async function getAgoraToken() {
+    const getAgoraToken = async () => {
+      setLoading(true);
       try {
-      
-
-        postApi(api_name_agora_token, {
+        const response = await postApi(api_name_agora_token, {
           channel_name: groupName,
-          uid: uid,
-          role: creatorId == uid ? "publisher" : "subscriber"
-        
-        })
-          .then(async response => {
-        setAgoraToken(response?.data?.token)
-          
-          })
-          .catch(error => {
-          
-            console.log('Agora token Error', error?.message);
-          });
+          uid,
+          role: creatorId === uid ? 'publisher' : 'subscriber',
+        });
+        setAgoraToken(response?.data?.token || '');
       } catch (error) {
-        console.log('Login Error ', error);
+        console.error('Error fetching Agora token:');
+      } finally {
+        setLoading(false);
       }
-    }
+    };
 
-getAgoraToken()
+    getAgoraToken();
     setupVideoSDKEngine();
 
    
@@ -148,10 +143,14 @@ getAgoraToken()
 
       await agoraEngineRef.current?.joinChannel(agoraToken, groupName, uid, {
         channelProfile: ChannelProfileType.ChannelProfileCommunication,
-        clientRoleType: isHost
-          ? ClientRoleType.ClientRoleBroadcaster
-          : ClientRoleType.ClientRoleAudience,
-        publishMicrophoneTrack: isHost, // Publish mic track only if host
+        // clientRoleType: isHost
+        //   ? ClientRoleType.ClientRoleBroadcaster
+        //   : ClientRoleType.ClientRoleAudience,
+        // publishMicrophoneTrack: isHost, // Publish mic track only if host
+        // autoSubscribeAudio: true, // Subscribe to audio
+
+        clientRoleType: ClientRoleType.ClientRoleBroadcaster, // Set both as Broadcasters
+        publishMicrophoneTrack: true, // Allow both to publish mic track
         autoSubscribeAudio: true, // Subscribe to audio
       });
 
@@ -186,6 +185,11 @@ getAgoraToken()
 
   return (
     <View style={tw`flex-row`}>
+      {loading ? 
+      <View style={tw`mr-5`}>
+         <Loader/> 
+         </View> 
+      : 
       <TouchableOpacity onPress={join}>
         <AntDesign
           name={'phone'}
@@ -194,7 +198,7 @@ getAgoraToken()
           style={tw`self-center mr-5 mt-1`}
         />
       </TouchableOpacity>
-     
+}
     </View>
   );
 

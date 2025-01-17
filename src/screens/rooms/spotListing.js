@@ -32,6 +32,7 @@ import {searchHandler, setSearchData} from '../../redux/searchSlice';
 import Loader from '../../components/loader/Loader';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {getProfileData} from '../../redux/profileSlice';
+import HoldOnAnimation from '../../components/loader/animation-loader';
 
 const SpotLight = () => {
   const navigation = useNavigation();
@@ -274,7 +275,7 @@ const SpotLight = () => {
       </View>
 
       {loading ? (
-        <Loader />
+      <HoldOnAnimation/>
       ) : displayedData?.length > 0 ? ( // If there's data to display
         <FlatList
           numColumns={2}

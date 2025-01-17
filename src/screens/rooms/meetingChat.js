@@ -217,7 +217,12 @@ const MeetingChat = () => {
         </View>
         </View>
       </View>
-
+      <View style={tw`flex-1 justify-center items-center`}>
+      <Image source={require('../../assets/meetingEmptyImg.png')} style={[tw`w-50 h-50 self-center`,{resizeMode:"cover"}]}/>
+      <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight self-center mt-5`}>
+      Waiting for the participants!
+              </Text>
+              </View>
       {/* Chat */}
       {/* {loadingInitial ? (
         <Loader />

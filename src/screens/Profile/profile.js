@@ -142,7 +142,7 @@ const Profile = () => {
   return (
     <View style={tw`bg-[#05102E] flex-1 `}>
       <Header name="Profile" />
-<ScrollView>
+
       <View
         style={{
           alignItems: 'center',
@@ -376,7 +376,7 @@ const Profile = () => {
           </Text>
         </LinearGradient>
       </TouchableOpacity>
-      </ScrollView>
+     
     </View>
   );
 };

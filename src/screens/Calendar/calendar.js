@@ -89,7 +89,7 @@ const CalendarScreen = () => {
             style={[tw`w-6 h-6 self-center`, {resizeMode: 'contain'}]}
           />
           <Text
-            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-1 w-20 mr-3`}>
+            style={tw`text-white text-[18px] font-400 leading-tight self-center text-center mx-1 w-20 mr-3`}>
             {item?.participants?.[0]?.name}
           </Text>
           <Text
@@ -101,7 +101,7 @@ const CalendarScreen = () => {
             style={[tw`w-6 h-6 self-center`, {resizeMode: 'contain'}]}
           />
           <Text
-            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-1 w-27`}>
+            style={tw`text-white text-[18px] font-400 leading-tight self-center text-center mx-1 w-27`}>
             {item?.participants?.[1]?.name}
           </Text>
 
