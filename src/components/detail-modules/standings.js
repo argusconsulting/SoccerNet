@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getAllStandings} from '../../redux/standingSlice';
 import { t } from 'i18next';
 
-const Standings = () => {
+const Standings = ({homeTeam , awayTeam}) => {
   const dispatch = useDispatch();
   const standingData = useSelector(state => state?.standing?.standingsData);
   const lang = useSelector(state => state?.language_store?.language);
@@ -19,6 +19,8 @@ const Standings = () => {
   const sortedStandings = standingData?.data
     ?.slice()
     .sort((a, b) => a.position - b.position);
+
+    const highlightStyle = tw`bg-yellow-200`;
 
   // Update the Item component to display the index
   const Item = ({item, index}) => {

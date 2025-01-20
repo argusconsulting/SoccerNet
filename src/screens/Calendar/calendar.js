@@ -50,6 +50,8 @@ const CalendarScreen = () => {
     dispatch(getAllFixturesByDate(selectedDate));
   }, [dispatch, selectedDate]);
 
+  console.log("============>", monthRange)
+
   useEffect(() => {
     if (monthRange.start && monthRange.end) {
       dispatch(

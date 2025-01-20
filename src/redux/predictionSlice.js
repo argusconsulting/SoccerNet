@@ -35,12 +35,29 @@ export const getPredictionDoubleChance = createAsyncThunk(
   },
 );
 
+//for team to score first goal
+export const getPredictionFirstGoal = createAsyncThunk(
+  'AI/firstGoal',
+  async (fixtureId) => {
+    try {
+      const response = await getSportsMonkApi(
+        `${api_name_getDoubleChance}/${fixtureId}?include=predictions.type`,
+      );
+      return response;
+    } catch (error) {
+      console.log('Error fetching first goal API', error);
+      return rejectWithValue(error);
+    }
+  },
+);
+
   const predictionSlice = createSlice({
     name: 'AI',
     initialState: {
       isLoading: false,
       probabilityData: [],
       doubleChanceData:[],
+      firstGoalData:[],
       status: '',
     },
     reducers: {},
@@ -70,6 +87,21 @@ export const getPredictionDoubleChance = createAsyncThunk(
         state.isLoading = true;
       });
       builder.addCase(getPredictionDoubleChance.rejected, (state, action) => {
+        state.status = 'rejected';
+        state.isLoading = false;
+      });
+
+      //first goal
+      builder.addCase(getPredictionFirstGoal.fulfilled, (state, action) => {
+        state.firstGoalData = action?.payload?.data;
+        state.status = 'fulfilled';
+        state.isLoading = false;
+      });
+      builder.addCase(getPredictionFirstGoal.pending, (state, action) => {
+        state.status = 'pending';
+        state.isLoading = true;
+      });
+      builder.addCase(getPredictionFirstGoal.rejected, (state, action) => {
         state.status = 'rejected';
         state.isLoading = false;
       });

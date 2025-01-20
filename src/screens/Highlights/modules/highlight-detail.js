@@ -266,7 +266,7 @@ const HighlightDetail = () => {
           {/* {type === 'Summary' && <Summary />} */}
           {/* {type === 'Summary' && <PlayerInfo fixtureId={fixtureId} />} */}
           {type === 'Statistics' && <Statistics fixtureId={fixtureId} />}
-          {type === 'Standings' && <Standings />}
+          {type === 'Standings' && <Standings homeTeam={homeTeam} awayTeam={awayTeam}/>}
           {type === 'LineUps' && <LineUps fixtureId={fixtureId} />}
           {type === 'Commentary' && <Commentary fixtureId={fixtureId} />}
             {type === 'AiPrediction' && <AiPrediction fixtureId={fixtureId} homeTeam={homeTeam} awayTeam={awayTeam}/>}

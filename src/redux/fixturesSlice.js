@@ -28,7 +28,7 @@ export const getAllFixturesByDateRange = createAsyncThunk(
   async ({start, end}) => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_fixtures_date_range}/${start}/${end}?per_page=200&filters=populate&timezone=Asia/Dubai`,
+        `${api_name_fixtures_date_range}/${start}/${end}?per_page=300&filters=populate&timezone=Asia/Dubai`,
       );
 
       return response;
