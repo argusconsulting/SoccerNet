@@ -58,14 +58,14 @@ const appId = 'fe78bc42c5464befadcf442ed64d9485';
 const GroupCall: React.FC<GroupCallProps> = ({ groupName , creatorId}) => {
   const navigation = useNavigation<NavigationProp<any>>();
   const uid = useSelector((state: RootState) => state.auth_store.userID);
-  const agoraEngineRef = useRef<IRtcEngine>(); // IRtcEngine instance
-  const [isJoined, setIsJoined] = useState(false); // Whether the local user has joined the channel
+  const agoraEngineRef = useRef<IRtcEngine>(); 
+  const [isJoined, setIsJoined] = useState(false); 
   const [isHost, setIsHost] = useState(true); // User role
   const [remoteUid, setRemoteUid] = useState(0); // Uid of the remote user
   const [message, setMessage] = useState(''); // User prompt message
   const [agoraToken , setAgoraToken] = useState(String)
   const [loading, setLoading] = useState(false);
-  const eventHandler = useRef<IRtcEngineEventHandler>(); // Callback functions
+  const eventHandler = useRef<IRtcEngineEventHandler>(); 
 
   useEffect(() => {
 

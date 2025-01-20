@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import debounce from 'lodash/debounce';
@@ -26,7 +27,6 @@ import Loader from '../../components/loader/Loader';
 import {getAllFixturesByDateRangeHighlights} from '../../redux/fixturesSlice';
 import moment from 'moment';
 import {getLiveScoresInPlay} from '../../redux/liveScoreSlice';
-import {clearTeamSearchData, teamSearchHandler} from '../../redux/searchSlice';
 import {ScrollView} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import SelectedLeagues from '../../components/selected-leagues';
@@ -37,6 +37,7 @@ const Home = () => {
   const lang = useSelector(state => state?.language_store?.language);
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
+  const { width } = useWindowDimensions();
   // const searchedData = useSelector(state => state?.search.teamSearchData);
   const [page, setPage] = useState(1);
   const [monthRange, setMonthRange] = useState({start: '', end: ''});
@@ -195,7 +196,7 @@ const Home = () => {
             />
           ) : (
             <TouchableOpacity
-            style={[tw`bg-[#303649] h-34  rounded-2xl mt-5 mx-5 w-92 justify-center` ]}>
+            style={[tw`bg-[#303649] h-34  rounded-2xl mt-5 mx-5  justify-center`, { width: width - 40 } ]}>
               <Image source={require('../../assets/no-data-live-now.png')} style={tw`w-14 h-14 self-center`}/>
             <Text
               style={tw`text-[#fff] text-[20px] font-401 leading-tight  self-center px-5`}>

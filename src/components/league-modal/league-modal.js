@@ -81,7 +81,7 @@ const LeagueModal = ({isVisible, toggleModal}) => {
           toggleModal();
         }
       }}
-      style={[tw`p-3 mt-7 w-30`]}>
+      style={[tw`p-3 mt-7`, { width: '30%' }]}>
       <Image
         source={item?.icon}
         style={[tw`w-7 h-7 self-center`, {resizeMode: 'contain'}]}
@@ -107,7 +107,13 @@ const LeagueModal = ({isVisible, toggleModal}) => {
           data={DATA}
           renderItem={({item}) => <Item item={item} />}
           keyExtractor={item => item.id}
-          contentContainerStyle={tw`ml-5`}
+          contentContainerStyle={[
+            tw`px-5 py-3`, // Add padding to align items
+            { justifyContent: 'space-between' },
+          ]}
+          columnWrapperStyle={{
+            justifyContent: 'space-between', // Ensures even spacing between items
+          }}
         />
         {/* <Button title="Hide modal" onPress={toggleModal} /> */}
       </View>
