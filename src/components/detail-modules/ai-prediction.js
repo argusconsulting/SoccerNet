@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import tw from '../../styles/tailwind'
 import LinearGradient from 'react-native-linear-gradient'
 import { useDispatch, useSelector } from 'react-redux'
-import { getPredictionDoubleChance, getPredictionProbability } from '../../redux/predictionSlice'
+import { getPredictionDoubleChance, getPredictionFirstGoal, getPredictionProbability } from '../../redux/predictionSlice'
 
 const AiPrediction = ({fixtureId , homeTeam , awayTeam}) => {
 const dispatch = useDispatch()
@@ -20,6 +20,7 @@ const dispatch = useDispatch()
     const fetchPredictions = () => {
       dispatch(getPredictionProbability(fixtureId));
       dispatch(getPredictionDoubleChance(fixtureId));
+      dispatch(getPredictionFirstGoal(fixtureId));
     };
 
     // Call the APIs initially
@@ -44,10 +45,7 @@ const dispatch = useDispatch()
             Who will win?
                 </Text>
 
-                {/* <Text
-                  style={tw`text-[#F5C451] text-[16px] font-400 leading-normal mt-1.5 self-center`}>
-           22,323  Votes
-                </Text> */}
+               
 
                 <View style={tw`flex-row justify-between mt-6 `}>
                     <View>
@@ -58,14 +56,14 @@ const dispatch = useDispatch()
                         {resizeMode: 'contain', borderRadius: 999}, // Make the image circular
                       ]}
                     />
-                <Text
+                {/* <Text
                   style={tw`text-[#fff] text-[18px] font-402 leading-normal mt-1.5 w-25 self-center text-center`}>
           {homeTeam?.name}
-                </Text>
+                </Text> */}
                 <TouchableOpacity
        onPress={() => setShowPredictions(true)}
         style={[
-          tw`mt-4 mx-5 rounded-full justify-center w-20 h-20`,
+          tw`mt-5 mx-5  rounded-full justify-center w-20 h-20`,
         
         ]}>
         <LinearGradient
@@ -91,14 +89,14 @@ const dispatch = useDispatch()
                         {resizeMode: 'contain', borderRadius: 999}, // Make the image circular
                       ]}
                     />
-      <Text
+      {/* <Text
                   style={tw`text-[#fff] text-[18px] font-402 leading-normal  self-center mt-1.5`}>
        Draw
-                </Text>
+                </Text> */}
       <TouchableOpacity
        onPress={() => setShowPredictions(true)}
        style={[
-         tw`mt-11 mx-5 rounded-full justify-center w-20 h-20`,
+         tw`mt-5 mx-5 rounded-full justify-center w-20 h-20`,
        
        ]}>
        <LinearGradient
@@ -124,14 +122,14 @@ const dispatch = useDispatch()
                         {resizeMode: 'contain', borderRadius: 999}, // Make the image circular
                       ]}
                     />
-     <Text
+     {/* <Text
                   style={tw`text-[#fff] text-[18px] font-402 leading-normal w-25 mt-1.5 self-center text-center`}>
         {awayTeam?.name}
-                </Text>
+                </Text> */}
      <TouchableOpacity
          onPress={() => setShowPredictions(true)}
        style={[
-         tw`mt-4 mx-5 rounded-full justify-center w-20 h-20`,
+         tw`mt-5 mx-5 rounded-full justify-center w-20 h-20`,
        
        ]}>
        <LinearGradient
@@ -243,7 +241,7 @@ const dispatch = useDispatch()
 
     <View style={tw`bg-[#303649] w-90 rounded-lg self-center mt-10 py-5`}>
     <Text
-                  style={tw`text-[#fff] text-[22px] font-400 leading-normal  self-center`}>
+                  style={tw`text-[#fff] text-[22px] mb-5 font-400 leading-normal  self-center`}>
       Who will score first goal ?
                 </Text>
 
@@ -251,10 +249,13 @@ const dispatch = useDispatch()
 
                 <View style={tw`flex-row justify-between mt-3 `}>
                     <View>
-                    <Text
-                  style={tw`text-[#fff] text-[18px] font-402 leading-normal mt-1.5 self-center`}>
-           1x
-                </Text>
+                    <Image
+                      source={{uri: homeTeam?.image_path}}
+                      style={[
+                        tw`w-10 h-10 self-center`, // Image size and centering
+                        {resizeMode: 'contain', borderRadius: 999}, // Make the image circular
+                      ]}
+                    />
                 <TouchableOpacity
            onPress={() => setShowDoubleChance(true)}
         style={[
@@ -276,10 +277,13 @@ const dispatch = useDispatch()
 
 <View>
 
-      <Text
-                  style={tw`text-[#fff] text-[18px] font-402 leading-normal  self-center mt-1.5`}>
-      No Draw
-                </Text>
+<Image
+                      source={require('../../assets/cross.png')}
+                      style={[
+                        tw`w-10 h-10 self-center`, // Image size and centering
+                        {resizeMode: 'contain', borderRadius: 999}, // Make the image circular
+                      ]}
+                    />
                 <TouchableOpacity
            onPress={() => setShowDoubleChance(true)}
        style={[
@@ -300,10 +304,13 @@ const dispatch = useDispatch()
      </View>
 
 <View>
-<Text
-                  style={tw`text-[#fff] text-[18px] font-402 leading-normal mt-1.5 self-center`}>
-          x2
-                </Text>
+<Image
+                      source={{uri: awayTeam?.image_path}}
+                      style={[
+                        tw`w-10 h-10 self-center`, // Image size and centering
+                        {resizeMode: 'contain', borderRadius: 999}, // Make the image circular
+                      ]}
+                    />
                 <TouchableOpacity
            onPress={() => setShowDoubleChance(true)}
        style={[

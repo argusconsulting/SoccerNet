@@ -183,7 +183,7 @@ const MeetingChat = () => {
         </View>
 
         <View style={tw`flex-row`}>
-         <GroupCall groupName={groupName} creatorId={creatorId}/>
+         <GroupCall groupName={groupName} creatorId={creatorId} groupId={groupId}/>
         <View style={tw`flex-row `}>
           <TouchableOpacity
             onPress={() => leaveHandler()}

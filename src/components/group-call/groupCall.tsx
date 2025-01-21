@@ -50,12 +50,13 @@ import Loader from '../loader/Loader';
 
   interface GroupCallProps {
     groupName: string;
-    creatorId: number
+    creatorId: number;
+    groupId: number;
   }
 // Define basic information
 const appId = 'fe78bc42c5464befadcf442ed64d9485';
 
-const GroupCall: React.FC<GroupCallProps> = ({ groupName , creatorId}) => {
+const GroupCall: React.FC<GroupCallProps> = ({ groupName , creatorId, groupId}) => {
   const navigation = useNavigation<NavigationProp<any>>();
   const uid = useSelector((state: RootState) => state.auth_store.userID);
   const agoraEngineRef = useRef<IRtcEngine>(); 
@@ -76,6 +77,7 @@ const GroupCall: React.FC<GroupCallProps> = ({ groupName , creatorId}) => {
           channel_name: groupName,
           uid,
           role: creatorId === uid ? 'publisher' : 'subscriber',
+          group_id: groupId,
         });
         setAgoraToken(response?.data?.token || '');
       } catch (error) {

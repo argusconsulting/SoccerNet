@@ -47,9 +47,9 @@ const ScoreCard = ({match, width, screen, navigate}) => {
 
   return (
     <TouchableOpacity
-      style={[tw`bg-[#303649] pb-3  rounded-2xl mt-5 mx-2`, {width: width}]}
+      style={[tw`bg-[#303649] pb-3  rounded-2xl mt-5 mx-2 w-full`, {width: width}]}
       onPress={() => navigation.navigate(navigate, {fixtureId: match?.id})}>
-      <View style={tw`flex-row justify-between mx-3`}>
+      <View style={tw`flex-row justify-between mx-3 `}>
         <Image
           source={{uri: match?.league?.image_path}}
           style={tw`w-8 h-8 mt-2 `}
@@ -73,35 +73,47 @@ const ScoreCard = ({match, width, screen, navigate}) => {
         )}
       </View>
 
-      <View style={tw`flex-row justify-between mx-10 mt-3 `}>
-        <View>
+      <View style={tw`flex-row justify-between  mt-3  `}>
+        <View style={tw`w-[40%]`}>
           <View
             style={[
-              tw`w-14 h-14 self-center`, // Parent container size
+              tw`w-14 h-14 self-center `, 
               {
-                backgroundColor: '#fff', // Background for shadow area (optional for contrast)
-                shadowColor: '#fff', // Shadow color
-                shadowOffset: {width: 0, height: 1}, // Shadow position
-                shadowOpacity: 0.25, // Shadow transparency
-                shadowRadius: 4, // Shadow blur
-                elevation: 5, // Shadow for Android
-                borderRadius: 999, // Circular shadow
+                backgroundColor: '#fff', 
+                shadowColor: '#fff',
+                shadowOffset: {width: 0, height: 1}, 
+                shadowOpacity: 0.25,
+                shadowRadius: 4, 
+                elevation: 5, 
+                borderRadius: 999, 
               },
             ]}>
-            {/* Image centered inside the shadowed circle */}
+            
             <Image
               source={{uri: homeTeam?.image_path}}
               style={[
-                tw`w-10 h-10 self-center mt-2`, // Image size and centering
-                {resizeMode: 'contain', borderRadius: 999}, // Make the image circular
+                tw`w-10 h-10 self-center mt-2`,
+                {resizeMode: 'contain', borderRadius: 999},
               ]}
             />
           </View>
-
-          <Text
-            style={[tw`text-[#fff] text-[16px] font-400 leading-tight mt-1.5 w-23 self-center `,{textAlign:"center"}]}>
+          {screen === 'Home' ? 
+  <Text
+    style={[
+      tw`text-[#fff] text-[16px] font-400 leading-tight mt-1.5 w-23 self-center`,
+      { textAlign: "center" }
+    ]}
+  >
+    {homeTeam?.name.length > 12 
+      ? `${homeTeam.name.slice(0, 11)} ...`
+      : homeTeam.name}
+  </Text>
+  :   
+  <Text
+            style={[tw`text-[#fff] text-[16px] font-400 leading-tight mt-1.5 w-23 self-center` ,{textAlign:"center"}]}>
             {homeTeam?.name}
           </Text>
+}
         </View>
         <Text
           style={tw`text-[#fff] text-[18px] font-401 leading-normal mt-1.5 ml-3`}>
@@ -115,18 +127,18 @@ const ScoreCard = ({match, width, screen, navigate}) => {
           style={tw`text-[#fff] text-[18px] font-401 leading-normal mt-1.5 mr-3`}>
           {awayScore}
         </Text>
-        <View>
+        <View style={tw`w-[40%] `}>
           <View
             style={[
-              tw`w-14 h-14 self-center`, // Parent container size
+              tw`w-14 h-14 self-center`, 
               {
-                backgroundColor: '#fff', // Background for shadow area (optional for contrast)
-                shadowColor: '#fff', // Shadow color
-                shadowOffset: {width: 0, height: 1}, // Shadow position
-                shadowOpacity: 0.25, // Shadow transparency
-               shadowRadius: 4, // Shadow blur
-                 elevation: 5, // Shadow for Android
-                borderRadius: 999, // Circular shadow
+                backgroundColor: '#fff', 
+                shadowColor: '#fff',
+                shadowOffset: {width: 0, height: 1}, 
+                shadowOpacity: 0.25, 
+               shadowRadius: 4, 
+                 elevation: 5,
+                borderRadius: 999, 
               },
             ]}>
             {/* Image centered inside the shadowed circle */}
@@ -138,10 +150,21 @@ const ScoreCard = ({match, width, screen, navigate}) => {
               ]}
             />
           </View>
-          <Text
-            style={[tw`text-[#fff] text-[16px] font-400 leading-tight mt-1.5 w-23 self-center `,{textAlign:"center"}]}>
+          {screen === 'Home' ?
+  <Text
+    style={[
+      tw`text-[#fff] text-[16px] font-400 leading-tight mt-1.5 w-23 self-center`,
+      { textAlign: "center" }
+    ]}
+  >
+    {awayTeam?.name.length > 12 
+      ? `${awayTeam.name.slice(0, 11)}...`
+      : awayTeam.name}
+  </Text> : <Text
+            style={[tw`text-[#fff] text-[16px] font-400 leading-tight mt-1.5 w-23 self-center` ,{textAlign:"center"}]}>
             {awayTeam?.name}
           </Text>
+}
         </View>
       </View>
     </TouchableOpacity>

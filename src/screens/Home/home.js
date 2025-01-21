@@ -138,40 +138,7 @@ const Home = () => {
           </TouchableOpacity>
         </View>
         <View style={tw`px-5`}>
-          {/* <Text
-            style={tw`text-white text-[22px] font-401 leading-tight  mt-3 mb-5 `}>
-            {t('whatsOnYourMind')}
-          </Text> */}
-
-          {/* <SearchBar
-            onSearch={handleSearch}
-            placeholderText={'Search By Leagues ...'}
-          /> */}
-          {/* {searchedData?.length > 0 && (
-            <View style={tw`bg-[#303649] rounded-lg py-2`}>
-              {searchedData?.map(e => {
-                return (
-                  <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('LeagueScreen', { seasonId: e?.currentseason?.id }) // Pass the league's id
-                  }
-                    style={tw`border-b-[0.5px] border-[#fff] mx-3 flex-row `}>
-                    <Image
-                      source={{uri: e?.image_path}}
-                      style={[
-                        tw`w-8 h-8 self-center ml-1`,
-                        {resizeMode: 'contain'},
-                      ]}
-                    />
-                    <Text
-                      style={tw`text-white text-[14px] ml-4 font-401 leading-tight self-center my-3 `}>
-                      {e?.name}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-          )} */}
+         
         </View>
     <SelectedLeagues/>
 
@@ -189,7 +156,7 @@ const Home = () => {
               horizontal
               showsHorizontalScrollIndicator={false}
               renderItem={({item, index}) => (
-                <ScoreCard match={item} width={280} navigate={'LiveDetails'} />
+                <ScoreCard match={item} width={280} screen ={'Home'} navigate={'LiveDetails'} />
               )}
               keyExtractor={(item, index) => index.toString()}
               contentContainerStyle={tw`items-center px-3`}
@@ -231,6 +198,7 @@ const Home = () => {
                 <ScoreCard
                   match={item}
                   width={280}
+                  screen ={'Home'}
                   navigate={'HighlightDetail'}
                 />
               )}
