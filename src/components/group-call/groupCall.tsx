@@ -20,10 +20,9 @@ import {
   RtcConnection,
   IRtcEngineEventHandler,
 } from 'react-native-agora';
-import {useDispatch, useSelector} from 'react-redux';
+import { useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import tw from '../../styles/tailwind';
-import { getProfileData } from '../../redux/profileSlice';
 import { postApi } from '../../scripts/api-services';
 import { api_name_agora_token } from '../../constants/api-constants';
 import Loader from '../loader/Loader';
@@ -70,24 +69,24 @@ const GroupCall: React.FC<GroupCallProps> = ({ groupName , creatorId, groupId}) 
 
   useEffect(() => {
 
-    const getAgoraToken = async () => {
-      setLoading(true);
-      try {
-        const response = await postApi(api_name_agora_token, {
-          channel_name: groupName,
-          uid,
-          role: creatorId === uid ? 'publisher' : 'subscriber',
-          group_id: groupId,
-        });
-        setAgoraToken(response?.data?.token || '');
-      } catch (error) {
-        console.error('Error fetching Agora token:');
-      } finally {
-        setLoading(false);
-      }
-    };
+    // const getAgoraToken = async () => {
+    //   setLoading(true);
+    //   try {
+    //     const response = await postApi(api_name_agora_token, {
+    //       channel_name: groupName,
+    //       uid,
+    //       role: creatorId === uid ? 'publisher' : 'subscriber',
+    //       group_id: groupId,
+    //     });
+    //     setAgoraToken(response?.data?.token || '');
+    //   } catch (error) {
+    //     console.error('Error fetching Agora token:');
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
 
-    getAgoraToken();
+    // getAgoraToken();
     setupVideoSDKEngine();
 
    
@@ -97,7 +96,7 @@ const GroupCall: React.FC<GroupCallProps> = ({ groupName , creatorId, groupId}) 
     };
   }, []);
 
-  // Define the setupVideoSDKEngine method called when the App starts
+ 
   const setupVideoSDKEngine = async () => {
     try {
       // Create RtcEngine after obtaining device permissions
@@ -132,46 +131,89 @@ const GroupCall: React.FC<GroupCallProps> = ({ groupName , creatorId, groupId}) 
     }
   };
 
-
   const join = async () => {
-    if (!agoraToken) {
-      console.log('Agora token is not available. Cannot join channel.');
-      return;
-    }
-
-    if (isJoined) return; // Prevent duplicate joining
-
     try {
-
-      await agoraEngineRef.current?.joinChannel(agoraToken, groupName, uid, {
-        channelProfile: ChannelProfileType.ChannelProfileCommunication,
-        // clientRoleType: isHost
-        //   ? ClientRoleType.ClientRoleBroadcaster
-        //   : ClientRoleType.ClientRoleAudience,
-        // publishMicrophoneTrack: isHost, // Publish mic track only if host
-        // autoSubscribeAudio: true, // Subscribe to audio
-
-        clientRoleType: ClientRoleType.ClientRoleBroadcaster, // Set both as Broadcasters
-        publishMicrophoneTrack: true, // Allow both to publish mic track
-        autoSubscribeAudio: true, // Subscribe to audio
+      // Prevent duplicate joining
+      if (isJoined) return;
+  
+      // Fetch Agora token before joining
+      setLoading(true);
+      const response = await postApi(api_name_agora_token, {
+        channel_name: groupName,
+        uid,
+        role: creatorId === uid ? 'publisher' : 'subscriber',
+        group_id: groupId,
       });
-
+  
+      const token = response?.data?.token || '';
+      if (!token) {
+        console.log('Failed to fetch Agora token. Cannot join channel.');
+        return;
+      }
+  
+      setAgoraToken(token); // Optional: If you want to store the token in state
+  
+      // Join the Agora channel
+      await agoraEngineRef.current?.joinChannel(token, groupName, uid, {
+        channelProfile: ChannelProfileType.ChannelProfileCommunication,
+        clientRoleType: ClientRoleType.ClientRoleBroadcaster,
+        publishMicrophoneTrack: true,
+        autoSubscribeAudio: true,
+      });
+  
       console.log('Joined channel successfully');
-
+  
       // Navigate to CallScreen after successfully joining
       navigation.navigate('CallScreen', {
         agoraEngine: agoraEngineRef.current,
-        leave
+        leave,
       });
     } catch (error) {
       console.error('Failed to join channel:', error);
+    } finally {
+      setLoading(false);
     }
   };
+  
+  // const join = async () => {
+  //   if (!agoraToken) {
+  //     console.log('Agora token is not available. Cannot join channel.');
+  //     return;
+  //   }
+
+  //   if (isJoined) return; // Prevent duplicate joining
+
+  //   try {
+
+  //     await agoraEngineRef.current?.joinChannel(agoraToken, groupName, uid, {
+  //       channelProfile: ChannelProfileType.ChannelProfileCommunication,
+  //       // clientRoleType: isHost
+  //       //   ? ClientRoleType.ClientRoleBroadcaster
+  //       //   : ClientRoleType.ClientRoleAudience,
+  //       // publishMicrophoneTrack: isHost, // Publish mic track only if host
+  //       // autoSubscribeAudio: true, // Subscribe to audio
+
+  //       clientRoleType: ClientRoleType.ClientRoleBroadcaster, 
+  //       publishMicrophoneTrack: true,
+  //       autoSubscribeAudio: true, 
+  //     });
+
+  //     console.log('Joined channel successfully');
+
+  //     // Navigate to CallScreen after successfully joining
+  //     navigation.navigate('CallScreen', {
+  //       agoraEngine: agoraEngineRef.current,
+  //       leave
+  //     });
+  //   } catch (error) {
+  //     console.error('Failed to join channel:', error);
+  //   }
+  // };
 
   // Define the leave method called after clicking the leave channel button
   const leave = () => {
     try {
-      // Call leaveChannel method to leave the channel
+   
 
       agoraEngineRef.current?.leaveChannel();
       setRemoteUid(0);
@@ -204,7 +246,7 @@ const GroupCall: React.FC<GroupCallProps> = ({ groupName , creatorId, groupId}) 
     </View>
   );
 
-  // Display information
+
   function showMessage(msg: string) {
     setMessage(msg);
   }

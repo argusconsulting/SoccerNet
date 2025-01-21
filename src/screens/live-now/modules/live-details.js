@@ -2,18 +2,20 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  RefreshControl,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {lazy, Suspense, useEffect, useState} from 'react';
+import React, {lazy, Suspense, useCallback, useEffect, useState} from 'react';
 import Header from '../../../components/header/header';
 import tw from '../../../styles/tailwind';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {getFixturesById} from '../../../redux/fixturesSlice';
 import moment from 'moment';
+import { ScrollView } from 'react-native-gesture-handler';
 const News = lazy(() => import('../../news/news'));
 const Commentary = lazy(() =>
   import('../../../components/detail-modules/commentary'),
@@ -24,6 +26,7 @@ const Standings = lazy(() =>
 
 const LiveDetails = () => {
   const route = useRoute();
+    const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
   const fixtureId = route?.params?.fixtureId;
   const navigation = useNavigation()
@@ -34,6 +37,12 @@ const LiveDetails = () => {
   useEffect(() => {
     dispatch(getFixturesById({fixtureId, lang}));
   }, []);
+
+    const onRefresh = useCallback(() => {
+      setRefreshing(true);
+      dispatch(getFixturesById({fixtureId, lang}));
+      setRefreshing(false);
+    }, [dispatch]);
 
   // Function to extract scores for home and away teams
   const homeTeam = detailData?.participants?.find(
@@ -94,7 +103,9 @@ const LiveDetails = () => {
   );
 
   return (
-    <View style={tw`bg-[#05102E] flex-1 `}>
+    <ScrollView style={tw`bg-[#05102E] flex-1 `}  refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }>
        <ImageBackground
           source={require('../../../assets/detail-bg.png')}
           style={[tw`w-full h-50`, {resizeMode: 'contain'}]}>
@@ -232,12 +243,12 @@ const LiveDetails = () => {
       </View>
 
       <Suspense fallback={<Text>Loading...</Text>}>
-        {type === 'Standings' && <Standings />}
+        {type === 'Standings' && <Standings homeTeam={homeTeam} awayTeam={awayTeam}/>}
         {type === 'News' && <News shownHeader={false} />}
 
-        {type === 'Commentary' && <Commentary />}
+        {type === 'Commentary' && <Commentary fixtureId={fixtureId}/>}
       </Suspense>
-    </View>
+    </ScrollView>
   );
 };
 
