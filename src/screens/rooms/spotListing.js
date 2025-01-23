@@ -33,6 +33,7 @@ import Loader from '../../components/loader/Loader';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {getProfileData} from '../../redux/profileSlice';
 import HoldOnAnimation from '../../components/loader/animation-loader';
+import { t } from 'i18next';
 
 const SpotLight = () => {
   const navigation = useNavigation();
@@ -239,7 +240,6 @@ const SpotLight = () => {
     </LinearGradient>
   </TouchableOpacity>
 </TouchableOpacity>
-
     );
   };
 
@@ -260,7 +260,21 @@ const SpotLight = () => {
 
   return (
     <View style={tw`bg-[#05102E] flex-1`}>
-      <Header name="Rooms" />
+      {/* <Header name="Rooms" /> */}
+      <View style={tw`flex-row p-5 `}>
+      <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <AntDesign
+          name={'arrowleft'}
+          size={24}
+          color={'#fff'}
+          style={tw`mr-3 mt-1`}
+        />
+      </TouchableOpacity>
+      <Text
+        style={tw`text-[#fff] text-[24px] font-401 leading-normal self-center `}>
+        {t("Rooms")}
+      </Text>
+    </View>
       <View style={tw`px-5`}>
         <SearchBar onSearch={handleSearch} placeholderText={'Search by room names...'} />
 

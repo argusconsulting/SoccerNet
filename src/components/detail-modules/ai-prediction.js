@@ -15,6 +15,7 @@ const dispatch = useDispatch()
   const filterdTeamScoredFirstData = firstGoalData?.predictions?.filter(item => item.type_id === 238);
   const [showPredictions, setShowPredictions] = useState(false);
   const [showDoubleChance, setShowDoubleChance] = useState(false);
+  const [showFirstGoal, setShowFirstGoal] = useState(false);
 
   useEffect(() => {
     const fetchPredictions = () => {
@@ -83,9 +84,9 @@ const dispatch = useDispatch()
 
 <View>
 <Image
-                      source={require('../../assets/cross.png')}
+                      source={require('../../assets/handshake.png')}
                       style={[
-                        tw`w-10 h-10 self-center`, // Image size and centering
+                        tw`w-12 h-12 self-center`, // Image size and centering
                         {resizeMode: 'contain', borderRadius: 999}, // Make the image circular
                       ]}
                     />
@@ -96,7 +97,7 @@ const dispatch = useDispatch()
       <TouchableOpacity
        onPress={() => setShowPredictions(true)}
        style={[
-         tw`mt-5 mx-5 rounded-full justify-center w-20 h-20`,
+         tw`mt-3 mx-5 rounded-full justify-center w-20 h-20`,
        
        ]}>
        <LinearGradient
@@ -239,7 +240,7 @@ const dispatch = useDispatch()
 
     {/* first goal prediction */}
 
-    <View style={tw`bg-[#303649] w-90 rounded-lg self-center mt-10 py-5`}>
+    <View style={tw`bg-[#303649] w-90 rounded-lg self-center my-10 py-5`}>
     <Text
                   style={tw`text-[#fff] text-[22px] mb-5 font-400 leading-normal  self-center`}>
       Who will score first goal ?
@@ -257,7 +258,7 @@ const dispatch = useDispatch()
                       ]}
                     />
                 <TouchableOpacity
-           onPress={() => setShowDoubleChance(true)}
+           onPress={() => setShowFirstGoal(true)}
         style={[
           tw`mt-4  mx-5 rounded-full justify-center w-20 h-20 self-center`,
         
@@ -270,7 +271,7 @@ const dispatch = useDispatch()
             tw`rounded-full justify-center`,
             {flex: 1, justifyContent: 'center', alignItems: 'center'},
           ]}>
-        <Text  style={tw`text-[#fff] text-[16px] font-402 leading-normal  self-center`}>{showDoubleChance ? `${filterdTeamScoredFirstData?.[0]?.predictions?.home.toFixed(2)} %` : "1X"} </Text>
+        <Text  style={tw`text-[#fff] text-[16px] font-402 leading-normal  self-center`}>{showFirstGoal ? `${filterdTeamScoredFirstData?.[0]?.predictions?.home.toFixed(2)} %` : "Yes"} </Text>
         </LinearGradient>
       </TouchableOpacity>
       </View>
@@ -278,16 +279,16 @@ const dispatch = useDispatch()
 <View>
 
 <Image
-                      source={require('../../assets/cross.png')}
+                      source={require('../../assets/handshake.png')}
                       style={[
-                        tw`w-10 h-10 self-center`, // Image size and centering
+                        tw`w-12 h-12 self-center`, // Image size and centering
                         {resizeMode: 'contain', borderRadius: 999}, // Make the image circular
                       ]}
                     />
                 <TouchableOpacity
-           onPress={() => setShowDoubleChance(true)}
+           onPress={() => setShowFirstGoal(true)}
        style={[
-         tw`mt-4 mx-5 rounded-full justify-center w-20 h-20`,
+         tw`mt-2 mx-5 rounded-full justify-center w-20 h-20`,
        
        ]}>
        <LinearGradient
@@ -298,7 +299,7 @@ const dispatch = useDispatch()
            tw`rounded-full justify-center`,
            {flex: 1, justifyContent: 'center', alignItems: 'center'},
          ]}>
-       <Text  style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>{showDoubleChance ? `${filterdTeamScoredFirstData?.[0]?.predictions?.draw.toFixed(2)} %`: "--"}</Text>
+       <Text  style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>{showFirstGoal ? `${filterdTeamScoredFirstData?.[0]?.predictions?.draw.toFixed(2)} %`: "--"}</Text>
        </LinearGradient>
      </TouchableOpacity>
      </View>
@@ -312,7 +313,7 @@ const dispatch = useDispatch()
                       ]}
                     />
                 <TouchableOpacity
-           onPress={() => setShowDoubleChance(true)}
+           onPress={() => setShowFirstGoal(true)}
        style={[
          tw`mt-4 mx-5 rounded-full justify-center w-20 h-20`,
        
@@ -325,7 +326,7 @@ const dispatch = useDispatch()
            tw`rounded-full justify-center`,
            {flex: 1, justifyContent: 'center', alignItems: 'center'},
          ]}>
-       <Text  style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>{showDoubleChance ? `${filterdTeamScoredFirstData?.[0]?.predictions?.draw.toFixed(2)} %`: "X2"}</Text>
+       <Text  style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>{showFirstGoal ? `${filterdTeamScoredFirstData?.[0]?.predictions?.draw.toFixed(2)} %`: "No"}</Text>
        </LinearGradient>
      </TouchableOpacity>
      </View>

@@ -33,8 +33,11 @@ const MeetingChat = () => {
   const [loadingInitial, setLoadingInitial] = useState(true);
   const userId = useSelector(state => state.auth_store.userID);
   const groupId = route?.params?.groupId;
-  const groupName = route?.params?.groupName;
-  const creatorId = route?.params?.creatorId;
+  // const groupName = route?.params?.groupName;
+  // const creatorId = route?.params?.creatorId;
+  const { id, groupName, creatorId } = route.params;
+
+  console.log("channel name",groupName , id, creatorId)
 
 
 
@@ -183,7 +186,7 @@ const MeetingChat = () => {
         </View>
 
         <View style={tw`flex-row`}>
-         <GroupCall groupName={groupName} creatorId={creatorId} groupId={groupId}/>
+         <GroupCall groupName={groupName} creatorId={creatorId} groupId={groupId || id}/>
         <View style={tw`flex-row `}>
           <TouchableOpacity
             onPress={() => leaveHandler()}

@@ -70,36 +70,27 @@ console.log("commentaryData", commentaryData)
             {item?.minute}"
           </Text>
         </View>
-        <View style={tw`w-70`}>
+        <View style={tw`w-70 flex-row`}>
+      
           <Text style={tw`text-[#a2a2a2] text-[14px] font-400 leading-tight w-70`}>
             {item?.comment}
           </Text>
+          {item?.comment?.toLowerCase().includes('red card') && (
+          <Image
+            source={require('../../assets/icons/red-card.png')}
+            style={[tw`w-3.5 h-3.5 mb-2`, { resizeMode: 'contain' }]}
+          />
+        )}
+        {item?.comment?.toLowerCase().includes('yellow card') && (
+          <Image
+          source={require('../../assets/icons/yellow-card.png')}
+            style={[tw`w-3.5 h-3.5 mb-2`, { resizeMode: 'contain' }]}
+          />
+        )}
         </View>
       </View>
   
-      {/* {item?.is_goal && (
-        <View style={tw`flex-row mx-5 mt-3`}>
-          <Image
-            source={item?.goal?.img}
-            style={[tw`w-3.5 h-3.5`, { resizeMode: 'contain' }]}
-          />
-          <Text style={tw`text-[#fff] text-[14px] font-401 leading-tight ml-2`}>
-            {item?.goal.playerName}"
-          </Text>
-        </View>
-      )}
-  
-      {item?.redCard && (
-        <View style={tw`flex-row mx-5 mt-3`}>
-          <Image
-            source={item?.redCard?.img}
-            style={[tw`w-3.5 h-3.5`, { resizeMode: 'contain' }]}
-          />
-          <Text style={tw`text-[#fff] text-[14px] font-401 leading-tight ml-2`}>
-            {item?.redCard.playerName}"
-          </Text>
-        </View>
-      )} */}
+   
     </View>
   );
   

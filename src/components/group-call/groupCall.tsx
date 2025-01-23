@@ -151,8 +151,6 @@ const GroupCall: React.FC<GroupCallProps> = ({ groupName , creatorId, groupId}) 
         return;
       }
   
-      setAgoraToken(token); // Optional: If you want to store the token in state
-  
       // Join the Agora channel
       await agoraEngineRef.current?.joinChannel(token, groupName, uid, {
         channelProfile: ChannelProfileType.ChannelProfileCommunication,

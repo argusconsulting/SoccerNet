@@ -6,11 +6,11 @@ import tw from '../styles/tailwind';
 import LanguageSelection from '../screens/LanguageSelection/LanguageSelection';
 import SplashScreen from '../screens/SplashScreen/SplashScreen';
 import LeagueSelection from '../screens/LeagueSelection/leagueSelection';
-
+import messaging from '@react-native-firebase/messaging';
 import Home from '../screens/Home/home';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {Image, TouchableOpacity} from 'react-native';
+import {Image, Linking, Text, TouchableOpacity} from 'react-native';
 import CalendarScreen from '../screens/Calendar/calendar';
 import {useState} from 'react';
 import LeagueModal from '../components/league-modal/league-modal';
@@ -154,6 +154,9 @@ const Stack = createNativeStackNavigator();
 export const StackScreen = () => {
   const token = useSelector(state => state.auth_store.token);
 
+
+
+
   return (
   
     <Stack.Navigator
@@ -196,8 +199,78 @@ export const StackScreen = () => {
 
 export default function Routes() {
   const token = useSelector(state => state.auth_store.token);
+
+  const NAVIGATION_IDS = ['MeetingChat'];
+  const linking = {
+    prefixes: ["kickscore://"],
+    config: {
+      screens: {
+        MeetingChat: {
+          path: 'MeetingChat/:id',
+          parse: {
+            id: (id) => id,
+            groupName: (groupName ) => decodeURIComponent(groupName  || ''),
+          },
+        },
+      },
+    },
+    async getInitialURL() {
+      const url = await Linking.getInitialURL();
+      if (typeof url === 'string') {
+        return url;
+      }
+      const message = await messaging().getInitialNotification();
+      const deeplinkURL = buildDeepLinkFromNotificationData(message?.data);
+      if (typeof deeplinkURL === 'string') {
+        return deeplinkURL;
+      }
+    },
+    subscribe(listener) {
+      const onReceiveURL = ({ url }) => listener(url);
+      const linkingSubscription = Linking.addEventListener('url', onReceiveURL);
+      const unsubscribe = messaging().onNotificationOpenedApp(remoteMessage => {
+        const url = buildDeepLinkFromNotificationData(remoteMessage.data);
+        if (typeof url === 'string') {
+          listener(url);
+        }
+      });
+  
+      return () => {
+        linkingSubscription.remove();
+        unsubscribe();
+      };
+    },
+  };
+  
+
+
+  function buildDeepLinkFromNotificationData(data) {
+    const navigationId = data?.navigationId;
+    if (!NAVIGATION_IDS.includes(navigationId)) {
+      console.warn('Unverified navigationId', navigationId);
+      return null;
+    }
+  
+    const meetingId = data?.group_id;
+    const groupName = data?.channel_name;
+    const creatorId = data.created_by;
+  
+    if (navigationId === 'MeetingChat') {
+      if (!meetingId || !groupName) {
+        console.warn("Missing meetingId or channelName", { meetingId, groupName });
+        return null;
+      }
+      console.log(`kickscore://MeetingChat/${meetingId}?groupName=${encodeURIComponent(groupName)}`)
+      return `kickscore://MeetingChat/${meetingId}?groupName=${encodeURIComponent(groupName)}&creatorId=${encodeURIComponent(creatorId)}`;
+    }
+  
+    return null;
+  }
+  
+
+
   return (
-    <NavigationContainer>
+    <NavigationContainer  linking={linking}>
       <StackScreen />
     </NavigationContainer>
   );
