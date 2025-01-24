@@ -7,10 +7,10 @@ import {
 
 export const getAllStandings = createAsyncThunk(
   'standings/getAllStandings',
-  async (lang) => {
+  async ({lang, currentPage}) => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_standings}?include=participant;details.type;&locale=${lang}`,
+        `${api_name_standings}?include=participant;details.type;&locale=${lang}&page=${currentPage}`,
       );
       return response;
     } catch (error) {
@@ -40,14 +40,35 @@ const standingSlice = createSlice({
   name: 'standings',
   initialState: {
     isLoading: false,
-    standingsData: [],
+    standingsData: {
+      data: [],  // Initially empty data array
+      pagination: {},
+    },
     lineUpFormations: [],
     status: '',
   },
   reducers: {},
   extraReducers: builder => {
     builder.addCase(getAllStandings.fulfilled, (state, action) => {
-      state.standingsData = action?.payload;
+      console.log('API Response:', action.payload); // Log the API response to check the data
+      
+      if (action.meta.arg.page === 1) {
+        // If it's the first page, replace the data
+        state.standingsData = action?.payload;
+      } else {
+        // For subsequent pages, append new data to the existing data
+        const existingIds = new Set(state.standingsData?.data?.map(item => item.id));
+        const uniqueData = action.payload.data.filter(item => !existingIds.has(item.id));
+        
+        // Log the unique data being appended
+        console.log('Unique Data:', uniqueData);
+        
+        state.standingsData = {
+          ...action.payload, // Keep the new pagination info
+          data: [...state.standingsData?.data, ...uniqueData], // Concatenate the new data
+        };
+      }
+      
       state.status = 'fulfilled';
       state.isLoading = false;
     });
