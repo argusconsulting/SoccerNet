@@ -26,6 +26,7 @@ const Standings = ({homeTeam , awayTeam}) => {
     console.log("cur", currentPage)
     setIsLoading(true);
     await dispatch(getAllStandings({lang, currentPage}));
+    
     setIsLoading(false);
   };
 
@@ -74,7 +75,7 @@ const Standings = ({homeTeam , awayTeam}) => {
        
       ]}>
         {/* Show the index + 1 to make the count start from 1 */}
-        <Text style={tw`text-white text-[14px]`}>{index + 1}</Text>
+        <Text style={tw`text-white text-[14px]`}>{(page - 1) * 25 + (index + 1)}</Text>
         <View style={tw`flex-row w-20  ml--2`}>
           <Image
             source={{uri: item?.participant?.image_path}}

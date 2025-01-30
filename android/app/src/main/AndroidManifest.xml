@@ -27,7 +27,7 @@
         <data android:pathPrefix="/android/callback" android:host="com.soccernet" android.scheme="com.soccernet"/>
       </intent-filter>
     </activity>
-    <activity android:name="net.openid.appauth.RedirectUriReceiverActivity" android.exported="true">
+    <activity android:name="net.openid.appauth.RedirectUriReceiverActivity" android.exported="true" >
       <intent-filter android:autoVerify="true">
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>

@@ -34,10 +34,10 @@ const MeetingChat = () => {
   const userId = useSelector(state => state.auth_store.userID);
   const groupId = route?.params?.groupId;
   // const groupName = route?.params?.groupName;
-  // const creatorId = route?.params?.creatorId;
+  // const createdById = route?.params?.creatorId;
   const { id, groupName, creatorId } = route.params;
 
-  console.log("channel name",groupName , id, creatorId)
+  console.log("channel name",groupName , id, creatorId , groupId )
 
 
 

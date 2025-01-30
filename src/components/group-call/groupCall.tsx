@@ -67,6 +67,8 @@ const GroupCall: React.FC<GroupCallProps> = ({ groupName , creatorId, groupId}) 
   const [loading, setLoading] = useState(false);
   const eventHandler = useRef<IRtcEngineEventHandler>(); 
 
+  console.log("in icon -------------->", groupName, creatorId, groupId)
+
   useEffect(() => {
 
     // const getAgoraToken = async () => {

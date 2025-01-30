@@ -12,7 +12,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Image, Linking, Text, TouchableOpacity} from 'react-native';
 import CalendarScreen from '../screens/Calendar/calendar';
-import {useState} from 'react';
+import {useRef, useState} from 'react';
 import LeagueModal from '../components/league-modal/league-modal';
 import Profile from '../screens/Profile/profile';
 import Highlights from '../screens/Highlights/highlights';
@@ -198,6 +198,7 @@ export const StackScreen = () => {
 };
 
 export default function Routes() {
+  const isReadyRef = useRef(false);
   const token = useSelector(state => state.auth_store.token);
 
   const NAVIGATION_IDS = ['MeetingChat'];
@@ -270,7 +271,7 @@ export default function Routes() {
 
 
   return (
-    <NavigationContainer  linking={linking}>
+    <NavigationContainer  linking={linking} >
       <StackScreen />
     </NavigationContainer>
   );

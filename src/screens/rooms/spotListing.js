@@ -131,7 +131,7 @@ const SpotLight = () => {
 
   const Item = ({item}) => {
     const isJoined = item.users.some(user => user.id === userId);
-    const handlePress = (groupId, groupName) => {
+    const handlePress = (groupId, groupName, creatorId) => {
       if (isJoined) {
         dispatch(leaveMeetingRooms({userId, groupId})).then(() => {
           dispatch(getMeetingRooms());
@@ -141,12 +141,14 @@ const SpotLight = () => {
           navigation.navigate('MeetingChat', {
             groupId: groupId,
             groupName: groupName,
+            creatorId: creatorId
           }),
         );
       }
     };
 
     const onCardClick = ({groupId, groupName , creatorId}) => {
+      console.log("creatorId-----------", creatorId)
       if (isJoined) {
         navigation.navigate('MeetingChat', {
           groupId: groupId,
@@ -215,7 +217,7 @@ const SpotLight = () => {
   {/* Fixed button at the bottom */}
   <TouchableOpacity
     disabled={item?.is_active === false}
-    onPress={() => handlePress(item?.id, item?.name)}
+    onPress={() => handlePress(item?.id, item?.name, item?.created_by)}
     style={[
       tw`mt-1 rounded-lg justify-center`,  // Remove bottom-0 and absolute
       { width: '100%', height: 40, alignSelf: 'center' },

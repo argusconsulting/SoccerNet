@@ -51,35 +51,34 @@ const standingSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(getAllStandings.fulfilled, (state, action) => {
       console.log('API Response:', action.payload); // Log the API response to check the data
-      
-      if (action.meta.arg.page === 1) {
+    
+      const currentPage = action.meta.arg.currentPage; // Get the page number
+    
+      if (currentPage === 1) {
         // If it's the first page, replace the data
-        state.standingsData = action?.payload;
+        state.standingsData = action.payload;
       } else {
-        // For subsequent pages, append new data to the existing data
-        const existingIds = new Set(state.standingsData?.data?.map(item => item.id));
-        const uniqueData = action.payload.data.filter(item => !existingIds.has(item.id));
-        
-        // Log the unique data being appended
-        console.log('Unique Data:', uniqueData);
-        
+        // Ensure only 25 items per page by replacing the previous page data
         state.standingsData = {
           ...action.payload, // Keep the new pagination info
-          data: [...state.standingsData?.data, ...uniqueData], // Concatenate the new data
+          data: action.payload.data, // Replace old data with new page data
         };
       }
-      
+    
       state.status = 'fulfilled';
       state.isLoading = false;
     });
+    
     builder.addCase(getAllStandings.pending, (state, action) => {
       state.status = 'pending';
       state.isLoading = true;
     });
+    
     builder.addCase(getAllStandings.rejected, (state, action) => {
       state.status = 'rejected';
       state.isLoading = false;
     });
+    
 
     //formation
     builder.addCase(getLineups.fulfilled, (state, action) => {

@@ -88,7 +88,7 @@ const LeagueModal = ({isVisible, toggleModal}) => {
       />
       <Text
         style={[
-          tw`text-[#fff] text-[18px] font-401 leading-normal mt-3 self-center`,
+          tw`text-[#fff] text-[16px] font-401 leading-normal mt-3 self-center`,
           {textAlign: 'center'},
         ]}>
         {t(item.title)}
@@ -108,7 +108,7 @@ const LeagueModal = ({isVisible, toggleModal}) => {
           renderItem={({item}) => <Item item={item} />}
           keyExtractor={item => item.id}
           contentContainerStyle={[
-            tw`px-5 py-3`, // Add padding to align items
+            tw`px-4 py-3`, // Add padding to align items
             { justifyContent: 'space-between' },
           ]}
           columnWrapperStyle={{

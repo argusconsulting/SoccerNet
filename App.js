@@ -5,7 +5,7 @@
  * @format
  */
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, Linking, StyleSheet, Text, View} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {LogBox} from 'react-native';
 import Routes from './src/routes/routes';
@@ -16,6 +16,7 @@ import {Provider} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from './src/styles/tailwind';
 import {loadLanguage} from './src/redux/languageSlice';
+import { Link } from '@react-navigation/native';
 
 function App() {
   LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
@@ -33,8 +34,18 @@ function App() {
       setLoading(false); // Stop loading once the language is set
     };
 
+
     loadStoredLanguage();
   }, []);
+
+  useEffect(async() => {
+const initialUrl = await Linking.getInitialURL();
+console.log("initialUrl", initialUrl)
+if(initialUrl){
+Linking.openURL(initialUrl)
+}
+  }, [])
+  
 
   if (loading) {
     return (
