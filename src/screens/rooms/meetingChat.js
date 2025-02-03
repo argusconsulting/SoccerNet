@@ -28,9 +28,9 @@ const MeetingChat = () => {
   const dispatch = useDispatch();
   const route = useRoute();
   const navigation = useNavigation();
-  const [message, setMessage] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [loadingInitial, setLoadingInitial] = useState(true);
+  // const [message, setMessage] = useState(null);
+  // const [messages, setMessages] = useState([]);
+  // const [loadingInitial, setLoadingInitial] = useState(true);
   const userId = useSelector(state => state.auth_store.userID);
   const groupId = route?.params?.groupId;
   // const groupName = route?.params?.groupName;
@@ -47,11 +47,11 @@ const MeetingChat = () => {
     });
   };
 
-  const sendMessagesHandler = () => {
-    dispatch(sendMessages({userId, groupId, message})).then(() => {
-      setMessage(null);
-    });
-  };
+  // const sendMessagesHandler = () => {
+  //   dispatch(sendMessages({userId, groupId, message})).then(() => {
+  //     setMessage(null);
+  //   });
+  // };
 
   // Initialize Pusher
   // useEffect(() => {
@@ -119,53 +119,53 @@ const MeetingChat = () => {
   // Fetch messages on component mount
  
  
-  useEffect(() => {
-    // Fetch messages only once on initial mount
-    dispatch(getMessages(groupId))
-      .then(fetchedMessages => {
-        if (Array.isArray(fetchedMessages?.payload?.messages)) {
-          setMessages(fetchedMessages?.payload?.messages); // Directly set messages
-        } else {
-          console.warn(
-            'Fetched messages are not in an array format:',
-            fetchedMessages,
-          );
-        }
-      })
-      .finally(() => {
-        setLoadingInitial(false);
-      });
-  }, [dispatch, groupId]);
+  // useEffect(() => {
+ 
+  //   dispatch(getMessages(groupId))
+  //     .then(fetchedMessages => {
+  //       if (Array.isArray(fetchedMessages?.payload?.messages)) {
+  //         setMessages(fetchedMessages?.payload?.messages); // Directly set messages
+  //       } else {
+  //         console.warn(
+  //           'Fetched messages are not in an array format:',
+  //           fetchedMessages,
+  //         );
+  //       }
+  //     })
+  //     .finally(() => {
+  //       setLoadingInitial(false);
+  //     });
+  // }, [dispatch, groupId]);
 
-  const Item = ({item}) => {
-    const isSender = item?.user?.id === userId;
-    return (
-      <View style={[tw` `, isSender ? tw`items-end` : tw`items-start`]}>
-        {!isSender && (
-          <View style={[tw`flex-row mt-4`]}>
-            <Image
-              source={{uri: item?.user?.formatted_avatar_url}}
-              style={tw`w-6 h-6 mx-3 rounded-full`}
-            />
-            <Text
-              style={tw`text-[#F5C451] text-[14px] font-401 leading-tight self-center`}>
-              {item?.user?.name}
-            </Text>
-          </View>
-        )}
+  // const Item = ({item}) => {
+  //   const isSender = item?.user?.id === userId;
+  //   return (
+  //     <View style={[tw` `, isSender ? tw`items-end` : tw`items-start`]}>
+  //       {!isSender && (
+  //         <View style={[tw`flex-row mt-4`]}>
+  //           <Image
+  //             source={{uri: item?.user?.formatted_avatar_url}}
+  //             style={tw`w-6 h-6 mx-3 rounded-full`}
+  //           />
+  //           <Text
+  //             style={tw`text-[#F5C451] text-[14px] font-401 leading-tight self-center`}>
+  //             {item?.user?.name}
+  //           </Text>
+  //         </View>
+  //       )}
 
-        <View
-          style={[
-            tw`rounded-3xl mt-3 px-4 py-2`,
-            isSender ? tw`bg-[#6A36CE] mr-5` : tw`bg-[#303649] ml-8`,
-          ]}>
-          <Text style={tw`text-[#fff] text-[14px] font-401 leading-tight`}>
-            {item?.content}
-          </Text>
-        </View>
-      </View>
-    );
-  };
+  //       <View
+  //         style={[
+  //           tw`rounded-3xl mt-3 px-4 py-2`,
+  //           isSender ? tw`bg-[#6A36CE] mr-5` : tw`bg-[#303649] ml-8`,
+  //         ]}>
+  //         <Text style={tw`text-[#fff] text-[14px] font-401 leading-tight`}>
+  //           {item?.content}
+  //         </Text>
+  //       </View>
+  //     </View>
+  //   );
+  // };
 
   return (
     <View style={tw`bg-[#05102E] flex-1`}>
@@ -222,10 +222,24 @@ const MeetingChat = () => {
       </View>
       <View style={tw`flex-1 justify-center items-center`}>
       <Image source={require('../../assets/meetingEmptyImg.png')} style={[tw`w-50 h-50 self-center`,{resizeMode:"cover"}]}/>
-      <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight self-center mt-5`}>
-      Waiting for the participants!
+      <View style={tw`flex-row self-center`}>
+       
+      <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight self-center mt-5 text-center`}>
+    Click on 
+              </Text>
+              <AntDesign
+          name={'phone'}
+          size={20}
+          color={'#fff'}
+          style={tw`self-center mt-5 mx-2 `}
+        />
+         <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight self-center mt-5  text-center`}>
+   to join the call !
               </Text>
               </View>
+              </View>
+
+
       {/* Chat */}
       {/* {loadingInitial ? (
         <Loader />

@@ -30,6 +30,7 @@ import {getLiveScoresInPlay} from '../../redux/liveScoreSlice';
 import {ScrollView} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import SelectedLeagues from '../../components/selected-leagues';
+import { notificationsCount } from '../../redux/announcementSlice';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -44,6 +45,9 @@ const Home = () => {
   const justFinishedData = useSelector(
     state => state?.fixtures?.fixturesByDateRangeHighlights,
   );
+    const notificationsCountNumber = useSelector(state => state?.announcement?.notificationsCount);
+  
+    console.log("notificationsCount", notificationsCountNumber);
 
   const inPlayLiveScores = useSelector(
     state => state?.liveScore?.liveScoreInPlayData,
@@ -65,6 +69,7 @@ const Home = () => {
 
   useEffect(() => {
     getWeekRange(moment()); // Initialize with current month
+    dispatch(notificationsCount())
   }, []);
 
   const fetchData = useCallback(() => {
@@ -126,16 +131,21 @@ const Home = () => {
             <Entypo name={'menu'} color={'#fff'} size={26} style={tw``} />
           </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Notification')}
-            activeOpacity={0.4}>
-            <Ionicons
+<TouchableOpacity
+                onPress={() => navigation.navigate('Notification')}   activeOpacity={0.4} style={tw`flex-row justify-center self-center`}>
+                <Ionicons
               name={'notifications'}
               color={'#fff'}
               size={26}
-              style={tw``}
+              style={tw`mr-3`}
             />
-          </TouchableOpacity>
+                <View style={[tw`bg-red-500 mt--2 mr-2 rounded-full w-5 h-5 justify-center`,{position:"absolute"}]}>
+                <Text
+        style={[tw`text-[#fff] text-[12px] font-400  leading-tight self-center  `]}>
+      {notificationsCountNumber}
+      </Text>
+      </View>
+              </TouchableOpacity>
         </View>
         <View style={tw`px-5`}>
          

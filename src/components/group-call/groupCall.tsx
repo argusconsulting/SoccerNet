@@ -175,42 +175,7 @@ const GroupCall: React.FC<GroupCallProps> = ({ groupName , creatorId, groupId}) 
     }
   };
   
-  // const join = async () => {
-  //   if (!agoraToken) {
-  //     console.log('Agora token is not available. Cannot join channel.');
-  //     return;
-  //   }
-
-  //   if (isJoined) return; // Prevent duplicate joining
-
-  //   try {
-
-  //     await agoraEngineRef.current?.joinChannel(agoraToken, groupName, uid, {
-  //       channelProfile: ChannelProfileType.ChannelProfileCommunication,
-  //       // clientRoleType: isHost
-  //       //   ? ClientRoleType.ClientRoleBroadcaster
-  //       //   : ClientRoleType.ClientRoleAudience,
-  //       // publishMicrophoneTrack: isHost, // Publish mic track only if host
-  //       // autoSubscribeAudio: true, // Subscribe to audio
-
-  //       clientRoleType: ClientRoleType.ClientRoleBroadcaster, 
-  //       publishMicrophoneTrack: true,
-  //       autoSubscribeAudio: true, 
-  //     });
-
-  //     console.log('Joined channel successfully');
-
-  //     // Navigate to CallScreen after successfully joining
-  //     navigation.navigate('CallScreen', {
-  //       agoraEngine: agoraEngineRef.current,
-  //       leave
-  //     });
-  //   } catch (error) {
-  //     console.error('Failed to join channel:', error);
-  //   }
-  // };
-
-  // Define the leave method called after clicking the leave channel button
+ 
   const leave = () => {
     try {
    
