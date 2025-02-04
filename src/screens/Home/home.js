@@ -69,8 +69,15 @@ const Home = () => {
 
   useEffect(() => {
     getWeekRange(moment()); // Initialize with current month
-    dispatch(notificationsCount())
+
   }, []);
+
+    useEffect(() => {
+      const willFocusSubscription = navigation.addListener('focus', () => {
+        dispatch(notificationsCount())
+      });
+      return willFocusSubscription;
+    }, [dispatch]);
 
   const fetchData = useCallback(() => {
     if (monthRange.start && monthRange.end) {

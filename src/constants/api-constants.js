@@ -12,6 +12,7 @@ export const api_name_new_announcements = 'announcements';
 export const api_name_all_notifications = 'notifications';
 export const api_name_all_notifications_count = 'notifications/count';
 export const api_name_notification_mark_as_read = 'notifications/mark-read';
+export const api_name_notification_mark_all_as_read = 'notifications/mark-all-read';
 export const api_name_post = 'posts';
 export const api_name_get_comments = 'posts/comments';
 export const api_name_create_comments = 'posts/comment';

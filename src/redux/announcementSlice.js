@@ -3,7 +3,7 @@
 // show announcements
 
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { api_name_all_notifications, api_name_all_notifications_count, api_name_new_announcements, api_name_notification_mark_as_read } from "../constants/api-constants";
+import { api_name_all_notifications, api_name_all_notifications_count, api_name_new_announcements, api_name_notification_mark_all_as_read, api_name_notification_mark_as_read } from "../constants/api-constants";
 import { getApi, postApi } from "../scripts/api-services";
 import Alertify from "../scripts/toast";
 
@@ -16,9 +16,12 @@ export const announcement = createAsyncThunk('announcements/newAnnouncements', a
     }
   });
 
-  export const notificationsHandler = createAsyncThunk('announcement/allNotifications', async () => {
+  export const notificationsHandler = createAsyncThunk('announcement/allNotifications', async (page) => {
     try {
-      const response = await getApi(`${api_name_all_notifications}`);
+      const response = await getApi(
+        `${api_name_all_notifications}?page=${page}&pageSize={10}`,
+      );
+      console.log("response", response)
       return response;
     } catch (error) {
       console.log('get notifications listing error', error);
@@ -31,6 +34,17 @@ export const announcement = createAsyncThunk('announcements/newAnnouncements', a
       return response;
     } catch (error) {
       console.log('get notifications count listing error', error);
+    }
+  });
+
+  export const notificationsMarkAllAsRead = createAsyncThunk('announcement/allNotificationsMarkRead', async () => {
+    try {
+      const response = await postApi(`${api_name_notification_mark_all_as_read}`);
+      console.log("response", response)
+      Alertify.success(response?.data?.message)
+      return response;
+    } catch (error) {
+      console.log('get notifications mark all as read listing error', error);
     }
   });
 
@@ -61,6 +75,7 @@ export const announcement = createAsyncThunk('announcements/newAnnouncements', a
     notificationsList: [],
     notificationsCount: '',
     markAsRead:[],
+    markAllAsRead:[],
     },
     reducers: {},
   
@@ -81,9 +96,11 @@ export const announcement = createAsyncThunk('announcements/newAnnouncements', a
         state.isLoading = true;
       })
       builder.addCase(notificationsHandler.fulfilled, (state, action) => {
+        console.log("action.payload", action.payload)
         state.isLoading = false;
-        state.notificationsList = action?.payload?.data;
-      })
+        state.notificationsList = action.payload;
+      });
+      
       builder.addCase(notificationsHandler.rejected, (state, action) => {
         state.isLoading = false;
       });
@@ -107,6 +124,12 @@ export const announcement = createAsyncThunk('announcements/newAnnouncements', a
         .addCase(notificationMarkAsRead.fulfilled, (state, action) => {
           state.isLoading = false;
           state.markAsRead = action?.payload;
+        });
+
+        // mark all as read
+        builder
+        .addCase(notificationsMarkAllAsRead.fulfilled, (state, action) => {
+          state.markAllAsRead = action?.payload;
         });
     },
   });
