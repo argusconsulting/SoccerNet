@@ -105,7 +105,7 @@ const ScoreCard = ({match, width, screen, navigate}) => {
     ]}
   >
     {homeTeam?.name.length > 12 
-      ? `${homeTeam.name.slice(0, 11)} ...`
+      ? `${homeTeam.name.slice(0, 10)} ...`
       : homeTeam.name}
   </Text>
   :   
