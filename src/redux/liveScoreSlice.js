@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {api_name_liveScore_inPlay} from '../constants/api-constants';
-import {getSportsMonkApi} from '../scripts/api-services';
+import {api_name_liveScore_inPlay, api_name_predictions_summary} from '../constants/api-constants';
+import {getApi, getSportsMonkApi, postApi} from '../scripts/api-services';
 
 export const getLiveScoresInPlay = createAsyncThunk(
   'liveScore/inPlay',
@@ -17,11 +17,28 @@ export const getLiveScoresInPlay = createAsyncThunk(
   },
 );
 
+
+export const getPredictionSummary = createAsyncThunk(
+  'liveScore/predectionSummary',
+  async (fixtureId) => {
+    try {
+      const response = await getApi(
+        `${api_name_predictions_summary}?fixture_id=${fixtureId}`,
+      );
+      return response;
+    } catch (error) {
+      console.log('Error fetching prediction summary data', error);
+      return rejectWithValue(error);
+    }
+  },
+);
+
 const liveScoreSlice = createSlice({
   name: 'liveScore',
   initialState: {
     isLoading: false,
     liveScoreInPlayData: [],
+    predictionSummaryData: [],
     status: '',
   },
   reducers: {},
@@ -36,6 +53,21 @@ const liveScoreSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(getLiveScoresInPlay.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.isLoading = false;
+    });
+
+
+    builder.addCase(getPredictionSummary.fulfilled, (state, action) => {
+      state.predictionSummaryData = action?.payload;
+      state.status = 'fulfilled';
+      state.isLoading = false;
+    });
+    builder.addCase(getPredictionSummary.pending, (state, action) => {
+      state.status = 'pending';
+      state.isLoading = true;
+    });
+    builder.addCase(getPredictionSummary.rejected, (state, action) => {
       state.status = 'rejected';
       state.isLoading = false;
     });

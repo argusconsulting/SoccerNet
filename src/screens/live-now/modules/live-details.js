@@ -23,6 +23,9 @@ const Commentary = lazy(() =>
 const Standings = lazy(() =>
   import('../../../components/detail-modules/standings'),
 );
+const PredictionSummary = lazy(() =>
+  import('../../../components/detail-modules/prediction-summary'),
+);
 
 const LiveDetails = () => {
   const route = useRoute();
@@ -82,6 +85,10 @@ const LiveDetails = () => {
     {
       id: 3,
       name: 'News',
+    },
+    {
+      id: 4,
+      name: 'PredictionSummary',
     },
   ];
 
@@ -247,6 +254,8 @@ const LiveDetails = () => {
         {type === 'News' && <News shownHeader={false} />}
 
         {type === 'Commentary' && <Commentary fixtureId={fixtureId}/>}
+                    {type === 'PredictionSummary' && <PredictionSummary fixtureId={fixtureId} homeTeam={homeTeam} awayTeam={awayTeam}/>}
+        
       </Suspense>
     </ScrollView>
   );

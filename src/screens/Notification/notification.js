@@ -109,11 +109,11 @@ const Notification = () => {
               {moment(item?.created_at).format('YYYY-MM-DD')} {'  '}
               {moment(item?.created_at).format('hh:mm A')}
             </Text>
-            <TouchableOpacity onPress={() => handleMarkAsRead(item?.id)}>
+            {/* <TouchableOpacity onPress={() => handleMarkAsRead(item?.id)}>
               <Text style={tw`text-[#72bf6a] text-[14px] font-400  mt-1 leading-tight `}>
                 Mark as read
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </View>
@@ -140,7 +140,11 @@ const Notification = () => {
             <Text style={[tw`text-[18px] text-[#fff] font-401 mx-5 w-60 leading-tight`, { textTransform: 'capitalize' }]}>
               {item?.Title}
             </Text>
-            <TruncatedText text={item?.Description} ellipsis=" (see more)" />
+
+            <Text style={[tw`text-[14px] text-[#fff] font-400 mx-5 w-60 leading-tight`, { textTransform: 'capitalize' }]}>
+              {item?.Description}
+            </Text>
+            {/* <TruncatedText text={item?.Description} ellipsis=" (see more)" /> */}
             <View style={tw`flex-row`}>
               <Text style={tw`text-[#fff] text-[12px] font-400 ml-5 mr-2 mt-1 leading-tight `}>
                 {item?.Schedule_at?.split?.(' ')[0]} {'  '}

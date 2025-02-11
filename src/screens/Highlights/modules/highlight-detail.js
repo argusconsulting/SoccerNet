@@ -38,6 +38,9 @@ const AiPrediction = lazy(() =>
   import('../../../components/detail-modules/ai-prediction'),
 );
 
+
+
+
 const HighlightDetail = () => {
   const route = useRoute();
   const navigation = useNavigation();
@@ -63,6 +66,7 @@ const HighlightDetail = () => {
       id: 1,
       name: 'AiPrediction',
     },
+   
   ];
 
   const [type, setType] = useState('Statistics');
@@ -270,6 +274,7 @@ const HighlightDetail = () => {
           {type === 'LineUps' && <LineUps fixtureId={fixtureId} />}
           {type === 'Commentary' && <Commentary fixtureId={fixtureId} />}
             {type === 'AiPrediction' && <AiPrediction fixtureId={fixtureId} homeTeam={homeTeam} awayTeam={awayTeam}/>}
+
         </Suspense>
       </ScrollView>
     </View>

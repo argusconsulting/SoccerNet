@@ -165,7 +165,7 @@ const Home = () => {
               style={tw`text-white text-[22px] font-401 leading-tight  mt-3  px-5`}>
               {t('liveNow')}
             </Text>
-
+{/* {console.log("clg-----------------", inPlayLiveScores?.data)} */}
           </View>
           {inPlayLiveScores?.data?.length > 0 ? (
             <FlatList
