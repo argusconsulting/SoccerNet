@@ -21,29 +21,30 @@ const ScoreCard = ({match, width, screen, navigate}) => {
   // Sum up the scores based on the participant_id
   match?.scores?.forEach(score => {
     if (
-      score.score.participant === 'home' &&
-      score.participant_id === homeTeam.id
+      score?.score?.participant === 'home' &&
+      score?.participant_id === homeTeam?.id
     ) {
       homeScore += score.score.goals;
     } else if (
-      score.score.participant === 'away' &&
-      score.participant_id === awayTeam.id
+      score?.score?.participant === 'away' &&
+      score?.participant_id === awayTeam?.id
     ) {
-      awayScore += score.score.goals;
+      awayScore += score?.score.goals;
     }
   });
 
-  // // Check if any participant has the placeholder image
-  const hasPlaceholderImage = match?.participants?.some(
-    participant =>
-      participant?.image_path ===
-      'https://cdn.sportmonks.com/images/soccer/team_placeholder.png',
-  );
 
-  // Do not render the ScoreCard if any participant has the placeholder image
-  if (hasPlaceholderImage) {
-    return null;
-  }
+  // // // Check if any participant has the placeholder image
+  // const hasPlaceholderImage = match?.participants?.some(
+  //   participant =>
+  //     participant?.image_path ===
+  //     'https://cdn.sportmonks.com/images/soccer/team_placeholder.png',
+  // );
+
+  // // Do not render the ScoreCard if any participant has the placeholder image
+  // if (hasPlaceholderImage) {
+  //   return null;
+  // }
 
   return (
     <TouchableOpacity

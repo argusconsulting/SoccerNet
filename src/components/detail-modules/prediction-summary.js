@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getPredictionSummary } from '../../redux/liveScoreSlice';
 
 const PredictionSummary = ({ fixtureId }) => {
+  console.log("fix------------------", fixtureId)
   const dispatch = useDispatch();
   const data = useSelector(state => state.liveScore.predictionSummaryData);
 

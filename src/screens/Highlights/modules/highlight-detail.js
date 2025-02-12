@@ -38,6 +38,10 @@ const AiPrediction = lazy(() =>
   import('../../../components/detail-modules/ai-prediction'),
 );
 
+const PredictionSummary = lazy(() =>
+  import('../../../components/detail-modules/prediction-summary'),
+);
+
 
 
 
@@ -65,6 +69,10 @@ const HighlightDetail = () => {
     {
       id: 1,
       name: 'AiPrediction',
+    },
+    {
+      id: 6,
+      name: 'PredictionSummary',
     },
    
   ];
@@ -274,6 +282,7 @@ const HighlightDetail = () => {
           {type === 'LineUps' && <LineUps fixtureId={fixtureId} />}
           {type === 'Commentary' && <Commentary fixtureId={fixtureId} />}
             {type === 'AiPrediction' && <AiPrediction fixtureId={fixtureId} homeTeam={homeTeam} awayTeam={awayTeam}/>}
+            {type === 'PredictionSummary' && <PredictionSummary fixtureId={fixtureId} homeTeam={homeTeam} awayTeam={awayTeam}/>}
 
         </Suspense>
       </ScrollView>

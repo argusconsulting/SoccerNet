@@ -82,17 +82,17 @@ const LiveDetails = () => {
       id: 2,
       name: 'Standings',
     },
-    {
-      id: 3,
-      name: 'News',
-    },
+    // {
+    //   id: 3,
+    //   name: 'News',
+    // },
     {
       id: 4,
       name: 'PredictionSummary',
     },
   ];
 
-  const [type, setType] = useState('Commentary');
+  const [type, setType] = useState('Standings');
 
   const renderItem = ({item}) => (
     <View style={tw``}>
@@ -251,7 +251,7 @@ const LiveDetails = () => {
 
       <Suspense fallback={<Text>Loading...</Text>}>
         {type === 'Standings' && <Standings homeTeam={homeTeam} awayTeam={awayTeam}/>}
-        {type === 'News' && <News shownHeader={false} />}
+        {/* {type === 'News' && <News shownHeader={false} />} */}
 
         {type === 'Commentary' && <Commentary fixtureId={fixtureId}/>}
                     {type === 'PredictionSummary' && <PredictionSummary fixtureId={fixtureId} homeTeam={homeTeam} awayTeam={awayTeam}/>}

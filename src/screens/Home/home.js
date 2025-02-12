@@ -12,7 +12,7 @@ import {
   View,
 } from 'react-native';
 import debounce from 'lodash/debounce';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import tw from '../../styles/tailwind';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -31,6 +31,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import SelectedLeagues from '../../components/selected-leagues';
 import { notificationsCount } from '../../redux/announcementSlice';
+import { store } from '../../redux/store';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -45,13 +46,14 @@ const Home = () => {
   const justFinishedData = useSelector(
     state => state?.fixtures?.fixturesByDateRangeHighlights,
   );
+  const lastScores = useRef(null);
+  const intervalId = useRef(null);
     const notificationsCountNumber = useSelector(state => state?.announcement?.notificationsCount);
   
-    console.log("notificationsCount", notificationsCountNumber);
-
   const inPlayLiveScores = useSelector(
     state => state?.liveScore?.liveScoreInPlayData,
   );
+
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
@@ -90,8 +92,35 @@ const Home = () => {
         }),
       );
     }
-    dispatch(getLiveScoresInPlay());
+ 
   }, [dispatch, monthRange, lang, page]);
+
+
+
+  useFocusEffect(
+    useCallback(() => {
+      const fetchScores = async () => {
+        await dispatch(getLiveScoresInPlay());
+        const latestScores = store.getState().liveScore.liveScoreInPlayData.data;
+
+        if (JSON.stringify(latestScores) !== JSON.stringify(lastScores.current)) {
+          console.log("Scores Updated:", latestScores);
+          lastScores.current = latestScores;
+        } else {
+          console.log("No Change in Scores");
+        }
+      };
+
+      fetchScores(); // Fetch immediately when screen comes into focus
+
+     if(justFinishedData?.data?.length > 0){
+      intervalId.current = setInterval(fetchScores, 5000); 
+     }else{
+      intervalId.current = setInterval(fetchScores, 1000 * 60 * 5); 
+     }
+      return () => clearInterval(intervalId.current); // Cleanup when screen loses focus
+    }, [dispatch, inPlayLiveScores?.data?.scores])
+  );
 
   useEffect(() => {
     fetchData();
@@ -122,9 +151,6 @@ const Home = () => {
         BackHandler.removeEventListener('hardwareBackPress', backAction);
     }, [])
   );
-
-
-
   return (
     <View style={tw`bg-[#05102E] flex-1 `}>
     <ScrollView
@@ -165,7 +191,6 @@ const Home = () => {
               style={tw`text-white text-[22px] font-401 leading-tight  mt-3  px-5`}>
               {t('liveNow')}
             </Text>
-{/* {console.log("clg-----------------", inPlayLiveScores?.data)} */}
           </View>
           {inPlayLiveScores?.data?.length > 0 ? (
             <FlatList

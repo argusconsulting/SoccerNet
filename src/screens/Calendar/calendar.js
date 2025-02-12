@@ -50,7 +50,6 @@ const CalendarScreen = () => {
     dispatch(getAllFixturesByDate(selectedDate));
   }, [dispatch, selectedDate]);
 
-  console.log("============>", monthRange)
 
   useEffect(() => {
     if (monthRange.start && monthRange.end) {
@@ -65,12 +64,12 @@ const CalendarScreen = () => {
 
   useEffect(() => {
     if (dataByRange?.length) {
-      markDatesWithMatches(dataByRange); // Mark dates when data is available
+      markDatesWithMatches(dataByRange); 
     }
   }, [dataByRange]);
 
   const handleDayPress = day => {
-    setSelectedDate(day.dateString); // Update state with selected date
+    setSelectedDate(day.dateString);
   };
 
   const handleMonthChange = month => {
@@ -82,6 +81,8 @@ const CalendarScreen = () => {
 
   const Item = ({item}) => {
     const time = moment(item?.starting_at).format('hh:mm A');
+    console.log("item", item)
+    // console.log("time", time ,"starting at", item?.participants?.[0]?.name , item?.starting_at)
 
     return (
       <View style={tw`bg-[#303649] w-90 py-3 mt-5 self-center rounded-lg`}>
@@ -111,7 +112,7 @@ const CalendarScreen = () => {
         </View>
         <Text
             style={tw`text-[#a2a2a2] text-[18px] font-400 leading-tight self-center mt-5 `}>
-            {time} UTC
+            {time} 
           </Text>
       </View>
     );
@@ -148,7 +149,6 @@ const CalendarScreen = () => {
         Date: {selectedDate}
       </Text>
 
-      {console.log('data?.data', data?.data)}
       {data?.data ? (
         <FlatList
           data={data?.data}

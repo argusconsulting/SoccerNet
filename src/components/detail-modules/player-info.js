@@ -29,9 +29,7 @@ const PlayerInfo = () => {
   const teamName = route?.params?.teamName;
   const data = useSelector(state => state?.player?.playerData);
   const seasons = useSelector(state => state?.player?.allSeasons);
-    const lang = useSelector(state => state?.language_store?.language);
 
-    console.log("data", data , seasons)
   
   const dispatch = useDispatch();
 
@@ -90,13 +88,10 @@ const PlayerInfo = () => {
       const uniqueSeasonIds = [
         ...new Set(data.statistics.map(stat => stat.season_id)),
       ];
-
-      // Fetch season data for each unique season ID
       uniqueSeasonIds.forEach(season_id => {
         dispatch(getSeasonsById(season_id));
       });
-
-      // Set initial selected season to the first one in the list
+    
       if (uniqueSeasonIds.length > 0) {
         setSelectedSeasonId(uniqueSeasonIds[0]);
       }
