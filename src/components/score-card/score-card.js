@@ -105,7 +105,7 @@ const ScoreCard = ({match, width, screen, navigate}) => {
       { textAlign: "center" }
     ]}
   >
-    {homeTeam?.name.length > 12 
+    {homeTeam?.name.length > 10
       ? `${homeTeam.name.slice(0, 10)} ...`
       : homeTeam.name}
   </Text>
@@ -158,8 +158,8 @@ const ScoreCard = ({match, width, screen, navigate}) => {
       { textAlign: "center" }
     ]}
   >
-    {awayTeam?.name.length > 12 
-      ? `${awayTeam.name.slice(0, 11)}...`
+    {awayTeam?.name.length > 10
+      ? `${awayTeam.name.slice(0, 10)}...`
       : awayTeam.name}
   </Text> : <Text
             style={[tw`text-[#fff] text-[16px] font-400 leading-tight mt-1.5 w-23 self-center` ,{textAlign:"center"}]}>
@@ -168,6 +168,11 @@ const ScoreCard = ({match, width, screen, navigate}) => {
 }
         </View>
       </View>
+
+      <Text
+            style={[tw`text-[#ed2939] text-[16px] font-400 leading-tight mt-2 mx-3`,{textAlign:"center"}]}>
+            Result: {' '}{match?.result_info}
+          </Text>
     </TouchableOpacity>
   );
 };

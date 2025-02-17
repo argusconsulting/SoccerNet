@@ -141,11 +141,10 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
         return;
       }
       const device_token = await GetFCMToken();
-      // console.log('device token value ', device_token);
       setSubmitLoader(true);
       postApi(api_name_login, {
         login_type: checked,
-        login: checked === 'email' ? emailValue : value,
+        login: checked === 'email' ? emailValue.trim() : value,
         password: password,
         fcm_token: device_token,
       })

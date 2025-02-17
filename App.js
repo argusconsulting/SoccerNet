@@ -40,7 +40,7 @@ function App() {
 
   useEffect(async() => {
 const initialUrl = await Linking.getInitialURL();
-console.log("initialUrl", initialUrl)
+// console.log("initialUrl", initialUrl)
 if(initialUrl){
 Linking.openURL(initialUrl)
 }

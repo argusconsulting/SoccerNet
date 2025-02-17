@@ -26,6 +26,9 @@ const Standings = lazy(() =>
 const PredictionSummary = lazy(() =>
   import('../../../components/detail-modules/prediction-summary'),
 );
+const LineUps = lazy(() =>
+  import('../../../components/detail-modules/lineUps'),
+);
 
 const LiveDetails = () => {
   const route = useRoute();
@@ -76,12 +79,17 @@ const LiveDetails = () => {
   const detailsType = [
     {
       id: 1,
-      name: 'Commentary',
+      name: 'Standings',
     },
     {
       id: 2,
-      name: 'Standings',
+      name: 'Commentary',
     },
+    {
+      id: 3,
+      name: 'LineUps',
+    },
+  
     // {
     //   id: 3,
     //   name: 'News',
@@ -233,6 +241,10 @@ const LiveDetails = () => {
             </Text>
           </View>
         </View>
+        <Text
+            style={[tw`text-[#ed2939] text-[16px] font-400 leading-tight mt-5  self-center` ,{textAlign:"center"}]}>
+           Result:{" "} {detailData?.result_info}
+          </Text> 
       </View>
       </ImageBackground>
 
@@ -252,7 +264,7 @@ const LiveDetails = () => {
       <Suspense fallback={<Text>Loading...</Text>}>
         {type === 'Standings' && <Standings homeTeam={homeTeam} awayTeam={awayTeam}/>}
         {/* {type === 'News' && <News shownHeader={false} />} */}
-
+        {type === 'LineUps' && <LineUps fixtureId={fixtureId} />}
         {type === 'Commentary' && <Commentary fixtureId={fixtureId}/>}
                     {type === 'PredictionSummary' && <PredictionSummary fixtureId={fixtureId} homeTeam={homeTeam} awayTeam={awayTeam}/>}
         

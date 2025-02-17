@@ -141,9 +141,9 @@ const HighlightDetail = () => {
       <ScrollView>
         <ImageBackground
           source={require('../../../assets/detail-bg.png')}
-          style={[tw`w-full h-50`, {resizeMode: 'contain'}]}>
+          style={[tw`w-full h-58`, {resizeMode: 'contain'}]}>
           <Header name="" />
-          <View style={[tw` px-5 pb-10  mt--5`]}>
+          <View style={[tw` px-5  mt--6`]}>
             <View style={tw`flex-row justify-between mb-4 `}>
               <Image
                 source={{uri: detailData?.league?.image_path}}
@@ -258,7 +258,12 @@ const HighlightDetail = () => {
                 </Text>
               </View>
             </View>
+            <Text
+            style={[tw`text-[#ed2939] text-[16px] font-400 leading-tight mt-5  self-center` ,{textAlign:"center"}]}>
+           Result:{" "} {detailData?.result_info}
+          </Text> 
           </View>
+         
         </ImageBackground>
 
         <View>
