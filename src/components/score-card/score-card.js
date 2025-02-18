@@ -169,10 +169,10 @@ const ScoreCard = ({match, width, screen, navigate}) => {
         </View>
       </View>
 
-      <Text
+      {/* <Text
             style={[tw`text-[#ed2939] text-[16px] font-400 leading-tight mt-2 mx-3`,{textAlign:"center"}]}>
             Result: {' '}{match?.result_info}
-          </Text>
+          </Text> */}
     </TouchableOpacity>
   );
 };
