@@ -8,6 +8,7 @@ import {
   Pressable,
   ImageBackground,
   Alert,
+  SafeAreaView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Header from '../../components/header/header';
@@ -140,7 +141,7 @@ const Profile = () => {
   };
 
   return (
-    <View style={tw`bg-[#05102E] flex-1 `}>
+    <SafeAreaView style={tw`bg-[#05102E] flex-1 `}>
       <Header name="Profile" />
 
       <View
@@ -377,7 +378,7 @@ const Profile = () => {
         </LinearGradient>
       </TouchableOpacity>
      
-    </View>
+    </SafeAreaView>
   );
 };
 

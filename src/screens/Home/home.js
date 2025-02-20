@@ -284,7 +284,7 @@ const Home = () => {
       <View style={[tw`absolute bottom-0 w-full h-60`, {zIndex: -1}]}>
         <Image
           source={require('../../assets/Homescreen-bg.png')}
-          style={tw`w-full h-60`}
+          style={tw`w-full h-60`} 
           resizeMode="cover"
         />
         <LinearGradient

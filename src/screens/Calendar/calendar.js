@@ -1,4 +1,4 @@
-import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import tw from '../../styles/tailwind';
 import {Calendar} from 'react-native-calendars';
@@ -119,7 +119,7 @@ const CalendarScreen = () => {
   };
 
   return (
-    <View style={tw`bg-[#12122A] flex-1 `}>
+    <SafeAreaView style={tw`bg-[#12122A] flex-1 `}>
       <Calendar
         style={{
           borderWidth: 1,
@@ -162,7 +162,7 @@ const CalendarScreen = () => {
           No data Found!
         </Text>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

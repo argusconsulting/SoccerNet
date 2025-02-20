@@ -2,6 +2,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  SafeAreaView,
   Text,
   TouchableOpacity,
   View,
@@ -132,7 +133,7 @@ const Photos = () => {
   );
 
   return (
-    <View style={tw`bg-[#05102E] flex-1`}>
+    <SafeAreaView style={tw`bg-[#05102E] flex-1`}>
       <Header name="Photos" />
       {isLoading ? (
         <Loader />
@@ -164,7 +165,7 @@ const Photos = () => {
           Upload your match moments
         </Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 

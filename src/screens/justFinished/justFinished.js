@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Header from '../../components/header/header';
 import tw from '../../styles/tailwind';
 import ScoreCard from '../../components/score-card/score-card';
@@ -56,7 +56,7 @@ const JustFinished = () => {
   };
 
   return (
-    <View style={tw`bg-[#05102E] flex-1`}>
+    <SafeAreaView style={tw`bg-[#05102E] flex-1`}>
       <Header name="Just Finished" />
       <View style={tw``}>
         {isLoading ? (
@@ -92,7 +92,7 @@ const JustFinished = () => {
           />
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

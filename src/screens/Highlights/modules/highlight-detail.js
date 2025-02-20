@@ -2,6 +2,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -137,7 +138,7 @@ const HighlightDetail = () => {
   };
 
   return (
-    <View style={tw`bg-[#05102E] flex-1 `}>
+    <SafeAreaView style={tw`bg-[#05102E] flex-1 `}>
       <ScrollView>
         <ImageBackground
           source={require('../../../assets/detail-bg.png')}
@@ -291,7 +292,7 @@ const HighlightDetail = () => {
 
         </Suspense>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

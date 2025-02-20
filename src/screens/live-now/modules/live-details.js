@@ -3,6 +3,7 @@ import {
   Image,
   ImageBackground,
   RefreshControl,
+  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -118,6 +119,7 @@ const LiveDetails = () => {
   );
 
   return (
+    <SafeAreaView>
     <ScrollView style={tw`bg-[#05102E] flex-1 `}  refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }>
@@ -270,6 +272,7 @@ const LiveDetails = () => {
         
       </Suspense>
     </ScrollView>
+    </SafeAreaView>
   );
 };
 

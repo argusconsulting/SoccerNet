@@ -109,11 +109,7 @@ const Notification = () => {
               {moment(item?.created_at).format('YYYY-MM-DD')} {'  '}
               {moment(item?.created_at).format('hh:mm A')}
             </Text>
-            {/* <TouchableOpacity onPress={() => handleMarkAsRead(item?.id)}>
-              <Text style={tw`text-[#72bf6a] text-[14px] font-400  mt-1 leading-tight `}>
-                Mark as read
-              </Text>
-            </TouchableOpacity> */}
+
           </View>
         </View>
       </View>

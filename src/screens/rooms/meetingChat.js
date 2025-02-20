@@ -2,6 +2,7 @@ import {
   Alert,
   FlatList,
   Image,
+  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -28,9 +29,6 @@ const MeetingChat = () => {
   const dispatch = useDispatch();
   const route = useRoute();
   const navigation = useNavigation();
-  // const [message, setMessage] = useState(null);
-  // const [messages, setMessages] = useState([]);
-  // const [loadingInitial, setLoadingInitial] = useState(true);
   const userId = useSelector(state => state.auth_store.userID);
   const groupId = route?.params?.groupId;
   // const groupName = route?.params?.groupName;
@@ -168,7 +166,7 @@ const MeetingChat = () => {
   // };
 
   return (
-    <View style={tw`bg-[#05102E] flex-1`}>
+    <SafeAreaView style={tw`bg-[#05102E] flex-1`}>
       <View style={tw`bg-[#303649] p-3 flex-row justify-between`}>
         <View style={tw`flex-row`}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -268,7 +266,7 @@ const MeetingChat = () => {
           />
         </TouchableOpacity>
       </View>  */}
-    </View>
+    </SafeAreaView>
   );
 };
 

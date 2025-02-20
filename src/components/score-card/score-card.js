@@ -53,7 +53,7 @@ const ScoreCard = ({match, width, screen, navigate}) => {
       <View style={tw`flex-row justify-between mx-3 `}>
         <Image
           source={{uri: match?.league?.image_path}}
-          style={tw`w-8 h-8 mt-2 `}
+          style={tw`w-7 h-7 mt-2 `}
         />
         {screen && (
           <Text
@@ -105,8 +105,8 @@ const ScoreCard = ({match, width, screen, navigate}) => {
       { textAlign: "center" }
     ]}
   >
-    {homeTeam?.name.length > 10
-      ? `${homeTeam.name.slice(0, 10)} ...`
+    {homeTeam?.name.length > 9
+      ? `${homeTeam.name.slice(0, 8)} ...`
       : homeTeam.name}
   </Text>
   :   

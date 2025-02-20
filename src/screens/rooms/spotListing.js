@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Alert,
   Dimensions,
+  SafeAreaView,
 } from 'react-native';
 import tw from '../../styles/tailwind';
 import Header from '../../components/header/header';
@@ -261,7 +262,7 @@ const SpotLight = () => {
 
 
   return (
-    <View style={tw`bg-[#05102E] flex-1`}>
+    <SafeAreaView style={tw`bg-[#05102E] flex-1`}>
       {/* <Header name="Rooms" /> */}
       <View style={tw`flex-row p-5 `}>
       <TouchableOpacity onPress={() => navigation.navigate('Home')}>
@@ -449,7 +450,7 @@ const SpotLight = () => {
           </View>
         </Modal>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

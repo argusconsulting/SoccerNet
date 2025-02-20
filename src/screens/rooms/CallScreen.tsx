@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   Alert,
+  SafeAreaView,
 } from 'react-native';
 import { IRtcEngine, RtcConnection } from 'react-native-agora';
 import { RouteProp } from '@react-navigation/native';
@@ -107,7 +108,7 @@ const CallScreen: React.FC<CallScreenProps> = ({ route }) => {
 
 
   return (
-    <View style={tw`bg-[#05102E] flex-1`}>
+    <SafeAreaView style={tw`bg-[#05102E] flex-1`}>
       <Header name="" />
       <FlatList
         data={remoteUsers}
@@ -184,7 +185,7 @@ const CallScreen: React.FC<CallScreenProps> = ({ route }) => {
           />
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

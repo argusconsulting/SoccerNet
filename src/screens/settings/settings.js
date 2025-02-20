@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import tw from '../../styles/tailwind';
 import Header from '../../components/header/header';
@@ -9,7 +9,7 @@ import {t} from 'i18next';
 const Settings = () => {
   const navigation = useNavigation();
   return (
-    <View style={tw`bg-[#05102E] flex-1 `}>
+    <SafeAreaView style={tw`bg-[#05102E] flex-1 `}>
       <Header name="Settings" />
 
       <TouchableOpacity
@@ -95,7 +95,7 @@ const Settings = () => {
         {/* Arrow Icon */}
         <AntDesign name={'right'} size={20} color={'#fff'} style={tw`mr-5`} />
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 

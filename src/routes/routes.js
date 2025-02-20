@@ -56,7 +56,7 @@ function BottomTabScreens() {
       <Tab.Navigator
         screenOptions={{
           headerShown: false,
-          tabBarStyle: {height: Platform.OS == 'ios' ? 55 : 55},
+          tabBarStyle: {height: Platform.OS == 'ios' ? 85 : 55},
         }}
         tabBarOptions={{
           showIcon: true,

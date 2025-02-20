@@ -1,4 +1,4 @@
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {FlatList, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect} from 'react';
 import PostCard from '../../components/post/post-card';
 import Loader from '../../components/loader/Loader';
@@ -22,7 +22,7 @@ const Discussion = () => {
   }, [dispatch]);
 
   return (
-    <View style={tw`bg-[#05102E] flex-1 `}>
+    <SafeAreaView style={tw`bg-[#05102E] flex-1 `}>
       <Header name="Discussion" />
       {isLoading ? (
         <Loader /> // Show loader while data is being fetched
@@ -41,7 +41,7 @@ const Discussion = () => {
           No data found!
         </Text>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
