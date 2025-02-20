@@ -4,6 +4,7 @@ import {
   FlatList,
   Image,
   RefreshControl,
+  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -160,7 +161,7 @@ const Home = () => {
 
 
   return (
-    <View style={tw`bg-[#05102E] flex-1 `}>
+    <SafeAreaView style={tw`bg-[#05102E] flex-1 `}>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -295,7 +296,7 @@ const Home = () => {
       </View>
 
       <Menu modalVisible={modalVisible} toggleModal={toggleModal} />
-    </View>
+    </SafeAreaView>
   );
 };
 

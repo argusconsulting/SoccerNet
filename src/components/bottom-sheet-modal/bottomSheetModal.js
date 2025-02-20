@@ -273,31 +273,32 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
         </View>
 
         <View style={tw`flex-row justify-between mt-1`}>
-          <View style={tw`flex-row`}>
+          <TouchableOpacity onPress={() => setChecked('email')} style={tw`flex-row`}>
             <RadioButton
+           
               color="#fff"
               value="email"
               status={checked === 'email' ? 'checked' : 'unchecked'}
-              onPress={() => setChecked('email')}
+              // onPress={() => setChecked('email')}
             />
             <Text
               style={tw`text-[#a9a9a9] text-[18px] font-400 leading-tight self-center ml-2`}>
               {t('email')}
             </Text>
-          </View>
+          </TouchableOpacity>
 
-          <View style={tw`flex-row`}>
+          <TouchableOpacity onPress={() => setChecked('contact_number')} style={tw`flex-row`}>
             <RadioButton
               value="contact_number"
               color="#fff"
               status={checked === 'contact_number' ? 'checked' : 'unchecked'}
-              onPress={() => setChecked('contact_number')}
+              // onPress={() => setChecked('contact_number')}
             />
             <Text
               style={tw`text-[#a9a9a9] text-[18px] font-400 leading-tight self-center ml-2`}>
               {t('phoneNumber')}
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>
 
         {/* Conditionally render text inputs */}

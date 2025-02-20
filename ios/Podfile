@@ -15,7 +15,10 @@ if linkage != nil
 end
 
 target 'SoccerNet' do
+  use_modular_headers!
   config = use_native_modules!
+  use_frameworks! :linkage => :static
+  $RNFirebaseAsStaticFramework = true
 
   use_react_native!(
     :path => config[:reactNativePath],

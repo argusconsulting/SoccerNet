@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import tw from '../../styles/tailwind';
 import GradientButton from '../../components/gradient-button/gradient-button';
@@ -19,7 +19,8 @@ const SplashScreen = () => {
   };
 
   return (
-    <View style={tw`bg-[#12122A] flex-1 p-5`}>
+    <SafeAreaView style={tw`bg-[#12122A] flex-1 p-5`}>
+  
       <Image
         source={require('../../assets/logo_name.png')}
         style={[tw`w-40 h-20 self-center mb-3`, {resizeMode: 'contain'}]}
@@ -28,6 +29,7 @@ const SplashScreen = () => {
         source={require('../../assets/spalsh-screen.png')}
         style={[tw`w-full h-[50%]`, {resizeMode: 'contain'}]}
       />
+      <View style={tw`mx-8 mt-2 `}>
       <Text style={tw`text-white text-[36px] font-401 leading-tight  mt-1`}>
         {t('discoverSport')}
       </Text>
@@ -80,6 +82,7 @@ const SplashScreen = () => {
         selectedValue={value}
       />
     </View>
+    </SafeAreaView>
   );
 };
 

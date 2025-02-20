@@ -1,6 +1,7 @@
 import {
   FlatList,
   Image,
+  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -103,6 +104,7 @@ const LanguageSelection = () => {
   );
 
   return (
+    <SafeAreaView>
     <View style={tw`bg-[#05102E] h-full p-5`}>
       <Text style={tw`text-[#fff] text-[34px] font-401 leading-tight mt-5`}>
         {t('language')}
@@ -144,6 +146,7 @@ const LanguageSelection = () => {
         </LinearGradient>
       </TouchableOpacity>
     </View>
+    </SafeAreaView>
   );
 };
 

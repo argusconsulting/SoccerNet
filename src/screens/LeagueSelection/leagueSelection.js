@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
+  SafeAreaView,
 } from 'react-native';
 import tw from '../../styles/tailwind';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -46,7 +47,7 @@ const LeagueSelection = () => {
   };
 
   return (
-    <View style={[tw`bg-[#05102E] h-full`, styles.container]}>
+    <SafeAreaView style={[tw`bg-[#05102E] h-full`, styles.container]}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={tw`p-5`}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -73,17 +74,7 @@ const LeagueSelection = () => {
             onSelectionChange={setSelectedLeagues}
           />
 
-          {/* <View style={tw`border-b-[#a2a2a2] border-[1px]`} />
-          <MultiSelectDropdown
-            leagueBy={t('leagueHeadingIntercontinental')}
-            leaguePlaceholder="Intercontinental leagues"
-          />
-
-          <View style={tw`border-b-[#a2a2a2] border-[1px]`} />
-          <MultiSelectDropdown
-            leagueBy={t('leagueHeadingWorldcup')}
-            leaguePlaceholder="World cup leagues"
-          /> */}
+        
         </View>
       </ScrollView>
 
@@ -101,7 +92,7 @@ const LeagueSelection = () => {
           </Text>
         </LinearGradient>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 
