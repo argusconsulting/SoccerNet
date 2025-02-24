@@ -25,7 +25,8 @@ export const userLogout = createAsyncThunk(
     try {
       removeToken();
       dispatch(clearToken());
-      RNRestart.Restart();
+      // RNRestart.Restart();
+      RNRestart.restart();
     } catch (error) {
       console.log('Error in logout', error);
       removeToken();

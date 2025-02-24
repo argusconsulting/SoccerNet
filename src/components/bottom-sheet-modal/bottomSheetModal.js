@@ -449,7 +449,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
           {isLogin ? t('loginWith') : t('signupWith')}
         </Text>
         <View style={tw`flex-row mt-3 self-center `}>
-          <GoogleLogin />
+          <GoogleLogin  onClose={onClose}/>
 
           <Image
             source={require('../../assets/icons/apple.png')}

@@ -119,16 +119,16 @@ const LiveDetails = () => {
   );
 
   return (
-    <SafeAreaView>
-    <ScrollView style={tw`bg-[#05102E] flex-1 `}  refreshControl={
+<SafeAreaView style={tw`bg-[#05102E] flex-1 `}  refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }>
+    <ScrollView >
        <ImageBackground
           source={require('../../../assets/detail-bg.png')}
-          style={[tw`w-full h-50`, {resizeMode: 'contain'}]}>
+          style={[tw`w-full h-58`, {resizeMode: 'contain'}]}>
       <Header name="" />
 
-      <View style={[tw` px-5 pb-10  mt--5`]}>
+      <View style={[tw` px-5 mt--6`]}>
         <View style={tw`flex-row justify-between`}>
           <Image
             source={{uri: detailData?.league?.image_path}}
@@ -243,15 +243,16 @@ const LiveDetails = () => {
             </Text>
           </View>
         </View>
-        <Text
+        {detailData?.result_info === !null && <Text
             style={[tw`text-[#ed2939] text-[16px] font-400 leading-tight mt-5  self-center` ,{textAlign:"center"}]}>
            Result:{" "} {detailData?.result_info}
-          </Text> 
+          </Text> }
+        
       </View>
       </ImageBackground>
 
       <View>
-        <View style={tw` border-t pt-3 ml-3 border-[#3e3e3e] mt-10 `} />
+        <View style={tw` border-t pt-3 ml-3 border-[#3e3e3e] mt-2`} />
         <FlatList
           data={detailsType}
           horizontal

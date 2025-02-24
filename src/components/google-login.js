@@ -19,7 +19,7 @@ import {GetFCMToken} from './notification-component';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from './loader/Loader';
 
-const GoogleLogin = () => {
+const GoogleLogin = ({onClose}) => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -70,6 +70,7 @@ const GoogleLogin = () => {
       store.dispatch(setSocialProfile(response?.data));
       store.dispatch(setUserAuthToken(response?.data?.token));
       store.dispatch(setUserID(response?.data?.user?.id));
+      onClose();
     
       // navigation.navigate('Home');
       return await GoogleSignin.signOut();

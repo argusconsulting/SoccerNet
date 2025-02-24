@@ -152,8 +152,9 @@ const EmptyScreen = () => {
 const Stack = createNativeStackNavigator();
 
 export const StackScreen = () => {
-  const token = useSelector(state => state.auth_store.token);
+  const token = useSelector(state => state?.auth_store?.token);
 
+  console.log("value token", token)
 
 
 
