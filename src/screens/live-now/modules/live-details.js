@@ -97,7 +97,7 @@ const LiveDetails = () => {
     // },
     {
       id: 4,
-      name: 'PredictionSummary',
+      name: 'Kickscore Prediction',
     },
   ];
 
@@ -269,7 +269,7 @@ const LiveDetails = () => {
         {/* {type === 'News' && <News shownHeader={false} />} */}
         {type === 'LineUps' && <LineUps fixtureId={fixtureId} />}
         {type === 'Commentary' && <Commentary fixtureId={fixtureId}/>}
-                    {type === 'PredictionSummary' && <PredictionSummary fixtureId={fixtureId} homeTeam={homeTeam} awayTeam={awayTeam}/>}
+        {type === 'Kickscore Prediction' && <PredictionSummary fixtureId={fixtureId} homeTeam={homeTeam} awayTeam={awayTeam}/>}
         
       </Suspense>
     </ScrollView>

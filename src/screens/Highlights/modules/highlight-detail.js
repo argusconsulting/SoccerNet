@@ -73,7 +73,7 @@ const HighlightDetail = () => {
     },
     {
       id: 6,
-      name: 'PredictionSummary',
+      name: 'Kickscore Prediction',
     },
    
   ];
@@ -88,7 +88,7 @@ const HighlightDetail = () => {
     dispatch(getFixturesById({fixtureId, lang}))
   },[dispatch, lang])
 
-  // Function to extract scores for home and away teams
+
   const homeTeam = detailData?.participants?.find(
     participant => participant?.meta?.location === 'home',
   );
@@ -99,7 +99,6 @@ const HighlightDetail = () => {
   let homeScore = 0;
   let awayScore = 0;
 
-  // Sum up the scores based on the participant_id
   detailData?.scores?.forEach(score => {
     if (
       score.score.participant === 'home' &&
@@ -123,7 +122,7 @@ const HighlightDetail = () => {
           style={[
             tw`h-7`,
             {paddingHorizontal: 10},
-            isLastItem && {marginRight: 10}, // Add marginRight only if it's the last item
+            isLastItem && {marginRight: 10},
           ]}
           onPress={() => setType(item.name)}>
           <Text style={tw`text-[#fff] text-[18px] font-400 self-center`}>
@@ -287,8 +286,8 @@ const HighlightDetail = () => {
           {type === 'Standings' && <Standings homeTeam={homeTeam} awayTeam={awayTeam}/>}
           {type === 'LineUps' && <LineUps fixtureId={fixtureId} />}
           {type === 'Commentary' && <Commentary fixtureId={fixtureId} />}
-            {type === 'AiPrediction' && <AiPrediction fixtureId={fixtureId} homeTeam={homeTeam} awayTeam={awayTeam}/>}
-            {type === 'PredictionSummary' && <PredictionSummary fixtureId={fixtureId} homeTeam={homeTeam} awayTeam={awayTeam}/>}
+          {type === 'AiPrediction' && <AiPrediction fixtureId={fixtureId} homeTeam={homeTeam} awayTeam={awayTeam}/>}
+          {type === 'Kickscore Prediction' && <PredictionSummary fixtureId={fixtureId} homeTeam={homeTeam} awayTeam={awayTeam}/>}
 
         </Suspense>
       </ScrollView>
