@@ -369,7 +369,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
                 withDarkTheme
                 withShadow
                 autoFocus={false}
-                containerStyle={tw`  bg-[#12122A] w-88 rounded-lg mb-5 border-[#a9a9a9] border-[1px]`}
+                containerStyle={tw`  bg-[#12122A] w-90 rounded-lg mb-5 border-[#a9a9a9] border-[1px]`}
                 textContainerStyle={tw`bg-[#12122a] border-l-[#a9a9a9] border-[1px] h-11  py-0 text-[#a9a9a9] rounded-lg`}
                 codeTextStyle={tw`text-[#a9a9a9] border-r-[#a9a9a9] `}
                 textInputStyle={tw`text-[#a9a9a9]`}

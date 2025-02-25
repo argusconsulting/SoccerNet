@@ -3,9 +3,6 @@ import React from 'react';
 import tw from '../styles/tailwind';
 import {
   authorize,
-  refresh,
-  revoke,
-  prefetchConfiguration,
 } from 'react-native-app-auth';
 import {useNavigation} from '@react-navigation/native';
 
