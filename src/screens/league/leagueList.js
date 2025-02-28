@@ -138,7 +138,8 @@ const LeagueScreen = () => {
   };
 
   return (
-    <SafeAreaView style={tw`bg-[#05102E] h-full p-5`}>
+    <SafeAreaView style={tw`bg-[#05102E] h-full `}>
+      <View style={tw`p-5`}>
       <View style={tw`flex-row mb-5`}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <AntDesign
@@ -158,6 +159,7 @@ const LeagueScreen = () => {
         renderItem={({item}) => <Item item={item} />}
         keyExtractor={item => item.id}
       />
+      </View>
     </SafeAreaView>
   );
 };

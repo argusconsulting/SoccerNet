@@ -23,16 +23,25 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.221160589936-1kr9sl1b151la93tak90j28aohff01is</string>
+				<string>fb1334161241290057</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FacebookAppID</key>
+	<string>1334161241290057</string>
+	<key>FacebookDisplayName</key>
+	<string>Kickscore</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -42,41 +51,21 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
-	<key>CFBundleURLTypes</key>
-<array>
-  <dict>
-  <key>CFBundleURLSchemes</key>
-  <array>
-    <string>fb1334161241290057</string>
-  </array>
-  </dict>
-</array>
-<key>FacebookAppID</key>
-<string>1334161241290057</string>
-<key>FacebookDisplayName</key>
-<string>Kickscore</string>
-
-<key>LSApplicationQueriesSchemes</key>
-<array>
-  <string>fbapi</string>
-  <string>fb-messenger-api</string>
-  <string>fbauth2</string>
-  <string>fbshareextension</string>
-</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>SourceSansPro-ExtraLight.ttf</string>
+		<string>FontAwesome6.ttf</string>
 		<string>SourceSansPro-Light.ttf</string>
 		<string>SourceSansPro-Bold.ttf</string>
 		<string>SourceSansPro-Regular.ttf</string>
+		<string>FontAwesome.ttf</string>
 		<string>SourceSansPro-Semibold.ttf</string>
 		<string>AntDesign.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>
 		<string>Feather.ttf</string>
-		<string>FontAwesome.ttf</string>
 		<string>FontAwesome5_Brands.ttf</string>
 		<string>Fontisto.ttf</string>
 		<string>Ionicons.ttf</string>

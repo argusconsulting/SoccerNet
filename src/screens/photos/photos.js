@@ -114,10 +114,13 @@ const Photos = () => {
       <View style={tw`p-3`}>
         <View style={tw`flex-row justify-between`}>
           <View style={tw`flex-row`}>
+            {console.log("image value ----->", item?.user?.avatar_url)}
+            {item?.user?.avatar_url ? 
             <Image
               source={{uri: item?.user?.avatar_url}}
               style={[tw`w-5 h-5 rounded-full`]}
-            />
+            /> :<View style={tw`bg-red-200 rounded-full w-6 h-6`}/>}
+
             <Text style={tw`text-[#fff] text-[16px] mx-3`}>
               {item?.user?.name}
             </Text>

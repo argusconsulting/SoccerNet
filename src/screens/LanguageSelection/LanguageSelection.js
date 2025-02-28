@@ -109,7 +109,7 @@ const LanguageSelection = () => {
       <Text style={tw`text-[#fff] text-[34px] font-401 leading-tight mt-5`}>
         {t('language')}
       </Text>
-      <Text style={tw`text-[#A9A9A9] text-[16px] font-400 leading-tight mt-8`}>
+      <Text style={tw`text-[#A9A9A9] text-[16px] font-400 leading-tight mt-5`}>
         {t('chooseLangText')}
       </Text>
       <FlatList
