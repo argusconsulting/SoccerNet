@@ -23,9 +23,12 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1334161241290057</string>
+			<string>fb1334161241290057</string>
+				<string>com.googleusercontent.apps.221160589936-1kr9sl1b151la93tak90j28aohff01is</string>
 			</array>
 		</dict>
 	</array>
@@ -33,6 +36,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FacebookAppID</key>
 	<string>1334161241290057</string>
+	<key>FacebookClientToken</key>
+	<string>1d094f5a0159aca9d2349d37cd9cab20</string>
 	<key>FacebookDisplayName</key>
 	<string>Kickscore</string>
 	<key>LSApplicationQueriesSchemes</key>

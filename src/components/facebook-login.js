@@ -1,4 +1,4 @@
-import {Image, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, Image, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {
   LoginButton,
@@ -20,8 +20,7 @@ const FacebookLogin = () => {
 
   const fbLogin = async () => {
   try {
-    const result = await LoginManager.logInWithPermissions(["public_profile", "email"], "limited", "my_nonce");
-
+    const result = await LoginManager.logInWithPermissions(["public_profile", "email"],  "my_nonce");
     if (result.isCancelled) {
       console.log("Login cancelled");
       return;

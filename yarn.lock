@@ -3879,13 +3879,13 @@ __metadata:
     react: ^18.3.1
     react-i18next: ^15.0.2
     react-native: 0.75.3
-    react-native-agora: ^4.5.0
+    react-native-agora: ^4.5.1
     react-native-app-auth: ^8.0.0
     react-native-blob-util: ^0.19.11
     react-native-calendars: ^1.1307.0
     react-native-date-picker: ^5.0.7
     react-native-dropdown-country-picker: ^1.0.11
-    react-native-fbsdk-next: ^13.1.3
+    react-native-fbsdk-next: ^13.4.1
     react-native-gesture-handler: ^2.19.0
     react-native-image-picker: ^7.1.2
     react-native-linear-gradient: ^2.8.3
@@ -9622,9 +9622,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-agora@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "react-native-agora@npm:4.5.0"
+"react-native-agora@npm:^4.5.1":
+  version: 4.5.1
+  resolution: "react-native-agora@npm:4.5.1"
   dependencies:
     buffer: ^6.0.3
     eventemitter3: ^5.0.1
@@ -9633,7 +9633,7 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 17a156402406782e795a3f1fcae3b791ba0aa0aeab391cd083071e02d54704fc1669414355d55a8472a1ffd5f6b17f0e80372bd0528a38a6376a2075faaee649
+  checksum: fb83650707c20bed7b6323864735a52ee16f23ef96c7efda1c52a944fa3d51d81153d15be8d4e22bad76e68ed958fd962ed9cfdc44d693db9173a3b542d2f165
   languageName: node
   linkType: hard
 
@@ -9733,16 +9733,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-fbsdk-next@npm:^13.1.3":
-  version: 13.1.3
-  resolution: "react-native-fbsdk-next@npm:13.1.3"
+"react-native-fbsdk-next@npm:^13.4.1":
+  version: 13.4.1
+  resolution: "react-native-fbsdk-next@npm:13.4.1"
   peerDependencies:
     expo: ">=47.0.0"
     react-native: ">=0.63.3"
   peerDependenciesMeta:
     expo:
       optional: true
-  checksum: 707e4e83a8686910d212b9d933011fbeb2c600d5bda921903f9c08dff5556ee41d39bb4fd7b4b767c799034b6d99921cd68b7ec2846f9e311ea61d07c4e12128
+  checksum: e8f0f470009485c48e17279b1dfe8e6f94303de52394ce579fb888518a694b79f741a060d957b097534003abb07827e03955203b55101c333ba07bf8f5d307b1
   languageName: node
   linkType: hard
 

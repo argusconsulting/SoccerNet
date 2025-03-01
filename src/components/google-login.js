@@ -56,7 +56,10 @@ const GoogleLogin = ({onClose}) => {
     setLoading(true);
     try {
       await GoogleSignin.hasPlayServices();
+
       const usrInfo = await GoogleSignin.signIn();
+      console.log("entered in google login")
+
       // setUserInfo(usrInfo);
       const device_token = await GetFCMToken();
       var idToken = usrInfo?.data?.idToken;
