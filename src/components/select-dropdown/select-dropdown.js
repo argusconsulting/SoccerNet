@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import tw from '../../styles/tailwind';
+import { useSelector } from 'react-redux';
 
 const MultiSelectDropdown = ({
   leagueBy,
@@ -21,6 +22,8 @@ const MultiSelectDropdown = ({
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const [searchText, setSearchText] = useState('');
+  const lang = useSelector(state => state?.language_store?.language);
+
 
   const toggleItemSelection = item => {
     console.log('id', item);
@@ -62,9 +65,14 @@ const MultiSelectDropdown = ({
 
   return (
     <View style={styles.container}>
-      <Text style={tw`text-[#fff] text-[24px] font-401 leading-normal mt-3`}>
+      {lang == 'ar' ?
+      <Text style={tw`text-[#fff] text-[24px] font-401 leading-normal my-3 self-end `}>
         {leagueBy}
       </Text>
+:
+<Text style={tw`text-[#fff] text-[24px] font-401 leading-normal mt-3`}>
+{leagueBy}
+</Text>}
       <TouchableOpacity
         style={[tw`flex-row justify-between`, styles.dropdownToggle]}
         onPress={() => setDropdownVisible(!dropdownVisible)}>
@@ -107,6 +115,7 @@ const MultiSelectDropdown = ({
                   ) && styles.selectedItem,
                 ]}
                 onPress={() => toggleItemSelection(item)}>
+                  
                 <Image source={{uri: item.image_path}} style={styles.flag} />
                 <Text style={styles.itemText}>{item?.name}</Text>
               </TouchableOpacity>

@@ -17,11 +17,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from './src/styles/tailwind';
 import {loadLanguage} from './src/redux/languageSlice';
 import { Link } from '@react-navigation/native';
+import { Settings } from "react-native-fbsdk-next";
 
 function App() {
   LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
   LogBox.ignoreAllLogs();
   const [loading, setLoading] = useState(true);
+
+    Settings.initializeSDK();
 
   useEffect(() => {
     const loadStoredLanguage = async () => {

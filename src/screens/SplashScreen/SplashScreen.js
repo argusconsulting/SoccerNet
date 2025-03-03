@@ -7,11 +7,13 @@ import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useTranslation} from 'react-i18next';
 import FacebookLogin from '../../components/facebook-login';
+import { useSelector } from 'react-redux';
 
 const SplashScreen = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [value, setValue] = useState(null);
   const {i18n, t} = useTranslation();
+  const lang = useSelector(state => state?.language_store?.language);
 
   const btnHandler = () => {
     setValue('SignUp');
@@ -30,6 +32,16 @@ const SplashScreen = () => {
         style={[tw`w-full h-[50%]`, {resizeMode: 'contain'}]}
       />
       <View style={tw`mx-8 mt-2 `}>
+        {lang == 'ar' ? <>
+      <Text style={tw`text-white text-[36px] font-401 leading-tight  mt-1 self-end text-right`}>
+        {t('discoverSport')}
+      </Text>
+
+      <Text
+        style={tw`text-[#a9a9a9] text-[18px] font-400 leading-tight mt-5 mb-3 self-end text-right`}>
+        {t('splashDesc')}{' '}
+      </Text>
+      </>: <>
       <Text style={tw`text-white text-[36px] font-401 leading-tight  mt-1`}>
         {t('discoverSport')}
       </Text>
@@ -37,7 +49,7 @@ const SplashScreen = () => {
       <Text
         style={tw`text-[#a9a9a9] text-[18px] font-400 leading-tight mt-5 mb-3`}>
         {t('splashDesc')}{' '}
-      </Text>
+      </Text></>}
 
       <View style={tw`flex-row mt-5`}>
         <TouchableOpacity

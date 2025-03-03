@@ -6,6 +6,8 @@ import {
   Profile,
   LoginManager,
   AuthenticationToken,
+  GraphRequest,
+  GraphRequestManager,
 } from 'react-native-fbsdk-next';
 import tw from '../styles/tailwind';
 import {setSocialLoginToken, setUserAuthToken} from '../redux/authSlice';
@@ -18,157 +20,147 @@ import {useNavigation} from '@react-navigation/native';
 const FacebookLogin = () => {
   const navigation = useNavigation();
 
-  const fbLogin = async () => {
-  try {
-    const result = await LoginManager.logInWithPermissions(["public_profile", "email"],  "my_nonce");
-    if (result.isCancelled) {
-      console.log("Login cancelled");
-      return;
-    }
+//   const fbLogin = async () => {
+//   try {
+//     const result = await LoginManager.logInWithPermissions(["public_profile", "email"] , "nonce");
+//     if (result.isCancelled) {
+//       console.log("Login cancelled");
+//       return;
+//     }
 
-    console.log("Login success with permissions:", result.grantedPermissions);
+//     console.log("Login success with permissions:", result.grantedPermissions);
 
-    let token = null;
+//     let token = null;
 
-    if (Platform.OS === "ios") {
-      // Get authentication token for iOS Limited Login Mode
-      const authToken = await AuthenticationToken.getAuthenticationTokenIOS();
-      token = authToken?.authenticationToken;
-      console.log("Auth token (iOS):", token);
-    } else {
-      // Get access token for Android (works with Graph API)
-      const accessToken = await AccessToken.getCurrentAccessToken();
-      token = accessToken?.accessToken;
-      console.log("Access token (Android):", token);
-    }
+//     if (Platform.OS === "ios") {
+   
+//       const authToken = await AuthenticationToken.getAuthenticationTokenIOS();
+//       token = authToken?.authenticationToken;
+//       console.log("Auth token (iOS):", token);
+//     } else {
+//       const accessToken = await AccessToken.getCurrentAccessToken();
+//       token = accessToken?.accessToken;
+//       console.log("Access token (Android):", token);
+//     }
 
-    // Call getData() only if a token exists
-    if (token) {
-      getData(token);
-    } else {
-      console.log("No token retrieved");
-    }
-  } catch (error) {
-    console.log("Login failed with error:", error);
-    Alert.alert("Error", "Facebook login failed.");
-  }
-};
+//     // Call getData() only if a token exists
+//     if (token) {
+//       getData(token);
+//     } else {
+//       console.log("No token retrieved");
+//     }
+//   } catch (error) {
+//     console.log("Login failed with error:", error);
+//     Alert.alert("Error", "Facebook login failed.");
+//   }
+// };
 
-const getData = async (token) => {
-  try {
-    console.log("Checking token in getData:", token);
+// const getData = async (token) => {
+//   try {
+//     console.log("Checking token in getData:", token);
 
-    if (!token) throw new Error("No access token found");
+//     if (!token) throw new Error("No access token found");
 
-    store.dispatch(setSocialLoginToken());
+//     store.dispatch(setSocialLoginToken());
 
-    // Send token to backend for authentication
-    const response = await _fbSocialLogin(token);
-    console.log("FB login response:", response);
+//     // Send token to backend for authentication
+//     const response = await _fbSocialLogin(token);
+//     console.log("FB login response:", response);
 
-    // Store user profile and authentication token
-    store.dispatch(setSocialProfile(response?.data?.user));
-    store.dispatch(setUserAuthToken(response?.data?.token));
+//     // Store user profile and authentication token
+//     store.dispatch(setSocialProfile(response?.data?.user));
+//     store.dispatch(setUserAuthToken(response?.data?.token));
+//     // Navigate to home screen
+//     navigation.navigate("LeagueSelection");
+//   } catch (error) {
+//     console.log("Error fetching data from Facebook:", error);
+//     Alert.alert("Error", "Failed to retrieve profile information.");
+//   }
+// };
 
-    // Navigate to home screen
-    navigation.navigate("Home");
-  } catch (error) {
-    console.log("Error fetching data from Facebook:", error);
-    Alert.alert("Error", "Failed to retrieve profile information.");
-  }
-};
+// async function _fbSocialLogin(token) {
+//   try {
+//     console.log("Sending token to backend:", token);
+//     const response = await postApi(api_name_fb_login, {
+//       access_token: token,
+//     });
+//     return response;
+//   } catch (error) {
+//     console.error("Error in _fbSocialLogin:", error);
+//     throw error;
+//   }
+// }
 
-async function _fbSocialLogin(token) {
-  try {
-    console.log("Sending token to backend:", token);
-    const response = await postApi(api_name_fb_login, {
-      access_token: token,
+
+
+const fbLogin = (resCallback) => {
+  // Ensure user is logged out before new login attempt
+  LoginManager.logOut();
+
+  // Initiate Facebook Login
+  LoginManager.logInWithPermissions(["public_profile", "email"] ,  "enabled")
+    .then((result) => {
+      console.log("Login Result:", result);
+
+      if (result.isCancelled) {
+        console.log("❌ Login cancelled by user");
+        return;
+      }
+
+      // Fetch Access Token
+      return AccessToken.getCurrentAccessToken();
+    })
+    .then((data) => {
+      if (!data) {
+        console.log("❌ Failed to get access token");
+        return;
+      }
+
+      const accessToken = data.accessToken;
+      console.log("✅ Access Token:",accessToken);
+      console.log("token expiry time ", data);
+
+      // Graph API Request to get user details
+      const infoRequest = new GraphRequest(
+        "/me?fields=id,name,email,picture",
+        { accessToken },
+        (error, result) => resCallback(error, result, accessToken) // Pass accessToken here
+      );
+
+      new GraphRequestManager().addRequest(infoRequest).start();
+    })
+    .catch((error) => {
+      console.log("❌ Login failed with error:", error);
     });
-    return response;
+};
+
+const onFbLogin = async () => {
+  try {
+    await fbLogin(resCallback);
   } catch (error) {
-    console.error("Error in _fbSocialLogin:", error);
-    throw error;
+    console.log("❌ Error in onFbLogin:", error);
   }
-}
+};
 
-  // const fbLogin = async () => {
-  //   // try {
-  //   //   const result = await LoginManager.logInWithPermissions(
-  //   //     [
-  //   //       "public_profile",
-  //   //       "email",
-  //   //     ],
-  //   //     "limited",
-  //   //     "my_nonce", // Optional
-  //   //   );
-  //   //   console.log(result);
-  //   //   if (Platform.OS === "ios") {
-  //   //     // This token **cannot** be used to access the Graph API.
-  //   //     // https://developers.facebook.com/docs/facebook-login/limited-login/
-  //   //     const result = await AuthenticationToken.getAuthenticationTokenIOS();
-        
-  //   //     console.log("auth token-----",result?.authenticationToken);
-  //   //   } else {
-  //   //     // This token can be used to access the Graph API.
-  //   //     const result = await AccessToken.getCurrentAccessToken();
-  //   //     console.log("Access token-----",result?.accessToken);
-        
-  //   //   }
-  //   // } catch (error) {
-  //   //   console.log(error);
-  //   // }
-  //   LoginManager.logInWithPermissions(['public_profile']).then(
-  //     function (result) {
-  //       if (result.isCancelled) {
-  //         console.log('Login cancelled');
-  //       } else {
-  //         console.log(
-  //           'Login success with permissions: ' +
-  //             result.grantedPermissions.toString(),
-  //         );
-  //         getData();
-  //       }
-  //     },
-  //     function (error) {
-  //       console.log('Login fail with error: ' + error);
-  //     },
-  //   );
-  // };
+const resCallback = (error, result, accessToken) => {
+  if (error) {
+    console.log("❌ Error fetching data:", error);
+    return;
+  } else {
+    const userData = result;
+    console.log("✅ Checking user data:", userData);
+    store.dispatch(setSocialProfile(userData));
+    // store.dispatch(setUserAuthToken(accessToken)); // Now accessToken is correctly passed
+    
+  }
 
-  // const getData = async () => {
-  //   try {
-  //     const data = await AccessToken.getCurrentAccessToken();
-  //     console.log("checking data in getdata-------", data)
-  //     var idToken = data?.accessToken;
-  //     store.dispatch(setSocialLoginToken());
-  //     const response = await _fbSocialLogin(idToken);
-  //     // console.log('checking response now here ', response);
-  //     store.dispatch(setSocialProfile(response?.data?.user));
-  //     store.dispatch(setUserAuthToken(response?.data?.token));
-  //     navigation.navigate('Home');
-  //     if (!data) throw new Error('No access token found');
-  //   } catch (error) {
-  //     console.log('Error fetching data from Facebook:', error);
-  //     Alert.alert('Error', 'Failed to retrieve profile information.');
-  //   }
-  // };
+  console.log("✅ Success fetching data:", result);
+};
 
-  // async function _fbSocialLogin(idToken) {
-  //   console.log('checking token', idToken);
-  //   try {
-  //     const response = await postApi(api_name_fb_login, {
-  //       access_token: idToken,
-  //     });
-  //     return response; // Return the response here
-  //   } catch (error) {
-  //     console.error(error);
-  //     throw error; // Rethrow the error so it can be handled in the caller function
-  //   }
-  // }
 
   return (
     <View>
-      <TouchableOpacity onPress={() => fbLogin()}>
+      <TouchableOpacity onPress={() => onFbLogin()}>
         <Image
           source={require('../assets/icons/facebook.png')}
           style={[tw`w-9 h-9 self-center mt-1`, {resizeMode: 'contain'}]}

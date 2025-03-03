@@ -36,27 +36,30 @@ const SelectedLeagues = React.memo(() => {
   // Memoized rendering of each list item
   const renderItem = useCallback(
     ({item}) => (
-      <View style={tw`bg-[#303649] p-1.5 mx-2 rounded-lg`}>
-        <View
-          style={[
-            tw`w-14 h-14 self-center`,
-            {
-              backgroundColor: 'rgba(0, 0, 0, 0.1)',
-              shadowColor: 'rgba(0, 0, 0, 0.3)',
-              elevation: 20,
-              borderRadius: 999,
-            },
-          ]}
-        >
-          <Image
-            source={{uri: item?.image_path}}
-            style={[
-              tw`w-10 h-10 self-center mt-2`,
-              {resizeMode: 'contain', borderRadius: 999},
-            ]}
-          />
-        </View>
-      </View>
+      <View 
+      style={[tw`p-1.5 mx-2 rounded-lg bg-[#303649]`, 
+             ]}>
+  <View
+    style={[
+      tw`w-14 h-14 self-center`,
+      {
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        shadowColor: 'rgba(0, 0, 0, 0.3)',
+        elevation: 20,
+        borderRadius: 999,
+      },
+    ]}
+  >
+    <Image
+      source={{uri: item?.image_path}}
+      style={[
+        tw`w-10 h-10 self-center mt-2`,
+        { resizeMode: 'contain', borderRadius: 999 },
+      ]}
+    />
+  </View>
+</View>
+
     ),
     []
   );
@@ -64,22 +67,25 @@ const SelectedLeagues = React.memo(() => {
   return (
     <View>
       <View>
-        <View style={tw`flex-row justify-between mb-5`}>
-          <Text style={tw`text-white text-[22px] font-401 leading-tight mt-3 px-5`}>
-            {t('league')}
-          </Text>
-          <TouchableOpacity onPress={navigateToLeagueScreen}>
-            <Text style={tw`text-[#8195FF] text-[14px] font-401 leading-tight mt-5 px-5`}>
-              {t('seeAll')}
-            </Text>
-          </TouchableOpacity>
-        </View>
+      <View style={tw`${lang === 'ar' ? 'flex-row-reverse' : 'flex-row'} justify-between mb-5`}>
+  <Text style={tw`text-white text-[22px] font-401 leading-tight mt-3 px-5`}>
+    {t('league')}
+  </Text>
+  <TouchableOpacity onPress={navigateToLeagueScreen}>
+    <Text style={tw`text-[#8195FF] text-[14px] font-401 leading-tight mt-5 px-5`}>
+      {t('seeAll')}
+    </Text>
+  </TouchableOpacity>
+</View>
+
+      
         {loading ? (
           <Loader />
         ) : (
           <FlatList
             data={data?.leagues}
             horizontal
+            inverted={lang === 'ar'}
             showsHorizontalScrollIndicator={false}
             renderItem={renderItem} // Use memoized renderItem
             keyExtractor={(item) => item.id}

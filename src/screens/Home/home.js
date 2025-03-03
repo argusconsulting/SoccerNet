@@ -201,11 +201,16 @@ const Home = () => {
         <SelectedLeagues />
 
         <View>
-          <View style={tw`flex-row justify-between mt-3 mb-2`}>
+          <View style={tw`justify-between mt-3 mb-2`}>
+            {lang == 'ar' ?  
             <Text
+              style={tw`text-white text-[22px] font-401 leading-tight  mt-3  px-5 self-end`}>
+              {t('liveNow')}
+            </Text>:  <Text
               style={tw`text-white text-[22px] font-401 leading-tight  mt-3  px-5`}>
               {t('liveNow')}
-            </Text>
+            </Text> }
+           
           </View>
           {inPlayLiveScores?.data?.length > 0 ? (
             <FlatList
@@ -242,7 +247,7 @@ const Home = () => {
         </View>
 
         <View>
-          <View style={tw`flex-row justify-between mt-3 mb-2`}>
+        <View style={tw`${lang === 'ar' ? 'flex-row-reverse' : 'flex-row'} justify-between mt-3 mb-2`}>
             <Text
               style={tw`text-white text-[22px] font-401 leading-tight  mt-3 px-5`}>
               {t('justFinished')}
@@ -256,7 +261,9 @@ const Home = () => {
                 </Text>
               </TouchableOpacity>
             )}
-          </View>
+          </View> 
+        
+          
           {filteredData?.length > 0 ? (
             <FlatList
               data={filteredData}

@@ -4,14 +4,19 @@
 #import <SafariServices/SafariServices.h>
 #import <FBSDKCoreKit/FBSDKCoreKit-Swift.h>
 #import <React/RCTBundleURLProvider.h>
+// #import <React/RCTI18nUtil.h>
 
 @implementation AppDelegate
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
    [[FBSDKApplicationDelegate sharedInstance] application:application
                        didFinishLaunchingWithOptions:launchOptions];
   [FIRApp configure];
+
+  //  [[RCTI18nUtil sharedInstance] allowRTL:YES];
+
   self.moduleName = @"SoccerNet";
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.

@@ -50,6 +50,8 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
   const [emailValue, setEmailValue] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+    const lang = useSelector(state => state?.language_store?.language);
+
 
   const getSelectedLeagues = async currentUserId => {
     try {
@@ -107,13 +109,15 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
     try {
       if (checked === 'email') {
         if (emailValue == '') {
-          ToastAndroid.show('Please enter your Email', ToastAndroid.LONG);
+          Alertify.error('Please enter your Email');
+          // ToastAndroid.show('Please enter your Email', ToastAndroid.LONG);
           return; // Stop further execution
         } else if (!validateEmail(emailValue)) {
-          ToastAndroid.show(
-            'Please enter a valid email address.',
-            ToastAndroid.LONG,
-          );
+          Alertify.error('Please enter a valid email address.');
+          // ToastAndroid.show(
+          //   'Please enter a valid email address.',
+          //   ToastAndroid.LONG,
+          // );
           return; // Stop further execution
         }
       }
@@ -121,23 +125,26 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
       // Validation for phone number when `checked` is 'contact'
       if (checked === 'contact_number') {
         if (value == '') {
-          ToastAndroid.show(
-            'Please enter your Phone Number',
-            ToastAndroid.LONG,
-          );
+          Alertify.error('Please enter your Phone Number');
+          // ToastAndroid.show(
+          //   'Please enter your Phone Number',
+          //   ToastAndroid.LONG,
+          // );
           return; // Stop further execution
         } else if (!validatePhoneNumber(value)) {
-          ToastAndroid.show(
-            'Please enter a valid phone number.',
-            ToastAndroid.LONG,
-          );
+          Alertify.error('Please enter a valid phone number.');
+          // ToastAndroid.show(
+          //   'Please enter a valid phone number.',
+          //   ToastAndroid.LONG,
+          // );
           return; // Stop further execution
         }
       }
 
       // Validation for password
       if (password == '') {
-        ToastAndroid.show('Please enter your password', ToastAndroid.LONG);
+        Alertify.error('Please enter your password');
+        // ToastAndroid.show('Please enter your password', ToastAndroid.LONG);
         return;
       }
       const device_token = await GetFCMToken();
@@ -180,17 +187,20 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
   async function handleRegister() {
     try {
       if (!name.trim()) {
-        ToastAndroid.show('Please enter your Name', ToastAndroid.LONG);
+        Alertify.error('Please enter your Name');
+        // ToastAndroid.show('Please enter your Name', ToastAndroid.LONG);
       }
       if (checked === 'email') {
         if (!emailValue.trim()) {
-          ToastAndroid.show('Please enter your Email', ToastAndroid.LONG);
+          Alertify.error('Please enter your Email');
+          // ToastAndroid.show('Please enter your Email', ToastAndroid.LONG);
           return; // Stop further execution
         } else if (!validateEmail(emailValue)) {
-          ToastAndroid.show(
-            'Please enter a valid email address.',
-            ToastAndroid.LONG,
-          );
+          Alertify.error('Please enter a valid email address.');
+          // ToastAndroid.show(
+          //   'Please enter a valid email address.',
+          //   ToastAndroid.LONG,
+          // );
           return; // Stop further execution
         }
       }
@@ -198,29 +208,35 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
       // Validation for phone number when `checked` is 'contact'
       if (checked === 'contact_number') {
         if (!value.trim()) {
-          ToastAndroid.show(
-            'Please enter your Phone Number',
-            ToastAndroid.LONG,
-          );
+          Alertify.error('Please enter your Phone Number');
+          // ToastAndroid.show(
+          //   'Please enter your Phone Number',
+          //   ToastAndroid.LONG,
+          // );
           return; // Stop further execution
         } else if (!validatePhoneNumber(value)) {
-          ToastAndroid.show(
-            'Please enter a valid phone number.',
-            ToastAndroid.LONG,
-          );
+          Alertify.error('Please enter a valid phone number.');
+          // ToastAndroid.show(
+          //   'Please enter a valid phone number.',
+          //   ToastAndroid.LONG,
+          // );
           return; // Stop further execution
         }
       }
 
       // Validation for password
       if (!password.trim()) {
-        ToastAndroid.show('Please enter your password', ToastAndroid.LONG);
+        Alertify.error('Please enter your password');
+        // ToastAndroid.show('Please enter your password', ToastAndroid.LONG);
         return; // Stop further execution
       } else if (!validatePassword(password)) {
-        ToastAndroid.show(
+        Alertify.error(
           'Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
-          ToastAndroid.LONG,
         );
+        // ToastAndroid.show(
+        //   'Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
+        //   ToastAndroid.LONG,
+        // );
         return; // Stop further execution
       } else {
         setSubmitLoader(true);
@@ -261,7 +277,8 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
       style={styles.modal}>
       <View style={styles.content}>
         <View style={styles.header} />
-        <View style={tw`flex-row `}>
+        {lang == 'ar' ? <>
+          <View style={tw`flex-row-reverse `}>
           <Image
             source={require('../../assets/logo.png')}
             style={[tw`w-12 h-12 self-center mb-3`, {resizeMode: 'contain'}]}
@@ -271,6 +288,18 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
             {t('welcomeToKickScore')}
           </Text>
         </View>
+        </>:<>
+        <View style={tw`flex-row `}>
+          <Image
+            source={require('../../assets/logo.png')}
+            style={[tw`w-12 h-12 self-center mb-3`, {resizeMode: 'contain'}]}
+          />
+          <Text
+            style={tw`text-white text-[28px] font-401 leading-tight self-center mx-5`}>
+            {t('welcomeToKickScore')}
+          </Text>
+        </View></>}
+        
 
         <View style={tw`flex-row justify-between mt-1`}>
           <TouchableOpacity onPress={() => setChecked('email')} style={tw`flex-row`}>

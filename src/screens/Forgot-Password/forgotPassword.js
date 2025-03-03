@@ -8,6 +8,7 @@ import { api_name_forgotPassword } from '../../constants/api-constants'
 import { validateEmail } from '../../scripts/validations'
 import { useNavigation } from '@react-navigation/native'
 import Header from '../../components/header/header'
+import Alertify from '../../scripts/toast'
 
 const ForgotPassword = () => {
     const navigation = useNavigation()
@@ -19,9 +20,11 @@ const ForgotPassword = () => {
         try {
         
             if (value == '') {
-              ToastAndroid.show('Please enter your Email', ToastAndroid.LONG);
+              Alertify.error('Please enter your Email');
+              // ToastAndroid.show('Please enter your Email', ToastAndroid.LONG);
             } else if (!validateEmail(value)) {
-              ToastAndroid.show('Please enter a valid email address.', ToastAndroid.LONG);
+              Alertify.error('Please enter a valid email address.');
+              // ToastAndroid.show('Please enter a valid email address.', ToastAndroid.LONG);
               
             } else {
          
@@ -29,7 +32,8 @@ const ForgotPassword = () => {
                 postApi(`${api_name_forgotPassword}?email=${value}`)
                     .then(async (response) => {
                       console.log("response",response)
-                      ToastAndroid.show(response?.data?.message, ToastAndroid.LONG);
+                      Alertify.success(response?.data?.message);
+                      // ToastAndroid.show(response?.data?.message, ToastAndroid.LONG);
                         if (response?.data?.status) {
                             navigation.navigate('Login');
                             setSubmitLoader(false)
