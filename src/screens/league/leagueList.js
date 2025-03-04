@@ -15,6 +15,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getAllLeaguesWithFixtures} from '../../redux/leagueSlice';
 import {getSeasonsById} from '../../redux/playerSlice';
 import Loader from '../../components/loader/Loader';
+import { t } from 'i18next';
 
 const LeagueScreen = () => {
   const navigation = useNavigation();
@@ -62,7 +63,7 @@ const LeagueScreen = () => {
     return (
       <View style={tw`bg-[#303649] mb-5 p-3 rounded-lg`}>
         <TouchableOpacity
-          style={tw`flex-row justify-between`}
+          style={tw`${lang == 'ar' ? 'flex-row-reverse ': 'flex-row'} justify-between`}
           onPress={() => toggleItem(currentSeasonId)}>
           <View style={tw`flex-row`}>
             <Image
@@ -140,7 +141,7 @@ const LeagueScreen = () => {
   return (
     <SafeAreaView style={tw`bg-[#05102E] h-full `}>
       <View style={tw`p-5`}>
-      <View style={tw`flex-row mb-5`}>
+      <View style={tw` ${lang == 'ar' ? 'flex-row-reverse' : 'flex-row'} mb-5`}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <AntDesign
             name={'arrowleft'}
@@ -150,7 +151,7 @@ const LeagueScreen = () => {
           />
         </TouchableOpacity>
         <Text style={tw`text-[#fff] text-[26px] font-401 leading-normal mx-5`}>
-          League
+         {t('league')}
         </Text>
       </View>
 

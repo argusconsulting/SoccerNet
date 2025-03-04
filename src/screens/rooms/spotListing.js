@@ -50,6 +50,8 @@ const SpotLight = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isProfileCheckModal, setProfileCheckModal] = useState(false);
   const filteredRoomData = final?.data?.groups;
+    const lang = useSelector(state => state?.language_store?.language);
+  
 
   const [selectedIds, setSelectedIds] = useState([]);
 
@@ -264,13 +266,13 @@ const SpotLight = () => {
   return (
     <SafeAreaView style={tw`bg-[#05102E] flex-1`}>
       {/* <Header name="Rooms" /> */}
-      <View style={tw`flex-row p-5 `}>
+      <View style={tw` ${lang == 'ar' ? 'flex-row-reverse' : 'flex-row'} p-5 `}>
       <TouchableOpacity onPress={() => navigation.navigate('Home')}>
         <AntDesign
           name={'arrowleft'}
           size={24}
           color={'#fff'}
-          style={tw`mr-3 mt-1`}
+          style={tw`mx-3 mt-2`}
         />
       </TouchableOpacity>
       <Text
