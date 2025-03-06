@@ -20,6 +20,7 @@ target 'SoccerNet' do
   use_frameworks! :linkage => :static
   $RNFirebaseAsStaticFramework = true
 
+
   use_react_native!(
     :path => config[:reactNativePath],
     # An absolute path to your application root.
@@ -28,6 +29,7 @@ target 'SoccerNet' do
 
   target 'SoccerNetTests' do
     inherit! :complete
+    # pod 'AgoraAudio_iOS', '4.5.1'
     # Pods for testing
   end
 

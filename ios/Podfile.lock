@@ -1,6 +1,6 @@
 PODS:
   - AgoraInfra_iOS (1.2.13)
-  - AgoraIrisRTC_iOS (4.5.0-build.1)
+  - AgoraIrisRTC_iOS (4.5.0-build.2)
   - AgoraRtcEngine_iOS (4.5.0):
     - AgoraRtcEngine_iOS/AIAEC (= 4.5.0)
     - AgoraRtcEngine_iOS/AIAECLL (= 4.5.0)
@@ -51,21 +51,21 @@ PODS:
   - BVLinearGradient (2.8.3):
     - React-Core
   - DoubleConversion (1.1.6)
-  - FBAEMKit (17.4.0):
-    - FBSDKCoreKit_Basics (= 17.4.0)
+  - FBAEMKit (18.0.0):
+    - FBSDKCoreKit_Basics (= 18.0.0)
   - FBLazyVector (0.75.3)
-  - FBSDKCoreKit (17.4.0):
-    - FBAEMKit (= 17.4.0)
-    - FBSDKCoreKit_Basics (= 17.4.0)
-  - FBSDKCoreKit_Basics (17.4.0)
-  - FBSDKGamingServicesKit (17.4.0):
-    - FBSDKCoreKit (= 17.4.0)
-    - FBSDKCoreKit_Basics (= 17.4.0)
-    - FBSDKShareKit (= 17.4.0)
-  - FBSDKLoginKit (17.4.0):
-    - FBSDKCoreKit (= 17.4.0)
-  - FBSDKShareKit (17.4.0):
-    - FBSDKCoreKit (= 17.4.0)
+  - FBSDKCoreKit (18.0.0):
+    - FBAEMKit (= 18.0.0)
+    - FBSDKCoreKit_Basics (= 18.0.0)
+  - FBSDKCoreKit_Basics (18.0.0)
+  - FBSDKGamingServicesKit (18.0.0):
+    - FBSDKCoreKit (= 18.0.0)
+    - FBSDKCoreKit_Basics (= 18.0.0)
+    - FBSDKShareKit (= 18.0.0)
+  - FBSDKLoginKit (18.0.0):
+    - FBSDKCoreKit (= 18.0.0)
+  - FBSDKShareKit (18.0.0):
+    - FBSDKCoreKit (= 18.0.0)
   - Firebase/Auth (11.5.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 11.5.0)
@@ -74,7 +74,7 @@ PODS:
   - Firebase/Messaging (11.5.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 11.5.0)
-  - FirebaseAppCheckInterop (11.8.0)
+  - FirebaseAppCheckInterop (11.9.0)
   - FirebaseAuth (11.5.0):
     - FirebaseAppCheckInterop (~> 11.0)
     - FirebaseAuthInterop (~> 11.0)
@@ -84,7 +84,7 @@ PODS:
     - GoogleUtilities/Environment (~> 8.0)
     - GTMSessionFetcher/Core (< 5.0, >= 3.4)
     - RecaptchaInterop (~> 100.0)
-  - FirebaseAuthInterop (11.8.0)
+  - FirebaseAuthInterop (11.9.0)
   - FirebaseCore (11.5.0):
     - FirebaseCoreInternal (= 11.5)
     - GoogleUtilities/Environment (~> 8.0)
@@ -1406,8 +1406,8 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-agora (4.5.0):
-    - AgoraIrisRTC_iOS (= 4.5.0-build.1)
+  - react-native-agora (4.5.1):
+    - AgoraIrisRTC_iOS (= 4.5.0-build.2)
     - AgoraRtcEngine_iOS (= 4.5.0)
     - DoubleConversion
     - glog
@@ -1436,20 +1436,20 @@ PODS:
     - React-Core
   - react-native-date-picker (5.0.7):
     - React-Core
-  - react-native-fbsdk-next (13.1.3):
+  - react-native-fbsdk-next (13.4.1):
     - React-Core
-    - react-native-fbsdk-next/Core (= 13.1.3)
-    - react-native-fbsdk-next/Login (= 13.1.3)
-    - react-native-fbsdk-next/Share (= 13.1.3)
-  - react-native-fbsdk-next/Core (13.1.3):
-    - FBSDKCoreKit (~> 17.3)
+    - react-native-fbsdk-next/Core (= 13.4.1)
+    - react-native-fbsdk-next/Login (= 13.4.1)
+    - react-native-fbsdk-next/Share (= 13.4.1)
+  - react-native-fbsdk-next/Core (13.4.1):
+    - FBSDKCoreKit (~> 18.0)
     - React-Core
-  - react-native-fbsdk-next/Login (13.1.3):
-    - FBSDKLoginKit (~> 17.3)
+  - react-native-fbsdk-next/Login (13.4.1):
+    - FBSDKLoginKit (~> 18.0)
     - React-Core
-  - react-native-fbsdk-next/Share (13.1.3):
-    - FBSDKGamingServicesKit (~> 17.3)
-    - FBSDKShareKit (~> 17.3)
+  - react-native-fbsdk-next/Share (13.4.1):
+    - FBSDKGamingServicesKit (~> 18.0)
+    - FBSDKShareKit (~> 18.0)
     - React-Core
   - react-native-image-picker (7.1.2):
     - DoubleConversion
@@ -2168,23 +2168,23 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AgoraInfra_iOS: 65e11a2183ab7836258768868d06058c22701b13
-  AgoraIrisRTC_iOS: 8207edf56ceaae6b8ee773d8e2137c6b7cb062be
+  AgoraIrisRTC_iOS: 67278818a420cf54184a197f7b47afb23704d7e2
   AgoraRtcEngine_iOS: 38b5e0a49bbad5616f284e6a4f9e4f5bb3fb3b2e
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
   boost: 4cb898d0bf20404aab1850c656dcea009429d6c1
   BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
   DoubleConversion: 76ab83afb40bddeeee456813d9c04f67f78771b5
-  FBAEMKit: 58cb5f302cdd715a56d4c1d0dfdd2e423ac1421a
+  FBAEMKit: e34530df538b8eb8aeb53c35867715ba6c63ef0c
   FBLazyVector: 7b438dceb9f904bd85ca3c31d64cce32a035472b
-  FBSDKCoreKit: 94d7461d0cecf441b1ba7c41acfff41daa8ccd41
-  FBSDKCoreKit_Basics: 151b43db8b834d3f0e02f95d36a44ffd36265e45
-  FBSDKGamingServicesKit: 55a13febe0cd117bf5f8f61f315d75aab9b7876e
-  FBSDKLoginKit: 5c1cd53c91a2282b3a4fe6e6d3dcf2b8b0d33d55
-  FBSDKShareKit: 00546a02dce72f37a4209cd68aaf5fb749185c3b
+  FBSDKCoreKit: d3f479a69127acebb1c6aad91c1a33907bcf6c2f
+  FBSDKCoreKit_Basics: 017b6dc2a1862024815a8229e75661e627ac1e29
+  FBSDKGamingServicesKit: cdb625419879a651d07906d8f874fc76291be660
+  FBSDKLoginKit: 5875762d1fe09ddcb05d03365d4f5dc34413843d
+  FBSDKShareKit: 082d1b087d6481af36f8d8433542f25f2fc2c8dd
   Firebase: 7a56fe4f56b5ab81b86a6822f5b8f909ae6fc7e2
-  FirebaseAppCheckInterop: 7bf86d55a2b7e9bd91464120eba3e52e4b63b2e2
+  FirebaseAppCheckInterop: 9226f7217b43e99dfa0bc9f674ad8108cef89feb
   FirebaseAuth: d8ad770642af39d1be932094be5f5230efb0ea74
-  FirebaseAuthInterop: 651756e70d9a0b9160db39ead71fd5507dbb6c84
+  FirebaseAuthInterop: 2a26ee1bea6d47df8048683cfa071e7da657798f
   FirebaseCore: 93abc05437f8064cd2bc0a53b768fb0bc5a1d006
   FirebaseCoreExtension: ddb2eb987f736b714d30f6386795b52c4670439e
   FirebaseCoreInternal: f47dd28ae7782e6a4738aad3106071a8fe0af604
@@ -2231,11 +2231,11 @@ SPEC CHECKSUMS:
   React-logger: 7e56c9eceafd7f45e98c16cb42ff3c9966c67119
   React-Mapbuffer: 614f504b9ca7735954fbdd8d33e9439255dc1fec
   React-microtasksnativemodule: 0f4e470a476acbca2b9cc4930949824f99511265
-  react-native-agora: f100a87c9e87f77ede3e336d75c06fe0a2e8b3b9
+  react-native-agora: de69fd25d188ac647488b8de7397bb5bb0b030f1
   react-native-app-auth: 58e24517e55368bee2950c5a4d0699ed80f0bff7
   react-native-blob-util: f7234c91ad0e3faeee51b3edee80b61553f74993
   react-native-date-picker: 585252087d4820b4cd8f2cf80068f6e8f5b72413
-  react-native-fbsdk-next: 7e2ab5c819f35f9e8d908517afd1bd8d367f0869
+  react-native-fbsdk-next: 52f81e60eb3e8e0e06cf9728b4572d3509ca9d01
   react-native-image-picker: 90e570e3ca0d4bf618da7c24a89dba848acee6b4
   react-native-render-html: 5afc4751f1a98621b3009432ef84c47019dcb2bd
   react-native-restart: 0bc732f4461709022a742bb29bcccf6bbc5b4863
@@ -2282,6 +2282,6 @@ SPEC CHECKSUMS:
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: 33604ac44957ebe3f30f15b4cd0a3f96634e624a
 
-PODFILE CHECKSUM: be326ec3e39eb7d75ff9256aa868362340f4c427
+PODFILE CHECKSUM: 293c0f4551fd3fa6298bcf86a01a285794d261b8
 
 COCOAPODS: 1.16.2

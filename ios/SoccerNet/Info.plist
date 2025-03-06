@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>Privacy - Microphone Usage Description</key>
+	<string>The purpose of using the microphone, for example, for a call or live interactive streaming.</string>
 	<key>CFBundleDisplayName</key>
 	<string>SoccerNet</string>
 	<key>CFBundleExecutable</key>

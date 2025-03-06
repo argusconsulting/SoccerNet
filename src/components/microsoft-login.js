@@ -5,9 +5,13 @@ import {
   authorize,
 } from 'react-native-app-auth';
 import {useNavigation} from '@react-navigation/native';
+import { store } from '../redux/store';
+import { setSocialProfile } from '../redux/profileSlice';
+import { setUserAuthToken, setUserID } from '../redux/authSlice';
 
-const MicrosoftLogin = () => {
+const MicrosoftLogin = ({onClose}) => {
   const navigation = useNavigation();
+
   const configs = {
     identityServer: {
       issuer:
@@ -41,6 +45,10 @@ const MicrosoftLogin = () => {
     })
       .then(res => {
         console.log('res', res);
+            store.dispatch(setSocialProfile(res?.data));
+              store.dispatch(setUserAuthToken(res?.data?.token));
+              store.dispatch(setUserID(res?.data?.user?.id));
+              onClose();
         navigation.navigate('LeagueSelection');
       })
       .catch(err => {

@@ -485,9 +485,9 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
             style={[tw`w-9 h-9 self-center mr-7`, {resizeMode: 'contain'}]}
           />
 
-          <MicrosoftLogin />
+          <MicrosoftLogin onClose={onClose}/>
 
-          <FacebookLogin />
+          <FacebookLogin onClose={onClose}/>
         </View>
         <TouchableOpacity
           style={tw`flex-row mt-5 self-center`}
