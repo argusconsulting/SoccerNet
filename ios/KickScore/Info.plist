@@ -7,7 +7,7 @@
 	<key>Privacy - Microphone Usage Description</key>
 	<string>The purpose of using the microphone, for example, for a call or live interactive streaming.</string>
 	<key>CFBundleDisplayName</key>
-	<string>SoccerNet</string>
+	<string>KickScore</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -59,7 +59,7 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>SourceSansPro-ExtraLight.ttf</string>

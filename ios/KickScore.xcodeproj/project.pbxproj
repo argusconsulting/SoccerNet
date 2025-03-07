@@ -7,18 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* SoccerNetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SoccerNetTests.m */; };
-		056D879A17A083BB9FA49EAD /* Pods_SoccerNet_SoccerNetTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F2EF1A74491CFF0CDBF9C06 /* Pods_SoccerNet_SoccerNetTests.framework */; };
+		00E356F31AD99517003FC87E /* KickScoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* KickScoreTests.m */; };
+		01CC314EEC0CFB635B2DE759 /* Pods_KickScore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61B28D26E99DF4CE904EC4B8 /* Pods_KickScore.framework */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		14D6B689F8A44E289B180778 /* SourceSansPro-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4C5ECE9EF71245C1A32FA473 /* SourceSansPro-ExtraLightItalic.ttf */; };
 		278BB2E874904712BB06938A /* SourceSansPro-SemiboldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB1F1A450C92438B8BADF912 /* SourceSansPro-SemiboldItalic.ttf */; };
+		298BB99294E7885EEB340F67 /* Pods_KickScore_KickScoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A522CAED31E7AF1646752850 /* Pods_KickScore_KickScoreTests.framework */; };
 		4226EAFCD4D94C9182F84B5A /* SourceSansPro-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A94B42C5EA1456089404252 /* SourceSansPro-BoldItalic.ttf */; };
 		4AB327DB8FEA43FF82B20745 /* SourceSansPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A1865980491452EAFAB3BCE /* SourceSansPro-Bold.ttf */; };
 		4FC26A8EA6AFB64AF70706F2 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 7423DECCD4A1BAACB57D652D /* PrivacyInfo.xcprivacy */; };
 		6E7DB43C85B040B7A744434F /* SourceSansPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 92998A13D4DC4A1DA8BD0C4D /* SourceSansPro-Regular.ttf */; };
-		703757471A67C9D06E078598 /* Pods_SoccerNet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E34407203E5E6A1DBA1657B3 /* Pods_SoccerNet.framework */; };
 		7360BF36DB99424F9BBBB051 /* SourceSansPro-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B9FA8D706D51472DAD48E809 /* SourceSansPro-ExtraLight.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		88D06A6B7CEF4A33B83C4787 /* SourceSansPro-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA90685DA52F490FA67CE8EC /* SourceSansPro-BlackItalic.ttf */; };
@@ -37,43 +37,43 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = SoccerNet;
+			remoteInfo = KickScore;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00E356EE1AD99517003FC87E /* SoccerNetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoccerNetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* KickScoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KickScoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* SoccerNetTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SoccerNetTests.m; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* KickScoreTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KickScoreTests.m; sourceTree = "<group>"; };
 		07F72ADADEC04DDA87E30F9C /* OFL.txt */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = OFL.txt; path = ../assets/fonts/OFL.txt; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* SoccerNet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoccerNet.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = SoccerNet/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = SoccerNet/AppDelegate.mm; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = SoccerNet/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = SoccerNet/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = SoccerNet/main.m; sourceTree = "<group>"; };
-		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = SoccerNet/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* KickScore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KickScore.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = KickScore/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = KickScore/AppDelegate.mm; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = KickScore/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = KickScore/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = KickScore/main.m; sourceTree = "<group>"; };
+		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = KickScore/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		1A1865980491452EAFAB3BCE /* SourceSansPro-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Bold.ttf"; path = "../assets/fonts/SourceSansPro-Bold.ttf"; sourceTree = "<group>"; };
-		3B4392A12AC88292D35C810B /* Pods-SoccerNet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SoccerNet.debug.xcconfig"; path = "Target Support Files/Pods-SoccerNet/Pods-SoccerNet.debug.xcconfig"; sourceTree = "<group>"; };
+		3B4392A12AC88292D35C810B /* Pods-KickScore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KickScore.debug.xcconfig"; path = "Target Support Files/Pods-KickScore/Pods-KickScore.debug.xcconfig"; sourceTree = "<group>"; };
 		3ED3EBB6398745059900682F /* SourceSansPro-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-LightItalic.ttf"; path = "../assets/fonts/SourceSansPro-LightItalic.ttf"; sourceTree = "<group>"; };
 		479FE1D93B0846E4A21249D8 /* SourceSansPro-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Black.ttf"; path = "../assets/fonts/SourceSansPro-Black.ttf"; sourceTree = "<group>"; };
 		4C5ECE9EF71245C1A32FA473 /* SourceSansPro-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-ExtraLightItalic.ttf"; path = "../assets/fonts/SourceSansPro-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
 		53B482C9BAF74F948B43AC69 /* SourceSansPro-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Italic.ttf"; path = "../assets/fonts/SourceSansPro-Italic.ttf"; sourceTree = "<group>"; };
-		5709B34CF0A7D63546082F79 /* Pods-SoccerNet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SoccerNet.release.xcconfig"; path = "Target Support Files/Pods-SoccerNet/Pods-SoccerNet.release.xcconfig"; sourceTree = "<group>"; };
-		5B7EB9410499542E8C5724F5 /* Pods-SoccerNet-SoccerNetTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SoccerNet-SoccerNetTests.debug.xcconfig"; path = "Target Support Files/Pods-SoccerNet-SoccerNetTests/Pods-SoccerNet-SoccerNetTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5709B34CF0A7D63546082F79 /* Pods-KickScore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KickScore.release.xcconfig"; path = "Target Support Files/Pods-KickScore/Pods-KickScore.release.xcconfig"; sourceTree = "<group>"; };
+		5B7EB9410499542E8C5724F5 /* Pods-KickScore-KickScoreTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KickScore-KickScoreTests.debug.xcconfig"; path = "Target Support Files/Pods-KickScore-KickScoreTests/Pods-KickScore-KickScoreTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5F9BFD939EE941B08FDF032A /* SourceSansPro-Semibold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Semibold.ttf"; path = "../assets/fonts/SourceSansPro-Semibold.ttf"; sourceTree = "<group>"; };
-		7423DECCD4A1BAACB57D652D /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = SoccerNet/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		61B28D26E99DF4CE904EC4B8 /* Pods_KickScore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KickScore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7423DECCD4A1BAACB57D652D /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = KickScore/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		7A94B42C5EA1456089404252 /* SourceSansPro-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-BoldItalic.ttf"; path = "../assets/fonts/SourceSansPro-BoldItalic.ttf"; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = SoccerNet/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		89C6BE57DB24E9ADA2F236DE /* Pods-SoccerNet-SoccerNetTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SoccerNet-SoccerNetTests.release.xcconfig"; path = "Target Support Files/Pods-SoccerNet-SoccerNetTests/Pods-SoccerNet-SoccerNetTests.release.xcconfig"; sourceTree = "<group>"; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = KickScore/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		89C6BE57DB24E9ADA2F236DE /* Pods-KickScore-KickScoreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KickScore-KickScoreTests.release.xcconfig"; path = "Target Support Files/Pods-KickScore-KickScoreTests/Pods-KickScore-KickScoreTests.release.xcconfig"; sourceTree = "<group>"; };
 		92998A13D4DC4A1DA8BD0C4D /* SourceSansPro-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Regular.ttf"; path = "../assets/fonts/SourceSansPro-Regular.ttf"; sourceTree = "<group>"; };
 		9E8E3B17F8C247078775A8D9 /* SourceSansPro-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Light.ttf"; path = "../assets/fonts/SourceSansPro-Light.ttf"; sourceTree = "<group>"; };
-		9F2EF1A74491CFF0CDBF9C06 /* Pods_SoccerNet_SoccerNetTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SoccerNet_SoccerNetTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A522CAED31E7AF1646752850 /* Pods_KickScore_KickScoreTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KickScore_KickScoreTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9FA8D706D51472DAD48E809 /* SourceSansPro-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-ExtraLight.ttf"; path = "../assets/fonts/SourceSansPro-ExtraLight.ttf"; sourceTree = "<group>"; };
 		CB1F1A450C92438B8BADF912 /* SourceSansPro-SemiboldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-SemiboldItalic.ttf"; path = "../assets/fonts/SourceSansPro-SemiboldItalic.ttf"; sourceTree = "<group>"; };
-		D584EBCA2D718E8700FE4423 /* SoccerNet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = SoccerNet.entitlements; path = SoccerNet/SoccerNet.entitlements; sourceTree = "<group>"; };
+		D584EBCA2D718E8700FE4423 /* KickScore.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = KickScore.entitlements; path = KickScore/KickScore.entitlements; sourceTree = "<group>"; };
 		D598DE202D65BE5100F6C913 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		E34407203E5E6A1DBA1657B3 /* Pods_SoccerNet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SoccerNet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FA90685DA52F490FA67CE8EC /* SourceSansPro-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-BlackItalic.ttf"; path = "../assets/fonts/SourceSansPro-BlackItalic.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -83,7 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				056D879A17A083BB9FA49EAD /* Pods_SoccerNet_SoccerNetTests.framework in Frameworks */,
+				298BB99294E7885EEB340F67 /* Pods_KickScore_KickScoreTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,20 +91,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				703757471A67C9D06E078598 /* Pods_SoccerNet.framework in Frameworks */,
+				01CC314EEC0CFB635B2DE759 /* Pods_KickScore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* SoccerNetTests */ = {
+		00E356EF1AD99517003FC87E /* KickScoreTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* SoccerNetTests.m */,
+				00E356F21AD99517003FC87E /* KickScoreTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = SoccerNetTests;
+			path = KickScoreTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -115,10 +115,10 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* SoccerNet */ = {
+		13B07FAE1A68108700A75B9A /* KickScore */ = {
 			isa = PBXGroup;
 			children = (
-				D584EBCA2D718E8700FE4423 /* SoccerNet.entitlements */,
+				D584EBCA2D718E8700FE4423 /* KickScore.entitlements */,
 				D598DE202D65BE5100F6C913 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -129,15 +129,15 @@
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 				7423DECCD4A1BAACB57D652D /* PrivacyInfo.xcprivacy */,
 			);
-			name = SoccerNet;
+			name = KickScore;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				E34407203E5E6A1DBA1657B3 /* Pods_SoccerNet.framework */,
-				9F2EF1A74491CFF0CDBF9C06 /* Pods_SoccerNet_SoccerNetTests.framework */,
+				61B28D26E99DF4CE904EC4B8 /* Pods_KickScore.framework */,
+				A522CAED31E7AF1646752850 /* Pods_KickScore_KickScoreTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -152,9 +152,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* SoccerNet */,
+				13B07FAE1A68108700A75B9A /* KickScore */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* SoccerNetTests */,
+				00E356EF1AD99517003FC87E /* KickScoreTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
@@ -168,8 +168,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* SoccerNet.app */,
-				00E356EE1AD99517003FC87E /* SoccerNetTests.xctest */,
+				13B07F961A680F5B00A75B9A /* KickScore.app */,
+				00E356EE1AD99517003FC87E /* KickScoreTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -177,10 +177,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3B4392A12AC88292D35C810B /* Pods-SoccerNet.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-SoccerNet.release.xcconfig */,
-				5B7EB9410499542E8C5724F5 /* Pods-SoccerNet-SoccerNetTests.debug.xcconfig */,
-				89C6BE57DB24E9ADA2F236DE /* Pods-SoccerNet-SoccerNetTests.release.xcconfig */,
+				3B4392A12AC88292D35C810B /* Pods-KickScore.debug.xcconfig */,
+				5709B34CF0A7D63546082F79 /* Pods-KickScore.release.xcconfig */,
+				5B7EB9410499542E8C5724F5 /* Pods-KickScore-KickScoreTests.debug.xcconfig */,
+				89C6BE57DB24E9ADA2F236DE /* Pods-KickScore-KickScoreTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -208,9 +208,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* SoccerNetTests */ = {
+		00E356ED1AD99517003FC87E /* KickScoreTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "SoccerNetTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "KickScoreTests" */;
 			buildPhases = (
 				A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -224,14 +224,13 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = SoccerNetTests;
-			productName = SoccerNetTests;
-			productReference = 00E356EE1AD99517003FC87E /* SoccerNetTests.xctest */;
+			name = KickScoreTests;
+			productReference = 00E356EE1AD99517003FC87E /* KickScoreTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* SoccerNet */ = {
+		13B07F861A680F5B00A75B9A /* KickScore */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "SoccerNet" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "KickScore" */;
 			buildPhases = (
 				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
@@ -246,9 +245,9 @@
 			);
 			dependencies = (
 			);
-			name = SoccerNet;
-			productName = SoccerNet;
-			productReference = 13B07F961A680F5B00A75B9A /* SoccerNet.app */;
+			name = KickScore;
+			productName = KickScore;
+			productReference = 13B07F961A680F5B00A75B9A /* KickScore.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -268,7 +267,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "SoccerNet" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "KickScore" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -284,8 +283,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* SoccerNet */,
-				00E356ED1AD99517003FC87E /* SoccerNetTests */,
+				13B07F861A680F5B00A75B9A /* KickScore */,
+				00E356ED1AD99517003FC87E /* KickScoreTests */,
 			);
 		};
 /* End PBXProject section */
@@ -347,15 +346,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SoccerNet/Pods-SoccerNet-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-KickScore/Pods-KickScore-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SoccerNet/Pods-SoccerNet-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-KickScore/Pods-KickScore-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SoccerNet/Pods-SoccerNet-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-KickScore/Pods-KickScore-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		807A4D146F080BFDD68B52E6 /* [CP-User] [RNFB] Core Configuration */ = {
@@ -386,7 +385,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-SoccerNet-SoccerNetTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-KickScore-KickScoreTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -408,7 +407,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-SoccerNet-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-KickScore-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -421,15 +420,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SoccerNet-SoccerNetTests/Pods-SoccerNet-SoccerNetTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-KickScore-KickScoreTests/Pods-KickScore-KickScoreTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SoccerNet-SoccerNetTests/Pods-SoccerNet-SoccerNetTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-KickScore-KickScoreTests/Pods-KickScore-KickScoreTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SoccerNet-SoccerNetTests/Pods-SoccerNet-SoccerNetTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-KickScore-KickScoreTests/Pods-KickScore-KickScoreTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
@@ -438,15 +437,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SoccerNet/Pods-SoccerNet-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-KickScore/Pods-KickScore-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SoccerNet/Pods-SoccerNet-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-KickScore/Pods-KickScore-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SoccerNet/Pods-SoccerNet-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-KickScore/Pods-KickScore-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
@@ -455,15 +454,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SoccerNet-SoccerNetTests/Pods-SoccerNet-SoccerNetTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-KickScore-KickScoreTests/Pods-KickScore-KickScoreTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SoccerNet-SoccerNetTests/Pods-SoccerNet-SoccerNetTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-KickScore-KickScoreTests/Pods-KickScore-KickScoreTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SoccerNet-SoccerNetTests/Pods-SoccerNet-SoccerNetTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-KickScore-KickScoreTests/Pods-KickScore-KickScoreTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -473,7 +472,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* SoccerNetTests.m in Sources */,
+				00E356F31AD99517003FC87E /* KickScoreTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,7 +490,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* SoccerNet */;
+			target = 13B07F861A680F5B00A75B9A /* KickScore */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -499,14 +498,14 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-SoccerNet-SoccerNetTests.debug.xcconfig */;
+			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-KickScore-KickScoreTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = SoccerNetTests/Info.plist;
+				INFOPLIST_FILE = KickScoreTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -520,17 +519,17 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SoccerNet.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SoccerNet";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KickScore.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/KickScore";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-SoccerNet-SoccerNetTests.release.xcconfig */;
+			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-KickScore-KickScoreTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = SoccerNetTests/Info.plist;
+				INFOPLIST_FILE = KickScoreTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -544,23 +543,24 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SoccerNet.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SoccerNet";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KickScore.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/KickScore";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-SoccerNet.debug.xcconfig */;
+			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-KickScore.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = SoccerNet/SoccerNet.entitlements;
+				CODE_SIGN_ENTITLEMENTS = KickScore/KickScore.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = SoccerNet/Info.plist;
+				INFOPLIST_FILE = KickScore/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = KickScore;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -572,7 +572,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.soccernet;
-				PRODUCT_NAME = SoccerNet;
+				PRODUCT_NAME = KickScore;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -582,16 +582,17 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-SoccerNet.release.xcconfig */;
+			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-KickScore.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = SoccerNet/SoccerNet.entitlements;
+				CODE_SIGN_ENTITLEMENTS = KickScore/KickScore.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = SoccerNet/Info.plist;
+				INFOPLIST_FILE = KickScore/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = KickScore;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -603,7 +604,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.soccernet;
-				PRODUCT_NAME = SoccerNet;
+				PRODUCT_NAME = KickScore;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -795,7 +796,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "SoccerNetTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "KickScoreTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -804,7 +805,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "SoccerNet" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "KickScore" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -813,7 +814,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "SoccerNet" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "KickScore" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

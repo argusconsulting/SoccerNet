@@ -14,7 +14,7 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'SoccerNet' do
+target 'KickScore' do
   use_modular_headers!
   config = use_native_modules!
   use_frameworks! :linkage => :static
@@ -27,7 +27,7 @@ target 'SoccerNet' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'SoccerNetTests' do
+  target 'KickScoreTests' do
     inherit! :complete
     # pod 'AgoraAudio_iOS', '4.5.1'
     # Pods for testing
