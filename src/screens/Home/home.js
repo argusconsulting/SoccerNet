@@ -118,7 +118,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, [fetchData]);8
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
