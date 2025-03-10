@@ -11,7 +11,7 @@ import React, {useEffect, useState} from 'react';
 import Header from '../../components/header/header';
 import tw from '../../styles/tailwind';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -74,8 +74,8 @@ const Photos = () => {
         <View style={tw`absolute bottom-0 right-0 flex-row p-2`}>
           <TouchableOpacity onPress={() => handleReaction('clap', item.id)}>
             {console.log('value of item', item)}
-            <FontAwesome6
-              name={'hands-clapping'}
+            <MaterialCommunityIcons
+              name={'hand-clap'}
               size={20}
               color={item.is_reacted === 'clap' ? '#FFBF00' : '#fff'}
               style={tw`self-center`}

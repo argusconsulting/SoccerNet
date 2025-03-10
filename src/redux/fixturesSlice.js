@@ -9,11 +9,11 @@ import {getSportsMonkApi, getSportsMonkCoreApi} from '../scripts/api-services';
 
 export const getAllFixturesByDate = createAsyncThunk(
   'fixtures/byDate',
-  async currentDate => {
+  async ({currentDate , lang}) => {
     console.log("currentDate", currentDate)
     try {
       const response = await getSportsMonkApi(
-        `${api_name_fixtures_date}/${currentDate}?include=participants;league;scores&timezone=Asia/Kolkata`,
+        `${api_name_fixtures_date}/${currentDate}?include=participants;league;scores&timezone=Asia/Dubai&locale=${lang}`,
       );
       return response;
     } catch (error) {
@@ -26,10 +26,10 @@ export const getAllFixturesByDate = createAsyncThunk(
 // for calendar
 export const getAllFixturesByDateRange = createAsyncThunk(
   'fixtures/byDateRange',
-  async ({start, end}) => {
+  async ({start, end , lang}) => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_fixtures_date_range}/${start}/${end}?per_page=300&filters=populate&timezone=Asia/Kolkata`,
+        `${api_name_fixtures_date_range}/${start}/${end}?per_page=300&filters=populate&timezone=Asia/Dubai&locale=${lang}`,
       );
 
       return response;

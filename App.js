@@ -5,7 +5,7 @@
  * @format
  */
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, Linking, StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, Alert, Linking, PermissionsAndroid, Platform, StyleSheet, Text, View} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {LogBox} from 'react-native';
 import Routes from './src/routes/routes';
@@ -18,6 +18,7 @@ import tw from './src/styles/tailwind';
 import {loadLanguage} from './src/redux/languageSlice';
 import { Link } from '@react-navigation/native';
 import { Settings } from "react-native-fbsdk-next";
+import { PERMISSIONS } from 'react-native-permissions';
 
 function App() {
   LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
@@ -26,7 +27,24 @@ function App() {
 
     Settings.initializeSDK();
 
+  const requestPermissions = async () => {
+   
+      await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+      ]);
+      await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS ,
+      ]);
+      // if (Platform.OS === 'android') {
+      //   await request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
+      // } else {
+      //   await request(PERMISSIONS.IOS.NOTIFICATIONS);
+      // }
+    
+  };
+
   useEffect(() => {
+    requestPermissions();
     const loadStoredLanguage = async () => {
       const savedLanguage = await AsyncStorage.getItem('selectedLanguage');
       console.log('value of saved lang', savedLanguage);
@@ -39,6 +57,7 @@ function App() {
 
 
     loadStoredLanguage();
+  
   }, []);
 
   useEffect(async() => {

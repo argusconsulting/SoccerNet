@@ -50,9 +50,6 @@ const Home = () => {
     state => state?.liveScore?.liveScoreInPlayData,
   );
 
-  // const toggleModal = () => {
-  //   setModalVisible(!modalVisible);
-  // };
 
   const getWeekRange = date => {
     // Set the end date to yesterday

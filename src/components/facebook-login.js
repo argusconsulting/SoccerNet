@@ -6,7 +6,7 @@ import {
   AuthenticationToken,
 } from 'react-native-fbsdk-next';
 import tw from '../styles/tailwind';
-import {setSocialLoginToken, setUserAuthToken} from '../redux/authSlice';
+import {setSocialLoginToken, setUserAuthToken, setUserID} from '../redux/authSlice';
 import {store} from '../redux/store';
 import {api_name_fb_login, api_name_fb_login_ios} from '../constants/api-constants';
 import {postApi} from '../scripts/api-services';
@@ -71,6 +71,7 @@ let response = null;
     // Store user profile and authentication token
     store.dispatch(setSocialProfile(response?.data?.user));
     store.dispatch(setUserAuthToken(response?.data?.token));
+    store.dispatch(setUserID(response?.data?.user?.id));
     // Navigate to home screen
     onClose();
     navigation.navigate("LeagueSelection");

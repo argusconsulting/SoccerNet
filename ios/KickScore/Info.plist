@@ -6,6 +6,17 @@
 	<string>en</string>
 	<key>Privacy - Microphone Usage Description</key>
 	<string>The purpose of using the microphone, for example, for a call or live interactive streaming.</string>
+	<key>NSMicrophoneUsageDescription</key>
+<string>We need access to your microphone for voice features.</string>
+
+<key>NSNotificationsUsageDescription</key>
+<string>We need notification access to keep you updated.</string>
+
+<key>UIBackgroundModes</key>
+<array>
+    <string>fetch</string>
+</array>
+
 	<key>CFBundleDisplayName</key>
 	<string>KickScore</string>
 	<key>CFBundleExecutable</key>

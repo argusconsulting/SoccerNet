@@ -220,11 +220,11 @@ const GroupCall: React.FC<GroupCallProps> = ({ groupName , creatorId, groupId}) 
 export default GroupCall;
 
 const getPermission = async () => {
-  if (Platform.OS === 'android') {
+ 
     await PermissionsAndroid.requestMultiple([
       PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
     ]);
-  }
+  
 };
 
 const styles = StyleSheet.create({

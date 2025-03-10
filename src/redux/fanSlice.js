@@ -101,6 +101,7 @@ export const inActiveRoomHandler = createAsyncThunk(
 export const joinMeetingRooms = createAsyncThunk(
   'meetingRoom/joinRooms',
   async ({userId, groupId}) => {
+    console.log('userId', userId,'groupid', groupId);
     const reqData = {
       user_id: userId,
     };
@@ -109,10 +110,11 @@ export const joinMeetingRooms = createAsyncThunk(
         `${api_name_create_fan_rooms}/${groupId}/join`,
         reqData,
       );
+      console.log("response-------------", response);
       Alertify.success(response?.data?.message);
       return response;
     } catch (error) {
-      console.log('error in creating meeting rooms ', error);
+      console.log('error in joining meeting rooms ', error);
       throw error;
     }
   },

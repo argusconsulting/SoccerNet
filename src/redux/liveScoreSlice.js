@@ -7,7 +7,7 @@ export const getLiveScoresInPlay = createAsyncThunk(
   async () => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_liveScore_inPlay}?include=participants;league;scores&timezone=Asia/Kolkata`,
+        `${api_name_liveScore_inPlay}?include=participants;league;scores&timezone=Asia/Dubai`,
       );
       return response;
     } catch (error) {

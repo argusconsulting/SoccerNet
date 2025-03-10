@@ -140,6 +140,7 @@ const SpotLight = () => {
           dispatch(getMeetingRooms());
         });
       } else {
+        console.log("entered")
         dispatch(joinMeetingRooms({userId, groupId})).then(() =>
           navigation.navigate('MeetingChat', {
             groupId: groupId,
@@ -160,7 +161,7 @@ const SpotLight = () => {
         });
       }
     };
-
+console.log("printing item", item)
     return (
 <TouchableOpacity
   style={[
