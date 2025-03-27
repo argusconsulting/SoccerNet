@@ -4,7 +4,7 @@ import tw from '../../styles/tailwind';
 import {useNavigation} from '@react-navigation/native';
 import moment from 'moment';
 
-const ScoreCard = ({match, width, screen, navigate}) => {
+const ScoreCard = React.memo(({match, width, screen, navigate}) => {
   const navigation = useNavigation();
 
   // Function to extract scores for home and away teams
@@ -175,6 +175,6 @@ const ScoreCard = ({match, width, screen, navigate}) => {
           </Text> */}
     </TouchableOpacity>
   );
-};
+});
 
 export default ScoreCard;

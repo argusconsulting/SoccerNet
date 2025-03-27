@@ -7,6 +7,7 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, Alert, Linking, PermissionsAndroid, Platform, StyleSheet, Text, View} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import notifee from  '@notifee/react-native';
 import {LogBox} from 'react-native';
 import Routes from './src/routes/routes';
 import {store} from './src/redux/store';
@@ -19,6 +20,7 @@ import {loadLanguage} from './src/redux/languageSlice';
 import { Link } from '@react-navigation/native';
 import { Settings } from "react-native-fbsdk-next";
 import { PERMISSIONS } from 'react-native-permissions';
+import { AndroidImportance } from '@notifee/react-native';
 
 function App() {
   LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
@@ -42,6 +44,7 @@ function App() {
       // }
     
   };
+
 
   useEffect(() => {
     requestPermissions();

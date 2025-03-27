@@ -1472,6 +1472,8 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - react-native-maps (1.20.1):
+    - React-Core
   - react-native-render-html (6.3.4):
     - React-Core
   - react-native-restart (0.0.27):
@@ -1800,10 +1802,10 @@ PODS:
   - RNGoogleSignin (13.1.0):
     - GoogleSignIn (~> 7.1)
     - React-Core
-  - RNNotifee (9.1.3):
+  - RNNotifee (9.1.8):
     - React-Core
-    - RNNotifee/NotifeeCore (= 9.1.3)
-  - RNNotifee/NotifeeCore (9.1.3):
+    - RNNotifee/NotifeeCore (= 9.1.8)
+  - RNNotifee/NotifeeCore (9.1.8):
     - React-Core
   - RNPermissions (5.2.6):
     - React-Core
@@ -1920,6 +1922,7 @@ DEPENDENCIES:
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
+  - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-render-html (from `../node_modules/react-native-render-html`)
   - react-native-restart (from `../node_modules/react-native-restart`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -2084,6 +2087,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fbsdk-next"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
+  react-native-maps:
+    :path: "../node_modules/react-native-maps"
   react-native-render-html:
     :path: "../node_modules/react-native-render-html"
   react-native-restart:
@@ -2242,6 +2247,7 @@ SPEC CHECKSUMS:
   react-native-date-picker: 585252087d4820b4cd8f2cf80068f6e8f5b72413
   react-native-fbsdk-next: 52f81e60eb3e8e0e06cf9728b4572d3509ca9d01
   react-native-image-picker: 90e570e3ca0d4bf618da7c24a89dba848acee6b4
+  react-native-maps: 9febd31278b35cd21e4fad2cf6fa708993be5dab
   react-native-render-html: 5afc4751f1a98621b3009432ef84c47019dcb2bd
   react-native-restart: 0bc732f4461709022a742bb29bcccf6bbc5b4863
   react-native-safe-area-context: ca0ebcd9798c5a45863c608c961d4f3f984b6ed2
@@ -2280,7 +2286,7 @@ SPEC CHECKSUMS:
   RNFBMessaging: 2ad5a47bd81da9f2d65188292d24115f40cbba74
   RNGestureHandler: 0bb0149abbdcf277fb89789fb2c56cdc59e3f556
   RNGoogleSignin: ba93c1137f8d5cebdd39b04f493fd212ddf5ecd6
-  RNNotifee: 6635a40b3ccc1660f1025278145499882867d54a
+  RNNotifee: 5e3b271e8ea7456a36eec994085543c9adca9168
   RNPermissions: 5124eb923c154c41e0439d86506a58beebaf8eb7
   RNScreens: f608e369383b866daacbedfd24733b6639736c28
   RNShare: b5987a0c9d518062a83bf74ae6e47a0c43f8b441

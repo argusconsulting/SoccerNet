@@ -12,7 +12,7 @@ import moment from 'moment';
 const CalendarScreen = () => {
   const dispatch = useDispatch();
   const data = useSelector(state => state?.fixtures?.fixturesByDate);
-
+  const lang = useSelector(state => state?.language_store?.language);
   const dataByRange = useSelector(
     state => state?.fixtures?.fixturesByDateRange,
   );
@@ -57,6 +57,7 @@ const CalendarScreen = () => {
         getAllFixturesByDateRange({
           start: monthRange.start,
           end: monthRange.end,
+          lang
         }),
       );
     }

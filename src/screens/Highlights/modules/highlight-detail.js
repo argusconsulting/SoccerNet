@@ -19,6 +19,7 @@ import moment from 'moment';
 import HoldOnAnimation from '../../../components/loader/animation-loader';
 import { getFixturesById } from '../../../redux/fixturesSlice';
 
+
 const Commentary = lazy(() =>
   import('../../../components/detail-modules/commentary'),
 );
@@ -42,6 +43,9 @@ const AiPrediction = lazy(() =>
 const PredictionSummary = lazy(() =>
   import('../../../components/detail-modules/prediction-summary'),
 );
+const MatchInfo = lazy(() =>
+  import('../../../components/detail-modules/match-info'),
+);
 
 
 
@@ -57,14 +61,18 @@ const HighlightDetail = () => {
     },
     {
       id: 3,
-      name: 'Standings',
+      name: 'Match Info',
     },
     {
       id: 4,
-      name: 'LineUps',
+      name: 'Standings',
     },
     {
       id: 5,
+      name: 'LineUps',
+    },
+    {
+      id: 6,
       name: 'Commentary',
     },
     {
@@ -72,7 +80,7 @@ const HighlightDetail = () => {
       name: 'AiPrediction',
     },
     {
-      id: 6,
+      id: 7,
       name: 'Kickscore Prediction',
     },
    
@@ -283,6 +291,7 @@ const HighlightDetail = () => {
           {/* {type === 'Summary' && <Summary />} */}
           {/* {type === 'Summary' && <PlayerInfo fixtureId={fixtureId} />} */}
           {type === 'Statistics' && <Statistics fixtureId={fixtureId} />}
+          {type === 'Match Info' && <MatchInfo detailData={detailData} />}
           {type === 'Standings' && <Standings homeTeam={homeTeam} awayTeam={awayTeam}/>}
           {type === 'LineUps' && <LineUps fixtureId={fixtureId} />}
           {type === 'Commentary' && <Commentary fixtureId={fixtureId} />}

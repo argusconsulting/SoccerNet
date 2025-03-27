@@ -11,6 +11,7 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
+import notifee from  '@notifee/react-native';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import tw from '../../styles/tailwind';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -20,7 +21,7 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import Menu from '../../components/menu/menu';
 import {t} from 'i18next';
 import { useDispatch, useSelector} from 'react-redux';
-import {getAllFixturesByDateRangeHighlights} from '../../redux/fixturesSlice';
+import {getAllFixturesByDate, getAllFixturesByDateRangeHighlights} from '../../redux/fixturesSlice';
 import moment from 'moment';
 import {getLiveScoresInPlay} from '../../redux/liveScoreSlice';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -37,12 +38,16 @@ const Home = () => {
   const [refreshing, setRefreshing] = useState(false);
   const {width} = useWindowDimensions();
   const [monthRange, setMonthRange] = useState({start: '', end: ''});
+  const currDateData = useSelector(state => state?.fixtures?.fixturesByDate);
   const justFinishedData = useSelector(
     state => state?.fixtures?.fixturesByDateRangeHighlights
   );
   const selectedData = useSelector(state => state.league.selectedLeagues);
   const lastScores = useRef(null);
   const intervalId = useRef(null);
+    const [selectedDate, setSelectedDate] = useState(
+      moment().format('YYYY-MM-DD'), // Initialize with current date
+    );
   const notificationsCountNumber = useSelector(
     state => state?.announcement?.notificationsCount,
   );
@@ -89,29 +94,61 @@ const Home = () => {
     useCallback(() => {
       const fetchScores = async () => {
         await dispatch(getLiveScoresInPlay());
-        const latestScores =
-          store.getState().liveScore.liveScoreInPlayData.data;
-
-        if (
-          JSON.stringify(latestScores) !== JSON.stringify(lastScores.current)
-        ) {
+        const latestScores = store.getState().liveScore.liveScoreInPlayData.data;
+  
+        if (JSON.stringify(latestScores) !== JSON.stringify(lastScores.current)) {
           console.log('Scores Updated:', latestScores);
           lastScores.current = latestScores;
         } else {
           console.log('No Change in Scores');
         }
       };
-
-      fetchScores(); // Fetch immediately when screen comes into focus
-
-      if (inPlayLiveScores?.data?.length > 0) {
-        intervalId.current = setInterval(fetchScores, 5000);
-      } else {
-        intervalId.current = setInterval(fetchScores, 1000 * 60 * 5);
+  
+      fetchScores(); // Fetch immediately
+  
+      if (intervalId.current) {
+        clearInterval(intervalId.current); // Clear existing interval
       }
-      return () => clearInterval(intervalId.current); // Cleanup when screen loses focus
+  
+      intervalId.current = setInterval(
+        fetchScores,
+        inPlayLiveScores?.data?.length > 0 ? 5000 : 1000 * 60 * 5
+      );
+  
+      return () => {
+        if (intervalId.current) {
+          clearInterval(intervalId.current); // Cleanup on unmount
+        }
+      };
     }, [dispatch, inPlayLiveScores?.data?.scores]),
   );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     const fetchScores = async () => {
+  //       await dispatch(getLiveScoresInPlay());
+  //       const latestScores =
+  //         store.getState().liveScore.liveScoreInPlayData.data;
+
+  //       if (
+  //         JSON.stringify(latestScores) !== JSON.stringify(lastScores.current)
+  //       ) {
+  //         console.log('Scores Updated:', latestScores);
+  //         lastScores.current = latestScores;
+  //       } else {
+  //         console.log('No Change in Scores');
+  //       }
+  //     };
+
+  //     fetchScores(); // Fetch immediately when screen comes into focus
+
+  //     if (inPlayLiveScores?.data?.length > 0) {
+  //       intervalId.current = setInterval(fetchScores, 5000);
+  //     } else {
+  //       intervalId.current = setInterval(fetchScores, 1000 * 60 * 5);
+  //     }
+  //     return () => clearInterval(intervalId.current); // Cleanup when screen loses focus
+  //   }, [dispatch, inPlayLiveScores?.data?.scores]),
+  // );
 
   useEffect(() => {
     fetchData();
@@ -156,7 +193,52 @@ const Home = () => {
     setModalVisible(prev => !prev);
   }, []);
 
+    useEffect(() => {
+      dispatch(getAllFixturesByDate(selectedDate));
+    }, [dispatch, selectedDate]);
 
+  const scheduleMatchNotification = async (match) => {
+    await notifee.requestPermission();
+  
+    // Create a notification channel (only needed once, can be done in App.js)
+    await notifee.createChannel({
+      id: 'match-notifications',
+      name: 'Match Notifications',
+    });
+  
+    const matchTimestamp = match.starting_at_timestamp * 1000; 
+    const notificationTime = new Date(matchTimestamp - 10 * 60 * 1000); 
+  
+    console.log("Match Time:", new Date(matchTimestamp)); 
+    console.log("Notification Time:", notificationTime);
+  
+    await notifee.createTriggerNotification(
+      {
+        title: "Upcoming Match!",
+        body: `${match.name} starts in 10 minutes!`,
+        android: {
+          channelId: 'match-notifications',
+        },
+      },
+      { type: 0, timestamp: notificationTime.getTime() } // Schedule notification
+    );
+  };
+
+
+  useEffect(() => {
+    if (currDateData?.data?.length) {
+      const now = Date.now();
+      const tenMinutesFromNow = now + 10 * 60 * 1000;
+  
+      currDateData.data.forEach(match => {
+        const matchTime = match.starting_at_timestamp * 1000;
+        if (matchTime > now && matchTime <= tenMinutesFromNow) {
+          scheduleMatchNotification(match);
+        }
+      });
+    }
+  }, [currDateData]);
+  
   return (
     <SafeAreaView style={tw`bg-[#05102E] flex-1 `}>
       <ScrollView
@@ -195,6 +277,7 @@ const Home = () => {
           </TouchableOpacity>
         </View>
         <View style={tw`px-5`}></View>
+       
         <SelectedLeagues />
 
         <View>
@@ -262,21 +345,28 @@ const Home = () => {
         
           
           {filteredData?.length > 0 ? (
-            <FlatList
-              data={filteredData}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              renderItem={({item}) => (
-                <ScoreCard
-                  match={item}
-                  width={280}
-                  screen={'Home'}
-                  navigate={'HighlightDetail'}
-                />
-              )}
-              keyExtractor={(item, index) => index.toString()}
-              contentContainerStyle={tw`items-center px-3`}
-            />
+           <FlatList
+           data={filteredData}
+           horizontal
+           showsHorizontalScrollIndicator={false}
+           renderItem={({ item }) => (
+             <ScoreCard
+               match={item}
+               width={280}
+               screen={'Home'}
+               navigate={'HighlightDetail'}
+             />
+           )}
+           keyExtractor={(item, index) => index.toString()}
+           contentContainerStyle={tw`items-center px-3`}
+           initialNumToRender={5} 
+           windowSize={5} 
+           getItemLayout={(data, index) => ({
+             length: 280, // Item width
+             offset: 280 * index,
+             index,
+           })}
+         />
           ) : (
             <Text
               style={tw`text-[#fff] text-[20px] font-401 leading-tight  mt-5 self-center px-5`}>
@@ -290,12 +380,13 @@ const Home = () => {
           source={require('../../assets/Homescreen-bg.png')}
           style={tw`w-full h-60`} 
           resizeMode="cover"
+          fadeDuration={300}
         />
         <LinearGradient
           colors={['rgba(0, 0, 0, 0.8)', 'rgba(0, 0, 0, 0)']}
-          start={{x: 0.5, y: 0}} // Top center
-          end={{x: 0.5, y: 1}} // Slight fade into transparency
-          style={tw`absolute top-0 w-full h-20 `} // Adjust height to control blur size
+          start={{x: 0.5, y: 0}} 
+          end={{x: 0.5, y: 1}} 
+          style={tw`absolute top-0 w-full h-20 `} 
         />
       </View>
 
