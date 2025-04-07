@@ -56,8 +56,8 @@ const LeagueModal = ({isVisible, toggleModal}) => {
     {
       id: '7',
       icon: require('../../assets/icons/newspaper.png'),
-      title: 'News',
-      navigate: 'News', // Example screen name
+      title: 'LeaderBoard',
+      navigate: 'LeaderBoard', // Example screen name
     },
     {
       id: '8',
@@ -88,7 +88,7 @@ const LeagueModal = ({isVisible, toggleModal}) => {
       />
       <Text
         style={[
-          tw`text-[#fff] text-[16px] font-401 leading-normal mt-3 self-center`,
+          tw`text-[#fff] text-[15px] font-401 leading-normal mt-3 self-center`,
           {textAlign: 'center'},
         ]}>
         {t(item.title)}

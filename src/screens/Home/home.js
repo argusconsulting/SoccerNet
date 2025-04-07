@@ -11,7 +11,7 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import notifee from  '@notifee/react-native';
+import notifee, { AndroidImportance } from  '@notifee/react-native';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import tw from '../../styles/tailwind';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -122,33 +122,6 @@ const Home = () => {
       };
     }, [dispatch, inPlayLiveScores?.data?.scores]),
   );
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     const fetchScores = async () => {
-  //       await dispatch(getLiveScoresInPlay());
-  //       const latestScores =
-  //         store.getState().liveScore.liveScoreInPlayData.data;
-
-  //       if (
-  //         JSON.stringify(latestScores) !== JSON.stringify(lastScores.current)
-  //       ) {
-  //         console.log('Scores Updated:', latestScores);
-  //         lastScores.current = latestScores;
-  //       } else {
-  //         console.log('No Change in Scores');
-  //       }
-  //     };
-
-  //     fetchScores(); // Fetch immediately when screen comes into focus
-
-  //     if (inPlayLiveScores?.data?.length > 0) {
-  //       intervalId.current = setInterval(fetchScores, 5000);
-  //     } else {
-  //       intervalId.current = setInterval(fetchScores, 1000 * 60 * 5);
-  //     }
-  //     return () => clearInterval(intervalId.current); // Cleanup when screen loses focus
-  //   }, [dispatch, inPlayLiveScores?.data?.scores]),
-  // );
 
   useEffect(() => {
     fetchData();
@@ -197,48 +170,132 @@ const Home = () => {
       dispatch(getAllFixturesByDate(selectedDate));
     }, [dispatch, selectedDate]);
 
-  const scheduleMatchNotification = async (match) => {
-    await notifee.requestPermission();
-  
-    // Create a notification channel (only needed once, can be done in App.js)
-    await notifee.createChannel({
-      id: 'match-notifications',
-      name: 'Match Notifications',
-    });
-  
-    const matchTimestamp = match.starting_at_timestamp * 1000; 
-    const notificationTime = new Date(matchTimestamp - 10 * 60 * 1000); 
-  
-    console.log("Match Time:", new Date(matchTimestamp)); 
-    console.log("Notification Time:", notificationTime);
-  
-    await notifee.createTriggerNotification(
-      {
-        title: "Upcoming Match!",
-        body: `${match.name} starts in 10 minutes!`,
-        android: {
-          channelId: 'match-notifications',
-        },
-      },
-      { type: 0, timestamp: notificationTime.getTime() } // Schedule notification
-    );
-  };
+    // const scheduleNotificationForFixedTime = async () => {
+    //   await notifee.requestPermission();
+    
+    //   // Create a notification channel (only needed once, can be done in App.js)
+    //   await notifee.createChannel({
+    //     id: 'match-notifications',
+    //     name: 'Match Notifications',
 
+    //   });
+    
+    //   // Set the notification time to 7:10 PM today
+    //   const now = new Date();
+    //   const notificationTime = new Date();
+    //   notificationTime.setHours(22, 50, 0, 0); // 7:10 PM (24-hour format)
+    
+    //   console.log("🚀 Scheduling Notification at:", notificationTime);
+    
+    //   await notifee.createTriggerNotification(
+    //     {
+    //       title: "Test Notification",
+    //       body: "This is a scheduled notification for 7:10 PM!",
+    //       android: {
+    //         channelId: 'match-notifications',
+    //       },
+    //     },
+    //     { type: 0, timestamp: notificationTime.getTime() } // Schedule notification
+    //   );
+    
+    //   console.log("✅ Notification set for:", notificationTime);
+    // };
+    
+    // // Trigger the notification when the component mounts
+    // useEffect(() => {
+    //   scheduleNotificationForFixedTime();
+    // }, []);
+    
 
-  useEffect(() => {
-    if (currDateData?.data?.length) {
-      const now = Date.now();
-      const tenMinutesFromNow = now + 10 * 60 * 1000;
-  
-      currDateData.data.forEach(match => {
-        const matchTime = match.starting_at_timestamp * 1000;
-        if (matchTime > now && matchTime <= tenMinutesFromNow) {
-          scheduleMatchNotification(match);
-        }
+   
+
+    const scheduledMatchesRef = useRef(new Set());
+
+    const scheduleMatchNotification = async (match) => {
+      await notifee.requestPermission();
+    
+      // Create a notification channel (only needed once)
+      await notifee.createChannel({
+        id: "match-notifications",
+        name: "Match Notifications",
+        sound: "default",
+        importance: AndroidImportance.HIGH,
       });
-    }
-  }, [currDateData]);
-  
+    
+      // Convert match start time to a timestamp
+      const matchTimestamp = new Date(match.starting_at).getTime();
+      
+      // Schedule notification 1 hour 17 minutes before the match
+      const notificationTime = matchTimestamp - (1 * 60 * 60 * 1000) ;
+    
+      console.log("Now:", new Date(Date.now()).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }));
+      console.log("Match Start Time (IST):", new Date(matchTimestamp).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }));
+      console.log("Notification Time (IST):", new Date(notificationTime).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }));
+      console.log("Time Difference:", notificationTime - Date.now(), "ms");
+    
+      if (notificationTime > Date.now()) {
+        if (!scheduledMatchesRef.current.has(match.id)) { 
+          await notifee.createTriggerNotification(
+            {
+              title: "Upcoming Match!",
+              body: `${match.name} starts in 1 hour !`,
+              android: {
+                channelId: "match-notifications",
+                sound: "default",
+                importance: AndroidImportance.HIGH,
+              },
+            },
+            { type: 0, timestamp: notificationTime }
+          );
+    
+          scheduledMatchesRef.current.add(match.id); // ✅ Store match ID
+          console.log(`✅ Notification scheduled for ${match.name}`);
+        } else {
+          console.log(`⚠️ Notification for ${match.name} already exists`);
+        }
+      } else {
+        console.log(`❌ Skipping ${match.name}, notification time has passed.`);
+      }
+    };
+    
+    useEffect(() => {
+      let intervalId;
+      
+      const checkAndScheduleNotifications = async () => {
+        if (currDateData?.data?.length) {
+          const now = Date.now();
+          console.log("Current Time (IST):", new Date(now).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }));
+    
+          for (const match of currDateData.data) {
+            const matchTime = new Date(match.starting_at).getTime();
+            const notificationTime = matchTime - (1 * 60 * 60 * 1000);
+    
+            if (now < notificationTime) {
+              if (!scheduledMatchesRef.current.has(match.id)) {
+                console.log(`✅ Scheduling Notification for: ${match.name}`);
+                await scheduleMatchNotification(match);
+              } else {
+                console.log(`⚠️ Skipping duplicate notification for ${match.name}`);
+              }
+            } else {
+              console.log(`❌ Skipping ${match.name}, notification time has passed.`);
+            }
+          }
+        }
+      };
+    
+      checkAndScheduleNotifications(); // Run immediately
+    
+      // Clear previous interval before starting a new one
+      if (intervalId) clearInterval(intervalId);
+      intervalId = setInterval(checkAndScheduleNotifications, 60 * 1000);
+    
+      return () => clearInterval(intervalId); // Cleanup on unmount
+    }, [currDateData]);
+    
+    
+    
+    
   return (
     <SafeAreaView style={tw`bg-[#05102E] flex-1 `}>
       <ScrollView

@@ -40,6 +40,7 @@ import PlayerInfo from '../components/detail-modules/player-info';
 import Players from '../components/detail-modules/players';
 import ForgotPassword from '../screens/Forgot-Password/forgotPassword';
 import CallScreen from '../screens/rooms/CallScreen';
+import LeaderBoard from '../screens/leaderBoard/leaderBoard';
 
 
 // Bottom Tab Navigation
@@ -193,14 +194,13 @@ export const StackScreen = () => {
       <Stack.Screen name="Players" component={Players} />
       <Stack.Screen name="PlayerInfo" component={PlayerInfo} />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+      <Stack.Screen name="LeaderBoard" component={LeaderBoard} />
       <Stack.Screen name="CallScreen" component={CallScreen} />
     </Stack.Navigator>
   );
 };
 
 export default function Routes() {
-  const isReadyRef = useRef(false);
-  const token = useSelector(state => state.auth_store.token);
 
   const NAVIGATION_IDS = ['MeetingChat'];
   const linking = {

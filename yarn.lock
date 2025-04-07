@@ -8146,7 +8146,7 @@ __metadata:
     react-native-maps: ^1.20.1
     react-native-modal: ^13.0.1
     react-native-paper: ^5.12.5
-    react-native-permissions: ^5.2.6
+    react-native-permissions: ^5.3.0
     react-native-phone-number-input: ^2.1.0
     react-native-picker-select: ^9.3.1
     react-native-rename: ^3.2.16
@@ -10100,9 +10100,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-permissions@npm:^5.2.6":
-  version: 5.2.6
-  resolution: "react-native-permissions@npm:5.2.6"
+"react-native-permissions@npm:^5.3.0":
+  version: 5.3.0
+  resolution: "react-native-permissions@npm:5.3.0"
   peerDependencies:
     react: ">=18.1.0"
     react-native: ">=0.70.0"
@@ -10110,7 +10110,7 @@ __metadata:
   peerDependenciesMeta:
     react-native-windows:
       optional: true
-  checksum: 313895bbd29c947d3f2b26dd58bec031a0216c4527c49ee48061e6167dedb8e690bb7cd27a1628d282b09bc31b05d48f998ebabcd7fc3e7ccb0da2bc8de3098d
+  checksum: 0896ed6919062a57b79c54d3de0d14a515ada9be87b5f65295e728ee23706430d99d45e48b8d45caad2d8f5eb42d1bd53cb213ff645ebec2117c94aadd35bfe8
   languageName: node
   linkType: hard
 

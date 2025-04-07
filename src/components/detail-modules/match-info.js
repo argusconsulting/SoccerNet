@@ -16,7 +16,7 @@ const MatchInfo = ({ detailData }) => {
                <View style={tw`bg-gray-900 p-5 rounded-lg shadow-lg mb-5`}>
             {/* Venue Information */}
             <Text style={tw`text-xl text-white font-bold mb-3 font-400 `}>Venue Information</Text>
-            <View style={tw`  mb-4`}>
+          <View style={tw`  mb-4`}>
                 <Image source={{ uri: image_path }} style={tw`w-full h-60 self-center rounded-lg`} />
                 <View style={tw`mt-3`}>
                     <Text style={tw`text-gray-200 font-400 font-[14px] text-lg font-bold`}>{name}</Text>
@@ -26,7 +26,7 @@ const MatchInfo = ({ detailData }) => {
                 </View>
             </View>
 
-            {/* Weather Report */}
+           
             <View style={tw`flex-row justify-between my-5`}>
             <Text style={tw`text-xl text-white font-bold font-401  `}>Weather Report</Text>
             <View style={tw`flex-row items-center justify-end `}>
@@ -58,8 +58,8 @@ const MatchInfo = ({ detailData }) => {
                 <FontAwesome5 name="cloud" size={20} color="white" />
                 <Text style={tw`text-gray-300 flex-1 ml-2 font-400 `}>Cloud Cover: {clouds}</Text>
             </View>
-
-            {/* Map View */}
+ 
+         
             <Text style={tw`text-xl text-white font-bold mb-3 my-5 font-401`}>Location</Text>
           
       <MapView
@@ -87,7 +87,8 @@ const MatchInfo = ({ detailData }) => {
       Linking.openURL(url);
     }}
   />
-</MapView>
+</MapView> 
+
 
         </View>
 

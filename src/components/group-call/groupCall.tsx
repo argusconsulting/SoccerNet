@@ -26,6 +26,7 @@ import tw from '../../styles/tailwind';
 import { postApi } from '../../scripts/api-services';
 import { api_name_agora_token } from '../../constants/api-constants';
 import Loader from '../loader/Loader';
+import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 
 
 
@@ -102,9 +103,7 @@ const GroupCall: React.FC<GroupCallProps> = ({ groupName , creatorId, groupId}) 
   const setupVideoSDKEngine = async () => {
     try {
       // Create RtcEngine after obtaining device permissions
-      if (Platform.OS === 'android') {
         await getPermission();
-      }
       agoraEngineRef.current = createAgoraRtcEngine();
       const agoraEngine = agoraEngineRef.current;
       eventHandler.current = {
@@ -220,12 +219,30 @@ const GroupCall: React.FC<GroupCallProps> = ({ groupName , creatorId, groupId}) 
 export default GroupCall;
 
 const getPermission = async () => {
- 
-    await PermissionsAndroid.requestMultiple([
-      PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-    ]);
-  
+  if (Platform.OS === 'ios') {
+    const result = await request(PERMISSIONS.IOS.MICROPHONE);
+    if (result === RESULTS.GRANTED) {
+      console.log('Microphone permission granted');
+    } else {
+      console.log('Microphone permission denied');
+    }
+  } else {
+    // Android logic (your existing code)
+    if (Platform.OS === 'android') {
+      await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+      ]);
+    }
+  }
 };
+
+// const getPermission = async () => {
+ 
+//     await PermissionsAndroid.requestMultiple([
+//       PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+//     ]);
+  
+// };
 
 const styles = StyleSheet.create({
   button: {

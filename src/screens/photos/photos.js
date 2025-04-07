@@ -47,24 +47,65 @@ const Photos = () => {
   const handleReaction = (reaction, postId) => {
     const updatedPhotos = localPhotos.map(photo => {
       if (photo.id === postId) {
+        const previousReaction = photo.is_reacted;
+  
+        // Clone the current counts
+        let claps = photo.claps_count || 0;
+        let likes = photo.likes_count || 0;
+        let hearts = photo.hearts_count || 0;
+  
+        // Decrease previous reaction count
+        if (previousReaction === 'clap') claps = Math.max(0, claps - 1);
+        if (previousReaction === 'like') likes = Math.max(0, likes - 1);
+        if (previousReaction === 'heart') hearts = Math.max(0, hearts - 1);
+  
+        // Increase new reaction count
+        if (reaction === 'clap') claps += 1;
+        if (reaction === 'like') likes += 1;
+        if (reaction === 'heart') hearts += 1;
+  
         return {
           ...photo,
-          is_reacted: reaction, // Set the reaction
-          claps_count: reaction === 'clap' ? 1 : 0,
-          likes_count: reaction === 'like' ? 1 : 0,
-          hearts_count: reaction === 'heart' ? 1 : 0,
+          is_reacted: reaction,
+          claps_count: claps,
+          likes_count: likes,
+          hearts_count: hearts,
         };
       }
       return photo;
     });
-
+  
     setLocalPhotos(updatedPhotos);
-
+  
     const reqData = {id: postId, reaction};
     dispatch(getFanReactions(reqData)).catch(() => {
-      setLocalPhotos(fanPhotos); // Rollback on failure
+      // Optional: rollback logic here, or refetch fanPhotos
+      dispatch(getFanPhotos());
     });
   };
+  
+
+  // const handleReaction = (reaction, postId) => {
+  //   const updatedPhotos = localPhotos.map(photo => {
+  //     if (photo.id === postId) {
+  //       return {
+  //         ...photo,
+  //         is_reacted: reaction, // Set the reaction
+  //         claps_count: reaction === 'clap' ? 1 : 0,
+  //         likes_count: reaction === 'like' ? 1 : 0,
+  //         hearts_count: reaction === 'heart' ? 1 : 0,
+  //       };
+  //     }
+  //     return photo;
+  //   });
+
+  //   setLocalPhotos(updatedPhotos);
+
+  //   const reqData = {id: postId, reaction};
+  //   dispatch(getFanReactions(reqData)).catch(() => {
+  //     setLocalPhotos(fanPhotos); // Rollback on failure
+  //   });
+  // };
 
   const renderItem = ({item}) => (
     <View style={tw`mt-5`}>

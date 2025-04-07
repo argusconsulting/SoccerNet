@@ -18,6 +18,7 @@ export const api_name_get_comments = 'posts/comments';
 export const api_name_create_comments = 'posts/comment';
 export const api_name_like_post = 'posts/like';
 export const api_name_fan_photos = 'get/fan-photos';
+export const api_name_leaderBoard = 'fan-photos/leaderboard';
 export const api_name_post_fan_photos = 'post/fan-photos';
 export const api_name_fan_reaction = 'photos';
 export const api_name_google_login = 'verify-google-token';
