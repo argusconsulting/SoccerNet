@@ -51,7 +51,7 @@ const TriviaQuestions = ({}) => {
   const renderQuestion = ({item}) => (
     <View>
       <RenderHtml
-        contentWidth={100}
+        contentWidth={50}
         source={{html: item?.question_text}}
         tagsStyles={customStyles}
       />
@@ -71,7 +71,7 @@ const TriviaQuestions = ({}) => {
             ]}
             onPress={() => handleOptionSelect(option)}>
             <RenderHtml
-              contentWidth={100}
+              contentWidth={20}
               source={{html: `${option.option_text || 'No text available'}`}}
               tagsStyles={customStyles}
             />

@@ -61,7 +61,7 @@ function Menu({modalVisible, toggleModal}) {
     {
       id: '0a5f78-3eae-4a0c-810b-6637687e799f',
       icon: require('../../assets/icons/newspaper.png'),
-      title: 'News',
+      title: 'LeaderBoard',
     },
     {
       id: '0a378-3eae-4a0c-810b-6637687e799f',
@@ -130,9 +130,9 @@ function Menu({modalVisible, toggleModal}) {
         toggleModal();
         navigation.navigate('Poll');
         break;
-      case 'News':
+      case 'LeaderBoard':
         toggleModal();
-        navigation.navigate('News');
+        navigation.navigate('LeaderBoard');
         break;
       case 'Photos':
         toggleModal();

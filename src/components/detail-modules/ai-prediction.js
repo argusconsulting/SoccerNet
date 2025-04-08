@@ -24,13 +24,10 @@ const dispatch = useDispatch()
       dispatch(getPredictionFirstGoal(fixtureId));
     };
 
-    // Call the APIs initially
     fetchPredictions();
 
-    // Set an interval to call the APIs every 10 minutes
     const interval = setInterval(fetchPredictions, 10 * 60 * 1000);
 
-    // Cleanup the interval when the component unmounts
     return () => clearInterval(interval);
   }, [dispatch, fixtureId]);
 
@@ -54,7 +51,7 @@ const dispatch = useDispatch()
                       source={{uri: homeTeam?.image_path}}
                       style={[
                         tw`w-10 h-10 self-center`, // Image size and centering
-                        {resizeMode: 'contain', borderRadius: 999}, // Make the image circular
+                        {resizeMode: 'contain', borderRadius: 999}, 
                       ]}
                     />
                 {/* <Text
@@ -69,8 +66,8 @@ const dispatch = useDispatch()
         ]}>
         <LinearGradient
           colors={['#6A36CE', '#2575F6']}
-          start={{x: 0, y: 0}} // Start from top left
-          end={{x: 1, y: 1}} // End at bottom right
+          start={{x: 0, y: 0}} 
+          end={{x: 1, y: 1}} 
           style={[
             tw`rounded-full justify-center`,
             {flex: 1, justifyContent: 'center', alignItems: 'center'},

@@ -26,7 +26,7 @@ const data = [
 
 const screenWidth = Dimensions.get('window').width;
 const numColumns = 2;
-const boxSize = screenWidth / numColumns - 40; // Adjust the spacing
+const boxSize = screenWidth / numColumns - 40; 
 
 const Trivia = () => {
   const dispatch = useDispatch();
