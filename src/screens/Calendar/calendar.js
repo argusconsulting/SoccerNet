@@ -86,7 +86,7 @@ const CalendarScreen = () => {
     // console.log("time", time ,"starting at", item?.participants?.[0]?.name , item?.starting_at)
 
     return (
-      <View style={tw`bg-[#303649] w-90 py-3 mt-5 self-center rounded-lg`}>
+      <View style={tw`bg-[#303649] w-90 h-25 py-3 mt-5 self-center justify-center rounded-lg border-l-[2px] border-[#d9d9d9]`}>
         <View style={tw`flex-row self-center`}>
           <Image
             source={{uri: item?.participants?.[0]?.image_path}}

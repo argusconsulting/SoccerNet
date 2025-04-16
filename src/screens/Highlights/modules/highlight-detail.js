@@ -149,7 +149,7 @@ const HighlightDetail = () => {
       <ScrollView>
         <ImageBackground
           source={require('../../../assets/detail-bg.png')}
-          style={[tw`w-full h-58`, {resizeMode: 'contain'}]}>
+          style={[tw`w-full h-auto`, {resizeMode: 'contain'}]}>
           <Header name="" />
           <View style={[tw` px-5  mt--6`]}>
             <View style={tw`flex-row justify-between mb-4 `}>
@@ -208,7 +208,7 @@ const HighlightDetail = () => {
                 </TouchableOpacity>
 
                 <Text
-                  style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5 self-center`}>
+                  style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5 self-center w-29 text-center`}>
                   {homeTeam?.name}
                 </Text>
               </View>
@@ -261,13 +261,13 @@ const HighlightDetail = () => {
                   </View>
                 </TouchableOpacity>
                 <Text
-                  style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5 self-center`}>
+                  style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5 self-center text-center w-27`}>
                   {awayTeam?.name}
                 </Text>
               </View>
             </View>
             <Text
-            style={[tw`text-[#ed2939] text-[16px] font-400 leading-tight mt-5  self-center` ,{textAlign:"center"}]}>
+            style={[tw`text-[#FF2F00] text-[16px] font-400 leading-tight mt-5 mb-2  self-center` ,{textAlign:"center"}]}>
            Result:{" "} {detailData?.result_info}
           </Text> 
           </View>
@@ -275,7 +275,7 @@ const HighlightDetail = () => {
         </ImageBackground>
 
         <View>
-          <View style={tw` border-t pt-3  border-[#3e3e3e] mt-2 `} />
+          <View style={tw` border-t pt-3  border-[#3e3e3e]  `} />
           <FlatList
             data={detailsType}
             horizontal

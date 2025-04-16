@@ -67,7 +67,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    getWeekRange(moment()); // Initialize with current month
+    getWeekRange(moment()); 
   }, []);
 
   useEffect(() => {
@@ -89,6 +89,8 @@ const Home = () => {
       );
     }
   }, [dispatch, monthRange, lang]);
+
+
 
   useFocusEffect(
     useCallback(() => {
@@ -125,7 +127,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);8
+  }, [fetchData]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -169,43 +171,6 @@ const Home = () => {
     useEffect(() => {
       dispatch(getAllFixturesByDate(selectedDate));
     }, [dispatch, selectedDate]);
-
-    // const scheduleNotificationForFixedTime = async () => {
-    //   await notifee.requestPermission();
-    
-    //   // Create a notification channel (only needed once, can be done in App.js)
-    //   await notifee.createChannel({
-    //     id: 'match-notifications',
-    //     name: 'Match Notifications',
-
-    //   });
-    
-    //   // Set the notification time to 7:10 PM today
-    //   const now = new Date();
-    //   const notificationTime = new Date();
-    //   notificationTime.setHours(22, 50, 0, 0); // 7:10 PM (24-hour format)
-    
-    //   console.log("🚀 Scheduling Notification at:", notificationTime);
-    
-    //   await notifee.createTriggerNotification(
-    //     {
-    //       title: "Test Notification",
-    //       body: "This is a scheduled notification for 7:10 PM!",
-    //       android: {
-    //         channelId: 'match-notifications',
-    //       },
-    //     },
-    //     { type: 0, timestamp: notificationTime.getTime() } // Schedule notification
-    //   );
-    
-    //   console.log("✅ Notification set for:", notificationTime);
-    // };
-    
-    // // Trigger the notification when the component mounts
-    // useEffect(() => {
-    //   scheduleNotificationForFixedTime();
-    // }, []);
-    
 
    
 

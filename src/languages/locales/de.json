@@ -26,7 +26,7 @@
   "leagueHeadingWorldcup": "Weltmeisterschaft",
   "whatsOnYourMind": "Was geht dir durch den Kopf?",
   "league": "Liga",
-  "liveNow": "Jetzt live",
+  "liveNow": "Laufende Spiele",
   "justFinished": "Gerade beendet",
   "seeAll": "Alle anzeigen",
   "Profile": "Profil",
@@ -87,6 +87,6 @@
 "Season": "Saison",
 "Search by team name" :"Suche nach Teamnamen",
 "Bundesliga": "Bundesliga",
-"laliga":"La Liga"
-
+"laliga":"La Liga",
+"LeaderBoard:": "Bestenliste"
 }

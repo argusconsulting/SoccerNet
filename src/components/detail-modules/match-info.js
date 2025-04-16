@@ -12,12 +12,13 @@ const MatchInfo = ({ detailData }) => {
     const { name, address, city_name, capacity, latitude, longitude, surface, image_path } = venue;
 
 
+    console.log("image_path", image_path);
     return (
                <View style={tw`bg-gray-900 p-5 rounded-lg shadow-lg mb-5`}>
             {/* Venue Information */}
             <Text style={tw`text-xl text-white font-bold mb-3 font-400 `}>Venue Information</Text>
           <View style={tw`  mb-4`}>
-                <Image source={{ uri: image_path }} style={tw`w-full h-60 self-center rounded-lg`} />
+               {image_path && <Image source={{ uri: image_path }} style={tw`w-full h-60 self-center rounded-lg`} />}
                 <View style={tw`mt-3`}>
                     <Text style={tw`text-gray-200 font-400 font-[14px] text-lg font-bold`}>{name}</Text>
                     <Text style={tw`text-gray-300 font-400 font-[14px]`}>Address:{'  '}{address}, {city_name}</Text>

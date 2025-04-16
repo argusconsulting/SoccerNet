@@ -8,6 +8,11 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { FlatList } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { getLeaderBoard } from '../../redux/fanPhotosSlice';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+} from 'react-native-reanimated';
 
 const LeaderBoard = () => {
   const dispatch = useDispatch();
@@ -16,6 +21,7 @@ const LeaderBoard = () => {
   useEffect(() => {
     dispatch(getLeaderBoard());
   }, [dispatch]);
+ 
 
   const getTopThreeUsers = leaderboardData => {
     if (!leaderboardData || leaderboardData.length === 0) return [];
@@ -46,8 +52,33 @@ const LeaderBoard = () => {
   const fallbackImage = require('../../assets/icons/football.png');
 
   const Podium = ({ user }) => {
-    if (!user) return null;
+    const scale = useSharedValue(0);
+    const opacity = useSharedValue(0);
+    const rotate = useSharedValue(0);
+    
+    useEffect(() => {
+      if (user?.rank === 1) {
+        scale.value = withTiming(1.2, { duration: 500 }, () => {
+          scale.value = withTiming(1, { duration: 300 });
+        });
+        opacity.value = withTiming(1, { duration: 800 });
+        rotate.value = withTiming(5, { duration: 400 }); // subtle wave
+      }
+    }, [user]);
+    
+    const animatedStyle = useAnimatedStyle(() => {
+      return {
+        opacity: opacity.value,
+        transform: [
+          { scale: scale.value },
+          { rotateZ: `${Math.sin(rotate.value) * 0.1}rad` },
+        ],
+      };
+    });
+  
 
+    if (!user) return null;
+  
     return (
       <View
         style={[
@@ -58,6 +89,11 @@ const LeaderBoard = () => {
           },
         ]}
       >
+         {user.rank === 1 && (
+          <Animated.Text style={[animatedStyle, styles.winnerText]}>
+             Winner!
+          </Animated.Text>
+        )}
         {user.rank === 1 && (
           <FontAwesome5 name="crown" size={24} color={user.color} style={{ position: 'absolute', top: -20 }} />
         )}
@@ -71,10 +107,44 @@ const LeaderBoard = () => {
         <Text style={[styles.score, { color: user.color }]}>
           {user?.score}
         </Text>
-        <AntDesign name="like1" size={18} color={user.color} style={tw`mb-5`} />
+        <AntDesign name="like1" size={18} color={user.color} style={tw`mb-2`} />
+  
+       
       </View>
     );
   };
+
+  
+  // const Podium = ({ user }) => {
+  //   if (!user) return null;
+
+  //   return (
+  //     <View
+  //       style={[
+  //         styles.podiumBlock,
+  //         {
+  //           height: user.rank === 1 ? 180 : 140,
+  //           backgroundColor: user.rank === 1 ? '#252A40' : '#1E2237',
+  //         },
+  //       ]}
+  //     >
+  //       {user.rank === 1 && (
+  //         <FontAwesome5 name="crown" size={24} color={user.color} style={{ position: 'absolute', top: -20 }} />
+  //       )}
+  //       <Image
+  //         source={user?.image ? { uri: user.image } : fallbackImage}
+  //         style={[styles.avatar, { borderColor: user.color }]}
+  //       />
+  //       <Text style={[styles.userName, { marginTop: user.rank === 1 ? 15 : 0 }]}>
+  //         {user?.username}
+  //       </Text>
+  //       <Text style={[styles.score, { color: user.color }]}>
+  //         {user?.score}
+  //       </Text>
+  //       <AntDesign name="like1" size={18} color={user.color} style={tw`mb-5`} />
+  //     </View>
+  //   );
+  // };
 
   const Item = ({ item }) => (
     <View style={tw`flex-row p-2 items-center justify-between my-3 border-b-[2px] border-[#5F59598A] mx-5`}>
@@ -159,5 +229,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 4,
     textAlign: 'center',
+  },
+  winnerText: {
+    color: '#FDBB30',
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginTop: 0,
+    textAlign: 'center',
+    textShadowColor: '#000',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 4,
+    letterSpacing: 1,
   },
 });

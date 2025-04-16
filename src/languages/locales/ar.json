@@ -26,7 +26,7 @@
   "leagueHeadingWorldcup": "كأس العالم",
   "whatsOnYourMind": "ماذا يدور في ذهنك؟",
   "league": "دوري",
-  "liveNow": "مباشر الآن",
+  "liveNow": "المباريات الجارية",
   "justFinished": "انتهت للتو",
   "seeAll": "عرض الكل",
   "Profile": "الملف الشخصي",
@@ -91,5 +91,6 @@
 "Season": "الموسم",
 "Search by team name" :"بحث بالاسم الفريق",
 "Bundesliga": "البوندسليغا",
-"laliga":"لا ليغا"
+"laliga":"لا ليغا",
+"LeaderBoard:": "لوحة الصدارة"
 }

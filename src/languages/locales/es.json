@@ -26,7 +26,7 @@
   "leagueHeadingWorldcup": "Copa del Mundo",
   "whatsOnYourMind": "¿En qué estás pensando?",
   "league": "Liga",
-  "liveNow": "En vivo ahora",
+  "liveNow": "Partidos en curso",
   "justFinished": "Acaba de terminar",
   "seeAll": "Ver todo",
   "Profile": "Perfil",
@@ -87,7 +87,8 @@
 "Season": "Temporada",
 "Search by team name" :"Buscar por nombre de equipo",
 "Bundesliga": "Bundesliga",
-"laliga":"La Liga"
+"laliga":"La Liga",
+"LeaderBoard:": "Tabla de clasificación"
 
 
 }
