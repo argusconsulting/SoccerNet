@@ -58,7 +58,7 @@
   "support": "الدعم",
   "selectAtLeastOneLeague": "اختر على الأقل دوريًا واحدًا",
   "VideoHighlights":"ملخص الفيديو",
-  "Oops!ComeBackLater":"أوبس! عُد لاحقاً.",
+  "Oops!ComeBackLater":"لا توجد مباريات متاحة حالياً!",
     "LineUps":"التشكيلات",
   "AiPrediction":"التنبؤ الذكي",
   "Home":"الرئيسية",
@@ -92,5 +92,5 @@
 "Search by team name" :"بحث بالاسم الفريق",
 "Bundesliga": "البوندسليغا",
 "laliga":"لا ليغا",
-"LeaderBoard:": "لوحة الصدارة"
+"LeaderBoard": "لوحة الصدارة"
 }

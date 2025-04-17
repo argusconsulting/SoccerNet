@@ -58,7 +58,7 @@
   "support": "Unterstützung",
   "selectAtLeastOneLeague": "Wählen Sie mindestens eine Liga aus",
   "VideoHighlights":"Video-Highlights",
-  "Oops!ComeBackLater":"Hoppla! Komm später wieder.",
+  "Oops!ComeBackLater":"Derzeit sind keine Spiele verfügbar!",
     "LineUps":"Aufstellungen",
   "AiPrediction":"KI-Vorhersage",
   "Home":"Heim",
@@ -88,5 +88,5 @@
 "Search by team name" :"Suche nach Teamnamen",
 "Bundesliga": "Bundesliga",
 "laliga":"La Liga",
-"LeaderBoard:": "Bestenliste"
+"LeaderBoard": "Bestenliste"
 }

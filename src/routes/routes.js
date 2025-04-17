@@ -43,6 +43,7 @@ import CallScreen from '../screens/rooms/CallScreen';
 import LeaderBoard from '../screens/leaderBoard/leaderBoard';
 
 
+
 // Bottom Tab Navigation
 const Tab = createBottomTabNavigator();
 function BottomTabScreens() {
@@ -196,6 +197,7 @@ export const StackScreen = () => {
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       <Stack.Screen name="LeaderBoard" component={LeaderBoard} />
       <Stack.Screen name="CallScreen" component={CallScreen} />
+ 
     </Stack.Navigator>
   );
 };

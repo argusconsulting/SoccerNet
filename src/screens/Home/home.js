@@ -174,89 +174,89 @@ const Home = () => {
 
    
 
-    const scheduledMatchesRef = useRef(new Set());
+    // const scheduledMatchesRef = useRef(new Set());
 
-    const scheduleMatchNotification = async (match) => {
-      await notifee.requestPermission();
+    // const scheduleMatchNotification = async (match) => {
+    //   await notifee.requestPermission();
     
-      // Create a notification channel (only needed once)
-      await notifee.createChannel({
-        id: "match-notifications",
-        name: "Match Notifications",
-        sound: "default",
-        importance: AndroidImportance.HIGH,
-      });
+    //   // Create a notification channel (only needed once)
+    //   await notifee.createChannel({
+    //     id: "match-notifications",
+    //     name: "Match Notifications",
+    //     sound: "default",
+    //     importance: AndroidImportance.HIGH,
+    //   });
     
-      // Convert match start time to a timestamp
-      const matchTimestamp = new Date(match.starting_at).getTime();
+    //   // Convert match start time to a timestamp
+    //   const matchTimestamp = new Date(match.starting_at).getTime();
       
-      // Schedule notification 1 hour 17 minutes before the match
-      const notificationTime = matchTimestamp - (1 * 60 * 60 * 1000) ;
+    //   // Schedule notification 1 hour 17 minutes before the match
+    //   const notificationTime = matchTimestamp - (1 * 60 * 60 * 1000) ;
     
-      console.log("Now:", new Date(Date.now()).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }));
-      console.log("Match Start Time (IST):", new Date(matchTimestamp).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }));
-      console.log("Notification Time (IST):", new Date(notificationTime).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }));
-      console.log("Time Difference:", notificationTime - Date.now(), "ms");
+    //   console.log("Now:", new Date(Date.now()).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }));
+    //   console.log("Match Start Time (IST):", new Date(matchTimestamp).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }));
+    //   console.log("Notification Time (IST):", new Date(notificationTime).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }));
+    //   console.log("Time Difference:", notificationTime - Date.now(), "ms");
     
-      if (notificationTime > Date.now()) {
-        if (!scheduledMatchesRef.current.has(match.id)) { 
-          await notifee.createTriggerNotification(
-            {
-              title: "Upcoming Match!",
-              body: `${match.name} starts in 1 hour !`,
-              android: {
-                channelId: "match-notifications",
-                sound: "default",
-                importance: AndroidImportance.HIGH,
-              },
-            },
-            { type: 0, timestamp: notificationTime }
-          );
+    //   if (notificationTime > Date.now()) {
+    //     if (!scheduledMatchesRef.current.has(match.id)) { 
+    //       await notifee.createTriggerNotification(
+    //         {
+    //           title: "Upcoming Match!",
+    //           body: `${match.name} starts in 1 hour !`,
+    //           android: {
+    //             channelId: "match-notifications",
+    //             sound: "default",
+    //             importance: AndroidImportance.HIGH,
+    //           },
+    //         },
+    //         { type: 0, timestamp: notificationTime }
+    //       );
     
-          scheduledMatchesRef.current.add(match.id); // ✅ Store match ID
-          console.log(`✅ Notification scheduled for ${match.name}`);
-        } else {
-          console.log(`⚠️ Notification for ${match.name} already exists`);
-        }
-      } else {
-        console.log(`❌ Skipping ${match.name}, notification time has passed.`);
-      }
-    };
+    //       scheduledMatchesRef.current.add(match.id); // ✅ Store match ID
+    //       console.log(`✅ Notification scheduled for ${match.name}`);
+    //     } else {
+    //       console.log(`⚠️ Notification for ${match.name} already exists`);
+    //     }
+    //   } else {
+    //     console.log(`❌ Skipping ${match.name}, notification time has passed.`);
+    //   }
+    // };
     
-    useEffect(() => {
-      let intervalId;
+    // useEffect(() => {
+    //   let intervalId;
       
-      const checkAndScheduleNotifications = async () => {
-        if (currDateData?.data?.length) {
-          const now = Date.now();
-          console.log("Current Time (IST):", new Date(now).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }));
+    //   const checkAndScheduleNotifications = async () => {
+    //     if (currDateData?.data?.length) {
+    //       const now = Date.now();
+    //       console.log("Current Time (IST):", new Date(now).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }));
     
-          for (const match of currDateData.data) {
-            const matchTime = new Date(match.starting_at).getTime();
-            const notificationTime = matchTime - (1 * 60 * 60 * 1000);
+    //       for (const match of currDateData.data) {
+    //         const matchTime = new Date(match.starting_at).getTime();
+    //         const notificationTime = matchTime - (1 * 60 * 60 * 1000);
     
-            if (now < notificationTime) {
-              if (!scheduledMatchesRef.current.has(match.id)) {
-                console.log(`✅ Scheduling Notification for: ${match.name}`);
-                await scheduleMatchNotification(match);
-              } else {
-                console.log(`⚠️ Skipping duplicate notification for ${match.name}`);
-              }
-            } else {
-              console.log(`❌ Skipping ${match.name}, notification time has passed.`);
-            }
-          }
-        }
-      };
+    //         if (now < notificationTime) {
+    //           if (!scheduledMatchesRef.current.has(match.id)) {
+    //             console.log(`✅ Scheduling Notification for: ${match.name}`);
+    //             await scheduleMatchNotification(match);
+    //           } else {
+    //             console.log(`⚠️ Skipping duplicate notification for ${match.name}`);
+    //           }
+    //         } else {
+    //           console.log(`❌ Skipping ${match.name}, notification time has passed.`);
+    //         }
+    //       }
+    //     }
+    //   };
     
-      checkAndScheduleNotifications(); // Run immediately
+    //   checkAndScheduleNotifications(); // Run immediately
     
-      // Clear previous interval before starting a new one
-      if (intervalId) clearInterval(intervalId);
-      intervalId = setInterval(checkAndScheduleNotifications, 60 * 1000);
+    //   // Clear previous interval before starting a new one
+    //   if (intervalId) clearInterval(intervalId);
+    //   intervalId = setInterval(checkAndScheduleNotifications, 60 * 1000);
     
-      return () => clearInterval(intervalId); // Cleanup on unmount
-    }, [currDateData]);
+    //   return () => clearInterval(intervalId); // Cleanup on unmount
+    // }, [currDateData]);
     
     
     
@@ -337,8 +337,8 @@ const Home = () => {
                 {width: width - 40},
               ]}>
               <Image
-                source={require('../../assets/no-data-live-now.png')}
-                style={tw`w-14 h-14 self-center`}
+                source={require('../../assets/goal1.png')}
+                style={tw`w-16 h-16 self-center mb-3`}
               />
               <Text
                 style={tw`text-[#fff] text-[20px] font-401 leading-tight  self-center px-5`}>
@@ -347,6 +347,7 @@ const Home = () => {
             </TouchableOpacity>
           )}
         </View>
+
 
         <View>
         <View style={tw`${lang === 'ar' ? 'flex-row-reverse' : 'flex-row'} justify-between mt-3 mb-2`}>

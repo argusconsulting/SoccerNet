@@ -7,7 +7,6 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, Alert, Linking, PermissionsAndroid, Platform, StyleSheet, Text, View} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import notifee from  '@notifee/react-native';
 import {LogBox} from 'react-native';
 import Routes from './src/routes/routes';
 import {store} from './src/redux/store';
@@ -17,17 +16,28 @@ import {Provider} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import tw from './src/styles/tailwind';
 import {loadLanguage} from './src/redux/languageSlice';
-import { Link } from '@react-navigation/native';
 import { Settings } from "react-native-fbsdk-next";
-import { PERMISSIONS } from 'react-native-permissions';
-import { AndroidImportance } from '@notifee/react-native';
 
 function App() {
   LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
   LogBox.ignoreAllLogs();
   const [loading, setLoading] = useState(true);
 
-    Settings.initializeSDK();
+  useEffect(() => {
+    const initializeApp = async () => {
+      try {
+        const initialUrl = await Linking.getInitialURL();
+        if (initialUrl) {
+          Linking.openURL(initialUrl);
+        }
+        Settings.initializeSDK();
+      } catch (error) {
+        console.error('Error initializing app::', error);
+      }
+    };
+  
+    initializeApp();
+  }, []);
 
   const requestPermissions = async () => {
    
@@ -63,14 +73,6 @@ function App() {
   
   }, []);
 
-  useEffect(async() => {
-const initialUrl = await Linking.getInitialURL();
-// console.log("initialUrl", initialUrl)
-if(initialUrl){
-Linking.openURL(initialUrl)
-}
-  }, [])
-  
 
   if (loading) {
     return (

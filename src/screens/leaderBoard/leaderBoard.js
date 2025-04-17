@@ -84,7 +84,7 @@ const LeaderBoard = () => {
         style={[
           styles.podiumBlock,
           {
-            height: user.rank === 1 ? 180 : 140,
+            height: user.rank === 1 ? 200 : 150,
             backgroundColor: user.rank === 1 ? '#252A40' : '#1E2237',
           },
         ]}
@@ -114,37 +114,6 @@ const LeaderBoard = () => {
     );
   };
 
-  
-  // const Podium = ({ user }) => {
-  //   if (!user) return null;
-
-  //   return (
-  //     <View
-  //       style={[
-  //         styles.podiumBlock,
-  //         {
-  //           height: user.rank === 1 ? 180 : 140,
-  //           backgroundColor: user.rank === 1 ? '#252A40' : '#1E2237',
-  //         },
-  //       ]}
-  //     >
-  //       {user.rank === 1 && (
-  //         <FontAwesome5 name="crown" size={24} color={user.color} style={{ position: 'absolute', top: -20 }} />
-  //       )}
-  //       <Image
-  //         source={user?.image ? { uri: user.image } : fallbackImage}
-  //         style={[styles.avatar, { borderColor: user.color }]}
-  //       />
-  //       <Text style={[styles.userName, { marginTop: user.rank === 1 ? 15 : 0 }]}>
-  //         {user?.username}
-  //       </Text>
-  //       <Text style={[styles.score, { color: user.color }]}>
-  //         {user?.score}
-  //       </Text>
-  //       <AntDesign name="like1" size={18} color={user.color} style={tw`mb-5`} />
-  //     </View>
-  //   );
-  // };
 
   const Item = ({ item }) => (
     <View style={tw`flex-row p-2 items-center justify-between my-3 border-b-[2px] border-[#5F59598A] mx-5`}>
@@ -168,7 +137,7 @@ const LeaderBoard = () => {
 
   return (
     <SafeAreaView style={tw`bg-[#05102E] flex-1`}>
-      <Header name={'Leaderboard'} />
+      <Header name={'LeaderBoard'} />
       <View style={styles.container}>
         <View style={styles.podiumContainer}>
           <Podium user={secondPlace} />

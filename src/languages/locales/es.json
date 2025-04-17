@@ -58,7 +58,7 @@
   "support": "Soporte",
   "selectAtLeastOneLeague": "Selecciona al menos una liga.",
   "VideoHighlights":"Resumen del video",
-  "Oops!ComeBackLater":"¡Ups! Vuelve más tarde.",
+  "Oops!ComeBackLater":"Actualmente no hay partidos disponibles.",
     "LineUps":"Alineaciones",
   "AiPrediction":"Predicción IA",
   "Home":"Local",
@@ -88,7 +88,7 @@
 "Search by team name" :"Buscar por nombre de equipo",
 "Bundesliga": "Bundesliga",
 "laliga":"La Liga",
-"LeaderBoard:": "Tabla de clasificación"
+"LeaderBoard": "Tabla de clasificación"
 
 
 }

@@ -40,6 +40,7 @@
   "LiveNow": "Live Now",
   "Menu": "Menu",
   "Logout": "Logout",
+  "LeaderBoard": "LeaderBoard",
   "Name": "Name",
   "Phone": "Phone",
   "Settings": "Settings",
@@ -91,6 +92,6 @@
   "Season": "Season",
   "Search by team name": "Search by team name",
   "Bundesliga": "Bundesliga",
-  "laliga": "La Liga",
-  "LeaderBoard:": "Leaderboardddd"
+  "laliga": "La Liga"
+
 }
