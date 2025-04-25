@@ -81,7 +81,7 @@ const HighlightDetail = () => {
     },
     {
       id: 7,
-      name: 'Kickscore Prediction',
+      name: 'Match Prediction',
     },
    
   ];
@@ -296,7 +296,7 @@ const HighlightDetail = () => {
           {type === 'LineUps' && <LineUps fixtureId={fixtureId} />}
           {type === 'Commentary' && <Commentary fixtureId={fixtureId} />}
           {type === 'AiPrediction' && <AiPrediction fixtureId={fixtureId} homeTeam={homeTeam} awayTeam={awayTeam}/>}
-          {type === 'Kickscore Prediction' && <PredictionSummary fixtureId={fixtureId} homeTeam={homeTeam} awayTeam={awayTeam}/>}
+          {type === 'Match Prediction' && <PredictionSummary fixtureId={fixtureId} homeTeam={homeTeam} awayTeam={awayTeam}/>}
 
         </Suspense>
       </ScrollView>

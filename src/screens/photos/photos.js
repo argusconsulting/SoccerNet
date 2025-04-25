@@ -155,7 +155,7 @@ const Photos = () => {
       <View style={tw`p-3`}>
         <View style={tw`flex-row justify-between`}>
           <View style={tw`flex-row`}>
-            {console.log("image value ----->", item?.user?.avatar_url)}
+            {/* {console.log("image value ----->", item?.user?.avatar_url)} */}
             {item?.user?.avatar_url ? 
             <Image
               source={{uri: item?.user?.avatar_url}}
@@ -171,7 +171,7 @@ const Photos = () => {
           </Text>
         </View>
 
-        <Text style={tw`text-[#A9A9A9] text-[18px] mt-2`}>{item?.caption}</Text>
+        <Text style={[tw`text-[#A9A9A9] text-[18px] mt-2 `,{textTransform:"capitalize"}]}>{item?.caption}</Text>
       </View>
     </View>
   );

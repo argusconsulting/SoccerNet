@@ -148,99 +148,13 @@ const dispatch = useDispatch()
              
     </View>
 
-    {/* //double chance  */}
-    <View style={tw`bg-[#303649] w-90 rounded-lg self-center mt-10 py-5`}>
-    <Text
-                  style={tw`text-[#fff] text-[22px] font-400 leading-normal  self-center`}>
-          Double Chance
-                </Text>
 
-             
+        {/* first goal prediction */}
 
-                <View style={tw`flex-row justify-between mt-3 `}>
-                    <View>
-                    <Text
-                  style={tw`text-[#fff] text-[18px] font-402 leading-normal mt-1.5 self-center`}>
-           1x
-                </Text>
-                <TouchableOpacity
-           onPress={() => setShowDoubleChance(true)}
-        style={[
-          tw`mt-4  mx-5 rounded-full justify-center w-20 h-20 self-center`,
-        
-        ]}>
-        <LinearGradient
-          colors={['#6A36CE', '#2575F6']}
-          start={{x: 0, y: 0}} // Start from top left
-          end={{x: 1, y: 1}} // End at bottom right
-          style={[
-            tw`rounded-full justify-center`,
-            {flex: 1, justifyContent: 'center', alignItems: 'center'},
-          ]}>
-        <Text  style={tw`text-[#fff] text-[16px] font-402 leading-normal  self-center`}>{showDoubleChance ? `${filteredDoubleChanceData?.[0]?.predictions?.home_away.toFixed(2)} %` : "1X"} </Text>
-        </LinearGradient>
-      </TouchableOpacity>
-      </View>
-
-<View>
-
-      <Text
-                  style={tw`text-[#fff] text-[18px] font-402 leading-normal  self-center mt-1.5`}>
-      No Draw
-                </Text>
-                <TouchableOpacity
-           onPress={() => setShowDoubleChance(true)}
-       style={[
-         tw`mt-4 mx-5 rounded-full justify-center w-20 h-20`,
-       
-       ]}>
-       <LinearGradient
-         colors={['#6A36CE', '#2575F6']}
-         start={{x: 0, y: 0}} // Start from top left
-         end={{x: 1, y: 1}} // End at bottom right
-         style={[
-           tw`rounded-full justify-center`,
-           {flex: 1, justifyContent: 'center', alignItems: 'center'},
-         ]}>
-       <Text  style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>{showDoubleChance ? `${filteredDoubleChanceData?.[0]?.predictions?.draw_home.toFixed(2)} %`: "--"}</Text>
-       </LinearGradient>
-     </TouchableOpacity>
-     </View>
-
-<View>
-<Text
-                  style={tw`text-[#fff] text-[18px] font-402 leading-normal mt-1.5 self-center`}>
-          x2
-                </Text>
-                <TouchableOpacity
-           onPress={() => setShowDoubleChance(true)}
-       style={[
-         tw`mt-4 mx-5 rounded-full justify-center w-20 h-20`,
-       
-       ]}>
-       <LinearGradient
-         colors={['#6A36CE', '#2575F6']}
-         start={{x: 0, y: 0}} // Start from top left
-         end={{x: 1, y: 1}} // End at bottom right
-         style={[
-           tw`rounded-full justify-center`,
-           {flex: 1, justifyContent: 'center', alignItems: 'center'},
-         ]}>
-       <Text  style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>{showDoubleChance ? `${filteredDoubleChanceData?.[0]?.predictions?.draw_away.toFixed(2)} %`: "X2"}</Text>
-       </LinearGradient>
-     </TouchableOpacity>
-     </View>
-                </View>
-             
-    </View>
-
-
-    {/* first goal prediction */}
-
-    <View style={tw`bg-[#303649] w-90 rounded-lg self-center my-10 py-5`}>
+        <View style={tw`bg-[#303649] w-90 rounded-lg self-center my-10 py-5`}>
     <Text
                   style={tw`text-[#fff] text-[22px] mb-5 font-400 leading-normal  self-center`}>
-      Who will score first goal ?
+      Which team will score first goal ?
                 </Text>
 
              
@@ -330,6 +244,95 @@ const dispatch = useDispatch()
                 </View>
              
     </View>
+
+    {/* //double chance  */}
+    <View style={tw`bg-[#303649] w-90 rounded-lg self-center mt-10 py-5`}>
+    <Text
+                  style={tw`text-[#fff] text-[22px] font-400 leading-normal  self-center`}>
+          Double Chance
+                </Text>
+
+             
+
+                <View style={tw`flex-row justify-between mt-3 `}>
+                    <View>
+                    <Text
+                  style={tw`text-[#fff] text-[18px] font-402 leading-normal mt-1.5 self-center`}>
+           1x
+                </Text>
+                <TouchableOpacity
+           onPress={() => setShowDoubleChance(true)}
+        style={[
+          tw`mt-4  mx-5 rounded-full justify-center w-20 h-20 self-center`,
+        
+        ]}>
+        <LinearGradient
+          colors={['#6A36CE', '#2575F6']}
+          start={{x: 0, y: 0}} // Start from top left
+          end={{x: 1, y: 1}} // End at bottom right
+          style={[
+            tw`rounded-full justify-center`,
+            {flex: 1, justifyContent: 'center', alignItems: 'center'},
+          ]}>
+        <Text  style={tw`text-[#fff] text-[16px] font-402 leading-normal  self-center`}>{showDoubleChance ? `${filteredDoubleChanceData?.[0]?.predictions?.home_away.toFixed(2)} %` : "1X"} </Text>
+        </LinearGradient>
+      </TouchableOpacity>
+      </View>
+
+<View>
+
+      <Text
+                  style={tw`text-[#fff] text-[18px] font-402 leading-normal  self-center mt-1.5`}>
+      No Draw
+                </Text>
+                <TouchableOpacity
+           onPress={() => setShowDoubleChance(true)}
+       style={[
+         tw`mt-4 mx-5 rounded-full justify-center w-20 h-20`,
+       
+       ]}>
+       <LinearGradient
+         colors={['#6A36CE', '#2575F6']}
+         start={{x: 0, y: 0}} // Start from top left
+         end={{x: 1, y: 1}} // End at bottom right
+         style={[
+           tw`rounded-full justify-center`,
+           {flex: 1, justifyContent: 'center', alignItems: 'center'},
+         ]}>
+       <Text  style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>{showDoubleChance ? `${filteredDoubleChanceData?.[0]?.predictions?.draw_home.toFixed(2)} %`: "--"}</Text>
+       </LinearGradient>
+     </TouchableOpacity>
+     </View>
+
+<View>
+<Text
+                  style={tw`text-[#fff] text-[18px] font-402 leading-normal mt-1.5 self-center`}>
+          x2
+                </Text>
+                <TouchableOpacity
+           onPress={() => setShowDoubleChance(true)}
+       style={[
+         tw`mt-4 mx-5 rounded-full justify-center w-20 h-20`,
+       
+       ]}>
+       <LinearGradient
+         colors={['#6A36CE', '#2575F6']}
+         start={{x: 0, y: 0}} // Start from top left
+         end={{x: 1, y: 1}} // End at bottom right
+         style={[
+           tw`rounded-full justify-center`,
+           {flex: 1, justifyContent: 'center', alignItems: 'center'},
+         ]}>
+       <Text  style={tw`text-[#fff] text-[16px] font-402 leading-normal self-center`}>{showDoubleChance ? `${filteredDoubleChanceData?.[0]?.predictions?.draw_away.toFixed(2)} %`: "X2"}</Text>
+       </LinearGradient>
+     </TouchableOpacity>
+     </View>
+                </View>
+             
+    </View>
+
+
+
     </>
   )
 }

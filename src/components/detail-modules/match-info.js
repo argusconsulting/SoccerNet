@@ -5,14 +5,19 @@ import tw from '../../styles/tailwind';
 import MapView, { Marker } from 'react-native-maps';
 
 const MatchInfo = ({ detailData }) => {
-    if (!detailData || !detailData.weatherreport || !detailData.venue) return null;
+    if (!detailData || !detailData.weatherreport || !detailData.venue) {
+         return (
+      <View>
+        <Text style={tw`text-white text-center text-lg mt-10`}>No data found !</Text>
+      </View>
+    )};
+
 
     const { weatherreport , venue } = detailData;
     const { temperature, feels_like, wind, humidity, pressure, clouds, description, icon, current } = weatherreport;
     const { name, address, city_name, capacity, latitude, longitude, surface, image_path } = venue;
 
 
-    console.log("image_path", image_path);
     return (
                <View style={tw`bg-gray-900 p-5 rounded-lg shadow-lg mb-5`}>
             {/* Venue Information */}
@@ -21,9 +26,10 @@ const MatchInfo = ({ detailData }) => {
                {image_path && <Image source={{ uri: image_path }} style={tw`w-full h-60 self-center rounded-lg`} />}
                 <View style={tw`mt-3`}>
                     <Text style={tw`text-gray-200 font-400 font-[14px] text-lg font-bold`}>{name}</Text>
-                    <Text style={tw`text-gray-300 font-400 font-[14px]`}>Address:{'  '}{address}, {city_name}</Text>
-                    <Text style={tw`text-gray-400 font-400 font-[14px]`}>Capacity:{'  '}{capacity}</Text>
-                    <Text style={tw`text-gray-400 font-400 font-[14px]`}>Surface:{'  '}{surface}</Text>
+                    
+                    <Text style={tw`text-gray-300 font-400 font-[14px]`}>Address:{'  '}{address } </Text>
+                    <Text style={tw`text-gray-400 font-400 font-[14px]`}>Capacity:{'  '}{capacity ?? `---`}</Text>
+                    <Text style={tw`text-gray-400 font-400 font-[14px]`}>Surface:{'  '}{surface ?? `---`}</Text>
                 </View>
             </View>
 

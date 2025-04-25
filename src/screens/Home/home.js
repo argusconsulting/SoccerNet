@@ -284,6 +284,7 @@ const Home = () => {
               size={26}
               style={tw`mr-3`}
             />
+            {notificationsCountNumber > 0 && 
             <View
               style={[
                 tw`bg-red-500 mt--2 mr-2 rounded-full w-5 h-5 justify-center`,
@@ -296,6 +297,7 @@ const Home = () => {
                 {notificationsCountNumber}
               </Text>
             </View>
+}
           </TouchableOpacity>
         </View>
         <View style={tw`px-5`}></View>

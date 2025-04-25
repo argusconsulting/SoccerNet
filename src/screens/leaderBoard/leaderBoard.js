@@ -62,7 +62,7 @@ const LeaderBoard = () => {
           scale.value = withTiming(1, { duration: 300 });
         });
         opacity.value = withTiming(1, { duration: 800 });
-        rotate.value = withTiming(5, { duration: 400 }); // subtle wave
+        rotate.value = withTiming(3.2, { duration: 400 }); // subtle wave
       }
     }, [user]);
     

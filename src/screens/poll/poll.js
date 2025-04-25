@@ -16,6 +16,7 @@ import Loader from '../../components/loader/Loader';
 const Poll = () => {
   const dispatch = useDispatch();
   const apiPolls = useSelector(state => state.poll?.userPollData);
+  console.log("api polls", apiPolls);
   const isLoading = useSelector(state => state.poll.isLoading);
   const [questions, setQuestions] = useState([]);
   const [userVotes, setUserVotes] = useState({}); 
@@ -32,26 +33,38 @@ const Poll = () => {
 
   const handleChoicePress = (pollId, selectedChoice) => {
     const selectedId = selectedChoice.id;
-    if (userVotes[pollId]) return; // Prevent further votes
-    const updatedQuestions = questions.map(question => {
-      if (question.id === pollId) {
-        const updatedChoices = question.options.map(option =>
-          option.id === selectedId
-            ? {...option, votes_count: option.votes_count + 1}
-            : option,
-        );
-
-        return {...question, options: updatedChoices};
-      }
-      return question;
-    });
-
-    setQuestions(updatedQuestions);
-
+    if (userVotes[pollId]) return;
+  
     setUserVotes(prevState => ({...prevState, [pollId]: true}));
-
-    dispatch(pollVoteData({id: selectedId, pollId}));
+  
+    dispatch(pollVoteData({id: selectedId, pollId})).then(() => {
+      dispatch(getPollData()); // refetch fresh vote data
+    });
   };
+  
+
+  // const handleChoicePress = (pollId, selectedChoice) => {
+  //   const selectedId = selectedChoice.id;
+  //   if (userVotes[pollId]) return; // Prevent further votes
+  //   const updatedQuestions = questions.map(question => {
+  //     if (question.id === pollId) {
+  //       const updatedChoices = question.options.map(option =>
+  //         option.id === selectedId
+  //           ? {...option, votes_count: option.votes_count + 1}
+  //           : option,
+  //       );
+
+  //       return {...question, options: updatedChoices};
+  //     }
+  //     return question;
+  //   });
+
+  //   setQuestions(updatedQuestions);
+
+  //   setUserVotes(prevState => ({...prevState, [pollId]: true}));
+
+  //   dispatch(pollVoteData({id: selectedId, pollId}));
+  // };
 
   return (
     <SafeAreaView style={[tw`bg-[#05102E] flex-1`]}>
