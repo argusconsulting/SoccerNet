@@ -41,7 +41,7 @@ const SelectedLeagues = React.memo(() => {
         ]}>
         <View
           style={[
-            tw`w-14 h-14 self-center`,
+            tw`w-16 h-16 self-center justify-center items-center`,
             {
               backgroundColor: 'rgba(0, 0, 0, 0.1)',
               shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -53,8 +53,8 @@ const SelectedLeagues = React.memo(() => {
           <Image
             source={{ uri: item?.image_path }}
             style={[
-              tw`w-10 h-10 self-center mt-2`,
-              { resizeMode: 'contain', borderRadius: 999 },
+              tw`w-10 h-10 self-center `,
+              { resizeMode: 'contain' },
             ]}
           />
         </View>
@@ -68,11 +68,11 @@ const SelectedLeagues = React.memo(() => {
     <View>
       <View>
         <View style={tw`${lang === 'ar' ? 'flex-row-reverse' : 'flex-row'} justify-between mb-5`}>
-          <Text style={tw`text-white text-[22px] font-401 leading-tight mt-3 px-5`}>
+          <Text style={tw`text-white text-[26px] font-401 leading-tight mt-3 px-5`}>
             {t('league')}
           </Text>
           <TouchableOpacity onPress={navigateToLeagueScreen}>
-            <Text style={tw`text-[#8195FF] text-[14px] font-401 leading-tight mt-5 px-5`}>
+            <Text style={tw`text-[#8195FF] text-[18px] font-401 leading-tight mt-5 px-5`}>
               {t('seeAll')}
             </Text>
           </TouchableOpacity>

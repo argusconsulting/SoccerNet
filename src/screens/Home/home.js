@@ -3,6 +3,7 @@ import {
   BackHandler,
   FlatList,
   Image,
+  ImageBackground,
   RefreshControl,
   SafeAreaView,
   StyleSheet,
@@ -271,7 +272,7 @@ const Home = () => {
           <TouchableOpacity
             onPress={toggleModal}
             activeOpacity={0.4}>
-            <Entypo name={'menu'} color={'#fff'} size={26} style={tw``} />
+            <Entypo name={'menu'} color={'#fff'} size={30} style={tw``} />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -281,7 +282,7 @@ const Home = () => {
             <Ionicons
               name={'notifications'}
               color={'#fff'}
-              size={26}
+              size={28}
               style={tw`mr-3`}
             />
             {notificationsCountNumber > 0 && 
@@ -308,10 +309,10 @@ const Home = () => {
           <View style={tw`justify-between mt-3 mb-2`}>
             {lang == 'ar' ?  
             <Text
-              style={tw`text-white text-[22px] font-401 leading-tight  mt-3  px-5 self-end`}>
+              style={tw`text-white text-[26px] font-401 leading-tight  mt-3  px-5 self-end`}>
               {t('liveNow')}
             </Text>:  <Text
-              style={tw`text-white text-[22px] font-401 leading-tight  mt-3  px-5`}>
+              style={tw`text-white text-[26px] font-401 leading-tight  mt-3  px-5`}>
               {t('liveNow')}
             </Text> }
            
@@ -334,19 +335,24 @@ const Home = () => {
             />
           ) : (
             <TouchableOpacity
+            style={[
+              tw`bg-[#303649] h-34 rounded-2xl mt-5 mx-5 justify-center self-center`,
+              { width: width - 40 },
+            ]}
+          >
+            <ImageBackground
+              source={require('../../assets/live_bg.png')}
               style={[
-                tw`bg-[#303649] h-34  rounded-2xl mt-5 mx-5  justify-center`,
-                {width: width - 40},
-              ]}>
-              <Image
-                source={require('../../assets/goal1.png')}
-                style={tw`w-16 h-16 self-center mb-3`}
-              />
-              <Text
-                style={tw`text-[#fff] text-[20px] font-401 leading-tight  self-center px-5`}>
+                tw`w-full h-full`,
+                { borderRadius: 16, overflow: 'hidden', justifyContent: 'center', alignItems: 'center' },
+              ]}
+            >
+              <Text style={tw`text-white text-[22px] font-401 leading-tight text-center px-5 `}>
                 {t('Oops!ComeBackLater')}
               </Text>
-            </TouchableOpacity>
+            </ImageBackground>
+          </TouchableOpacity>
+          
           )}
         </View>
 
@@ -354,14 +360,14 @@ const Home = () => {
         <View>
         <View style={tw`${lang === 'ar' ? 'flex-row-reverse' : 'flex-row'} justify-between mt-3 mb-2`}>
             <Text
-              style={tw`text-white text-[22px] font-401 leading-tight  mt-3 px-5`}>
+              style={tw`text-white text-[26px] font-401 leading-tight  mt-3 px-5`}>
               {t('justFinished')}
             </Text>
             {justFinishedData?.data?.length > 0 && (
               <TouchableOpacity
                 onPress={() => navigation.navigate('JustFinished')}>
                 <Text
-                  style={tw`text-[#8195FF] text-[14px] font-401 leading-tight  mt-5  px-5`}>
+                  style={tw`text-[#8195FF] text-[18px] font-401 leading-tight  mt-5  px-5`}>
                   {t('seeAll')}
                 </Text>
               </TouchableOpacity>

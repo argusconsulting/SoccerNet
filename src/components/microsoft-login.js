@@ -6,6 +6,8 @@ import {useNavigation} from '@react-navigation/native';
 import {store} from '../redux/store';
 import {setSocialProfile} from '../redux/profileSlice';
 import {setUserAuthToken, setUserID} from '../redux/authSlice';
+import { api_name_microsoft_login } from '../constants/api-constants';
+import { postApi } from '../scripts/api-services';
 
 const MicrosoftLogin = ({onClose}) => {
   const navigation = useNavigation();
@@ -29,19 +31,20 @@ const MicrosoftLogin = ({onClose}) => {
       const authResult = await authorize(config);
       console.log('Auth Result:', authResult);
 
-      const userInfoResponse = await fetch('https://graph.microsoft.com/v1.0/me', {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${authResult.accessToken}`,
-        },
-      });
+      // const userInfoResponse = await fetch('https://graph.microsoft.com/v1.0/me', {
+      //   method: 'GET',
+      //   headers: {
+      //     Authorization: `Bearer ${authResult.accessToken}`,
+      //   },
+      // });
 
-      const userInfo = await userInfoResponse.json();
-      console.log('User Info:', userInfo);
+      // const userInfo = await userInfoResponse.json();
+      // console.log('User Info:', userInfo);
+      const response = await _microsoftSocialLogin(authResult?.accessToken);
 
-      store.dispatch(setSocialProfile(userInfo));
-      store.dispatch(setUserAuthToken(authResult.accessToken));
-      store.dispatch(setUserID(userInfo.id));
+     store.dispatch(setSocialProfile(response?.data));
+          store.dispatch(setUserAuthToken(response?.data?.token));
+          store.dispatch(setUserID(response?.data?.user?.id));
 
       onClose();
       navigation.navigate('LeagueSelection');
@@ -49,6 +52,22 @@ const MicrosoftLogin = ({onClose}) => {
       console.log('Microsoft Login Error:', err);
     }
   };
+
+    async function _microsoftSocialLogin(idToken) {
+      console.log('microsoft token', idToken);
+      try {
+        const response = await postApi(api_name_microsoft_login, {
+          access_token: idToken,
+        
+        });
+        console.log('microsoft res', response);
+  
+        return response; // Return the response here
+      } catch (error) {
+        console.error(error);
+        throw error; // Rethrow the error so it can be handled in the caller function
+      }
+    }
 
   return (
     <View>
