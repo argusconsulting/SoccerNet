@@ -25,8 +25,6 @@ const Highlights = () => {
     state => state?.fixtures?.fixturesByDateRangeHighlights,
   );
 
-  console.log("checkihg langġ", lang)
-
   const getWeekRange = date => {
     const end = moment(date).subtract(1, 'day').format('YYYY-MM-DD');
     const start = moment(end).subtract(30, 'days').format('YYYY-MM-DD');

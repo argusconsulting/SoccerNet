@@ -42,7 +42,6 @@ const PostCard = ({item}) => {
     try {
       const response = await RNFetchBlob.fetch('GET', imageUrl);
       const base64Data = response.base64();
-
       const imageBase64Url = `data:image/jpeg;base64,${base64Data}`;
 
       const options = {

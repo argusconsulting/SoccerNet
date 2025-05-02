@@ -110,14 +110,10 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
       if (checked === 'email') {
         if (emailValue == '') {
           Alertify.error('Please enter your Email');
-          // ToastAndroid.show('Please enter your Email', ToastAndroid.LONG);
           return; // Stop further execution
         } else if (!validateEmail(emailValue)) {
           Alertify.error('Please enter a valid email address.');
-          // ToastAndroid.show(
-          //   'Please enter a valid email address.',
-          //   ToastAndroid.LONG,
-          // );
+     
           return; // Stop further execution
         }
       }
@@ -126,17 +122,11 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
       if (checked === 'contact_number') {
         if (value == '') {
           Alertify.error('Please enter your Phone Number');
-          // ToastAndroid.show(
-          //   'Please enter your Phone Number',
-          //   ToastAndroid.LONG,
-          // );
+      
           return; // Stop further execution
         } else if (!validatePhoneNumber(value)) {
           Alertify.error('Please enter a valid phone number.');
-          // ToastAndroid.show(
-          //   'Please enter a valid phone number.',
-          //   ToastAndroid.LONG,
-          // );
+       
           return; // Stop further execution
         }
       }
@@ -165,8 +155,6 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
             dispatch(setUserID(response?.data?.user?.id));
             dispatch(setUserDetails(response?.data?.user));
             onClose();
-
-            // navigation.navigate('LeagueSelection');
             getSelectedLeagues(response?.data?.user?.id);
 
             setSubmitLoader(false);
@@ -197,10 +185,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
           return; // Stop further execution
         } else if (!validateEmail(emailValue)) {
           Alertify.error('Please enter a valid email address.');
-          // ToastAndroid.show(
-          //   'Please enter a valid email address.',
-          //   ToastAndroid.LONG,
-          // );
+        
           return; // Stop further execution
         }
       }
@@ -209,17 +194,11 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
       if (checked === 'contact_number') {
         if (!value.trim()) {
           Alertify.error('Please enter your Phone Number');
-          // ToastAndroid.show(
-          //   'Please enter your Phone Number',
-          //   ToastAndroid.LONG,
-          // );
+         
           return; // Stop further execution
         } else if (!validatePhoneNumber(value)) {
           Alertify.error('Please enter a valid phone number.');
-          // ToastAndroid.show(
-          //   'Please enter a valid phone number.',
-          //   ToastAndroid.LONG,
-          // );
+    
           return; // Stop further execution
         }
       }
@@ -227,16 +206,12 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
       // Validation for password
       if (!password.trim()) {
         Alertify.error('Please enter your password');
-        // ToastAndroid.show('Please enter your password', ToastAndroid.LONG);
         return; // Stop further execution
       } else if (!validatePassword(password)) {
         Alertify.error(
           'Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
         );
-        // ToastAndroid.show(
-        //   'Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
-        //   ToastAndroid.LONG,
-        // );
+    
         return; // Stop further execution
       } else {
         setSubmitLoader(true);
@@ -278,10 +253,10 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
       <View style={styles.content}>
         <View style={styles.header} />
         {lang == 'ar' ? <>
-          <View style={tw`flex-row-reverse `}>
+          <View style={tw`flex-row-reverse`}>
           <Image
             source={require('../../assets/logo.png')}
-            style={[tw`w-12 h-12 self-center mb-3`, {resizeMode: 'contain'}]}
+            style={[tw`w-12 h-12 self-center `, {resizeMode: 'contain'}]}
           />
           <Text
             style={tw`text-white text-[28px] font-401 leading-tight self-center mx-5`}>
@@ -289,19 +264,19 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
           </Text>
         </View>
         </>:<>
-        <View style={tw`flex-row `}>
-          <Image
-            source={require('../../assets/logo.png')}
-            style={[tw`w-12 h-12 self-center mb-3`, {resizeMode: 'contain'}]}
-          />
-          <Text
-            style={tw`text-white text-[28px] font-401 leading-tight self-center mx-5`}>
-            {t('welcomeToKickScore')}
-          </Text>
-        </View></>}
+        <View style={tw`flex-row items-center justify-center self-center `}>
+  <Image
+    source={require('../../assets/logo.png')}
+    style={[tw`w-12 h-12`, { resizeMode: 'contain' }]}
+  />
+  <Text
+    style={tw`text-white text-[28px] font-401 leading-tight mx-5 `}>
+    {t('welcomeToKickScore')}
+  </Text>
+</View></>}
         
 
-        <View style={tw`flex-row justify-between mt-1`}>
+        <View style={tw`flex-row justify-between mt-4`}>
           <TouchableOpacity onPress={() => setChecked('email')} style={tw`flex-row`}>
             <RadioButton
            
