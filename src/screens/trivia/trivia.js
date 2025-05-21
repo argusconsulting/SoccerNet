@@ -3,6 +3,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -25,7 +26,7 @@ const data = [
 
 const screenWidth = Dimensions.get('window').width;
 const numColumns = 2;
-const boxSize = screenWidth / numColumns - 40; // Adjust the spacing
+const boxSize = screenWidth / numColumns - 40; 
 
 const Trivia = () => {
   const dispatch = useDispatch();
@@ -95,7 +96,7 @@ const Trivia = () => {
   };
 
   return (
-    <View style={tw`bg-[#05102E] flex-1 `}>
+    <SafeAreaView style={tw`bg-[#05102E] flex-1 `}>
       <Header name="" />
 
       <Image
@@ -118,7 +119,7 @@ const Trivia = () => {
         source={require('../../assets/trivia-bg.png')}
         style={tw`w-full h-40 self-center`}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -2,6 +2,7 @@ import {
   Alert,
   FlatList,
   Image,
+  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -13,7 +14,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import TextInput from '../../components/library/text-input';
 import {useDispatch, useSelector} from 'react-redux';
-import {Pusher} from '@pusher/pusher-websocket-react-native';
+// import {Pusher} from '@pusher/pusher-websocket-react-native';
 import {
   getMessages,
   inActiveRoomHandler,
@@ -22,19 +23,21 @@ import {
 } from '../../redux/fanSlice';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import Loader from '../../components/loader/Loader';
+import GroupCall from '../../components/group-call/groupCall';
 
 const MeetingChat = () => {
   const dispatch = useDispatch();
   const route = useRoute();
   const navigation = useNavigation();
-  const [message, setMessage] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [loadingInitial, setLoadingInitial] = useState(true);
   const userId = useSelector(state => state.auth_store.userID);
   const groupId = route?.params?.groupId;
-  const groupName = route?.params?.groupName;
+  // const groupName = route?.params?.groupName;
+  // const createdById = route?.params?.creatorId;
+  const { id, groupName, creatorId } = route.params;
 
-  console.log('id, name', groupId, groupName);
+  console.log("channel name",groupName , id, creatorId , groupId )
+
+
 
   const leaveHandler = () => {
     dispatch(leaveMeetingRooms({userId, groupId})).then(() => {
@@ -42,126 +45,128 @@ const MeetingChat = () => {
     });
   };
 
-  const sendMessagesHandler = () => {
-    dispatch(sendMessages({userId, groupId, message})).then(() => {
-      setMessage(null);
-    });
-  };
+  // const sendMessagesHandler = () => {
+  //   dispatch(sendMessages({userId, groupId, message})).then(() => {
+  //     setMessage(null);
+  //   });
+  // };
 
   // Initialize Pusher
-  useEffect(() => {
-    let channel; // Declare channel outside of useEffect to ensure it's accessible for cleanup
+  // useEffect(() => {
+  //   let channel; // Declare channel outside of useEffect to ensure it's accessible for cleanup
 
-    const initializePusher = async () => {
-      const pusherInstance = Pusher.getInstance();
+  //   const initializePusher = async () => {
+  //     const pusherInstance = Pusher.getInstance();
 
-      await pusherInstance.init({
-        apiKey: '34e8ce6685ada31490ca',
-        cluster: 'ap2',
-        authEndpoint: 'https://kickscore.eprime.app/api/broadcasting/auth',
-      });
+  //     await pusherInstance.init({
+  //       apiKey: '34e8ce6685ada31490ca',
+  //       cluster: 'ap2',
+  //       authEndpoint: 'https://kickscore.eprime.app/api/broadcasting/auth',
+  //     });
 
-      await pusherInstance.connect();
+  //     await pusherInstance.connect();
 
-      // Subscribe to the channel
-      channel = await pusherInstance.subscribe({
-        channelName: `group.${groupId}`,
-        onSubscriptionSucceeded: (channelName, data) => {
-          // console.log(`Subscribed to ${channelName}`);
-        },
-        onEvent: event => {
-          console.log(`Event received: ${event}`);
+  //     // Subscribe to the channel
+  //     channel = await pusherInstance.subscribe({
+  //       channelName: `group.${groupId}`,
+  //       onSubscriptionSucceeded: (channelName, data) => {
+  //         // console.log(`Subscribed to ${channelName}`);
+  //       },
+  //       onEvent: event => {
+  //         console.log(`Event received: ${event}`);
 
-          try {
-            const parsedData = JSON.parse(event?.data);
-            const messageData = parsedData?.message;
+  //         try {
+  //           const parsedData = JSON.parse(event?.data);
+  //           const messageData = parsedData?.message;
 
-            if (messageData) {
-              const newMessage = {
-                id: messageData.id, // Ensure the message has a unique ID
-                user: messageData.user,
-                content: messageData.content,
-                createdAt: new Date(messageData.createdAt),
-              };
+  //           if (messageData) {
+  //             const newMessage = {
+  //               id: messageData.id, // Ensure the message has a unique ID
+  //               user: messageData.user,
+  //               content: messageData.content,
+  //               createdAt: new Date(messageData.createdAt),
+  //             };
 
-              // Append the new message to the `messages` state
-              setMessages(prevMessages => [...prevMessages, newMessage]);
-            } else {
-              console.warn('Message data is missing:', parsedData);
-            }
-          } catch (error) {
-            console.error('Error parsing event data:', error);
-          }
-        },
-      });
+  //             // Append the new message to the `messages` state
+  //             setMessages(prevMessages => [...prevMessages, newMessage]);
+  //           } else {
+  //             console.warn('Message data is missing:', parsedData);
+  //           }
+  //         } catch (error) {
+  //           console.error('Error parsing event data:', error);
+  //         }
+  //       },
+  //     });
 
-      channel.bind('pusher:subscription_error', error => {
-        console.log('Subscription error:', error);
-      });
-    };
+  //     channel.bind('pusher:subscription_error', error => {
+  //       console.log('Subscription error:', error);
+  //     });
+  //   };
 
-    initializePusher();
+  //   initializePusher();
 
-    // Cleanup function to unsubscribe from the channel when the component unmounts
-    return () => {
-      if (channel) {
-        channel.unsubscribe();
-        console.log('Unsubscribed from the channel');
-      }
-    };
-  }, [groupId]); // Dependency array ensures the effect runs again when groupId changes
+  //   // Cleanup function to unsubscribe from the channel when the component unmounts
+  //   return () => {
+  //     if (channel) {
+  //       channel.unsubscribe();
+  //       console.log('Unsubscribed from the channel');
+  //     }
+  //   };
+  // }, [groupId]); // Dependency array ensures the effect runs again when groupId changes
 
   // Fetch messages on component mount
-  useEffect(() => {
-    // Fetch messages only once on initial mount
-    dispatch(getMessages(groupId))
-      .then(fetchedMessages => {
-        if (Array.isArray(fetchedMessages?.payload?.messages)) {
-          setMessages(fetchedMessages?.payload?.messages); // Directly set messages
-        } else {
-          console.warn(
-            'Fetched messages are not in an array format:',
-            fetchedMessages,
-          );
-        }
-      })
-      .finally(() => {
-        setLoadingInitial(false);
-      });
-  }, [dispatch, groupId]);
+ 
+ 
+  // useEffect(() => {
+ 
+  //   dispatch(getMessages(groupId))
+  //     .then(fetchedMessages => {
+  //       if (Array.isArray(fetchedMessages?.payload?.messages)) {
+  //         setMessages(fetchedMessages?.payload?.messages); // Directly set messages
+  //       } else {
+  //         console.warn(
+  //           'Fetched messages are not in an array format:',
+  //           fetchedMessages,
+  //         );
+  //       }
+  //     })
+  //     .finally(() => {
+  //       setLoadingInitial(false);
+  //     });
+  // }, [dispatch, groupId]);
 
-  const Item = ({item}) => {
-    const isSender = item?.user?.id === userId;
-    return (
-      <View style={[tw` `, isSender ? tw`items-end` : tw`items-start`]}>
-        {!isSender && (
-          <View style={[tw`flex-row mt-4`]}>
-            <Image
-              source={{uri: item?.user?.formatted_avatar_url}}
-              style={tw`w-6 h-6 mx-3 rounded-full`}
-            />
-            <Text
-              style={tw`text-[#F5C451] text-[14px] font-401 leading-tight self-center`}>
-              {item?.user?.name}
-            </Text>
-          </View>
-        )}
+  // const Item = ({item}) => {
+  //   const isSender = item?.user?.id === userId;
+  //   return (
+  //     <View style={[tw` `, isSender ? tw`items-end` : tw`items-start`]}>
+  //       {!isSender && (
+  //         <View style={[tw`flex-row mt-4`]}>
+  //           <Image
+  //             source={{uri: item?.user?.formatted_avatar_url}}
+  //             style={tw`w-6 h-6 mx-3 rounded-full`}
+  //           />
+  //           <Text
+  //             style={tw`text-[#F5C451] text-[14px] font-401 leading-tight self-center`}>
+  //             {item?.user?.name}
+  //           </Text>
+  //         </View>
+  //       )}
 
-        <View
-          style={[
-            tw`rounded-3xl mt-3 px-4 py-2`,
-            isSender ? tw`bg-[#6A36CE] mr-5` : tw`bg-[#303649] ml-8`,
-          ]}>
-          <Text style={tw`text-[#fff] text-[14px] font-401 leading-tight`}>
-            {item?.content}
-          </Text>
-        </View>
-      </View>
-    );
-  };
+  //       <View
+  //         style={[
+  //           tw`rounded-3xl mt-3 px-4 py-2`,
+  //           isSender ? tw`bg-[#6A36CE] mr-5` : tw`bg-[#303649] ml-8`,
+  //         ]}>
+  //         <Text style={tw`text-[#fff] text-[14px] font-401 leading-tight`}>
+  //           {item?.content}
+  //         </Text>
+  //       </View>
+  //     </View>
+  //   );
+  // };
 
   return (
-    <View style={tw`bg-[#05102E] flex-1`}>
+    <SafeAreaView style={tw`bg-[#05102E] flex-1`}>
       <View style={tw`bg-[#303649] p-3 flex-row justify-between`}>
         <View style={tw`flex-row`}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -173,10 +178,13 @@ const MeetingChat = () => {
             />
           </TouchableOpacity>
           <Text
-            style={tw`text-[#fff] text-[20px] font-401 leading-tight self-center`}>
+            style={[tw`text-[#fff] text-[20px] font-401 leading-tight self-center`,{textTransform:"capitalize"}]}>
             {groupName}
           </Text>
         </View>
+
+        <View style={tw`flex-row`}>
+         <GroupCall groupName={groupName} creatorId={creatorId} groupId={groupId || id}/>
         <View style={tw`flex-row `}>
           <TouchableOpacity
             onPress={() => leaveHandler()}
@@ -208,10 +216,30 @@ const MeetingChat = () => {
             </LinearGradient>
           </TouchableOpacity>
         </View>
+        </View>
       </View>
+      <View style={tw`flex-1 justify-center items-center`}>
+      <Image source={require('../../assets/meetingEmptyImg.png')} style={[tw`w-50 h-50 self-center`,{resizeMode:"cover"}]}/>
+      <View style={tw`flex-row self-center`}>
+       
+      <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight self-center mt-5 text-center`}>
+    Click on 
+              </Text>
+              <AntDesign
+          name={'phone'}
+          size={20}
+          color={'#fff'}
+          style={tw`self-center mt-5 mx-2 `}
+        />
+         <Text style={tw`text-[#fff] text-[20px] font-401 leading-tight self-center mt-5  text-center`}>
+   to join the call !
+              </Text>
+              </View>
+              </View>
+
 
       {/* Chat */}
-      {loadingInitial ? (
+      {/* {loadingInitial ? (
         <Loader />
       ) : (
         <View style={tw`mb-30`}>
@@ -224,7 +252,7 @@ const MeetingChat = () => {
       )}
 
       {/* Fixed Bottom Input Row */}
-      <View style={[tw`flex-row p-2 bg-[#05102E]`, styles.inputContainer]}>
+      {/* <View style={[tw`flex-row p-2 bg-[#05102E]`, styles.inputContainer]}>
         <TextInput
           placeholder="Message ..."
           value={message}
@@ -237,8 +265,8 @@ const MeetingChat = () => {
             style={tw`w-12 h-12 ml-2 self-center`}
           />
         </TouchableOpacity>
-      </View>
-    </View>
+      </View>  */}
+    </SafeAreaView>
   );
 };
 

@@ -6,13 +6,13 @@ import tw from '../styles/tailwind';
 import LanguageSelection from '../screens/LanguageSelection/LanguageSelection';
 import SplashScreen from '../screens/SplashScreen/SplashScreen';
 import LeagueSelection from '../screens/LeagueSelection/leagueSelection';
-
+import messaging from '@react-native-firebase/messaging';
 import Home from '../screens/Home/home';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {Image, TouchableOpacity} from 'react-native';
+import {Image, Linking, Text, TouchableOpacity} from 'react-native';
 import CalendarScreen from '../screens/Calendar/calendar';
-import {useState} from 'react';
+import {useRef, useState} from 'react';
 import LeagueModal from '../components/league-modal/league-modal';
 import Profile from '../screens/Profile/profile';
 import Highlights from '../screens/Highlights/highlights';
@@ -38,6 +38,11 @@ import MeetingChat from '../screens/rooms/meetingChat';
 import JustFinished from '../screens/justFinished/justFinished';
 import PlayerInfo from '../components/detail-modules/player-info';
 import Players from '../components/detail-modules/players';
+import ForgotPassword from '../screens/Forgot-Password/forgotPassword';
+import CallScreen from '../screens/rooms/CallScreen';
+import LeaderBoard from '../screens/leaderBoard/leaderBoard';
+
+
 
 // Bottom Tab Navigation
 const Tab = createBottomTabNavigator();
@@ -53,7 +58,7 @@ function BottomTabScreens() {
       <Tab.Navigator
         screenOptions={{
           headerShown: false,
-          tabBarStyle: {height: Platform.OS == 'ios' ? 55 : 55},
+          tabBarStyle: {height: Platform.OS == 'ios' ? 85 : 55},
         }}
         tabBarOptions={{
           showIcon: true,
@@ -149,41 +154,14 @@ const EmptyScreen = () => {
 const Stack = createNativeStackNavigator();
 
 export const StackScreen = () => {
-  const token = useSelector(state => state.auth_store.token);
+  const token = useSelector(state => state?.auth_store?.token);
+
+  console.log("value token", token)
+
+
 
   return (
-    // <Stack.Navigator screenOptions={{headerShown: false}}>
-    //   {(token == undefined || token == '' || token == null) && (
-    //     <>
-    //       <Stack.Screen
-    //         name="LanguageSelection"
-    //         component={LanguageSelection}
-    //       />
-    //       <Stack.Screen name="SplashScreen" component={SplashScreen} />
-    //     </>
-    //   )}
-    //   <>
-    //     <Stack.Screen name="LeagueSelection" component={LeagueSelection} />
-    //     <Stack.Screen name="Home" component={BottomTabScreens} />
-    //     <Stack.Screen name="Calendar" component={CalendarScreen} />
-    //     <Stack.Screen name="Profile" component={Profile} />
-    //     <Stack.Screen name="Highlights" component={Highlights} />
-    //     <Stack.Screen name="HighlightDetail" component={HighlightDetail} />
-    //     <Stack.Screen name="Trivia" component={Trivia} />
-    //     <Stack.Screen name="Poll" component={Poll} />
-    //     <Stack.Screen name="LeagueScreen" component={LeagueScreen} />
-    //     <Stack.Screen name="TriviaQuestions" component={TriviaQuestions} />
-    //     <Stack.Screen name="Discussion" component={Discussion} />
-    //     <Stack.Screen name="News" component={News} />
-    //     <Stack.Screen name="Photos" component={Photos} />
-    //     <Stack.Screen name="UploadPhotos" component={UploadPhotos} />
-    //     <Stack.Screen name="LiveNow" component={LiveNow} />
-    //     <Stack.Screen name="LiveDetails" component={LiveDetails} />
-    //     <Stack.Screen name="SpotLight" component={SpotLight} />
-    //     <Stack.Screen name="Notification" component={Notification} />
-    //     <Stack.Screen name="Settings" component={Settings} />
-    //   </>
-    // </Stack.Navigator>
+  
     <Stack.Navigator
       screenOptions={{headerShown: false}}
       initialRouteName={token ? 'Home' : 'LanguageSelection'} // Set the starting screen based on token
@@ -216,14 +194,87 @@ export const StackScreen = () => {
       <Stack.Screen name="JustFinished" component={JustFinished} />
       <Stack.Screen name="Players" component={Players} />
       <Stack.Screen name="PlayerInfo" component={PlayerInfo} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+      <Stack.Screen name="LeaderBoard" component={LeaderBoard} />
+      <Stack.Screen name="CallScreen" component={CallScreen} />
+ 
     </Stack.Navigator>
   );
 };
 
 export default function Routes() {
-  const token = useSelector(state => state.auth_store.token);
+
+  const NAVIGATION_IDS = ['MeetingChat'];
+  const linking = {
+    prefixes: ["kickscore://"],
+    config: {
+      screens: {
+        MeetingChat: {
+          path: 'MeetingChat/:id',
+          parse: {
+            id: (id) => id,
+            groupName: (groupName ) => decodeURIComponent(groupName  || ''),
+          },
+        },
+      },
+    },
+    async getInitialURL() {
+      const url = await Linking.getInitialURL();
+      if (typeof url === 'string') {
+        return url;
+      }
+      const message = await messaging().getInitialNotification();
+      const deeplinkURL = buildDeepLinkFromNotificationData(message?.data);
+      if (typeof deeplinkURL === 'string') {
+        return deeplinkURL;
+      }
+    },
+    subscribe(listener) {
+      const onReceiveURL = ({ url }) => listener(url);
+      const linkingSubscription = Linking.addEventListener('url', onReceiveURL);
+      const unsubscribe = messaging().onNotificationOpenedApp(remoteMessage => {
+        const url = buildDeepLinkFromNotificationData(remoteMessage.data);
+        if (typeof url === 'string') {
+          listener(url);
+        }
+      });
+  
+      return () => {
+        linkingSubscription.remove();
+        unsubscribe();
+      };
+    },
+  };
+  
+
+
+  function buildDeepLinkFromNotificationData(data) {
+    const navigationId = data?.navigationId;
+    if (!NAVIGATION_IDS.includes(navigationId)) {
+      console.warn('Unverified navigationId', navigationId);
+      return null;
+    }
+  
+    const meetingId = data?.group_id;
+    const groupName = data?.channel_name;
+    const creatorId = data.created_by;
+  
+    if (navigationId === 'MeetingChat') {
+      if (!meetingId || !groupName) {
+        console.warn("Missing meetingId or channelName", { meetingId, groupName });
+        return null;
+      }
+      console.log(`kickscore://MeetingChat/${meetingId}?groupName=${encodeURIComponent(groupName)}`)
+      return `kickscore://MeetingChat/${meetingId}?groupName=${encodeURIComponent(groupName)}&creatorId=${encodeURIComponent(creatorId)}`;
+    }
+  
+    return null;
+  }
+  
+
+
   return (
-    <NavigationContainer>
+    <NavigationContainer  linking={linking} >
       <StackScreen />
     </NavigationContainer>
   );

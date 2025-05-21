@@ -2,6 +2,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -14,11 +15,11 @@ import Header from '../../../components/header/header';
 import {t} from 'i18next';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {getFixturesById} from '../../../redux/fixturesSlice';
 import moment from 'moment';
-const Summary = lazy(() =>
-  import('../../../components/detail-modules/summary'),
-);
+import HoldOnAnimation from '../../../components/loader/animation-loader';
+import { getFixturesById } from '../../../redux/fixturesSlice';
+
+
 const Commentary = lazy(() =>
   import('../../../components/detail-modules/commentary'),
 );
@@ -31,49 +32,71 @@ const Players = lazy(() =>
 const Statistics = lazy(() =>
   import('../../../components/detail-modules/statistics'),
 );
-const PlayerInfo = lazy(() =>
-  import('../../../components/detail-modules/player-info'),
-);
 const LineUps = lazy(() =>
   import('../../../components/detail-modules/lineUps'),
 );
+
+const AiPrediction = lazy(() =>
+  import('../../../components/detail-modules/ai-prediction'),
+);
+
+const PredictionSummary = lazy(() =>
+  import('../../../components/detail-modules/prediction-summary'),
+);
+const MatchInfo = lazy(() =>
+  import('../../../components/detail-modules/match-info'),
+);
+
+
+
 
 const HighlightDetail = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const detailsType = [
-    // {
-    //   id: 1,
-    //   name: 'Summary',
-    // },
+ 
     {
       id: 2,
       name: 'Statistics',
     },
     {
       id: 3,
-      name: 'Standings',
+      name: 'Match Info',
     },
     {
       id: 4,
-      name: 'LineUps',
+      name: 'Standings',
     },
     {
       id: 5,
+      name: 'LineUps',
+    },
+    {
+      id: 6,
       name: 'Commentary',
     },
+    {
+      id: 1,
+      name: 'AiPrediction',
+    },
+    {
+      id: 7,
+      name: 'Match Prediction',
+    },
+   
   ];
 
   const [type, setType] = useState('Statistics');
   const dispatch = useDispatch();
   const fixtureId = route?.params?.fixtureId;
   const detailData = useSelector(state => state?.fixtures?.fixturesById);
+    const lang = useSelector(state => state?.language_store?.language);
+  
+  useEffect(()=>{
+    dispatch(getFixturesById({fixtureId, lang}))
+  },[dispatch, lang])
 
-  useEffect(() => {
-    dispatch(getFixturesById(fixtureId));
-  }, []);
 
-  // Function to extract scores for home and away teams
   const homeTeam = detailData?.participants?.find(
     participant => participant?.meta?.location === 'home',
   );
@@ -84,7 +107,6 @@ const HighlightDetail = () => {
   let homeScore = 0;
   let awayScore = 0;
 
-  // Sum up the scores based on the participant_id
   detailData?.scores?.forEach(score => {
     if (
       score.score.participant === 'home' &&
@@ -108,7 +130,7 @@ const HighlightDetail = () => {
           style={[
             tw`h-7`,
             {paddingHorizontal: 10},
-            isLastItem && {marginRight: 10}, // Add marginRight only if it's the last item
+            isLastItem && {marginRight: 10},
           ]}
           onPress={() => setType(item.name)}>
           <Text style={tw`text-[#fff] text-[18px] font-400 self-center`}>
@@ -123,13 +145,13 @@ const HighlightDetail = () => {
   };
 
   return (
-    <View style={tw`bg-[#05102E] flex-1 `}>
+    <SafeAreaView style={tw`bg-[#05102E] flex-1 `}>
       <ScrollView>
         <ImageBackground
           source={require('../../../assets/detail-bg.png')}
-          style={[tw`w-full h-50`, {resizeMode: 'contain'}]}>
+          style={[tw`w-full h-auto`, {resizeMode: 'contain'}]}>
           <Header name="" />
-          <View style={[tw` px-5 pb-10  mt--5`]}>
+          <View style={[tw` px-5  mt--6`]}>
             <View style={tw`flex-row justify-between mb-4 `}>
               <Image
                 source={{uri: detailData?.league?.image_path}}
@@ -186,7 +208,7 @@ const HighlightDetail = () => {
                 </TouchableOpacity>
 
                 <Text
-                  style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5 self-center`}>
+                  style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5 self-center w-29 text-center`}>
                   {homeTeam?.name}
                 </Text>
               </View>
@@ -239,16 +261,21 @@ const HighlightDetail = () => {
                   </View>
                 </TouchableOpacity>
                 <Text
-                  style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5 self-center`}>
+                  style={tw`text-[#fff] text-[14px] font-400 leading-normal mt-1.5 self-center text-center w-27`}>
                   {awayTeam?.name}
                 </Text>
               </View>
             </View>
+            <Text
+            style={[tw`text-[#FF2F00] text-[16px] font-400 leading-tight mt-5 mb-2  self-center` ,{textAlign:"center"}]}>
+           Result:{" "} {detailData?.result_info}
+          </Text> 
           </View>
+         
         </ImageBackground>
 
         <View>
-          <View style={tw` border-t pt-3  border-[#3e3e3e] mt-2 `} />
+          <View style={tw` border-t pt-3  border-[#3e3e3e]  `} />
           <FlatList
             data={detailsType}
             horizontal
@@ -260,16 +287,20 @@ const HighlightDetail = () => {
           <View style={tw` border-b pt-3  border-[#3e3e3e] `} />
         </View>
 
-        <Suspense fallback={<Text>Loading...</Text>}>
+        <Suspense fallback={<HoldOnAnimation/>}>
           {/* {type === 'Summary' && <Summary />} */}
           {/* {type === 'Summary' && <PlayerInfo fixtureId={fixtureId} />} */}
           {type === 'Statistics' && <Statistics fixtureId={fixtureId} />}
-          {type === 'Standings' && <Standings />}
+          {type === 'Match Info' && <MatchInfo detailData={detailData} />}
+          {type === 'Standings' && <Standings homeTeam={homeTeam} awayTeam={awayTeam}/>}
           {type === 'LineUps' && <LineUps fixtureId={fixtureId} />}
-          {type === 'Commentary' && <Commentary />}
+          {type === 'Commentary' && <Commentary fixtureId={fixtureId} />}
+          {type === 'AiPrediction' && <AiPrediction fixtureId={fixtureId} homeTeam={homeTeam} awayTeam={awayTeam}/>}
+          {type === 'Match Prediction' && <PredictionSummary fixtureId={fixtureId} homeTeam={homeTeam} awayTeam={awayTeam}/>}
+
         </Suspense>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

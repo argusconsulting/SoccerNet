@@ -27,7 +27,7 @@ export const getAllLeaguesWithFixtures = createAsyncThunk(
   async ({lang}) => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_allLeagues}?locale=${lang}&include=currentSeason`,
+        `${api_name_allLeagues}?locale=${lang}&include=currentSeason;latest`,
       );
       return response;
     } catch (error) {
@@ -44,7 +44,6 @@ export const getSelectedLeagues = createAsyncThunk(
       const response = await getApi(
         `${api_name_selectedLeagues}?locale=${lang}`,
       );
-      console.log('res of getting', response);
       return response;
     } catch (error) {
       console.log('Error fetching leagues API', error);
@@ -64,7 +63,6 @@ export const postSelectedLeagues = createAsyncThunk(
         api_name_sending_selected_leagues,
         reqData,
       );
-      console.log('sending data', response);
       return response;
     } catch (error) {
       console.log('Error sending selected leagues API', error);
@@ -81,6 +79,7 @@ const leagueSlice = createSlice({
     selectedLeagues: [],
     isLoadingSelectedLeagues: false,
     allLeagueData: [],
+    isFetched: false,
     status: '',
   },
   reducers: {},
@@ -104,10 +103,12 @@ const leagueSlice = createSlice({
       state.selectedLeagues = action?.payload;
       state.status = 'fulfilled';
       state.isLoadingSelectedLeagues = false;
+      state.isFetched = true;
     });
     builder.addCase(getSelectedLeagues.pending, (state, action) => {
       state.status = 'pending';
       state.isLoadingSelectedLeagues = true;
+     
     });
     builder.addCase(getSelectedLeagues.rejected, (state, action) => {
       state.status = 'rejected';

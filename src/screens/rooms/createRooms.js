@@ -1,5 +1,6 @@
 import {
   Button,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -43,7 +44,7 @@ const CreateRooms = () => {
     });
   };
   return (
-    <View style={tw`bg-[#05102E] flex-1 `}>
+    <SafeAreaView style={tw`bg-[#05102E] flex-1 `}>
       <Header name="Create a Room" />
       <View style={tw`p-5`}>
         <Text
@@ -143,7 +144,7 @@ const CreateRooms = () => {
           }}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

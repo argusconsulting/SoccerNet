@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -15,14 +16,12 @@ import Loader from '../../components/loader/Loader';
 const Poll = () => {
   const dispatch = useDispatch();
   const apiPolls = useSelector(state => state.poll?.userPollData);
+  console.log("api polls", apiPolls);
   const isLoading = useSelector(state => state.poll.isLoading);
-
-  // Local state to manage the polls and track votes
   const [questions, setQuestions] = useState([]);
-  const [userVotes, setUserVotes] = useState({}); // Track which polls the user voted for
+  const [userVotes, setUserVotes] = useState({}); 
 
   useEffect(() => {
-    // Dispatch action to fetch poll data when component mounts
     dispatch(getPollData());
   }, [dispatch]);
 
@@ -34,35 +33,41 @@ const Poll = () => {
 
   const handleChoicePress = (pollId, selectedChoice) => {
     const selectedId = selectedChoice.id;
-
-    // Check if the user already voted for this poll
-    if (userVotes[pollId]) return; // Prevent further votes
-
-    // Update the votes for the selected choice
-    const updatedQuestions = questions.map(question => {
-      if (question.id === pollId) {
-        const updatedChoices = question.options.map(option =>
-          option.id === selectedId
-            ? {...option, votes_count: option.votes_count + 1}
-            : option,
-        );
-
-        return {...question, options: updatedChoices};
-      }
-      return question;
-    });
-
-    setQuestions(updatedQuestions);
-
-    // Mark the poll as voted in local state
+    if (userVotes[pollId]) return;
+  
     setUserVotes(prevState => ({...prevState, [pollId]: true}));
-
-    // Dispatch the vote action with the option ID
-    dispatch(pollVoteData({id: selectedId, pollId}));
+  
+    dispatch(pollVoteData({id: selectedId, pollId})).then(() => {
+      dispatch(getPollData()); // refetch fresh vote data
+    });
   };
+  
+
+  // const handleChoicePress = (pollId, selectedChoice) => {
+  //   const selectedId = selectedChoice.id;
+  //   if (userVotes[pollId]) return; // Prevent further votes
+  //   const updatedQuestions = questions.map(question => {
+  //     if (question.id === pollId) {
+  //       const updatedChoices = question.options.map(option =>
+  //         option.id === selectedId
+  //           ? {...option, votes_count: option.votes_count + 1}
+  //           : option,
+  //       );
+
+  //       return {...question, options: updatedChoices};
+  //     }
+  //     return question;
+  //   });
+
+  //   setQuestions(updatedQuestions);
+
+  //   setUserVotes(prevState => ({...prevState, [pollId]: true}));
+
+  //   dispatch(pollVoteData({id: selectedId, pollId}));
+  // };
 
   return (
-    <View style={[tw`bg-[#05102E] flex-1`]}>
+    <SafeAreaView style={[tw`bg-[#05102E] flex-1`]}>
       <ScrollView>
         <Header name="Poll" />
         {isLoading ? (
@@ -116,7 +121,7 @@ const Poll = () => {
           </View>
         )}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

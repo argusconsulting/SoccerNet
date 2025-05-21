@@ -3,6 +3,7 @@ import {getApi, postApi} from '../scripts/api-services';
 import {
   api_name_fan_photos,
   api_name_fan_reaction,
+  api_name_leaderBoard,
   api_name_post_fan_photos,
 } from '../constants/api-constants';
 import Alertify from '../scripts/toast';
@@ -10,6 +11,16 @@ import Alertify from '../scripts/toast';
 export const getFanPhotos = createAsyncThunk('fanPhotos/photos', async () => {
   try {
     const response = await getApi(`${api_name_fan_photos}`);
+    return response;
+  } catch (error) {
+    console.log('get fan photos list error', error);
+    throw error;
+  }
+});
+
+export const getLeaderBoard = createAsyncThunk('leaderboard/photos', async () => {
+  try {
+    const response = await getApi(`${api_name_leaderBoard}`);
     return response;
   } catch (error) {
     console.log('get fan photos list error', error);
@@ -72,6 +83,7 @@ export const fanPhotosSlice = createSlice({
   initialState: {
     isLoading: false,
     fanPhotos: [],
+    leaderBoard:[]
   },
   reducers: {},
 
@@ -85,6 +97,18 @@ export const fanPhotosSlice = createSlice({
         state.fanPhotos = action?.payload;
       })
       .addCase(getFanPhotos.rejected, (state, action) => {
+        state.isLoading = false;
+      });
+
+      builder
+      .addCase(getLeaderBoard.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(getLeaderBoard.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.leaderBoard = action?.payload?.leaderboard;
+      })
+      .addCase(getLeaderBoard.rejected, (state, action) => {
         state.isLoading = false;
       });
 

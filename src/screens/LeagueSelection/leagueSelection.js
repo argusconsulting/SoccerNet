@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
+  SafeAreaView,
 } from 'react-native';
 import tw from '../../styles/tailwind';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -46,9 +47,35 @@ const LeagueSelection = () => {
   };
 
   return (
-    <View style={[tw`bg-[#05102E] h-full`, styles.container]}>
+    <SafeAreaView style={[tw`bg-[#05102E] h-full`, styles.container]}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={tw`p-5`}>
+        {lang == 'ar' ?  <View style={tw`p-5 `}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <AntDesign
+              name={'arrowleft'}
+              size={24}
+              color={'#fff'}
+              style={tw`mt-1 self-end`}
+            />
+          </TouchableOpacity>
+          <Text
+            style={tw`text-[#fff] text-[34px] font-401 leading-normal mt-3 self-end`}>
+            {t('selectFavLeague')}
+          </Text>
+          <Text
+            style={tw`text-[#A9A9A9] text-[16px] font-400 leading-tight mt-3  self-end`}>
+            {t('chooseMoreThanOne')}
+          </Text>
+
+          <MultiSelectDropdown
+            leagueBy={t('leagueHeadingCountry')}
+            leaguePlaceholder="Country leagues"
+            data={allLeagues?.data}
+            onSelectionChange={setSelectedLeagues}
+          />
+
+        
+        </View>:  <View style={tw`p-5`}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <AntDesign
               name={'arrowleft'}
@@ -73,18 +100,9 @@ const LeagueSelection = () => {
             onSelectionChange={setSelectedLeagues}
           />
 
-          {/* <View style={tw`border-b-[#a2a2a2] border-[1px]`} />
-          <MultiSelectDropdown
-            leagueBy={t('leagueHeadingIntercontinental')}
-            leaguePlaceholder="Intercontinental leagues"
-          />
-
-          <View style={tw`border-b-[#a2a2a2] border-[1px]`} />
-          <MultiSelectDropdown
-            leagueBy={t('leagueHeadingWorldcup')}
-            leaguePlaceholder="World cup leagues"
-          /> */}
-        </View>
+        
+        </View>}
+       
       </ScrollView>
 
       {/* Fixed Continue Button */}
@@ -101,7 +119,7 @@ const LeagueSelection = () => {
           </Text>
         </LinearGradient>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 

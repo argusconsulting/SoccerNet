@@ -19,14 +19,18 @@ import {
   getSeasonsById,
 } from '../../redux/playerSlice';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { t } from 'i18next';
 
 const PlayerInfo = () => {
   const route = useRoute();
   const playerId = route?.params?.playerId;
+  const playername = route?.params?.playerName;
   const teamImage = route?.params?.teamImage;
   const teamName = route?.params?.teamName;
   const data = useSelector(state => state?.player?.playerData);
   const seasons = useSelector(state => state?.player?.allSeasons);
+
+  
   const dispatch = useDispatch();
 
   const [selectedSeasonId, setSelectedSeasonId] = useState(null);
@@ -73,6 +77,7 @@ const PlayerInfo = () => {
     dispatch(
       getPlayersById({
         playerId,
+        // lang,
         includeParams: 'statistics.details.type;country;position',
       }),
     );
@@ -83,13 +88,10 @@ const PlayerInfo = () => {
       const uniqueSeasonIds = [
         ...new Set(data.statistics.map(stat => stat.season_id)),
       ];
-
-      // Fetch season data for each unique season ID
       uniqueSeasonIds.forEach(season_id => {
         dispatch(getSeasonsById(season_id));
       });
-
-      // Set initial selected season to the first one in the list
+    
       if (uniqueSeasonIds.length > 0) {
         setSelectedSeasonId(uniqueSeasonIds[0]);
       }
@@ -140,7 +142,7 @@ const PlayerInfo = () => {
           />
           <Text
             style={tw`text-[#fff] text-[22px] self-center mt-70 font-402 leading-normal`}>
-            {data?.display_name}
+            {playername}
           </Text>
           <View style={tw`flex-row border-b-[#fff] border-b-[0.3px] mt-3 pb-1`}>
             {positionName && categoryImages[positionName] && (
@@ -151,7 +153,7 @@ const PlayerInfo = () => {
             )}
             <Text
               style={tw`text-[#fff] text-[16px] self-center font-401 leading-normal mr-5`}>
-              {positionName}
+              {t(positionName)}
             </Text>
             <Entypo
               name={'man'}
@@ -190,7 +192,7 @@ const PlayerInfo = () => {
               />
               <Text
                 style={tw`text-[#fff] text-[20px] font-401 leading-normal mt-1`}>
-                Date of Birth
+                {t('Date of Birth')}
               </Text>
             </View>
             <Text
@@ -206,7 +208,7 @@ const PlayerInfo = () => {
               />
               <Text
                 style={tw`text-[#fff] text-[20px] font-401 leading-normal `}>
-                Height
+                {t('Height')}
               </Text>
             </View>
             <Text
@@ -224,7 +226,7 @@ const PlayerInfo = () => {
               style={tw`w-5 h-5 mr-3 mt-0.5 `}
             />
             <Text style={tw`text-[#fff] text-[20px] font-401 leading-normal `}>
-              Seasons
+              {t('Season')}
             </Text>
           </View>
           <ScrollView
@@ -257,7 +259,7 @@ const PlayerInfo = () => {
                     {stat.value.total ?? stat.value.average ?? 'N/A'}
                   </Text>
                   <Text style={tw`text-[#fff] text-[18px] mb-5 font-400`}>
-                    {stat.type.name}
+                    {t(stat.type.name)}
                   </Text>
                 </View>
               ))}

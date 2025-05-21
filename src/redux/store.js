@@ -16,6 +16,8 @@ import liveScoreSlice from './liveScoreSlice';
 import meetingRoom from './fanSlice';
 import playerSlice from './playerSlice';
 import searchSlice from './searchSlice';
+import predictionSlice from './predictionSlice'
+import commentriesSlice from './commentriesSlice'
 
 const persistConfig = {
   key: 'root',
@@ -45,6 +47,8 @@ const reducers = combineReducers({
   room: meetingRoom,
   player: playerSlice,
   search: searchSlice,
+  prediction : predictionSlice,
+  commentries : commentriesSlice
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

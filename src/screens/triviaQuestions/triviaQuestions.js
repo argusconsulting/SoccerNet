@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import tw from '../../styles/tailwind';
@@ -51,7 +51,7 @@ const TriviaQuestions = ({}) => {
   const renderQuestion = ({item}) => (
     <View>
       <RenderHtml
-        contentWidth={100}
+        contentWidth={50}
         source={{html: item?.question_text}}
         tagsStyles={customStyles}
       />
@@ -71,7 +71,7 @@ const TriviaQuestions = ({}) => {
             ]}
             onPress={() => handleOptionSelect(option)}>
             <RenderHtml
-              contentWidth={100}
+              contentWidth={20}
               source={{html: `${option.option_text || 'No text available'}`}}
               tagsStyles={customStyles}
             />
@@ -82,7 +82,8 @@ const TriviaQuestions = ({}) => {
   );
 
   return (
-    <View style={tw`bg-[#05102E] h-full p-5`}>
+    <SafeAreaView style={tw`bg-[#05102E] h-full `}>
+      <View style={tw`p-5`}> 
       <View style={tw`flex-row`}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <AntDesign
@@ -174,7 +175,8 @@ const TriviaQuestions = ({}) => {
           </Text>
         </View>
       )}
-    </View>
+      </View>
+    </SafeAreaView>
   );
 };
 

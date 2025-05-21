@@ -23,16 +23,25 @@ export const userLogout = createAsyncThunk(
   'user/logout',
   async (_, {dispatch}) => {
     try {
-      removeToken();
+      await removeToken();
       dispatch(clearToken());
-      RNRestart.Restart();
+
+      const tokenAfterRemoval = await AsyncStorage.getItem('token');
+      console.log('Token after removal:', tokenAfterRemoval);
+
+      setTimeout(() => {
+        RNRestart.restart();
+      }, 1000); // Give time for state update
     } catch (error) {
       console.log('Error in logout', error);
-      removeToken();
+      await removeToken();
       dispatch(clearToken());
-      RNRestart.Restart();
+
+      setTimeout(() => {
+        RNRestart.restart();
+      }, 1000);
     }
-  },
+  }
 );
 
 export const authSlice = createSlice({

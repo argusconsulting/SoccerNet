@@ -1,4 +1,4 @@
-import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import tw from '../../styles/tailwind';
 import {Calendar} from 'react-native-calendars';
@@ -12,7 +12,7 @@ import moment from 'moment';
 const CalendarScreen = () => {
   const dispatch = useDispatch();
   const data = useSelector(state => state?.fixtures?.fixturesByDate);
-
+  const lang = useSelector(state => state?.language_store?.language);
   const dataByRange = useSelector(
     state => state?.fixtures?.fixturesByDateRange,
   );
@@ -50,12 +50,14 @@ const CalendarScreen = () => {
     dispatch(getAllFixturesByDate(selectedDate));
   }, [dispatch, selectedDate]);
 
+
   useEffect(() => {
     if (monthRange.start && monthRange.end) {
       dispatch(
         getAllFixturesByDateRange({
           start: monthRange.start,
           end: monthRange.end,
+          lang
         }),
       );
     }
@@ -63,12 +65,12 @@ const CalendarScreen = () => {
 
   useEffect(() => {
     if (dataByRange?.length) {
-      markDatesWithMatches(dataByRange); // Mark dates when data is available
+      markDatesWithMatches(dataByRange); 
     }
   }, [dataByRange]);
 
   const handleDayPress = day => {
-    setSelectedDate(day.dateString); // Update state with selected date
+    setSelectedDate(day.dateString);
   };
 
   const handleMonthChange = month => {
@@ -80,42 +82,45 @@ const CalendarScreen = () => {
 
   const Item = ({item}) => {
     const time = moment(item?.starting_at).format('hh:mm A');
+    console.log("item", item)
+    // console.log("time", time ,"starting at", item?.participants?.[0]?.name , item?.starting_at)
 
     return (
-      <View style={tw`bg-[#303649] w-90 py-3 mt-5 self-center rounded-lg`}>
-        <View style={tw`flex-row ml-5`}>
+      <View style={tw`bg-[#303649] w-90 h-25 py-3 mt-5 self-center justify-center rounded-lg border-l-[2px] border-[#d9d9d9]`}>
+        <View style={tw`flex-row self-center`}>
           <Image
             source={{uri: item?.participants?.[0]?.image_path}}
-            style={[tw`w-6 h-6`, {resizeMode: 'contain'}]}
+            style={[tw`w-6 h-6 self-center`, {resizeMode: 'contain'}]}
           />
           <Text
-            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-1 `}>
+            style={tw`text-white text-[18px] font-400 leading-tight self-center text-center mx-1 w-25 mr-3`}>
             {item?.participants?.[0]?.name}
           </Text>
           <Text
-            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-1 `}>
+            style={tw`text-white text-[18px] font-400 leading-tight self-center mr-4 `}>
             v/s
           </Text>
           <Image
             source={{uri: item?.participants?.[1]?.image_path}}
-            style={[tw`w-6 h-6`, {resizeMode: 'contain'}]}
+            style={[tw`w-6 h-6 self-center`, {resizeMode: 'contain'}]}
           />
           <Text
-            style={tw`text-white text-[18px] font-400 leading-tight self-center mx-1 `}>
+            style={tw`text-white text-[18px] font-400 leading-tight self-center text-center mx-1 w-27`}>
             {item?.participants?.[1]?.name}
           </Text>
 
-          <Text
-            style={tw`text-[#a2a2a2] text-[18px] font-400 leading-tight self-center mx-3 `}>
-            {time}
-          </Text>
+        
         </View>
+        <Text
+            style={tw`text-[#a2a2a2] text-[18px] font-400 leading-tight self-center mt-5 `}>
+            {time} 
+          </Text>
       </View>
     );
   };
 
   return (
-    <View style={tw`bg-[#12122A] flex-1 `}>
+    <SafeAreaView style={tw`bg-[#12122A] flex-1 `}>
       <Calendar
         style={{
           borderWidth: 1,
@@ -145,7 +150,6 @@ const CalendarScreen = () => {
         Date: {selectedDate}
       </Text>
 
-      {console.log('data?.data', data?.data)}
       {data?.data ? (
         <FlatList
           data={data?.data}
@@ -159,7 +163,7 @@ const CalendarScreen = () => {
           No data Found!
         </Text>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

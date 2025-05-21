@@ -1,6 +1,7 @@
 import {
   FlatList,
   Image,
+  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -23,6 +24,9 @@ const LanguageSelection = () => {
   const selectedLanguage = useSelector(
     state => state?.language_store?.language,
   );
+    const lang = useSelector(state => state?.language_store?.language);
+    console.log("seeing lang", lang)
+  
   const {from} = route.params || {};
 
   const DATA = [
@@ -103,13 +107,25 @@ const LanguageSelection = () => {
   );
 
   return (
+    <SafeAreaView>
+     
     <View style={tw`bg-[#05102E] h-full p-5`}>
-      <Text style={tw`text-[#fff] text-[34px] font-401 leading-tight mt-5`}>
-        {t('language')}
-      </Text>
-      <Text style={tw`text-[#A9A9A9] text-[16px] font-400 leading-tight mt-8`}>
+    {lang == 'ar' ? <>
+  <Text style={tw`text-[#fff] text-[34px] font-401 leading-tight mt-5 self-end`}>
+    {t('language')}
+  </Text>
+      <Text style={tw`text-[#A9A9A9] text-[16px] font-400 leading-tight mt-5 self-end`}>
         {t('chooseLangText')}
       </Text>
+      </>
+      : <>
+       <Text style={tw`text-[#fff] text-[34px] font-401 leading-tight mt-5`}>
+        {t('language')}
+      </Text>
+      <Text style={tw`text-[#A9A9A9] text-[16px] font-400 leading-tight mt-5`}>
+        {t('chooseLangText')}
+      </Text></>}
+     
       <FlatList
         numColumns={2}
         data={DATA}
@@ -144,6 +160,7 @@ const LanguageSelection = () => {
         </LinearGradient>
       </TouchableOpacity>
     </View>
+    </SafeAreaView>
   );
 };
 

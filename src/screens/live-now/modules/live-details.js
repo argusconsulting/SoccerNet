@@ -2,18 +2,21 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  RefreshControl,
+  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {lazy, Suspense, useEffect, useState} from 'react';
+import React, {lazy, Suspense, useCallback, useEffect, useState} from 'react';
 import Header from '../../../components/header/header';
 import tw from '../../../styles/tailwind';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {getFixturesById} from '../../../redux/fixturesSlice';
 import moment from 'moment';
+import { ScrollView } from 'react-native-gesture-handler';
 const News = lazy(() => import('../../news/news'));
 const Commentary = lazy(() =>
   import('../../../components/detail-modules/commentary'),
@@ -21,16 +24,32 @@ const Commentary = lazy(() =>
 const Standings = lazy(() =>
   import('../../../components/detail-modules/standings'),
 );
+const PredictionSummary = lazy(() =>
+  import('../../../components/detail-modules/prediction-summary'),
+);
+const LineUps = lazy(() =>
+  import('../../../components/detail-modules/lineUps'),
+);
 
 const LiveDetails = () => {
   const route = useRoute();
+    const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
   const fixtureId = route?.params?.fixtureId;
   const navigation = useNavigation()
   const detailData = useSelector(state => state?.fixtures?.fixturesById);
+    const lang = useSelector(state => state?.language_store?.language);
+  
+
   useEffect(() => {
-    dispatch(getFixturesById(fixtureId));
+    dispatch(getFixturesById({fixtureId, lang}));
   }, []);
+
+    const onRefresh = useCallback(() => {
+      setRefreshing(true);
+      dispatch(getFixturesById({fixtureId, lang}));
+      setRefreshing(false);
+    }, [dispatch]);
 
   // Function to extract scores for home and away teams
   const homeTeam = detailData?.participants?.find(
@@ -61,19 +80,28 @@ const LiveDetails = () => {
   const detailsType = [
     {
       id: 1,
-      name: 'Commentary',
-    },
-    {
-      id: 2,
       name: 'Standings',
     },
     {
+      id: 2,
+      name: 'Commentary',
+    },
+    {
       id: 3,
-      name: 'News',
+      name: 'LineUps',
+    },
+  
+    // {
+    //   id: 3,
+    //   name: 'News',
+    // },
+    {
+      id: 4,
+      name: 'Kickscore Prediction',
     },
   ];
 
-  const [type, setType] = useState('Commentary');
+  const [type, setType] = useState('Standings');
 
   const renderItem = ({item}) => (
     <View style={tw``}>
@@ -91,13 +119,16 @@ const LiveDetails = () => {
   );
 
   return (
-    <View style={tw`bg-[#05102E] flex-1 `}>
+<SafeAreaView style={tw`bg-[#05102E] flex-1 `}  refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }>
+    <ScrollView >
        <ImageBackground
           source={require('../../../assets/detail-bg.png')}
-          style={[tw`w-full h-50`, {resizeMode: 'contain'}]}>
+          style={[tw`w-full h-58`, {resizeMode: 'contain'}]}>
       <Header name="" />
 
-      <View style={[tw` px-5 pb-10  mt--5`]}>
+      <View style={[tw` px-5 mt--6`]}>
         <View style={tw`flex-row justify-between`}>
           <Image
             source={{uri: detailData?.league?.image_path}}
@@ -212,11 +243,16 @@ const LiveDetails = () => {
             </Text>
           </View>
         </View>
+        {detailData?.result_info === !null && <Text
+            style={[tw`text-[#ed2939] text-[16px] font-400 leading-tight mt-5  self-center` ,{textAlign:"center"}]}>
+           Result:{" "} {detailData?.result_info}
+          </Text> }
+        
       </View>
       </ImageBackground>
 
       <View>
-        <View style={tw` border-t pt-3 ml-3 border-[#3e3e3e] mt-10 `} />
+        <View style={tw` border-t pt-3 ml-3 border-[#3e3e3e] mt-2`} />
         <FlatList
           data={detailsType}
           horizontal
@@ -229,12 +265,15 @@ const LiveDetails = () => {
       </View>
 
       <Suspense fallback={<Text>Loading...</Text>}>
-        {type === 'Standings' && <Standings />}
-        {type === 'News' && <News shownHeader={false} />}
-
-        {type === 'Commentary' && <Commentary />}
+        {type === 'Standings' && <Standings homeTeam={homeTeam} awayTeam={awayTeam}/>}
+        {/* {type === 'News' && <News shownHeader={false} />} */}
+        {type === 'LineUps' && <LineUps fixtureId={fixtureId} />}
+        {type === 'Commentary' && <Commentary fixtureId={fixtureId}/>}
+        {type === 'Kickscore Prediction' && <PredictionSummary fixtureId={fixtureId} homeTeam={homeTeam} awayTeam={awayTeam}/>}
+        
       </Suspense>
-    </View>
+    </ScrollView>
+    </SafeAreaView>
   );
 };
 

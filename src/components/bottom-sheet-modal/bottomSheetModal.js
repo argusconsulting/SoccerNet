@@ -50,7 +50,8 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
   const [emailValue, setEmailValue] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [checkSavedLeagues, setCheckSavedLeagues] = useState([]);
+    const lang = useSelector(state => state?.language_store?.language);
+
 
   const getSelectedLeagues = async currentUserId => {
     try {
@@ -108,13 +109,11 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
     try {
       if (checked === 'email') {
         if (emailValue == '') {
-          ToastAndroid.show('Please enter your Email', ToastAndroid.LONG);
+          Alertify.error('Please enter your Email');
           return; // Stop further execution
         } else if (!validateEmail(emailValue)) {
-          ToastAndroid.show(
-            'Please enter a valid email address.',
-            ToastAndroid.LONG,
-          );
+          Alertify.error('Please enter a valid email address.');
+     
           return; // Stop further execution
         }
       }
@@ -122,31 +121,27 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
       // Validation for phone number when `checked` is 'contact'
       if (checked === 'contact_number') {
         if (value == '') {
-          ToastAndroid.show(
-            'Please enter your Phone Number',
-            ToastAndroid.LONG,
-          );
+          Alertify.error('Please enter your Phone Number');
+      
           return; // Stop further execution
         } else if (!validatePhoneNumber(value)) {
-          ToastAndroid.show(
-            'Please enter a valid phone number.',
-            ToastAndroid.LONG,
-          );
+          Alertify.error('Please enter a valid phone number.');
+       
           return; // Stop further execution
         }
       }
 
       // Validation for password
       if (password == '') {
-        ToastAndroid.show('Please enter your password', ToastAndroid.LONG);
+        Alertify.error('Please enter your password');
+        // ToastAndroid.show('Please enter your password', ToastAndroid.LONG);
         return;
       }
       const device_token = await GetFCMToken();
-      // console.log('device token value ', device_token);
       setSubmitLoader(true);
       postApi(api_name_login, {
         login_type: checked,
-        login: checked === 'email' ? emailValue : value,
+        login: checked === 'email' ? emailValue.trim() : value,
         password: password,
         fcm_token: device_token,
       })
@@ -160,8 +155,6 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
             dispatch(setUserID(response?.data?.user?.id));
             dispatch(setUserDetails(response?.data?.user));
             onClose();
-
-            // navigation.navigate('LeagueSelection');
             getSelectedLeagues(response?.data?.user?.id);
 
             setSubmitLoader(false);
@@ -182,17 +175,17 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
   async function handleRegister() {
     try {
       if (!name.trim()) {
-        ToastAndroid.show('Please enter your Name', ToastAndroid.LONG);
+        Alertify.error('Please enter your Name');
+        // ToastAndroid.show('Please enter your Name', ToastAndroid.LONG);
       }
       if (checked === 'email') {
         if (!emailValue.trim()) {
-          ToastAndroid.show('Please enter your Email', ToastAndroid.LONG);
+          Alertify.error('Please enter your Email');
+          // ToastAndroid.show('Please enter your Email', ToastAndroid.LONG);
           return; // Stop further execution
         } else if (!validateEmail(emailValue)) {
-          ToastAndroid.show(
-            'Please enter a valid email address.',
-            ToastAndroid.LONG,
-          );
+          Alertify.error('Please enter a valid email address.');
+        
           return; // Stop further execution
         }
       }
@@ -200,29 +193,25 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
       // Validation for phone number when `checked` is 'contact'
       if (checked === 'contact_number') {
         if (!value.trim()) {
-          ToastAndroid.show(
-            'Please enter your Phone Number',
-            ToastAndroid.LONG,
-          );
+          Alertify.error('Please enter your Phone Number');
+         
           return; // Stop further execution
         } else if (!validatePhoneNumber(value)) {
-          ToastAndroid.show(
-            'Please enter a valid phone number.',
-            ToastAndroid.LONG,
-          );
+          Alertify.error('Please enter a valid phone number.');
+    
           return; // Stop further execution
         }
       }
 
       // Validation for password
       if (!password.trim()) {
-        ToastAndroid.show('Please enter your password', ToastAndroid.LONG);
+        Alertify.error('Please enter your password');
         return; // Stop further execution
       } else if (!validatePassword(password)) {
-        ToastAndroid.show(
+        Alertify.error(
           'Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
-          ToastAndroid.LONG,
         );
+    
         return; // Stop further execution
       } else {
         setSubmitLoader(true);
@@ -263,43 +252,57 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
       style={styles.modal}>
       <View style={styles.content}>
         <View style={styles.header} />
-        <View style={tw`flex-row `}>
+        {lang == 'ar' ? <>
+          <View style={tw`flex-row-reverse`}>
           <Image
             source={require('../../assets/logo.png')}
-            style={[tw`w-12 h-12 self-center mb-3`, {resizeMode: 'contain'}]}
+            style={[tw`w-12 h-12 self-center `, {resizeMode: 'contain'}]}
           />
           <Text
             style={tw`text-white text-[28px] font-401 leading-tight self-center mx-5`}>
             {t('welcomeToKickScore')}
           </Text>
         </View>
+        </>:<>
+        <View style={tw`flex-row items-center justify-center self-center `}>
+  <Image
+    source={require('../../assets/logo.png')}
+    style={[tw`w-12 h-12`, { resizeMode: 'contain' }]}
+  />
+  <Text
+    style={tw`text-white text-[28px] font-401 leading-tight mx-5 `}>
+    {t('welcomeToKickScore')}
+  </Text>
+</View></>}
+        
 
-        <View style={tw`flex-row justify-between mt-1`}>
-          <View style={tw`flex-row`}>
+        <View style={tw`flex-row justify-between mt-4`}>
+          <TouchableOpacity onPress={() => setChecked('email')} style={tw`flex-row`}>
             <RadioButton
+           
               color="#fff"
               value="email"
               status={checked === 'email' ? 'checked' : 'unchecked'}
-              onPress={() => setChecked('email')}
+              // onPress={() => setChecked('email')}
             />
             <Text
               style={tw`text-[#a9a9a9] text-[18px] font-400 leading-tight self-center ml-2`}>
               {t('email')}
             </Text>
-          </View>
+          </TouchableOpacity>
 
-          <View style={tw`flex-row`}>
+          <TouchableOpacity onPress={() => setChecked('contact_number')} style={tw`flex-row`}>
             <RadioButton
               value="contact_number"
               color="#fff"
               status={checked === 'contact_number' ? 'checked' : 'unchecked'}
-              onPress={() => setChecked('contact_number')}
+              // onPress={() => setChecked('contact_number')}
             />
             <Text
               style={tw`text-[#a9a9a9] text-[18px] font-400 leading-tight self-center ml-2`}>
               {t('phoneNumber')}
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>
 
         {/* Conditionally render text inputs */}
@@ -334,10 +337,14 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
               />
 
               {isLogin && (
+                  <TouchableOpacity onPress={()=> {
+                    onClose();
+                    navigation.navigate('ForgotPassword')}}>
                 <Text
                   style={tw`text-[#a9a9a9] text-[16px] font-401 leading-tight mt-3 mx-1`}>
                   Forgot password ?
                 </Text>
+                </TouchableOpacity>
               )}
             </>
           ) : (
@@ -366,7 +373,7 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
                 withDarkTheme
                 withShadow
                 autoFocus={false}
-                containerStyle={tw`  bg-[#12122A] w-88 rounded-lg mb-5 border-[#a9a9a9] border-[1px]`}
+                containerStyle={tw`  bg-[#12122A] w-90 rounded-lg mb-5 border-[#a9a9a9] border-[1px]`}
                 textContainerStyle={tw`bg-[#12122a] border-l-[#a9a9a9] border-[1px] h-11  py-0 text-[#a9a9a9] rounded-lg`}
                 codeTextStyle={tw`text-[#a9a9a9] border-r-[#a9a9a9] `}
                 textInputStyle={tw`text-[#a9a9a9]`}
@@ -386,10 +393,14 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
               />
 
               {isLogin && (
+                <TouchableOpacity onPress={()=> {
+                  onClose();
+                  navigation.navigate('ForgotPassword')}}>
                 <Text
                   style={tw`text-[#a9a9a9] text-[16px] font-401 leading-tight mt-3 mx-1`}>
                   Forgot password ?
                 </Text>
+                </TouchableOpacity>
               )}
             </>
           )}
@@ -442,16 +453,16 @@ const BottomSheetModal = ({isVisible, onClose, selectedValue}) => {
           {isLogin ? t('loginWith') : t('signupWith')}
         </Text>
         <View style={tw`flex-row mt-3 self-center `}>
-          <GoogleLogin />
+          <GoogleLogin  onClose={onClose}/>
 
           <Image
             source={require('../../assets/icons/apple.png')}
             style={[tw`w-9 h-9 self-center mr-7`, {resizeMode: 'contain'}]}
           />
 
-          <MicrosoftLogin />
+          <MicrosoftLogin onClose={onClose}/>
 
-          <FacebookLogin />
+          <FacebookLogin onClose={onClose}/>
         </View>
         <TouchableOpacity
           style={tw`flex-row mt-5 self-center`}

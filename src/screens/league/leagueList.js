@@ -1,48 +1,69 @@
 import {
   FlatList,
   Image,
+  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useMemo, useCallback} from 'react';
 import tw from '../../styles/tailwind';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useDispatch, useSelector} from 'react-redux';
 import {getAllLeaguesWithFixtures} from '../../redux/leagueSlice';
 import {getSeasonsById} from '../../redux/playerSlice';
 import Loader from '../../components/loader/Loader';
+import { t } from 'i18next';
 
 const LeagueScreen = () => {
   const navigation = useNavigation();
+  const route = useRoute();
   const [expandedItem, setExpandedItem] = useState(null);
   const dispatch = useDispatch();
   const allLeagues = useSelector(state => state?.league?.allLeagueData);
   const lang = useSelector(state => state?.language_store?.language);
-  const seasons = useSelector(state => state?.player?.allSeasons); // Assuming fetched season data is stored here
+  const seasons = useSelector(state => state?.player?.allSeasons);
   const loading = useSelector(state => state?.player?.isLoading);
+
   useEffect(() => {
     dispatch(getAllLeaguesWithFixtures({lang}));
-  }, []);
+  }, [dispatch, lang]);
+
+  useEffect(() => {
+    if (route.params?.seasonId) {
+      setExpandedItem(route.params.seasonId);
+      dispatch(getSeasonsById(route.params.seasonId));
+    }
+  }, [route.params?.seasonId, dispatch]);
 
   const toggleItem = seasonId => {
-    setExpandedItem(expandedItem === seasonId ? null : seasonId); // Toggle expansion by seasonId
-    dispatch(getSeasonsById(seasonId)); // Fetch season data for the specific current season ID
+    setExpandedItem(expandedItem === seasonId ? null : seasonId); 
+    if (expandedItem !== seasonId) {
+      dispatch(getSeasonsById(seasonId)); 
+    }
   };
 
   const Item = ({item}) => {
     const currentSeasonId = item.currentseason?.id;
-    const seasonData = seasons?.[currentSeasonId]; // Access season data using the ID
-
-    const seasonName = seasonData?.name || item.currentseason?.name;
+    const seasonData = seasons?.[currentSeasonId];
     const fixtures = seasonData?.fixtures || [];
-
+  
+    // Get today's date (without time for precise comparison)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+  
+    // Filter fixtures to include only those before or equal to today's date
+    const filteredFixtures = fixtures.filter(fixture => {
+      const fixtureDate = new Date(fixture.starting_at);
+      return fixtureDate <= today; // Only include fixtures up to today's date
+    });
+  
     return (
       <View style={tw`bg-[#303649] mb-5 p-3 rounded-lg`}>
         <TouchableOpacity
-          style={tw`flex-row justify-between`}
+          style={tw`${lang == 'ar' ? 'flex-row-reverse ': 'flex-row'} justify-between`}
           onPress={() => toggleItem(currentSeasonId)}>
           <View style={tw`flex-row`}>
             <Image
@@ -61,18 +82,14 @@ const LeagueScreen = () => {
             style={tw`mt-1`}
           />
         </TouchableOpacity>
-
-        {/* Display season name and fixtures when item is expanded */}
+  
+        {/* Display season name and filtered fixtures when item is expanded */}
         {expandedItem === currentSeasonId && (
           <>
-            <Text style={tw`text-[#fff] text-[20px] font-400 mt-5`}>
-              Season : {seasonName || 'No season name'}
-            </Text>
-
             {loading ? (
               <Loader />
-            ) : fixtures.length > 0 ? (
-              fixtures.map((fixture, index) => (
+            ) : filteredFixtures.length > 0 ? (
+              filteredFixtures.map((fixture, index) => (
                 <TouchableOpacity
                   onPress={() =>
                     navigation.navigate('HighlightDetail', {
@@ -80,23 +97,23 @@ const LeagueScreen = () => {
                     })
                   }
                   key={index}
-                  style={tw` mt-5 border-b-[#a2a2a2] border-b-[1px] w-full`}>
+                  style={tw`mt-5 border-b-[#a2a2a2] border-b-[1px] w-full`}>
                   <View style={tw`flex-row items-center self-center`}>
                     {fixture.participants.map((participant, idx) => (
                       <React.Fragment key={participant.id}>
                         <View style={tw`flex-row  self-center`}>
                           <Image
                             source={{uri: participant?.image_path}}
-                            style={[tw`w-8 h-8`, {resizeMode: 'contain'}]}
+                            style={[tw`w-7 h-7 self-center `, {resizeMode: 'contain'}]}
                           />
                           <Text
-                            style={tw`text-[#a2a2a2] text-[20px] self-center font-400 mx-2`}>
+                            style={tw`text-[#a2a2a2] text-[16px] self-center font-400 mx-2 w-20 text-center`}>
                             {participant?.name}
                           </Text>
                         </View>
                         {/* Only display "vs" if it’s not the last participant */}
                         {idx < fixture.participants.length - 1 && (
-                          <Text style={tw`text-[#a2a2a2] text-[20px] mx-2`}>
+                          <Text style={tw`text-[#a2a2a2] text-[20px] mx-5`}>
                             vs
                           </Text>
                         )}
@@ -104,7 +121,7 @@ const LeagueScreen = () => {
                     ))}
                   </View>
                   <Text
-                    style={tw`text-[#a2a2a2] text-[16px] self-center mt-2 mb-2 `}>
+                    style={tw`text-[#a2a2a2] text-[16px] self-center mt-2 mb-2`}>
                     {fixture.starting_at}
                   </Text>
                 </TouchableOpacity>
@@ -122,8 +139,9 @@ const LeagueScreen = () => {
   };
 
   return (
-    <View style={tw`bg-[#05102E] h-full p-5`}>
-      <View style={tw`flex-row mb-5`}>
+    <SafeAreaView style={tw`bg-[#05102E] h-full `}>
+      <View style={tw`p-5`}>
+      <View style={tw` ${lang == 'ar' ? 'flex-row-reverse' : 'flex-row'} mb-5`}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <AntDesign
             name={'arrowleft'}
@@ -133,7 +151,7 @@ const LeagueScreen = () => {
           />
         </TouchableOpacity>
         <Text style={tw`text-[#fff] text-[26px] font-401 leading-normal mx-5`}>
-          League
+         {t('league')}
         </Text>
       </View>
 
@@ -142,7 +160,8 @@ const LeagueScreen = () => {
         renderItem={({item}) => <Item item={item} />}
         keyExtractor={item => item.id}
       />
-    </View>
+      </View>
+    </SafeAreaView>
   );
 };
 

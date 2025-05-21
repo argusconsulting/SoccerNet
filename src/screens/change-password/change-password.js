@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -54,11 +55,11 @@ const ChangePassword = () => {
   }
 
   return (
-    <View style={tw`bg-[#05102E] flex-1 `}>
+    <SafeAreaView style={tw`bg-[#05102E] flex-1 `}>
       <Header name={'ChangePassword'} />
       <View style={tw`mx-5 mt-10`}>
         <Text
-          style={tw`text-[#fff] text-[14px] font-Regular ml-1 leading-tight`}>
+          style={tw`text-[#fff] text-[14px] font-Regular leading-tight`}>
           Current Password
         </Text>
 
@@ -72,7 +73,7 @@ const ChangePassword = () => {
       </View>
       <View style={tw`mx-5 mt-10`}>
         <Text
-          style={tw`text-[#fff] text-[14px] font-Regular ml-1 leading-tight`}>
+          style={tw`text-[#fff] text-[14px] font-Regular leading-tight`}>
           New Password
         </Text>
 
@@ -86,7 +87,7 @@ const ChangePassword = () => {
       </View>
       <View style={tw`mx-5 mt-10`}>
         <Text
-          style={tw`text-[#fff] text-[14px] font-Regular ml-1 leading-tight`}>
+          style={tw`text-[#fff] text-[14px] font-Regular  leading-tight`}>
           Confirm Password
         </Text>
 
@@ -125,7 +126,7 @@ const ChangePassword = () => {
           )}
         </LinearGradient>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -1,6 +1,7 @@
 import notifee, {AndroidImportance} from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
 import {Platform, ToastAndroid} from 'react-native';
+import Alertify from '../scripts/toast';
 // import notifee, {AndroidImportance} from '@notifee/react-native';
 
 export const requestUserPermission = async () => {
@@ -98,7 +99,8 @@ const _handleNotificationListeners = () => {
   messaging().onNotificationOpenedApp(remoteMessage => {
     console.log('Notification opened app:', remoteMessage);
     if (remoteMessage.notification) {
-      ToastAndroid.show(remoteMessage.notification.body, ToastAndroid.LONG);
+      Alertify.default( remoteMessage.notification.body);
+      // ToastAndroid.show(remoteMessage.notification.body, ToastAndroid.LONG);
     }
   });
 
@@ -109,7 +111,8 @@ const _handleNotificationListeners = () => {
       if (remoteMessage) {
         console.log('Initial notification:', remoteMessage);
         if (remoteMessage.notification) {
-          ToastAndroid.show(remoteMessage.notification.body, ToastAndroid.LONG);
+          Alertify.default( remoteMessage.notification.body);
+          // ToastAndroid.show(remoteMessage.notification.body, ToastAndroid.LONG);
         }
       }
     })

@@ -11,10 +11,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getLineups} from '../../redux/standingSlice';
 import {getPlayersById} from '../../redux/playerSlice';
 import Modal from 'react-native-modal';
+import { t } from 'i18next';
 
 const LineUps = ({fixtureId}) => {
   const dispatch = useDispatch();
   const formation = useSelector(state => state?.standing?.lineUpFormations);
+    const lang = useSelector(state => state?.language_store?.language);
+  
   const [selectedTeam, setSelectedTeam] = useState('home');
   const [playerDetails, setPlayerDetails] = useState({});
   const requestCache = React.useRef({});
@@ -22,7 +25,7 @@ const LineUps = ({fixtureId}) => {
   const [selectedPlayer, setSelectedPlayer] = useState(null);
 
   useEffect(() => {
-    dispatch(getLineups(fixtureId));
+    dispatch(getLineups({fixtureId, lang}));
   }, [dispatch, fixtureId]);
 
   const getPlayerDetails = async playerId => {
@@ -40,6 +43,7 @@ const LineUps = ({fixtureId}) => {
     const fetchPromise = dispatch(
       getPlayersById({
         playerId,
+        lang,
         includeParams: 'statistics.details.type;country;position',
       }),
     )
@@ -153,46 +157,6 @@ const LineUps = ({fixtureId}) => {
     return {top, left};
   };
 
-  // const getPositionStyle = (formationPosition, formation) => {
-  //   const rows = parseFormation(formation);
-  //   let currentRow = 0;
-  //   let playerIndex = 0;
-
-  //   // Determine the row and position within the row
-  //   for (let i = rows.length - 1; i >= 0; i--) {
-  //     if (formationPosition <= playerIndex + rows[i]) {
-  //       currentRow = i;
-  //       playerIndex = formationPosition - playerIndex - 1;
-  //       break;
-  //     }
-  //     playerIndex += rows[i];
-  //   }
-
-  //   // Vertical positioning (lower for midfielders and attackers)
-  //   const baseTop = 67; // Default top for defenders
-  //   const topAdjustment = currentRow * 22; // Adjust per row
-  //   const isMidfielderOrAttacker = currentRow > 0; // Check if it's not defenders
-  //   const top = `${
-  //     baseTop - topAdjustment + (isMidfielderOrAttacker ? 3 : 0)
-  //   }%`;
-
-  //   // Horizontal positioning (even spacing across the row)
-  //   const playersInRow = rows[currentRow];
-  //   const totalWidth = 60; // The percentage width across which players are spread
-  //   const leftMargin = 15; // Margin from the left edge
-  //   const spacing = totalWidth / (playersInRow - 1);
-
-  //   let left;
-  //   if (playersInRow === 1) {
-  //     // Center single player (e.g., goalkeepers)
-  //     left = '45%';
-  //   } else {
-  //     // Evenly space players in the row
-  //     left = `${leftMargin + playerIndex * spacing}%`;
-  //   }
-
-  //   return {top, left};
-  // };
 
   useEffect(() => {
     const fetchDetailsForPlayers = async () => {
@@ -282,7 +246,7 @@ const LineUps = ({fixtureId}) => {
                 selectedTeam === 'home' ? tw`bg-blue-500` : tw`bg-[#05102E]`,
               ]}>
               <Text style={tw`text-white text-[18px] font-401`}>
-                HomeTeam: {homeTeam?.name}
+                {t('Home')}: {homeTeam?.name}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -292,7 +256,7 @@ const LineUps = ({fixtureId}) => {
                 selectedTeam === 'away' ? tw`bg-blue-500` : tw`bg-[#05102E]`,
               ]}>
               <Text style={tw`text-white text-[16px] font-401`}>
-                AwayTeam: {awayTeam?.name}
+                {t('Away')}: {awayTeam?.name}
               </Text>
             </TouchableOpacity>
           </View>
@@ -322,8 +286,8 @@ const LineUps = ({fixtureId}) => {
         </>
       ) : (
         <Text
-          style={tw`text-[#fff] text-[20px] font-401 self-center leading-normal mr-3`}>
-          No Data Found!
+          style={tw`text-[#fff] text-[20px] font-401 self-center leading-normal mt-5`}>
+          No Lineups Found!
         </Text>
       )}
 

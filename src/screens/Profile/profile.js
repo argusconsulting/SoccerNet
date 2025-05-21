@@ -7,6 +7,8 @@ import {
   TextInput,
   Pressable,
   ImageBackground,
+  Alert,
+  SafeAreaView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Header from '../../components/header/header';
@@ -24,15 +26,20 @@ import {useNavigation} from '@react-navigation/native';
 import Alertify from '../../scripts/toast';
 import UploadPopup from '../../components/upload-PopUp';
 import {t} from 'i18next';
+import CountryCodeDropdownPicker from 'react-native-dropdown-country-picker';
+import CountryPicker from '../../components/country-picker';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Profile = () => {
   const navigation = useNavigation();
   const [uploadPopup, setUploadPopup] = useState(false);
-  const [profilePicture, setProfilePicture] = useState();
   const [imageData, setImageData] = useState([]);
-
   const dispatch = useDispatch();
   const userProfileData = useSelector(state => state.profile.userProfileData);
+
+  const handleCountrySelect = (country) => {
+    Alert.alert("Country Selected", `You selected: ${country.label}`);
+  };
 
   //for selecting image
   const chooseFile = type => {
@@ -46,7 +53,6 @@ const Profile = () => {
       launchImageLibrary(options, response => {
         setUploadPopup(false);
         response?.assets?.map(n => {
-          setProfilePicture(n.uri);
           let data = {
             uri: n.uri,
             name: n.fileName,
@@ -135,7 +141,7 @@ const Profile = () => {
   };
 
   return (
-    <View style={tw`bg-[#05102E] flex-1 `}>
+    <SafeAreaView style={tw`bg-[#05102E] flex-1 `}>
       <Header name="Profile" />
 
       <View
@@ -308,19 +314,16 @@ const Profile = () => {
             style={tw`self-center`}
           />
         </View>
-        <TextInput
-          type="text"
-          style={tw`border-b border-[#a9a9a9] text-[#a9a9a9]  h-10 w-70 rounded-lg px-2`}
-          placeholder={t('countryPlaceHolder')}
-          value={userProfileData?.country}
-          maxLength={25}
-          onChangeText={text =>
-            handleFieldChange({
-              key: 'country',
-              value: text,
-            })
-          }
-        />
+        <CountryPicker
+       onSelect={(selectedCountry) =>
+        handleFieldChange({
+          key: 'country',
+          value: selectedCountry,
+        })
+      }
+        value={userProfileData?.country}
+      />
+       
       </View>
 
       {/* settings */}
@@ -374,7 +377,8 @@ const Profile = () => {
           </Text>
         </LinearGradient>
       </TouchableOpacity>
-    </View>
+     
+    </SafeAreaView>
   );
 };
 

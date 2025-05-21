@@ -7,13 +7,14 @@ import {
   TouchableOpacity,
   Alert,
   Dimensions,
+  SafeAreaView,
 } from 'react-native';
 import tw from '../../styles/tailwind';
 import Header from '../../components/header/header';
 import moment from 'moment'; // You can use this library for date formatting
 import LinearGradient from 'react-native-linear-gradient';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Checkbox} from 'react-native-paper';
 import debounce from 'lodash/debounce';
@@ -32,6 +33,8 @@ import {searchHandler, setSearchData} from '../../redux/searchSlice';
 import Loader from '../../components/loader/Loader';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {getProfileData} from '../../redux/profileSlice';
+import HoldOnAnimation from '../../components/loader/animation-loader';
+import { t } from 'i18next';
 
 const SpotLight = () => {
   const navigation = useNavigation();
@@ -47,6 +50,8 @@ const SpotLight = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isProfileCheckModal, setProfileCheckModal] = useState(false);
   const filteredRoomData = final?.data?.groups;
+    const lang = useSelector(state => state?.language_store?.language);
+  
 
   const [selectedIds, setSelectedIds] = useState([]);
 
@@ -83,6 +88,9 @@ const SpotLight = () => {
     });
     return willFocusSubscription;
   }, [dispatch]);
+
+
+
 
   const debouncedSearch = useCallback(
     debounce(query => {
@@ -126,31 +134,34 @@ const SpotLight = () => {
 
   const Item = ({item}) => {
     const isJoined = item.users.some(user => user.id === userId);
-
-    const handlePress = (groupId, groupName) => {
+    const handlePress = (groupId, groupName, creatorId) => {
       if (isJoined) {
         dispatch(leaveMeetingRooms({userId, groupId})).then(() => {
           dispatch(getMeetingRooms());
         });
       } else {
+        console.log("entered")
         dispatch(joinMeetingRooms({userId, groupId})).then(() =>
           navigation.navigate('MeetingChat', {
             groupId: groupId,
             groupName: groupName,
+            creatorId: creatorId
           }),
         );
       }
     };
 
-    const onCardClick = ({groupId, groupName}) => {
+    const onCardClick = ({groupId, groupName , creatorId}) => {
+      console.log("creatorId-----------", creatorId)
       if (isJoined) {
         navigation.navigate('MeetingChat', {
           groupId: groupId,
           groupName: groupName,
+          creatorId: creatorId
         });
       }
     };
-
+console.log("printing item", item)
     return (
 <TouchableOpacity
   style={[
@@ -160,12 +171,12 @@ const SpotLight = () => {
     {  width: screenWidth  /2 - 20 , flexDirection: 'column', justifyContent: 'space-between', minHeight: 180 }, // Add flex and minHeight
   ]}
   disabled={item?.is_active === false}
-  onPress={() => onCardClick({ groupId: item?.id, groupName: item?.name })}>
+  onPress={() => onCardClick({ groupId: item?.id, groupName: item?.name , creatorId : item?.created_by })}>
   
-  <View style={tw`flex-row justify-between`}>
+  <View style={tw`flex-row justify-between  h-15 `}>
     <Text
       style={[
-        tw`text-white text-[20px] font-401 leading-normal mb-1 w-30 h-15`,
+        tw`text-white text-[20px] font-401 leading-normal mb-1 w-30`,
         { textTransform: 'capitalize' },
       ]}>
       {item.name}
@@ -210,7 +221,7 @@ const SpotLight = () => {
   {/* Fixed button at the bottom */}
   <TouchableOpacity
     disabled={item?.is_active === false}
-    onPress={() => handlePress(item?.id, item?.name)}
+    onPress={() => handlePress(item?.id, item?.name, item?.created_by)}
     style={[
       tw`mt-1 rounded-lg justify-center`,  // Remove bottom-0 and absolute
       { width: '100%', height: 40, alignSelf: 'center' },
@@ -235,7 +246,6 @@ const SpotLight = () => {
     </LinearGradient>
   </TouchableOpacity>
 </TouchableOpacity>
-
     );
   };
 
@@ -255,8 +265,22 @@ const SpotLight = () => {
 
 
   return (
-    <View style={tw`bg-[#05102E] flex-1`}>
-      <Header name="Rooms" />
+    <SafeAreaView style={tw`bg-[#05102E] flex-1`}>
+      {/* <Header name="Rooms" /> */}
+      <View style={tw` ${lang == 'ar' ? 'flex-row-reverse' : 'flex-row'} p-5 `}>
+      <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <AntDesign
+          name={'arrowleft'}
+          size={24}
+          color={'#fff'}
+          style={tw`mx-3 mt-2`}
+        />
+      </TouchableOpacity>
+      <Text
+        style={tw`text-[#fff] text-[24px] font-401 leading-normal self-center `}>
+        {t("Rooms")}
+      </Text>
+    </View>
       <View style={tw`px-5`}>
         <SearchBar onSearch={handleSearch} placeholderText={'Search by room names...'} />
 
@@ -271,7 +295,7 @@ const SpotLight = () => {
       </View>
 
       {loading ? (
-        <Loader />
+      <HoldOnAnimation/>
       ) : displayedData?.length > 0 ? ( // If there's data to display
         <FlatList
           numColumns={2}
@@ -429,7 +453,7 @@ const SpotLight = () => {
           </View>
         </Modal>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 

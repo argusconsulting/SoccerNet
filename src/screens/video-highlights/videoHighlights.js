@@ -1,4 +1,4 @@
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {FlatList, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Header from '../../components/header/header';
 import axios from 'axios';
@@ -29,7 +29,7 @@ const VideoHighlights = () => {
   );
 
   return (
-    <View style={tw`bg-[#05102E] flex-1`}>
+    <SafeAreaView style={tw`bg-[#05102E] flex-1`}>
       <Header name="Video Highlights" />
       <FlatList
         data={videos}
@@ -37,7 +37,7 @@ const VideoHighlights = () => {
         keyExtractor={(item, index) => index.toString()}
         contentContainerStyle={tw`p-3`}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

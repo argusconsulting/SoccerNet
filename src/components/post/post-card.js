@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
   FlatList,
+  SafeAreaView,
 } from 'react-native';
 import tw from '../../styles/tailwind';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -41,7 +42,6 @@ const PostCard = ({item}) => {
     try {
       const response = await RNFetchBlob.fetch('GET', imageUrl);
       const base64Data = response.base64();
-
       const imageBase64Url = `data:image/jpeg;base64,${base64Data}`;
 
       const options = {
@@ -139,34 +139,12 @@ const PostCard = ({item}) => {
   };
 
   return (
-    <View
+    <SafeAreaView
       style={[
         tw`mx-2 w-85  self-center bg-[#303649] rounded-lg my-2`,
         styles.elevation,
       ]}>
-      {/* <View style={tw`flex-row items-center`}>
-        <Image
-          source={{uri: item?.user?.avatar_url}}
-          style={tw`w-7 h-7 rounded-lg`}
-        />
-        <View>
-          <Text
-            colors={'#E42B12'}
-            style={[
-              tw`text-[16px] font-401 mx-5 mt-1 leading-tight`,
-              {textTransform: 'capitalize'},
-            ]}>
-            {item?.user?.name}
-          </Text>
-
-          <Text
-            style={tw`text-[#3b3b3b] text-[12px] font-400 mx-1 mt-1 mx-5 leading-tight w-85`}>
-            {formattedDate}
-            {'   '}
-            {formattedTime}
-          </Text>
-        </View>
-      </View> */}
+      
 
       <Image
         source={{uri: item?.image}}
@@ -225,7 +203,7 @@ const PostCard = ({item}) => {
       <Modal
         isVisible={modalVisible}
         onBackdropPress={() => setModalVisible(false)}>
-        <View style={tw`flex-1 bg-[#303649] rounded-md`}>
+        <View style={tw`flex-1 bg-[#303649] rounded-md my-10`}>
           <View style={styles.messageContainer}>
             <View style={[tw`flex-row justify-between items-center px-5 pt-3`]}>
               <Text style={styles.messageTitle}>Comments</Text>
@@ -288,7 +266,7 @@ const PostCard = ({item}) => {
           </View>
         </View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
 

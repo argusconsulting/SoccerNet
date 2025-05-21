@@ -56,8 +56,8 @@ const LeagueModal = ({isVisible, toggleModal}) => {
     {
       id: '7',
       icon: require('../../assets/icons/newspaper.png'),
-      title: 'News',
-      navigate: 'News', // Example screen name
+      title: 'LeaderBoard',
+      navigate: 'LeaderBoard', // Example screen name
     },
     {
       id: '8',
@@ -81,14 +81,14 @@ const LeagueModal = ({isVisible, toggleModal}) => {
           toggleModal();
         }
       }}
-      style={[tw`p-3 mt-7 w-30`]}>
+      style={[tw`p-3 mt-7`, { width: '30%' }]}>
       <Image
         source={item?.icon}
         style={[tw`w-7 h-7 self-center`, {resizeMode: 'contain'}]}
       />
       <Text
         style={[
-          tw`text-[#fff] text-[18px] font-401 leading-normal mt-3 self-center`,
+          tw`text-[#fff] text-[15px] font-401 leading-normal mt-3 self-center`,
           {textAlign: 'center'},
         ]}>
         {t(item.title)}
@@ -107,7 +107,13 @@ const LeagueModal = ({isVisible, toggleModal}) => {
           data={DATA}
           renderItem={({item}) => <Item item={item} />}
           keyExtractor={item => item.id}
-          contentContainerStyle={tw`ml-5`}
+          contentContainerStyle={[
+            tw`px-4 py-3`, // Add padding to align items
+            { justifyContent: 'space-between' },
+          ]}
+          columnWrapperStyle={{
+            justifyContent: 'space-between', // Ensures even spacing between items
+          }}
         />
         {/* <Button title="Hide modal" onPress={toggleModal} /> */}
       </View>

@@ -2,6 +2,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  SafeAreaView,
   Text,
   TouchableOpacity,
   View,
@@ -10,7 +11,7 @@ import React, {useEffect, useState} from 'react';
 import Header from '../../components/header/header';
 import tw from '../../styles/tailwind';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -46,24 +47,65 @@ const Photos = () => {
   const handleReaction = (reaction, postId) => {
     const updatedPhotos = localPhotos.map(photo => {
       if (photo.id === postId) {
+        const previousReaction = photo.is_reacted;
+  
+        // Clone the current counts
+        let claps = photo.claps_count || 0;
+        let likes = photo.likes_count || 0;
+        let hearts = photo.hearts_count || 0;
+  
+        // Decrease previous reaction count
+        if (previousReaction === 'clap') claps = Math.max(0, claps - 1);
+        if (previousReaction === 'like') likes = Math.max(0, likes - 1);
+        if (previousReaction === 'heart') hearts = Math.max(0, hearts - 1);
+  
+        // Increase new reaction count
+        if (reaction === 'clap') claps += 1;
+        if (reaction === 'like') likes += 1;
+        if (reaction === 'heart') hearts += 1;
+  
         return {
           ...photo,
-          is_reacted: reaction, // Set the reaction
-          claps_count: reaction === 'clap' ? 1 : 0,
-          likes_count: reaction === 'like' ? 1 : 0,
-          hearts_count: reaction === 'heart' ? 1 : 0,
+          is_reacted: reaction,
+          claps_count: claps,
+          likes_count: likes,
+          hearts_count: hearts,
         };
       }
       return photo;
     });
-
+  
     setLocalPhotos(updatedPhotos);
-
+  
     const reqData = {id: postId, reaction};
     dispatch(getFanReactions(reqData)).catch(() => {
-      setLocalPhotos(fanPhotos); // Rollback on failure
+      // Optional: rollback logic here, or refetch fanPhotos
+      dispatch(getFanPhotos());
     });
   };
+  
+
+  // const handleReaction = (reaction, postId) => {
+  //   const updatedPhotos = localPhotos.map(photo => {
+  //     if (photo.id === postId) {
+  //       return {
+  //         ...photo,
+  //         is_reacted: reaction, // Set the reaction
+  //         claps_count: reaction === 'clap' ? 1 : 0,
+  //         likes_count: reaction === 'like' ? 1 : 0,
+  //         hearts_count: reaction === 'heart' ? 1 : 0,
+  //       };
+  //     }
+  //     return photo;
+  //   });
+
+  //   setLocalPhotos(updatedPhotos);
+
+  //   const reqData = {id: postId, reaction};
+  //   dispatch(getFanReactions(reqData)).catch(() => {
+  //     setLocalPhotos(fanPhotos); // Rollback on failure
+  //   });
+  // };
 
   const renderItem = ({item}) => (
     <View style={tw`mt-5`}>
@@ -73,8 +115,8 @@ const Photos = () => {
         <View style={tw`absolute bottom-0 right-0 flex-row p-2`}>
           <TouchableOpacity onPress={() => handleReaction('clap', item.id)}>
             {console.log('value of item', item)}
-            <FontAwesome6
-              name={'hands-clapping'}
+            <MaterialCommunityIcons
+              name={'hand-clap'}
               size={20}
               color={item.is_reacted === 'clap' ? '#FFBF00' : '#fff'}
               style={tw`self-center`}
@@ -113,10 +155,13 @@ const Photos = () => {
       <View style={tw`p-3`}>
         <View style={tw`flex-row justify-between`}>
           <View style={tw`flex-row`}>
+            {/* {console.log("image value ----->", item?.user?.avatar_url)} */}
+            {item?.user?.avatar_url ? 
             <Image
               source={{uri: item?.user?.avatar_url}}
               style={[tw`w-5 h-5 rounded-full`]}
-            />
+            /> :<View style={tw`bg-red-200 rounded-full w-6 h-6`}/>}
+
             <Text style={tw`text-[#fff] text-[16px] mx-3`}>
               {item?.user?.name}
             </Text>
@@ -126,13 +171,13 @@ const Photos = () => {
           </Text>
         </View>
 
-        <Text style={tw`text-[#A9A9A9] text-[18px] mt-2`}>{item?.caption}</Text>
+        <Text style={[tw`text-[#A9A9A9] text-[18px] mt-2 `,{textTransform:"capitalize"}]}>{item?.caption}</Text>
       </View>
     </View>
   );
 
   return (
-    <View style={tw`bg-[#05102E] flex-1`}>
+    <SafeAreaView style={tw`bg-[#05102E] flex-1`}>
       <Header name="Photos" />
       {isLoading ? (
         <Loader />
@@ -164,7 +209,7 @@ const Photos = () => {
           Upload your match moments
         </Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 

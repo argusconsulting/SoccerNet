@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     View,
     ScrollView,
+    SafeAreaView,
   } from 'react-native';
   import React, {useState} from 'react';
   import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
@@ -92,7 +93,7 @@ dispatch(postFanPhotos({caption:value , image:imageData ,acknowledge:checked }))
 }
   
     return (
-      <View style={tw`bg-[#05102E] flex-1`}>
+      <SafeAreaView style={tw`bg-[#05102E] flex-1`}>
         <Header name="Photos" />
         
         <ScrollView contentContainerStyle={tw`px-5 flex-grow`}>
@@ -177,7 +178,7 @@ dispatch(postFanPhotos({caption:value , image:imageData ,acknowledge:checked }))
       </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </SafeAreaView>
     );
   };
   

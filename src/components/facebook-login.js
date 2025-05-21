@@ -1,95 +1,112 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, Image, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {
-  LoginButton,
   AccessToken,
-  Profile,
   LoginManager,
+  AuthenticationToken,
 } from 'react-native-fbsdk-next';
 import tw from '../styles/tailwind';
-import {setSocialLoginToken, setUserAuthToken} from '../redux/authSlice';
+import {setSocialLoginToken, setUserAuthToken, setUserID} from '../redux/authSlice';
 import {store} from '../redux/store';
-import {api_name_fb_login} from '../constants/api-constants';
+import {api_name_fb_login, api_name_fb_login_ios} from '../constants/api-constants';
 import {postApi} from '../scripts/api-services';
 import {setSocialProfile} from '../redux/profileSlice';
 import {useNavigation} from '@react-navigation/native';
 
-const FacebookLogin = () => {
+const FacebookLogin = ({onClose}) => {
   const navigation = useNavigation();
-  // working code
-  //   const handleLoginFinished = async (error, result) => {
-  //     console.log('Error:', error, 'Result:', result);
-
-  //     if (error) {
-  //       console.log('Login error:', error);
-  //       Alert.alert('Login Error', error.message);
-  //     } else if (result.isCancelled) {
-  //       console.log('Login was cancelled.');
-  //     } else {
-  //       try {
-  //         const data = await AccessToken.getCurrentAccessToken();
-  //         console.log('Access Token:', data?.accessToken.toString());
-
-  //         const profile = await Profile.getCurrentProfile();
-  //         if (profile) {
-  //           console.log(`Logged in as ${profile.name} with ID ${profile.userID}`);
-  //         }
-  //       } catch (err) {
-  //         console.log('Error fetching profile:', err);
-  //         Alert.alert('Error', 'Could not retrieve profile information.');
-  //       }
-  //     }
-  //   };
 
   const fbLogin = async () => {
-    LoginManager.logInWithPermissions(['public_profile']).then(
-      function (result) {
-        if (result.isCancelled) {
-          console.log('Login cancelled');
-        } else {
-          console.log(
-            'Login success with permissions: ' +
-              result.grantedPermissions.toString(),
-          );
-          getData();
-        }
-      },
-      function (error) {
-        console.log('Login fail with error: ' + error);
-      },
-    );
-  };
-
-  const getData = async () => {
-    try {
-      const data = await AccessToken.getCurrentAccessToken();
-      // console.log('this is data', data);
-      var idToken = data?.accessToken;
-      store.dispatch(setSocialLoginToken());
-      const response = await _fbSocialLogin(idToken);
-      // console.log('checking response now here ', response);
-      store.dispatch(setSocialProfile(response?.data?.user));
-      store.dispatch(setUserAuthToken(response?.data?.token));
-      navigation.navigate('Home');
-      if (!data) throw new Error('No access token found');
-    } catch (error) {
-      console.log('Error fetching data from Facebook:', error);
-      Alert.alert('Error', 'Failed to retrieve profile information.');
+  try {
+    const result = await LoginManager.logInWithPermissions(["public_profile", "email"] , "enabled","nonce");
+    if (result.isCancelled) {
+      console.log("Login cancelled");
+      return;
     }
-  };
 
-  async function _fbSocialLogin(idToken) {
-    console.log('checking token', idToken);
-    try {
-      const response = await postApi(api_name_fb_login, {
-        access_token: idToken,
-      });
-      return response; // Return the response here
-    } catch (error) {
-      console.error(error);
-      throw error; // Rethrow the error so it can be handled in the caller function
+    console.log("Login success with permissions:", result.grantedPermissions);
+
+    let token = null;
+
+    if (Platform.OS === "ios") {
+   
+      const authToken = await AuthenticationToken.getAuthenticationTokenIOS();
+      token = authToken?.authenticationToken;
+      console.log("Auth token (iOS):", token);
+    } else {
+      const accessToken = await AccessToken.getCurrentAccessToken();
+      token = accessToken?.accessToken;
+      console.log("Access token (Android):", token);
     }
+
+    // Call getData() only if a token exists for android
+    if (token) {
+      getData(token);
+    } else {
+      console.log("No token retrieved for android");
+    }
+  } catch (error) {
+    console.log("Login failed with error:", error);
+    Alert.alert("Error", "Facebook login failed.");
   }
+};
+
+const getData = async (token) => {
+  try {
+    console.log("Checking token in getData:", token);
+
+    if (!token) throw new Error("No access token found");
+
+    store.dispatch(setSocialLoginToken());
+let response = null;
+    // Send token to backend for authentication
+    if(Platform.OS === "ios"){
+       response = await _fbSocialLoginIos(token);
+    }else{
+       response = await _fbSocialLogin(token);
+    }
+ 
+    console.log("FB login response:", response);
+
+    // Store user profile and authentication token
+    store.dispatch(setSocialProfile(response?.data?.user));
+    store.dispatch(setUserAuthToken(response?.data?.token));
+    store.dispatch(setUserID(response?.data?.user?.id));
+    // Navigate to home screen
+    onClose();
+    navigation.navigate("LeagueSelection");
+  } catch (error) {
+    console.log("Error fetching data from Facebook:", error);
+    Alert.alert("Error", "Failed to retrieve profile information.");
+  }
+};
+
+async function _fbSocialLogin(token) {
+  try {
+    console.log("Sending token to backend:", token);
+    const response = await postApi(api_name_fb_login, {
+      access_token: token,
+    });
+    return response;
+  } catch (error) {
+    console.error("Error in _fbSocialLogin:", error);
+    throw error;
+  }
+}
+
+async function _fbSocialLoginIos(token) {
+  try {
+    console.log("Sending ios token to backend:", token);
+    const response = await postApi(api_name_fb_login_ios, {
+      access_token: token,
+    });
+    return response;
+  } catch (error) {
+    console.error("Error in ios_fbSocialLogin:", error);
+    throw error;
+  }
+}
+
 
   return (
     <View>

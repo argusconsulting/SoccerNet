@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Alert,
   Image,
+  SafeAreaView,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import tw from '../../styles/tailwind';
@@ -60,7 +61,7 @@ function Menu({modalVisible, toggleModal}) {
     {
       id: '0a5f78-3eae-4a0c-810b-6637687e799f',
       icon: require('../../assets/icons/newspaper.png'),
-      title: 'News',
+      title: 'LeaderBoard',
     },
     {
       id: '0a378-3eae-4a0c-810b-6637687e799f',
@@ -70,7 +71,7 @@ function Menu({modalVisible, toggleModal}) {
     {
       id: '0a378-3eae-4a0c-810b-67e799f',
       icon: require('../../assets/icons/highlights.png'),
-      title: 'Video Highlights',
+      title: 'VideoHighlights',
     },
     {
       id: '0a3d5f78-3e6e-4a0c-810b-6637687e799f',
@@ -129,15 +130,15 @@ function Menu({modalVisible, toggleModal}) {
         toggleModal();
         navigation.navigate('Poll');
         break;
-      case 'News':
+      case 'LeaderBoard':
         toggleModal();
-        navigation.navigate('News');
+        navigation.navigate('LeaderBoard');
         break;
       case 'Photos':
         toggleModal();
         navigation.navigate('Photos');
         break;
-      case 'Video Highlights':
+      case 'VideoHighlights':
         toggleModal();
         navigation.navigate('videoHighlights');
         break;
@@ -188,16 +189,16 @@ function Menu({modalVisible, toggleModal}) {
   );
 
   return (
-    <View style={tw`flex-1`}>
+   
       <Modal
         isVisible={modalVisible}
-        style={tw`m-0 absolute left-0 right-0 h-full `}
+        style={tw`m-0 absolute left-0 right-0 h-full  `}
         animationIn={slideInLeft}
         animationOut={slideOutRight}
         animationInTiming={600}
         animationOutTiming={600}
         onBackdropPress={toggleModal}>
-        <View style={tw`flex-1 w-[80%] h-full bg-[#303649] rounded-md`}>
+       <SafeAreaView style={tw`flex-1 w-[80%] h-full bg-[#303649] rounded-md`}>
           <View style={tw`flex-row justify-between mx-5 m-5`}>
             <Text style={tw`text-[22px] text-[#fff]  font-401 leading-tight`}>
               {t('Menu')}
@@ -220,9 +221,9 @@ function Menu({modalVisible, toggleModal}) {
             )}
             keyExtractor={item => item.id}
           />
-        </View>
+         </SafeAreaView>
       </Modal>
-    </View>
+  
   );
 }
 

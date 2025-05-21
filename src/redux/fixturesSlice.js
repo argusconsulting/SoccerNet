@@ -9,10 +9,11 @@ import {getSportsMonkApi, getSportsMonkCoreApi} from '../scripts/api-services';
 
 export const getAllFixturesByDate = createAsyncThunk(
   'fixtures/byDate',
-  async currentDate => {
+  async currentDate  => {
+    console.log("currentDate", currentDate)
     try {
       const response = await getSportsMonkApi(
-        `${api_name_fixtures_date}/${currentDate}?include=participants;league;scores;`,
+        `${api_name_fixtures_date}/${currentDate}?include=participants;league;scores&timezone=Asia/Kolkata`,
       );
       return response;
     } catch (error) {
@@ -25,10 +26,10 @@ export const getAllFixturesByDate = createAsyncThunk(
 // for calendar
 export const getAllFixturesByDateRange = createAsyncThunk(
   'fixtures/byDateRange',
-  async ({start, end}) => {
+  async ({start, end , lang}) => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_fixtures_date_range}/${start}/${end}?per_page=200&filters=populate`,
+        `${api_name_fixtures_date_range}/${start}/${end}?per_page=300&filters=populate&timezone=Asia/Kolkata&locale=${lang}`,
       );
 
       return response;
@@ -42,11 +43,11 @@ export const getAllFixturesByDateRange = createAsyncThunk(
 // for highlights
 export const getAllFixturesByDateRangeHighlights = createAsyncThunk(
   'fixtures/byDateRangeHighlights',
-  async ({start, end, page}) => {
-    console.log('page', page);
+  async ({start, end, page, lang}) => {
+    console.log('page', lang);
     try {
       const response = await getSportsMonkApi(
-        `${api_name_fixtures_date_range}/${start}/${end}?include=participants;league;scores&page=${page}`,
+        `${api_name_fixtures_date_range}/${start}/${end}?include=participants;league;scores&page=${page}&locale=${lang}&timezone=Asia/Kolkata`,
       );
       return response;
     } catch (error) {
@@ -59,10 +60,10 @@ export const getAllFixturesByDateRangeHighlights = createAsyncThunk(
 // for fixtures id
 export const getFixturesById = createAsyncThunk(
   'fixtures/byFixturesId',
-  async fixtureId => {
+  async ({fixtureId, lang}) => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_fixtures_id}/${fixtureId}?include=participants;league;scores;statistics;`,
+        `${api_name_fixtures_id}/${fixtureId}?include=participants;league;scores;WeatherReport;venue;statistics&locale=${lang}&timezone=Asia/Kolkata`,
       );
       return response;
     } catch (error) {
@@ -75,10 +76,10 @@ export const getFixturesById = createAsyncThunk(
 // for lineups
 export const getFixturesByIdLineUps = createAsyncThunk(
   'fixtures/byFixturesIdLineUps',
-  async fixtureId => {
+  async ({fixtureId, lang}) => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_fixtures_id}/${fixtureId}?include=participants;lineups.player;lineups.type`,
+        `${api_name_fixtures_id}/${fixtureId}?include=participants;lineups.player;lineups.type&locale=${lang}&timezone=Asia/Kolkata`,
       );
       return response;
     } catch (error) {
@@ -91,10 +92,10 @@ export const getFixturesByIdLineUps = createAsyncThunk(
 // for type
 export const getTypeById = createAsyncThunk(
   'fixtures/byTypeId',
-  async typeId => {
+  async ({typeId, lang}) => {
     try {
       const response = await getSportsMonkCoreApi(
-        `${api_name_type_id}/${typeId}`,
+        `${api_name_type_id}/${typeId}?locale=${lang}`,
       );
       return response;
     } catch (error) {

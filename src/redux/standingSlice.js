@@ -7,14 +7,14 @@ import {
 
 export const getAllStandings = createAsyncThunk(
   'standings/getAllStandings',
-  async () => {
+  async ({lang, currentPage}) => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_standings}?include=participant;details.type;`,
+        `${api_name_standings}?include=participant;details.type;&locale=${lang}&page=${currentPage}`,
       );
       return response;
     } catch (error) {
-      console.log('Error fetching fixtures by date API', error);
+      console.log('Error fetching all standing', error);
       return rejectWithValue(error);
     }
   },
@@ -23,16 +23,14 @@ export const getAllStandings = createAsyncThunk(
 // for fixtures id with lineups
 export const getLineups = createAsyncThunk(
   'standings/lineups',
-  async fixtureId => {
-    console.log('is fixtureId available', fixtureId);
+  async ({fixtureId, lang}) => {
     try {
       const response = await getSportsMonkApi(
-        `${api_name_fixtures_id}/${fixtureId}?include=formations;lineups;participants&filters=lineupTypes:11`,
+        `${api_name_fixtures_id}/${fixtureId}?include=formations;lineups;participants&filters=lineupTypes:11&locale=${lang}`,
       );
-      console.log('line ups', response);
       return response;
     } catch (error) {
-      console.log('Error fetching fixtures by id API', error);
+      console.log('Error fetching lineup', error);
       return rejectWithValue(error);
     }
   },
@@ -42,25 +40,45 @@ const standingSlice = createSlice({
   name: 'standings',
   initialState: {
     isLoading: false,
-    standingsData: [],
+    standingsData: {
+      data: [],  // Initially empty data array
+      pagination: {},
+    },
     lineUpFormations: [],
     status: '',
   },
   reducers: {},
   extraReducers: builder => {
     builder.addCase(getAllStandings.fulfilled, (state, action) => {
-      state.standingsData = action?.payload;
+      console.log('API Response:', action.payload); // Log the API response to check the data
+    
+      const currentPage = action.meta.arg.currentPage; // Get the page number
+    
+      if (currentPage === 1) {
+        // If it's the first page, replace the data
+        state.standingsData = action.payload;
+      } else {
+        // Ensure only 25 items per page by replacing the previous page data
+        state.standingsData = {
+          ...action.payload, // Keep the new pagination info
+          data: action.payload.data, // Replace old data with new page data
+        };
+      }
+    
       state.status = 'fulfilled';
       state.isLoading = false;
     });
+    
     builder.addCase(getAllStandings.pending, (state, action) => {
       state.status = 'pending';
       state.isLoading = true;
     });
+    
     builder.addCase(getAllStandings.rejected, (state, action) => {
       state.status = 'rejected';
       state.isLoading = false;
     });
+    
 
     //formation
     builder.addCase(getLineups.fulfilled, (state, action) => {
